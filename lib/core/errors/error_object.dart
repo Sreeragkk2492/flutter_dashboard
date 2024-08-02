@@ -1,10 +1,8 @@
-
-
 import 'dart:async';
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
-import 'package:dio/dio.dart';
-import 'package:flutter_dashboard/core/errors/exceptions.dart';
+import 'exceptions.dart';
 
 class ErrorObject {
   const ErrorObject({
@@ -16,12 +14,10 @@ class ErrorObject {
   final String message;
 
   static ErrorObject errorObject({Object? exception}) {
-    // exception?.log(name: "ErrorObject");
-
     Object? exp;
 
-    if (exception is DioException) {
-      exp = handleDioException(exception);
+    if (exception is http.ClientException) {
+      exp = handleHttpException(exception);
     } else {
       exp = exception;
     }
@@ -29,21 +25,19 @@ class ErrorObject {
     return handleException(exp);
   }
 
-  static Object? handleDioException(DioException exception) {
-    switch (exception.response?.statusCode) {
-      case 400:
-      case 401:
-      case 403:
-      case 404:
-      case 406:
-      case 429:
-        return NotFoundException();
-      case 500:
-        return ServerException();
-      case 422:
-        return const ErrorObject(title: "Error", message: "error 422");
-      default:
-        return exception;
+  static Object? handleHttpException(http.ClientException exception) {
+    // Note: http package doesn't provide status codes directly
+    // You might need to parse the exception message or use a custom approach
+    // to determine the status code
+    
+    if (exception.message.contains('404')) {
+      return NotFoundException();
+    } else if (exception.message.contains('500')) {
+      return ServerException();
+    } else if (exception.message.contains('422')) {
+      return const ErrorObject(title: "Error", message: "error 422");
+    } else {
+      return exception;
     }
   }
 
@@ -82,12 +76,11 @@ class ErrorObject {
           title: 'Error Code: NOT_FOUND',
           message: 'The requested resource was not found (404).',
         );
-      case DioException:
+      case http.ClientException:
         return const ErrorObject(
-          title: 'Error Code: DIO_ERROR',
+          title: 'Error Code: HTTP_ERROR',
           message: 'An error occurred during network request.',
         );
-
       default:
         if (exception is ErrorObject) return exception;
         return const ErrorObject(

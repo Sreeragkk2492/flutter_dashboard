@@ -85,10 +85,11 @@ class DepartmentList extends StatelessWidget {
                                     _dataTableHorizontalScrollController,
                                 child: SizedBox(
                                   width: dataTableWidth,
-                                  child: Obx(()=>
-                                     DataTable(
+                                  child: Obx(
+                                    () => DataTable(
                                       border: const TableBorder(
-                                          verticalInside: BorderSide(width: 0.5),
+                                          verticalInside:
+                                              BorderSide(width: 0.5),
                                           top: BorderSide(width: 0.5),
                                           right: BorderSide(width: 0.5),
                                           left: BorderSide(width: 0.5),
@@ -104,7 +105,7 @@ class DepartmentList extends StatelessWidget {
                                             label: Row(
                                           children: [
                                             Text('#'),
-                                    
+
                                             //  IconButton(
                                             //      onPressed: () {},
                                             //      icon: Icon(Icons.arrow_drop_down ))
@@ -115,7 +116,7 @@ class DepartmentList extends StatelessWidget {
                                             label: Row(
                                           children: [
                                             Text('Category'),
-                                    
+
                                             //  IconButton(
                                             //      onPressed: () {},
                                             //      icon: Icon(Icons.arrow_drop_down ))
@@ -142,7 +143,7 @@ class DepartmentList extends StatelessWidget {
                                         DataColumn(
                                             label: Row(
                                           children: [
-                                          //  Text('Status'),
+                                            //  Text('Status'),
                                             //  IconButton(
                                             //      onPressed: () {},
                                             //      icon: Icon(Icons.arrow_drop_down_sharp))
@@ -154,6 +155,7 @@ class DepartmentList extends StatelessWidget {
                                           (index) {
                                         var department =
                                             screenController.departments[index];
+                                             print("Processing department: $department"); // Debug print
                                         return DataRow.byIndex(
                                           index: index,
                                           cells: [
@@ -161,21 +163,24 @@ class DepartmentList extends StatelessWidget {
                                             const DataCell(Text('2022-06-30')),
                                             DataCell(Text(
                                                 department.departmentName)),
-                                            DataCell(
-                                                Text('${Random().nextInt(50)}')),
-                                                 DataCell(TextButton(
-                                                    onPressed: () {
-                                                   showEditDialog(context,
-                                                      DialogType.info, index,department );
-                                                    },
-                                                    child: const Text(
-                                                      'Edit',
-                                                      style: TextStyle(
-                                                          color: AppColors
-                                                              .blackColor,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )))
+                                            DataCell(Text(
+                                                '${Random().nextInt(50)}')),
+                                            DataCell(TextButton(
+                                                onPressed: () {
+                                                  showEditDialog(
+                                                      context,
+                                                      DialogType.info,
+                                                      index,
+                                                      department);
+                                                },
+                                                child: const Text(
+                                                  'Edit',
+                                                  style: TextStyle(
+                                                      color:
+                                                          AppColors.blackColor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )))
                                             // DataCell(Text(
                                             //     '${Random().nextInt(100)}')),
                                             // DataCell(Text(
@@ -200,9 +205,11 @@ class DepartmentList extends StatelessWidget {
     )));
   }
 
-  void showEditDialog(BuildContext context, DialogType dialogType, int index,Department department) {
+   showEditDialog(BuildContext context, DialogType dialogType, int index,
+      Department department) {
     final screenWidth = MediaQuery.of(context).size.width;
-     TextEditingController nameController = TextEditingController(text: department.departmentName);
+    TextEditingController nameController =
+        TextEditingController(text: department.departmentName);
     final dialogWidth = screenWidth * 0.8;
     final dialog = AwesomeDialog(
         alignment: Alignment.center,
@@ -216,113 +223,117 @@ class DepartmentList extends StatelessWidget {
           child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-             Container(
-      padding: EdgeInsets.all(kDefaultPadding),
-    //  decoration: BoxDecoration(color: AppColors.bgGreyColor),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        // mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('Update Department',
-              style: GoogleFonts.montserrat(
-                  fontSize: kDefaultPadding + kTextPadding,
-                  fontWeight: FontWeight.bold)),
-          buildSizedBoxH(kDefaultPadding * 2),
-          FormBuilder(
-            //  key: _formKey,
-            autovalidateMode: AutovalidateMode.disabled,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+              Container(
+                padding: EdgeInsets.all(kDefaultPadding),
+                //  decoration: BoxDecoration(color: AppColors.bgGreyColor),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisSize: MainAxisSize.min,
                   children: [
-                    Flexible(
-                      child: FormBuilderTextField(
-                        name: 'Category/Industry',
-                        controller:
-                            screenController.categoryOrIndustryController,
-                        decoration: InputDecoration(
-                          labelText: 'Category/Industry',
-                          // hintText: 'test.user',
-                          // helperText: '* To test registration fail: admin',
-                          border: const OutlineInputBorder(),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                        ),
-                        enableSuggestions: false,
-                        validator: FormBuilderValidators.required(),
-                        // onSaved: (value) => (_formData.username = value ?? ''),
+                    Text('Update Department',
+                        style: GoogleFonts.montserrat(
+                            fontSize: kDefaultPadding + kTextPadding,
+                            fontWeight: FontWeight.bold)),
+                    buildSizedBoxH(kDefaultPadding * 2),
+                    FormBuilder(
+                      //  key: _formKey,
+                      autovalidateMode: AutovalidateMode.disabled,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Flexible(
+                                child: FormBuilderTextField(
+                                  name: 'Category/Industry',
+                                  controller: screenController
+                                      .categoryOrIndustryController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Category/Industry',
+                                    // hintText: 'test.user',
+                                    // helperText: '* To test registration fail: admin',
+                                    border: const OutlineInputBorder(),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                  ),
+                                  enableSuggestions: false,
+                                  validator: FormBuilderValidators.required(),
+                                  // onSaved: (value) => (_formData.username = value ?? ''),
+                                ),
+                              ),
+                            ],
+                          ),
+                          buildSizedBoxH(kDefaultPadding * 3),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: FormBuilderTextField(
+                                  name: 'Department Name',
+                                  controller: nameController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Department Name',
+                                    // hintText: 'test.user',
+                                    // helperText: '* To test registration fail: admin',
+                                    border: const OutlineInputBorder(),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                  ),
+                                  enableSuggestions: false,
+                                  validator: FormBuilderValidators.required(),
+                                  // onSaved: (value) => (_formData.username = value ?? ''),
+                                ),
+                              ),
+                              buildSizedboxW(kDefaultPadding),
+                              Flexible(
+                                child: FormBuilderTextField(
+                                  name: 'Status',
+                                  controller: screenController.statusController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Status',
+                                    // hintText: 'test@gmail.com',
+                                    border: const OutlineInputBorder(),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                  ),
+                                  keyboardType: TextInputType.emailAddress,
+                                  validator: FormBuilderValidators.required(),
+                                  // onSaved: (value) => (_formData.email = value ?? ''),
+                                ),
+                              ),
+                            ],
+                          ),
+                          buildSizedBoxH(kDefaultPadding * 3),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: FormBuilderTextField(
+                                  name: 'Remarks',
+                                  controller:
+                                      screenController.remarksController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Remarks',
+                                    hintText: 'Test',
+                                    border: OutlineInputBorder(),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                  ),
+                                  enableSuggestions: false,
+                                  keyboardType: TextInputType.name,
+                                  validator: FormBuilderValidators.required(),
+                                  // onSaved: (value) => (_formData.firstname = value ?? ''),
+                                ),
+                              ),
+                              buildSizedboxW(kDefaultPadding),
+                            ],
+                          ),
+                          buildSizedBoxH(kDefaultPadding * 3),
+                          buildSizedBoxH(kDefaultPadding * 3),
+                        ],
                       ),
                     ),
                   ],
                 ),
-                buildSizedBoxH(kDefaultPadding * 3),
-                Row(
-                  children: [
-                    Flexible(
-                      child: FormBuilderTextField(
-                        name: 'Department Name',
-                        controller: nameController,
-                        decoration: InputDecoration(
-                          labelText: 'Department Name',
-                          // hintText: 'test.user',
-                          // helperText: '* To test registration fail: admin',
-                          border: const OutlineInputBorder(),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                        ),
-                        enableSuggestions: false,
-                        validator: FormBuilderValidators.required(),
-                        // onSaved: (value) => (_formData.username = value ?? ''),
-                      ),
-                    ),
-                    buildSizedboxW(kDefaultPadding),
-                    Flexible(
-                      child: FormBuilderTextField(
-                        name: 'Status',
-                        controller: screenController.statusController,
-                        decoration: InputDecoration(
-                          labelText: 'Status',
-                          // hintText: 'test@gmail.com',
-                          border: const OutlineInputBorder(),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: FormBuilderValidators.required(),
-                        // onSaved: (value) => (_formData.email = value ?? ''),
-                      ),
-                    ),
-                  ],
-                ),
-                buildSizedBoxH(kDefaultPadding * 3),
-                Row(
-                  children: [
-                    Flexible(
-                      child: FormBuilderTextField(
-                        name: 'Remarks',
-                        controller: screenController.remarksController,
-                        decoration: const InputDecoration(
-                          labelText: 'Remarks',
-                          hintText: 'Test',
-                          border: OutlineInputBorder(),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                        ),
-                        enableSuggestions: false,
-                        keyboardType: TextInputType.name,
-                        validator: FormBuilderValidators.required(),
-                        // onSaved: (value) => (_formData.firstname = value ?? ''),
-                      ),
-                    ),
-                    buildSizedboxW(kDefaultPadding),
-                  ],
-                ),
-                buildSizedBoxH(kDefaultPadding * 3),
-               
-                buildSizedBoxH(kDefaultPadding * 3),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
+              ),
               buildSizedBoxH(kDefaultPadding),
             ]),
           ),
@@ -344,9 +355,9 @@ class DepartmentList extends StatelessWidget {
                 ),
 
             onPressed: () {
-              department.departmentName=nameController.text; 
-            screenController.updateDepartment(department); 
-           Get.off(()=>DepartmentList()); 
+              department.departmentName = nameController.text;
+              screenController.updateDepartment(department);
+              Get.off(() => DepartmentList());
             },
             child: const Padding(
               padding: EdgeInsets.all(8.0),

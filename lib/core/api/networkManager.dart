@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:either_dart/either.dart';
 import 'package:flutter_dashboard/core/api/apiHandlers.dart';
 import 'package:flutter_dashboard/core/constants/credentials.dart';
@@ -10,7 +9,6 @@ import 'package:flutter_dashboard/core/view_models/token_management.dart';
 
 class NetWorkManager extends APIHandler {
   static NetWorkManager? _shared;
-  var dio = Dio();
   NetWorkManager._();
 
   static NetWorkManager shared() => _shared ?? NetWorkManager._();
@@ -25,43 +23,46 @@ class NetWorkManager extends APIHandler {
     int? timeoutInSec,
   }) async {
     try {
-      Map<String, String> header = {
-        // 'Cookie':
-        //     "PHPSESSID=${cookie.isNotEmpty ? cookie : "9er32rrs1mnvo60b5mc843qs51"}",
+      Map<String, String> headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
       };
 
       if (isAuthRequired) {
-        header["Authorization"] = "Bearer $token";
+        headers["Authorization"] = "Bearer $token";
       }
 
-      dio.options.headers = header;
-
-      if (method == "put") {
-       dio.options.headers["Content-Type"] = "application/json"; 
-      }
-
-      Response response;
+      http.Response response;
+      final uri = Uri.parse(url).replace(queryParameters: params);
+      print("Requesting URL: $uri"); // For debugging
 
       if (method == "post") {
-        response = await dio
-            .post(url,
-                queryParameters: params, data: jsonEncode(data ?? {}))
+        response = await http
+            .post(uri,
+                headers: headers,
+                body: jsonEncode(data ?? {}),
+                encoding: encodingType)
             .timeout(Duration(seconds: timeoutInSec ?? 10));
       } else if (method == "put") {
-        response = await dio
-            .put(url, queryParameters: params,data: jsonEncode(data ?? {}))
+        response = await http
+            .put(uri,
+                headers: headers,
+                body: jsonEncode(data ?? {}),
+                encoding: encodingType)
             .timeout(Duration(seconds: timeoutInSec ?? 10));
       } else if (method == "delete") {
-        response = await dio
-            .delete(url)
+        response = await http
+            .delete(uri, headers: headers)
             .timeout(Duration(seconds: timeoutInSec ?? 10));
       } else {
-        response = await dio
-            .get(url, queryParameters: params,)
+        // GET request
+        response = await http
+            .get(uri, headers: headers)
             .timeout(Duration(seconds: timeoutInSec ?? 10));
       }
+
+      print("Response status: ${response.statusCode}"); // For debugging
+      print("Response body: ${response.body}"); // For debugging
 
       final result = returnResponse(response);
 
@@ -87,25 +88,11 @@ class NetWorkManager extends APIHandler {
 
       throw result;
     } catch (exception) {
-      if (exception is DioException) {
-        try {
-          if (exception.error is SocketException) {
-            return Left(ErrorObject.errorObject(
-                exception: const SocketException("Network error!")));
-          }
-
-          if (exception.response == null) {
-            return Left(ErrorObject.errorObject(exception: exception));
-          }
-
-          final result = returnResponse(exception.response!);
-
-          return Left(ErrorObject.errorObject(exception: result));
-        } catch (e) {
-          return Left(ErrorObject.errorObject(exception: e));
-        }
+      print("Exception occurred: $exception"); // For debugging
+      if (exception is SocketException) {
+        return Left(ErrorObject.errorObject(
+            exception: const SocketException("Network error!")));
       }
-
       return Left(ErrorObject.errorObject(exception: exception));
     }
   }

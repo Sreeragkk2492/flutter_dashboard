@@ -1,17 +1,16 @@
 import 'dart:convert';
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_dashboard/core/constants/httpResponses.dart';
 import 'package:flutter_dashboard/core/errors/exceptions.dart';
 
 class APIHandler {
-  dynamic returnResponse(Response response) {
+  dynamic returnResponse(http.Response response) {
     switch (response.statusCode) {
       case HttpResponses.OK:
       case HttpResponses.Created:
       case HttpResponses.NoContent:
       case HttpResponses.PartialContent:
-        return response.data;
-      // return jsonDecode(response.data.toString());
+        return jsonDecode(response.body);
       case HttpResponses.BadRequest:
         throw Exception("Invalid Request");
       case HttpResponses.Unauthorized:
@@ -27,16 +26,15 @@ class APIHandler {
     }
   }
 
-  getError(Response response) {
+  getError(http.Response response) {
     Map<String, dynamic>? responseJson;
 
-    if (response.statusCode! >= 500) {
+    if (response.statusCode >= 500) {
       return ServerException();
     } else if ((response.statusCode == 400) ||
         (response.statusCode == 401) ||
         (response.statusCode == 403) ||
         (response.statusCode == 404) ||
-        (response.statusCode == 406) ||
         (response.statusCode == 406) ||
         (response.statusCode == 429)) {
       const errorMessage = "Not found";
@@ -44,8 +42,7 @@ class APIHandler {
     }
 
     try {
-      responseJson =
-          Map<String, dynamic>.from(jsonDecode(response.data.toString()));
+      responseJson = jsonDecode(response.body) as Map<String, dynamic>;
     } catch (exception) {
       return exception;
     }
@@ -56,9 +53,7 @@ class APIHandler {
 
     if (response.statusCode == 422) {
       Map<String, dynamic> errors = responseJson["errors"];
-
       final keys = errors.keys;
-
       final errorStrings = errors[keys.first];
       return Exception(errorStrings[0]);
     } else {
