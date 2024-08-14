@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dashboard/core/api/httpservice.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/view_models/responsive.dart';
@@ -103,37 +102,45 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMobileLayout(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final screenHeight = screenSize.height;
-
-    return Scaffold(
-      backgroundColor: AppColors.whiteColor,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Image.asset(
-                'assets/l3.jpg',
-                width: double.infinity,
-                height: screenHeight / 4,
-              ),
-              buildSizedBoxH(20),
-              Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
+ Widget _buildMobileLayout(BuildContext context) {
+  return Scaffold(
+    backgroundColor: AppColors.whiteColor,
+    body: LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/l3.jpg',
+                      width: double.infinity,
+                      height: constraints.maxHeight * 0.25, // 25% of screen height
+                    ),
+                    buildSizedBoxH(20),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: _buildForm(context),
+                      ),
+                    ),
+                  ],
                 ),
-                child: Obx(() => _buildForm(context)),
               ),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
-  }
+        );
+      },
+    ),
+  );
+}
 
   Widget _buildForm(BuildContext context) {
     return FormBuilder(

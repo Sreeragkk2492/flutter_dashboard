@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
+import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/controller/designation_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/controller/employee_category_controller.dart';
-import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 
-import '../controller/employee_controller.dart';
-
-class EmployeeFormWidget extends StatelessWidget {
-  EmployeeFormWidget({super.key});
+class EditEmployeeForm extends StatelessWidget {
+  EditEmployeeForm({super.key});
   final screenController = Get.put(EmployeeController());
   final employeeCategoryController = Get.put(EmployeeCategoryController());
   final designationController = Get.put(DesignationController());
   final _formKey = GlobalKey<FormBuilderState>();
-
   @override
   Widget build(BuildContext context) {
     return FormBuilder(
-      key: _formKey,
+        key: _formKey,
         autovalidateMode: AutovalidateMode.disabled,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,15 +74,16 @@ class EmployeeFormWidget extends StatelessWidget {
                     // enableSuggestions: false,
                     // keyboardType: TextInputType.name,
                     validator: FormBuilderValidators.required(),
+
                     items: screenController.companydetails
                         .map((company) => DropdownMenuItem(
                               value: company.id,
                               child: Text(company.companyName),
                             ))
                         .toList(),
-                        onChanged: (value){
-                          screenController.setSelectedCompany(value!);
-                        },
+                    onChanged: (value) {
+                      screenController.setSelectedCompany(value!);
+                    },
                     // onSaved: (value) => (_formData.firstname = value ?? ''),
                   ),
                 ),
@@ -97,7 +95,7 @@ class EmployeeFormWidget extends StatelessWidget {
               children: [
                 Flexible(
                   child: FormBuilderTextField(
-                     controller: screenController.usernameController,
+                    // controller: screenController.usernameController,
                     name: 'Username',
                     decoration: const InputDecoration(
                       labelText: 'Username',
@@ -114,7 +112,7 @@ class EmployeeFormWidget extends StatelessWidget {
                 buildSizedboxW(kDefaultPadding),
                 Flexible(
                   child: FormBuilderTextField(
-                     controller: screenController.passwordController,
+                    // controller: screenController.passwordController,
                     name: 'Password',
                     decoration: const InputDecoration(
                       labelText: 'Password',
@@ -134,7 +132,7 @@ class EmployeeFormWidget extends StatelessWidget {
               children: [
                 Flexible(
                   child: FormBuilderTextField(
-                     controller: screenController.employeeIdController ,
+                    //  controller: screenController.employeeIdController ,
                     name: 'Employee ID',
                     decoration: const InputDecoration(
                       labelText: 'Employee ID',
@@ -151,7 +149,7 @@ class EmployeeFormWidget extends StatelessWidget {
                 buildSizedboxW(kDefaultPadding),
                 Flexible(
                   child: FormBuilderTextField(
-                     controller: screenController.biometricIdController,
+                    //controller: screenController.biometricIdController,
                     name: 'Biometric ID',
                     decoration: const InputDecoration(
                       labelText: 'Biometric ID',
@@ -171,7 +169,7 @@ class EmployeeFormWidget extends StatelessWidget {
               children: [
                 Flexible(
                   child: FormBuilderTextField(
-                   controller: screenController.reportingIdController,
+                    // controller: screenController.reportingIdController,
                     name: 'Reporting To',
                     decoration: const InputDecoration(
                       labelText: 'Reporting To',
@@ -181,7 +179,7 @@ class EmployeeFormWidget extends StatelessWidget {
                     ),
                     enableSuggestions: false,
                     keyboardType: TextInputType.name,
-                   // validator: FormBuilderValidators.required(),
+                    // validator: FormBuilderValidators.required(),
                     // onSaved: (value) => (_formData.firstname = value ?? ''),
                   ),
                 ),
@@ -198,15 +196,16 @@ class EmployeeFormWidget extends StatelessWidget {
                     ),
                     // keyboardType: TextInputType.name,
                     validator: FormBuilderValidators.required(),
+
                     items: employeeCategoryController.empcategories
                         .map((empcategory) => DropdownMenuItem(
                               value: empcategory.id,
                               child: Text(empcategory.name),
                             ))
                         .toList(),
-                        onChanged: (value){
-                          screenController.setSelectedEmployeeCategory(value!);
-                        },
+                    onChanged: (value) {
+                      screenController.setSelectedEmployeeCategory(value!);
+                    },
                     //  onSaved: (value) => (_formData.lastname = value ?? ''),
                   ),
                 ),
@@ -228,15 +227,16 @@ class EmployeeFormWidget extends StatelessWidget {
                     // enableSuggestions: false,
                     // keyboardType: TextInputType.name,
                     validator: FormBuilderValidators.required(),
+
                     items: designationController.designations
                         .map((designations) => DropdownMenuItem(
                               value: designations.id,
                               child: Text(designations.designation),
                             ))
                         .toList(),
-                        onChanged: (value){
-                          screenController.setSelectedDesignation(value!);
-                        },
+                    onChanged: (value) {
+                      screenController.setSelectedDesignation(value!);
+                    },
                     // onSaved: (value) => (_formData.firstname = value ?? ''),
                   ),
                 ),
@@ -254,15 +254,16 @@ class EmployeeFormWidget extends StatelessWidget {
                     // enableSuggestions: false,
                     // keyboardType: TextInputType.name,
                     validator: FormBuilderValidators.required(),
+
                     items: screenController.usertype
                         .map((usertype) => DropdownMenuItem(
                               value: usertype.id,
                               child: Text(usertype.name),
                             ))
                         .toList(),
-                        onChanged: (value){
-                          screenController.setSelectedUserTypeId(value!);
-                        },
+                    onChanged: (value) {
+                      screenController.setSelectedUserTypeId(value!);
+                    },
                     // onSaved: (value) => (_formData.firstname = value ?? ''),
                   ),
                 ),
@@ -320,7 +321,7 @@ class EmployeeFormWidget extends StatelessWidget {
               children: [
                 Flexible(
                   child: FormBuilderTextField(
-                      controller: screenController.addressController,
+                     controller: screenController.addressController,
                     name: 'Address',
                     decoration: const InputDecoration(
                       labelText: 'Address',
@@ -342,7 +343,7 @@ class EmployeeFormWidget extends StatelessWidget {
               children: [
                 Flexible(
                   child: FormBuilderTextField(
-                     controller: screenController.dobController,
+                      controller: screenController.dobController,
                     name: 'Date Of Birth',
                     decoration: const InputDecoration(
                       labelText: 'Date Of Birth',
@@ -359,7 +360,7 @@ class EmployeeFormWidget extends StatelessWidget {
                 buildSizedboxW(kDefaultPadding),
                 Flexible(
                   child: FormBuilderTextField(
-                      controller:screenController.phoneNumberController,
+                     controller:screenController.phoneNumberController,
                     name: 'Phone Number',
                     decoration: const InputDecoration(
                       labelText: 'Phone Number',
@@ -379,7 +380,7 @@ class EmployeeFormWidget extends StatelessWidget {
               children: [
                 Flexible(
                   child: FormBuilderTextField(
-                     controller: screenController.joiningDateController,
+                    // controller: screenController.joiningDateController,
                     name: 'Joining Date',
                     decoration: const InputDecoration(
                       labelText: 'Joining Date',
@@ -413,22 +414,6 @@ class EmployeeFormWidget extends StatelessWidget {
               ],
             ),
             buildSizedBoxH(kDefaultPadding * 3),
-             Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    DefaultAddButton(
-                        buttonname: 'Add a User', 
-                        onClick: ()  {
-                         if (_formKey.currentState!.saveAndValidate()) {
-                final formData = _formKey.currentState!.value;
-                screenController.addUser(formData);
-                Get.back(); 
-              }
-                         
-                        
-                        }),
-                  ],
-                ),
           ],
         ));
   }

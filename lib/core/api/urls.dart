@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
 class ApiUrls {
-  static String BASE_URL = "http://13.60.173.158";
+  static String BASE_URL = "https://percapita.qhance.com/app1";
 
   ///get base url
   // static const GET_BASE_URL = "/get_customer_link";
@@ -25,11 +25,16 @@ class ApiUrls {
   static const GET_ALL_EMPLOYEE_CATEGORY = "/employee_category/get_emplopyee_category";
   static const UPDATE_EMPLOYEE_CATEGORY = "/employee_category/update_employee_category";
 
-  ///request
-  // static const POST_REQUEST_URL = "/add-request";
-  // static const ATTENDANCE_URL = "/check_in_out";
-  // static const ATTENDANCE_STATUS_URL = "/check_status";
+  ///user
+   static const ADD_USER = "/user/add_user";
+   static const GET_ALL_USER = "/user/get_users";
+  static const UPDATE_USER = "/user/update_user";
 
-  ///leave
-  // static const GET_LEAVE_TYPES_URL = "/get-leave-types";
+  ///company
+   static const GET_ALL_COMPANY = "/company/get_company";
+
+
+
+   ///usertype
+   static const GET_ALL_USERTYPE = "/user_type/get_user_type";
 }

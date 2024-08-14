@@ -77,10 +77,12 @@ class ErrorObject {
           message: 'The requested resource was not found (404).',
         );
       case http.ClientException:
-        return const ErrorObject(
-          title: 'Error Code: HTTP_ERROR',
-          message: 'An error occurred during network request.',
-        );
+       final clientException = exception as http.ClientException;
+  print('ClientException details: ${clientException.message}, URI: ${clientException.uri}');
+  return ErrorObject(
+    title: 'Error Code: HTTP_ERROR',
+    message: 'Network request failed: ${clientException.message}. URI: ${clientException.uri}',
+  );
       default:
         if (exception is ErrorObject) return exception;
         return const ErrorObject(

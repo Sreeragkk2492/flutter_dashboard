@@ -2,26 +2,47 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class StorageServices extends GetxService {
-  FlutterSecureStorage storage = const FlutterSecureStorage();
+  late FlutterSecureStorage storage;
 
-  static init() async {
-    Get.put(StorageServices(), permanent: true);
+  StorageServices() {
+    // Initialize with web-specific options
+    storage = FlutterSecureStorage(
+      webOptions: WebOptions(
+        dbName: 'myDb',
+        publicKey: 'some_public_key',
+      ),
+    );
+  }
+
+  static Future<void> init() async {
+    await Get.putAsync(() async => StorageServices());
   }
 
   Future<String> read(String key) async {
-    final result = await storage.read(key: key);
-
-    return result ?? "";
+    try {
+      final result = await storage.read(key: key);
+      return result ?? "";
+    } catch (e) {
+      print('Error reading from storage: $e');
+      return "";
+    }
   }
 
   Future<String> write(String key, String? value) async {
-    await storage.write(key: key, value: value);
-
-    return value ?? "";
+    try {
+      await storage.write(key: key, value: value);
+      return value ?? "";
+    } catch (e) {
+      print('Error writing to storage: $e');
+      return "";
+    }
   }
 
-  Future delete(String key) async {
-    await storage.delete(key: key);
-    
+  Future<void> delete(String key) async {
+    try {
+      await storage.delete(key: key);
+    } catch (e) {
+      print('Error deleting from storage: $e');
+    }
   }
 }

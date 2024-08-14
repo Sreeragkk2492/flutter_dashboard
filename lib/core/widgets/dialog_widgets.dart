@@ -4,12 +4,17 @@ import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/getx/company_list_controller.dart';
+import 'package:flutter_dashboard/models/user_model.dart';
 import 'package:flutter_dashboard/screens/company_screen/widget/company_form_widget.dart';
 import 'package:flutter_dashboard/screens/company_screen/widget/details_form_widgte.dart';
+import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
+import 'package:flutter_dashboard/screens/employee_screen/employee_list_all.dart';
 import 'package:flutter_dashboard/screens/employee_screen/widget/details_dialog_widget.dart';
-import 'package:flutter_dashboard/screens/employee_screen/widget/employee_form_widget.dart';
+import 'package:flutter_dashboard/screens/employee_screen/widget/edit_employee_form.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+final screenController = Get.put(EmployeeController());
 
 class DialogWidgets {
   static void showDialog(BuildContext context, DialogType dialogType) {
@@ -24,7 +29,7 @@ class DialogWidgets {
           Get.back();
         },
         btnCancelOnPress: () {},
-        body: const Center(  
+        body: const Center(
           child: Text('Updated succesfully'),
         ));
 
@@ -34,7 +39,7 @@ class DialogWidgets {
   static void showDetailsDialog(BuildContext context, DialogType dialogType) {
     final screenWidth = MediaQuery.of(context).size.width;
     Size screenSize = MediaQuery.of(context).size;
-    final dialogWidth = screenWidth * 0.8 ;   
+    final dialogWidth = screenWidth * 0.8;
     final dialog = AwesomeDialog(
         alignment: Alignment.center,
         context: context,
@@ -73,8 +78,8 @@ class DialogWidgets {
             ]),
           ),
         ),
-        
-       // width: dialogWidth,
+
+        // width: dialogWidth,
         btnOkOnPress: () {},
         btnOk: Container(
           alignment: Alignment.bottomRight,
@@ -105,14 +110,13 @@ class DialogWidgets {
         ));
 
     dialog.show();
-    
   }
 
   static void showEmpDetailsDialog(
       BuildContext context, DialogType dialogType) {
     final screenWidth = MediaQuery.of(context).size.width;
     Size screenSize = MediaQuery.of(context).size;
-    final dialogWidth = screenWidth * 0.8; 
+    final dialogWidth = screenWidth * 0.8;
     final dialog = AwesomeDialog(
         alignment: Alignment.center,
         context: context,
@@ -151,7 +155,7 @@ class DialogWidgets {
             ]),
           ),
         ),
-       // width: dialogWidth,
+        // width: dialogWidth,
         btnOkOnPress: () {},
         btnOk: Container(
           alignment: Alignment.bottomRight,
@@ -184,7 +188,7 @@ class DialogWidgets {
     dialog.show();
   }
 
-  static void showEditDialog(BuildContext context, DialogType dialogType, 
+  static void showEditDialog(BuildContext context, DialogType dialogType,
       CompanyListController controller, int index) {
     TextEditingController namecontroller =
         TextEditingController(text: controller.filteredCompany[index].name);
@@ -239,7 +243,7 @@ class DialogWidgets {
             ]),
           ),
         ),
-      //  width: dialogWidth,
+        //  width: dialogWidth,
         btnOkOnPress: () {},
         btnOk: Container(
           alignment: Alignment.bottomRight,
@@ -272,11 +276,11 @@ class DialogWidgets {
 
     dialog.show();
   }
-   static void showEmpEditDialog(BuildContext context, DialogType dialogType,
-      ) {
-    
+
+  static void showEmpEditDialog(
+      BuildContext context, DialogType dialogType, User user) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final dialogWidth = screenWidth * 0.8; 
+    final dialogWidth = screenWidth * 0.8;
     final dialog = AwesomeDialog(
         alignment: Alignment.center,
         context: context,
@@ -294,11 +298,11 @@ class DialogWidgets {
                       fontSize: kDefaultPadding + kTextPadding,
                       fontWeight: FontWeight.bold)),
               buildSizedBoxH(kDefaultPadding),
-             EmployeeFormWidget() 
+              EditEmployeeForm()
             ]),
           ),
         ),
-       // width: dialogWidth,
+        // width: dialogWidth,
         btnOkOnPress: () {},
         btnOk: Container(
           alignment: Alignment.bottomRight,
@@ -315,11 +319,12 @@ class DialogWidgets {
                 ),
 
             onPressed: () {
-              showDialog(context, DialogType.success);
+              screenController.updateEmployee(user);
+              Get.off(() => EmployeeListAll());
               // Get.back();
             },
             child: const Padding(
-              padding: EdgeInsets.all(8.0), 
+              padding: EdgeInsets.all(8.0),
               child: Text(
                 'Update',
                 style: TextStyle(color: AppColors.whiteColor),

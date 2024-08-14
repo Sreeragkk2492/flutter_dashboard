@@ -11,10 +11,12 @@ import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/core/widgets/ui_component_appbar.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
+import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:get/get.dart';
 
 class EmployeeListAll extends StatelessWidget {
   EmployeeListAll({super.key});
+  final screenController = Get.put(EmployeeController());
   final _dataTableHorizontalScrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -22,11 +24,11 @@ class EmployeeListAll extends StatelessWidget {
         body: EntranceFader(
             child: ListView(
       children: [
-        Padding(
+        Padding( 
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
           child: UIComponenetsAppBar(
-            title: 'Total Employee : 4',
-            subtitle: '',
+            title: 'Total Employee : ${screenController.users.length}',
+            subtitle: '', 
             icon: const Icon(Icons.rocket),
             buttonTitle: 'Add Employee',
             onClick: () {
@@ -77,96 +79,99 @@ class EmployeeListAll extends StatelessWidget {
                                     _dataTableHorizontalScrollController,
                                 child: SizedBox(
                                   width: dataTableWidth,
-                                  child: DataTable(
-                                    border: const TableBorder(
-                                        verticalInside: BorderSide(width: 0.2),
-                                        top: BorderSide(width: 0.5),
-                                        right: BorderSide(width: 0.5),
-                                        left: BorderSide(width: 0.5),
-                                        bottom: BorderSide(width: 0.5)),
-                                    dividerThickness: 2,
-                                    sortColumnIndex: 0,
-                                    sortAscending: true,
-                                    showCheckboxColumn: false,
-                                    showBottomBorder: true,
-                                    columns: [
-                                      DataColumn(
-                                          // numeric: true,
-                                          label: Row(
-                                        children: [
-                                          const Text('Emp Name'),
-                                          IconButton(
-                                              onPressed: () {},
-                                              icon: const Icon(
-                                                  Icons.arrow_drop_down))
-                                        ],
-                                      )),
-                                      DataColumn(
-                                          label: Row(
-                                        children: [
-                                          const Text('Emp Id'),
-                                          IconButton(
-                                              onPressed: () {},
-                                              icon: const Icon(
-                                                  Icons.arrow_drop_down_sharp))
-                                        ],
-                                      )),
-                                      DataColumn(
-                                          label: Row(
-                                        children: [
-                                          const Text('Status'),
-                                          IconButton(
-                                              onPressed: () {},
-                                              icon: const Icon(
-                                                  Icons.arrow_drop_down_sharp))
-                                        ],
-                                      )),
-                                      DataColumn(
-                                        label: Row(
+                                  child: Obx(()=>
+                                     DataTable(
+                                      border: const TableBorder(
+                                          verticalInside: BorderSide(width: 0.2),
+                                          top: BorderSide(width: 0.5),
+                                          right: BorderSide(width: 0.5),
+                                          left: BorderSide(width: 0.5),
+                                          bottom: BorderSide(width: 0.5)),
+                                      dividerThickness: 2,
+                                      sortColumnIndex: 0,
+                                      sortAscending: true,
+                                      showCheckboxColumn: false,
+                                      showBottomBorder: true,
+                                      columns: [
+                                        DataColumn(
+                                            // numeric: true,
+                                            label: Row(
                                           children: [
-                                            const Text('Mob Number'),
+                                            const Text('Emp Name'),
                                             IconButton(
                                                 onPressed: () {},
-                                                icon: const Icon(Icons
-                                                    .arrow_drop_down_sharp))
+                                                icon: const Icon(
+                                                    Icons.arrow_drop_down))
                                           ],
+                                        )),
+                                        DataColumn(
+                                            label: Row(
+                                          children: [
+                                            const Text('Emp Id'),
+                                            IconButton(
+                                                onPressed: () {},
+                                                icon: const Icon(
+                                                    Icons.arrow_drop_down_sharp))
+                                          ],
+                                        )),
+                                        DataColumn(
+                                            label: Row(
+                                          children: [
+                                            const Text('Status'),
+                                            IconButton(
+                                                onPressed: () {},
+                                                icon: const Icon(
+                                                    Icons.arrow_drop_down_sharp))
+                                          ],
+                                        )),
+                                        DataColumn(
+                                          label: Row(
+                                            children: [
+                                              const Text('Mob Number'),
+                                              IconButton(
+                                                  onPressed: () {},
+                                                  icon: const Icon(Icons
+                                                      .arrow_drop_down_sharp))
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      const DataColumn(
-                                        label: Text(''),
-                                      ),
-                                    ],
-                                    rows: List.generate(5, (index) {
-                                      return DataRow.byIndex(
-                                        index: index,
-                                        cells: [
-                                          DataCell(GestureDetector(
-                                              onTap: () {
-                                                DialogWidgets
-                                                    .showEmpDetailsDialog(
-                                                        context,
-                                                        DialogType.info);
-                                              },
-                                              child: Text(
-                                                  'Employee${index + 1}'))),
-                                          const DataCell(Text('2022-06-30')),
-                                          DataCell(Text('IsActive')),
-                                          DataCell(Text('123456789')),
-                                          DataCell(TextButton(
-                                              onPressed: () {
-                                                DialogWidgets.showEmpEditDialog(
-                                                    context, DialogType.info);
-                                              },
-                                              child: const Text(
-                                                'Edit',
-                                                style: TextStyle(
-                                                    color: AppColors.blackColor,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )))
-                                        ],
-                                      );
-                                    }),
+                                        const DataColumn(
+                                          label: Text(''),
+                                        ),
+                                      ],
+                                      rows: List.generate(screenController.users.length, (index) {
+                                        var user=screenController.users[index];
+                                        return DataRow.byIndex(
+                                          index: index,
+                                          cells: [
+                                            DataCell(GestureDetector(
+                                                onTap: () {
+                                                  DialogWidgets
+                                                      .showEmpDetailsDialog(
+                                                          context,
+                                                          DialogType.info);
+                                                },
+                                                child: Text(
+                                                   user.userName))),
+                                             DataCell(Text(user.id)),
+                                            DataCell(Text('IsActive')),
+                                            DataCell(Text('123456789')),
+                                            DataCell(TextButton(
+                                                onPressed: () {
+                                                  DialogWidgets.showEmpEditDialog(
+                                                      context, DialogType.info,user);
+                                                },
+                                                child: const Text(
+                                                  'Edit',
+                                                  style: TextStyle(
+                                                      color: AppColors.blackColor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )))
+                                          ],
+                                        );
+                                      }),
+                                    ),
                                   ),
                                 ),
                               ),
