@@ -4,16 +4,17 @@ import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
+import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AddIndustry extends StatelessWidget {
-   AddIndustry({super.key});
-   final _formKey = GlobalKey<FormState>();
-
+class AddCompanyModules extends StatelessWidget {
+   AddCompanyModules({super.key});
+    final screenController = Get.put(EmployeeController()); 
+ final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -56,7 +57,7 @@ class AddIndustry extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Add Industry',
+                            Text('Add Company Modules',
                                 style: TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.bold)),
@@ -77,7 +78,7 @@ class AddIndustry extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Flexible(flex: 4, child: addindustry()),
+                        Flexible(flex: 4, child: addCompanyModules()),
                         buildSizedboxW(kDefaultPadding),
                       ],
                     ),
@@ -88,7 +89,7 @@ class AddIndustry extends StatelessWidget {
                         vertical: kDefaultPadding + kTextPadding),
                     child: Column(
                       children: [
-                        addindustry(),
+                        addCompanyModules(),
                         buildSizedBoxH(kDefaultPadding),
                       ],
                     ),
@@ -99,7 +100,7 @@ class AddIndustry extends StatelessWidget {
     )));
   }
 
-  Widget addindustry() {
+  Widget addCompanyModules() {
     return Container(
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
@@ -113,15 +114,10 @@ class AddIndustry extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Add any Industry',
+              Text('Add Company Modules',
                   style: GoogleFonts.montserrat(
                       fontSize: kDefaultPadding + kTextPadding,
                       fontWeight: FontWeight.bold)),
-              // buildSizedBoxH(kDefaultPadding),
-              // Text(
-              //   'USER INFORMATION',
-              //   style: themeData.textTheme.labelLarge,
-              // ),
               buildSizedBoxH(kDefaultPadding * 2),
               FormBuilder(
                   key: _formKey,
@@ -132,83 +128,92 @@ class AddIndustry extends StatelessWidget {
                     Row(
                       children: [
                         Flexible(
-                          child: FormBuilderTextField(
-                            name: 'Industry Name',
-                            decoration: InputDecoration(
-                              labelText: 'Industry Name',
-                              // hintText: 'test.user',
-                              // helperText: '* To test registration fail: admin',
-                              border: const OutlineInputBorder(),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                            ),
-                            enableSuggestions: false,
+                          child: Obx(()=>
+                      FormBuilderDropdown<String>(
+                      // controller: widget.companyNameController,
+                      name: 'Company Name',
+                      decoration: const InputDecoration(
+                        labelText: 'Company Name',
+                        hintText: 'Company Name',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      // enableSuggestions: false,
+                      // keyboardType: TextInputType.name,
+                      validator: FormBuilderValidators.required(),
+                      items: screenController.companydetails
+                          .map((company) => DropdownMenuItem(
+                                value: company.id,
+                                child: Text(company.companyName),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        screenController.setSelectedCompany(value!);
+                      },
+                      // onSaved: (value) => (_formData.firstname = value ?? ''),
+                    ),
+                  ),
+                        ),
+                      ],
+                    ),
+                    buildSizedBoxH(kDefaultPadding * 3),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: FormBuilderCheckbox(
+                            //   decoration: InputDecoration(border: OutlineInputBorder()),
+                            // enableSuggestions: false,
                             validator: FormBuilderValidators.required(),
+                            title: Text(
+                              'Attendance & Leave Management',
+                              style: TextStyle(fontSize: 17),
+                            ),
+                            name: 'test',
                             // onSaved: (value) => (_formData.username = value ?? ''),
                           ),
                         ),
                         buildSizedboxW(kDefaultPadding),
                         Flexible(
-                          child: FormBuilderDropdown(
-                            name: 'Status',
-                            decoration: InputDecoration(
-                              labelText: 'Status',
-                              // hintText: 'test@gmail.com',
-                              border: const OutlineInputBorder(),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                            ),
-                            // keyboardType: TextInputType.emailAddress,
+                          child: FormBuilderCheckbox(
+                            //   decoration: InputDecoration(border: OutlineInputBorder()),
+                            // enableSuggestions: false,
                             validator: FormBuilderValidators.required(),
-                            items: [
-                              DropdownMenuItem(child: Text('Active'),value: 'Active',),
-                              DropdownMenuItem(child: Text('InActive'),value: 'InActive',), 
-                            ],
-                            // onSaved: (value) => (_formData.email = value ?? ''),
+                            title: Text('Payroll Management',
+                                style: TextStyle(fontSize: 17)),
+                            name: 'test',
+                            // onSaved: (value) => (_formData.username = value ?? ''),
                           ),
                         ),
                       ],
                     ),
                     buildSizedBoxH(kDefaultPadding * 3),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: FormBuilderTextField(
-                            name: 'Remarks',
-                            decoration: const InputDecoration(
-                              labelText: 'Remarks',
-                              hintText: 'please add your remarks',
-                              border: OutlineInputBorder(),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                            ),
-                            enableSuggestions: false,
-                            keyboardType: TextInputType.name,
-                            validator: FormBuilderValidators.required(),
-                            // onSaved: (value) => (_formData.firstname = value ?? ''),
-                          ),
-                        ),
-                        buildSizedboxW(kDefaultPadding),
-                      ],
-                    ),
+                    // Row(
+                    //   children: [
+                    //     Flexible(
+                    //       child:
+                    //     ),
+                    //     buildSizedboxW(kDefaultPadding),
+                    //   ],
+                    // ),
                     buildSizedBoxH(kDefaultPadding * 3),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         DefaultAddButton(
-                            buttonname: 'Add Industry',
+                            buttonname: 'Add Company Module',
                             onClick: () {
-                              //  await screenController.addEmpCategory();
+                              // await screenController.addDepartment();
                               Get.back();
                             }),
                       ],
                     ),
+                    buildSizedBoxH(kDefaultPadding * 5),
                     // Divider(
                     //   indent: kDefaultPadding * 2,
                     //   endIndent: kDefaultPadding * 2,
                     // ),
                     // buildSizedBoxH(kDefaultPadding * 3),
-                    buildSizedBoxH(kDefaultPadding * 3),
+                    // buildSizedBoxH(kDefaultPadding * 3),
                   ],
                 ),
               ),

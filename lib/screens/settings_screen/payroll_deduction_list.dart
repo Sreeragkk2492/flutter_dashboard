@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/animations/entrance_fader.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
@@ -10,24 +11,24 @@ import 'package:flutter_dashboard/core/widgets/ui_component_appbar.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:get/get.dart';
 
-class CompanyAllowanceDetails extends StatelessWidget {
-  CompanyAllowanceDetails({super.key});
-  final _dataTableHorizontalScrollController = ScrollController();
+class PayrollDeductionList extends StatelessWidget {
+   PayrollDeductionList({super.key});
+ final _dataTableHorizontalScrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-    return PortalMasterLayout(
+    return  PortalMasterLayout(
         body: EntranceFader(
             child: ListView(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
           child: UIComponenetsAppBar(
-            title: 'Company Allowance Details',
+            title: 'Deduction List',
             subtitle: '',
             icon: Icon(Icons.rocket),
-            buttonTitle: 'Add Company Allowance Details',
+            buttonTitle: 'Add Deduction Type',
             onClick: () {
-              Get.toNamed(Routes.AddCompanyAllowanceDetails);
+              Get.toNamed(Routes.AddDeductionType); 
             },
           ),
         ),
@@ -75,7 +76,7 @@ class CompanyAllowanceDetails extends StatelessWidget {
                                 child: SizedBox(
                                   width: dataTableWidth,
                                   child: DataTable(
-                                    border: const TableBorder(
+                                    border: TableBorder(
                                         verticalInside: BorderSide(width: 0.5),
                                         top: BorderSide(width: 0.5),
                                         right: BorderSide(width: 0.5),
@@ -99,20 +100,9 @@ class CompanyAllowanceDetails extends StatelessWidget {
                                         ],
                                       )),
                                       DataColumn(
-                                          // numeric: true,
                                           label: Row(
                                         children: [
-                                          Text('Company Id'),
-
-                                          //  IconButton(
-                                          //      onPressed: () {},
-                                          //      icon: Icon(Icons.arrow_drop_down ))
-                                        ],
-                                      )),
-                                      DataColumn(
-                                          label: Row(
-                                        children: [
-                                          Text('Payroll Allowance Id'),
+                                          Text('Deduction'),
                                           //  IconButton(
                                           //      onPressed: () {},
                                           //      icon: Icon(Icons.arrow_drop_down_sharp))
@@ -121,7 +111,7 @@ class CompanyAllowanceDetails extends StatelessWidget {
                                       DataColumn(
                                           label: Row(
                                         children: [
-                                          Text('Remarks'),
+                                          Text('Status'),
                                           //  IconButton(
                                           //      onPressed: () {},
                                           //      icon: Icon(Icons.arrow_drop_down_sharp))
@@ -134,9 +124,9 @@ class CompanyAllowanceDetails extends StatelessWidget {
                                         cells: [
                                           DataCell(Text('#${index + 1}')),
                                           const DataCell(Text('2022-06-30')),
-                                          DataCell(Text('${index + 1}')),
-                                          DataCell(
-                                              Text('${Random().nextInt(50)}')),
+                                          DataCell(Text(' ${index + 1}')),
+                                          // DataCell(Text(
+                                          //     '${Random().nextInt(50)}')),
                                           // DataCell(Text(
                                           //     '${Random().nextInt(100)}')),
                                           // DataCell(Text(

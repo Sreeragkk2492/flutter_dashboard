@@ -78,6 +78,7 @@ class AddProcessingDate extends StatelessWidget {
                         Flexible(
                           flex: 4,
                           child: FourFormfield(
+                              defaultAddButton: 'Add Processing Date',
                               heading: 'Add Processing Date',
                               fieldone: 'Company Name',
                               fieldtwo: 'Date',
@@ -99,6 +100,7 @@ class AddProcessingDate extends StatelessWidget {
                     child: Column(
                       children: [
                         FourFormfield(
+                            defaultAddButton: 'Add Processing Date',
                             heading: 'Add Processing Date',
                             fieldone: 'Company Name',
                             fieldtwo: 'Date',

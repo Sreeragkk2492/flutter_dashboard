@@ -79,6 +79,7 @@ class AddMaxLeaveAllowed extends StatelessWidget {
                         Flexible(
                           flex: 4,
                           child: FourFormfield(
+                            defaultAddButton: 'Add Max Leave Allowed',
                               heading: 'Add Processing Date',
                               fieldone: 'Company Name',
                               fieldtwo: 'Employee Category',
@@ -100,6 +101,7 @@ class AddMaxLeaveAllowed extends StatelessWidget {
                     child: Column(
                       children: [
                         FourFormfield(
+                            defaultAddButton: 'Add Max Leave Allowed',
                             heading: 'Add Processing Date',
                             fieldone: 'Company Name',
                             fieldtwo: 'Employee Category',

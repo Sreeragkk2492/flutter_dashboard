@@ -14,6 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 class AddEmployementCategory extends StatelessWidget {
   AddEmployementCategory({super.key});
   final screenController = Get.find<EmployeeCategoryController>();
+   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -101,106 +102,128 @@ class AddEmployementCategory extends StatelessWidget {
 
   Widget addindustry() {
     return Container(
-      padding: EdgeInsets.all(kDefaultPadding),
-      decoration: BoxDecoration(color: AppColors.bgGreyColor),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        // mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('Add a Employee Category',
-              style: GoogleFonts.montserrat(
-                  fontSize: kDefaultPadding + kTextPadding,
-                  fontWeight: FontWeight.bold)),
-          // buildSizedBoxH(kDefaultPadding),
-          // Text(
-          //   'USER INFORMATION',
-          //   style: themeData.textTheme.labelLarge,
-          // ),
-          buildSizedBoxH(kDefaultPadding * 2),
-          FormBuilder(
-            //  key: _formKey,
-            autovalidateMode: AutovalidateMode.disabled,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
+      ]),
+      child: Card(
+        color: AppColors.whiteColor,
+        clipBehavior: Clip.antiAlias,
+        child: Padding(
+          padding: EdgeInsets.all(kDefaultPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Add any Employee Category',
+                  style: GoogleFonts.montserrat(
+                      fontSize: kDefaultPadding + kTextPadding,
+                      fontWeight: FontWeight.bold)),
+              // buildSizedBoxH(kDefaultPadding),
+              // Text(
+              //   'USER INFORMATION',
+              //   style: themeData.textTheme.labelLarge,
+              // ),
+              buildSizedBoxH(kDefaultPadding * 2),
+              FormBuilder(
+                  key: _formKey,
+                autovalidateMode: AutovalidateMode.disabled,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Flexible(
-                      child: FormBuilderTextField(
-                        name: 'Category Name',
-                        controller: screenController.categoryNameController,
-                        decoration: InputDecoration(
-                          labelText: 'Category Name',
-                          // hintText: 'test.user',
-                          // helperText: '* To test registration fail: admin',
-                          border: const OutlineInputBorder(),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                    Row(
+                      children: [
+                        Flexible(
+                          child: FormBuilderTextField(
+                            name: 'Category Name',
+                            controller: screenController.categoryNameController,
+                            decoration: InputDecoration(
+                              labelText: 'Category Name',
+                              // hintText: 'test.user',
+                              // helperText: '* To test registration fail: admin',
+                              border: const OutlineInputBorder(),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                            ),
+                            enableSuggestions: false,
+                            validator: FormBuilderValidators.required(),
+                            // onSaved: (value) => (_formData.username = value ?? ''),
+                          ),
                         ),
-                        enableSuggestions: false,
-                        validator: FormBuilderValidators.required(),
-                        // onSaved: (value) => (_formData.username = value ?? ''),
-                      ),
-                    ),
-                    buildSizedboxW(kDefaultPadding),
-                    Flexible(
-                      child: FormBuilderTextField(
-                        name: 'Status',
-                        decoration: InputDecoration(
-                          labelText: 'Status',
-                          // hintText: 'test@gmail.com',
-                          border: const OutlineInputBorder(),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                        buildSizedboxW(kDefaultPadding),
+                        Flexible(
+                          child: FormBuilderDropdown(
+                              name: 'Status',
+                              decoration: InputDecoration(
+                                labelText: 'Status',
+                                // hintText: 'test@gmail.com',
+                                border: const OutlineInputBorder(),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                              ),
+                              // keyboardType: TextInputType.emailAddress,
+                              validator: FormBuilderValidators.required(),
+                              items: [
+                                DropdownMenuItem(
+                                  child: Text('Active'),
+                                  value: 'Active',
+                                ),
+                                DropdownMenuItem(
+                                  child: Text('InActive'),
+                                  value: 'InActive',
+                                ),
+                              ],
+                              // onSaved: (value) => (_formData.email = value ?? ''),
+                            ),
                         ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: FormBuilderValidators.required(),
-                        // onSaved: (value) => (_formData.email = value ?? ''),
-                      ),
+                      ],
                     ),
+                    buildSizedBoxH(kDefaultPadding * 3),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: FormBuilderTextField(
+                            name: 'Remarks',
+                            decoration: const InputDecoration(
+                              labelText: 'Remarks',
+                              hintText: 'please add your remarks',
+                              border: OutlineInputBorder(),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                            ),
+                            enableSuggestions: false,
+                            keyboardType: TextInputType.name,
+                            validator: FormBuilderValidators.required(),
+                            // onSaved: (value) => (_formData.firstname = value ?? ''),
+                          ),
+                        ),
+                        buildSizedboxW(kDefaultPadding),
+                      ],
+                    ),
+                    buildSizedBoxH(kDefaultPadding * 3),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DefaultAddButton(
+                            buttonname: 'Add Employee Category',
+                            onClick: () async {
+                              await screenController.addEmpCategory();
+                              Get.back();
+                            }),
+                      ],
+                    ),
+                    //  buildSizedBoxH(kDefaultPadding * 3),
+                    // Divider(
+                    //   indent: kDefaultPadding * 2,
+                    //   endIndent: kDefaultPadding * 2,
+                    // ),
+                    // buildSizedBoxH(kDefaultPadding * 3),
+                    buildSizedBoxH(kDefaultPadding * 3),
                   ],
                 ),
-                buildSizedBoxH(kDefaultPadding * 3),
-                Row(
-                  children: [
-                    Flexible(
-                      child: FormBuilderTextField(
-                        name: 'Remarks',
-                        decoration: const InputDecoration(
-                          labelText: 'Remarks',
-                          hintText: 'Test',
-                          border: OutlineInputBorder(),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                        ),
-                        enableSuggestions: false,
-                        keyboardType: TextInputType.name,
-                        validator: FormBuilderValidators.required(),
-                        // onSaved: (value) => (_formData.firstname = value ?? ''),
-                      ),
-                    ),
-                    buildSizedboxW(kDefaultPadding),
-                  ],
-                ),
-                buildSizedBoxH(kDefaultPadding * 3),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    DefaultAddButton(
-                        buttonname: 'Add a Employee Category',
-                        onClick: () async {
-                          await screenController.addEmpCategory();
-                             Get.back();
-                        }),
-                  ],
-                ),
-                Divider(
-                  indent: kDefaultPadding * 2,
-                  endIndent: kDefaultPadding * 2,
-                ),
-                buildSizedBoxH(kDefaultPadding * 3),
-                buildSizedBoxH(kDefaultPadding * 3),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

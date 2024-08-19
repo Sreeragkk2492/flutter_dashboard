@@ -26,14 +26,16 @@ class EmployeeListAll extends StatelessWidget {
       children: [
         Padding( 
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-          child: UIComponenetsAppBar(
-            title: 'Total Employee : ${screenController.users.length}',
-            subtitle: '', 
-            icon: const Icon(Icons.rocket),
-            buttonTitle: 'Add Employee',
-            onClick: () {
-              Get.toNamed(Routes.AddEmployee);
-            },
+          child: Obx(()=>
+             UIComponenetsAppBar(
+              title: 'Total Employee : ${screenController.users.length}',
+              subtitle: '', 
+              icon: const Icon(Icons.rocket),
+              buttonTitle: 'Add Employee',
+              onClick: () {
+                Get.toNamed(Routes.AddEmployee);
+              },
+            ),
           ),
         ),
         buildSizedBoxH(kDefaultPadding),

@@ -12,9 +12,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddEmployee extends StatelessWidget {
-   AddEmployee({super.key});
- final screenController = Get.put(EmployeeController()); 
- //  final employeeCategoryController = Get.put(EmployeeCategoryController());  
+  AddEmployee({super.key});
+  final screenController = Get.put(EmployeeController());
+  //  final employeeCategoryController = Get.put(EmployeeCategoryController());
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -46,7 +46,7 @@ class AddEmployee extends StatelessWidget {
                         Container(
                           height: 70,
                           width: 70,
-                          decoration: BoxDecoration( 
+                          decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               image: DecorationImage(
                                   image: AssetImage('assets/profile3.jpg'),
@@ -57,7 +57,7 @@ class AddEmployee extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Add Employee',  
+                            Text('Add Employee',
                                 style: TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.bold)),
@@ -78,7 +78,7 @@ class AddEmployee extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Flexible(flex: 4 , child: addemployee()), 
+                        Flexible(flex: 4, child: addemployee()),
                         buildSizedboxW(kDefaultPadding),
                       ],
                     ),
@@ -89,7 +89,7 @@ class AddEmployee extends StatelessWidget {
                         vertical: kDefaultPadding + kTextPadding),
                     child: Column(
                       children: [
-                      addemployee(),
+                        addemployee(),
                         buildSizedBoxH(kDefaultPadding),
                       ],
                     ),
@@ -102,24 +102,31 @@ class AddEmployee extends StatelessWidget {
 
   Widget addemployee() {
     return Container(
-      padding: EdgeInsets.all(kDefaultPadding),
-      decoration: BoxDecoration(
-          color: AppColors.bgGreyColor,
-          borderRadius: BorderRadius.circular(12)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Basic Information',
-              style: GoogleFonts.montserrat(
-                  fontSize: kDefaultPadding + kTextPadding,
-                  fontWeight: FontWeight.bold)),
-          buildSizedBoxH(kDefaultPadding),
-          buildSizedBoxH(kDefaultPadding * 2),
-          EmployeeFormWidget(), 
-           
-          buildSizedBoxH(kDefaultPadding * 3),
-          Divider(indent: kDefaultPadding * 2, endIndent: kDefaultPadding * 2),
-        ],
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
+      ]),
+      child: Card(
+        color: AppColors.whiteColor,
+        clipBehavior: Clip.antiAlias,
+        child: Padding(
+          padding: EdgeInsets.all(kDefaultPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Basic Information',
+                  style: GoogleFonts.montserrat(
+                      fontSize: kDefaultPadding + kTextPadding,
+                      fontWeight: FontWeight.bold)),
+              buildSizedBoxH(kDefaultPadding),
+              buildSizedBoxH(kDefaultPadding * 2),
+              EmployeeFormWidget(),
+              buildSizedBoxH(kDefaultPadding * 3),
+              
+              // Divider(
+              //     indent: kDefaultPadding * 2, endIndent: kDefaultPadding * 2),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -10,8 +10,8 @@ import 'package:flutter_dashboard/core/widgets/ui_component_appbar.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:get/get.dart';
 
-class CompanyPayrollDeduction extends StatelessWidget {
-  CompanyPayrollDeduction({super.key});
+class CompanyDeductionDetails extends StatelessWidget {
+  CompanyDeductionDetails({super.key});
   final _dataTableHorizontalScrollController = ScrollController();
   @override
   Widget build(BuildContext context) {

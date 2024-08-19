@@ -78,6 +78,7 @@ class AddDeduction extends StatelessWidget {
                         Flexible(
                           flex: 4,
                           child: ThreeFormfield(
+                              defaultAddButton: 'Add Deduction',
                               heading: 'Add Deduction Type',
                               fieldone: 'Deduction Name',
                               fieldtwo: 'Status',
@@ -97,6 +98,7 @@ class AddDeduction extends StatelessWidget {
                     child: Column(
                       children: [
                         ThreeFormfield(
+                            defaultAddButton: 'Add Deduction',
                             heading: 'Add Deduction Type',
                             fieldone: 'Deduction Name',
                             fieldtwo: 'Status',

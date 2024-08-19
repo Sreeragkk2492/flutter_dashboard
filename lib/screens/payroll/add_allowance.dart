@@ -5,6 +5,7 @@ import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/screens/payroll/widget/three_formfield.dart';
+import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,7 +37,7 @@ class AddAllowance extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
                     margin: EdgeInsets.all(kDefaultPadding),
                     decoration: BoxDecoration(
-                        color: AppColors.bgGreyColor,
+                         color: AppColors.bgGreyColor,
                         borderRadius: BorderRadius.circular(12)),
                     child: Row(
                       children: [
@@ -78,6 +79,7 @@ class AddAllowance extends StatelessWidget {
                         Flexible(
                           flex: 4,
                           child: ThreeFormfield(
+                              defaultAddButton: 'Add Allowance',
                               heading: 'Add Allowance Type',
                               fieldone: 'Allowance Name',
                               fieldtwo: 'Status',
@@ -97,6 +99,7 @@ class AddAllowance extends StatelessWidget {
                     child: Column(
                       children: [
                         ThreeFormfield(
+                          defaultAddButton: 'Add Allowance',
                             heading: 'Add Allowance Type',
                             fieldone: 'Allowance Name',
                             fieldtwo: 'Status',
@@ -105,6 +108,7 @@ class AddAllowance extends StatelessWidget {
                             labeltwo: 'Status',
                             labelthree: 'Remarks'),
                         buildSizedBoxH(kDefaultPadding),
+                       
                       ],
                     ),
                   ),

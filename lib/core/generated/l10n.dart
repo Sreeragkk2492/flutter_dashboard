@@ -256,7 +256,7 @@ class Lang {
   /// `Dashboard`
   String get dashboard {
     return Intl.message(
-      'Dashboard',
+      'DASHBOARD',
       name: 'dashboard',
       desc: '',
       args: [],

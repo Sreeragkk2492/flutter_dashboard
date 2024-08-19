@@ -5,11 +5,13 @@ import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/screens/company_screen/widget/company_form_widget.dart';
+import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddCompany extends StatelessWidget {
-  const AddCompany({super.key});
-
+  AddCompany({super.key});
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -76,7 +78,7 @@ class AddCompany extends StatelessWidget {
                         Flexible(flex: 4, child: addcompany()),
                         buildSizedboxW(kDefaultPadding),
                       ],
-                    ), 
+                    ),
                   )
                 : Padding(
                     padding: EdgeInsets.symmetric(
@@ -97,41 +99,59 @@ class AddCompany extends StatelessWidget {
 
   Widget addcompany() {
     return Container(
-      padding: EdgeInsets.all(kDefaultPadding),
-      decoration: BoxDecoration(
-          color: AppColors.bgGreyColor,
-          borderRadius: BorderRadius.circular(12)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Basic Information',
-              style: GoogleFonts.montserrat(
-                  fontSize: kDefaultPadding + kTextPadding,
-                  fontWeight: FontWeight.bold)),
-          buildSizedBoxH(kDefaultPadding),
-          buildSizedBoxH(kDefaultPadding * 2),
-          CompanyFormWidget(
-            companyIdController: TextEditingController(),
-            companyCodeController: TextEditingController(),
-            companyNameController: TextEditingController(),
-            industryController: TextEditingController(),
-            statusController: TextEditingController(),
-            groupNameController: TextEditingController(),
-            legalNameController: TextEditingController(),
-            founderController: TextEditingController(),
-            emailController: TextEditingController(),
-            panController: TextEditingController(),
-            whatsappController: TextEditingController(),
-            phoneNumberController: TextEditingController(),
-            addressController: TextEditingController(),
-            landmarkController: TextEditingController(),
-            cityController: TextEditingController(),
-            stateController: TextEditingController(),
-            countryController: TextEditingController(),
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
+      ]),
+      child: Card(
+        color: AppColors.whiteColor,
+        clipBehavior: Clip.antiAlias,
+        child: Padding(
+          padding: EdgeInsets.all(kDefaultPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Basic Information',
+                  style: GoogleFonts.montserrat(
+                      fontSize: kDefaultPadding + kTextPadding,
+                      fontWeight: FontWeight.bold)),
+              buildSizedBoxH(kDefaultPadding),
+              buildSizedBoxH(kDefaultPadding * 2),
+              CompanyFormWidget(
+                companyIdController: TextEditingController(),
+                companyCodeController: TextEditingController(),
+                companyNameController: TextEditingController(),
+                industryController: TextEditingController(),
+                statusController: TextEditingController(),
+                groupNameController: TextEditingController(),
+                legalNameController: TextEditingController(),
+                founderController: TextEditingController(),
+                emailController: TextEditingController(),
+                panController: TextEditingController(),
+                whatsappController: TextEditingController(),
+                phoneNumberController: TextEditingController(),
+                addressController: TextEditingController(),
+                landmarkController: TextEditingController(),
+                cityController: TextEditingController(),
+                stateController: TextEditingController(),
+                countryController: TextEditingController(),
+              ),
+              buildSizedBoxH(kDefaultPadding * 3),
+              buildSizedboxW(kDefaultPadding * 3),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  DefaultAddButton(
+                      buttonname: 'Add Company',
+                      onClick: () {
+                        // await screenController.addDepartment();
+                        Get.back();
+                      }),
+                ],
+              ),
+              // Divider(indent: kDefaultPadding * 2, endIndent: kDefaultPadding * 2),
+            ],
           ),
-          buildSizedBoxH(kDefaultPadding * 3),
-          Divider(indent: kDefaultPadding * 2, endIndent: kDefaultPadding * 2),
-        ],
+        ),
       ),
     );
   }

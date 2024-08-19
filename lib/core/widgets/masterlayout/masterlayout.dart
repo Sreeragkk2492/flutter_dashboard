@@ -16,93 +16,103 @@ final sidebarMenuConfigs = [
        SidebarMenuConfig(
     uri: '', 
     icon: Icons.interests_rounded,
-    title: (context) => 'Company',
+    title: (context) => 'COMPANY',
     children: [
       SidebarChildMenuConfig(
         uri:  Routes.CLISTALL,   
         icon: Icons.circle_outlined,
-        title: (context) => 'List All',
+        title: (context) => 'List Companies',
       ),
       SidebarChildMenuConfig(
         uri:  Routes.COMAPANYMODULE,
         icon: Icons.circle_outlined,
-        title: (context) => 'Company Modules',
+        title: (context) => 'Company Modules List',
       ),
       SidebarChildMenuConfig(
         uri:  Routes.COMPANYLEAVETYPE,
         icon: Icons.circle_outlined,
-        title: (context) => 'Leave Type',
+        title: (context) => ' Company Leave Types',
       ),
       SidebarChildMenuConfig(
         uri:Routes.COMPANYHOLIDAY,
         icon: Icons.circle_outlined,
-        title: (context) => 'Holiday List',
+        title: (context) => ' Company Holiday List',
       ),
        SidebarChildMenuConfig(
-        uri:Routes.COMPANYMENU,
+        uri:Routes.CompanyMenuList,
         icon: Icons.circle_outlined,
-        title: (context) => 'Company menu', 
+        title: (context) => 'Company Menu List', 
+      ),
+       SidebarChildMenuConfig(
+        uri:Routes.CompanyWorkingShift,
+        icon: Icons.circle_outlined,
+        title: (context) => 'Company Working Shift', 
+      ),
+       SidebarChildMenuConfig(
+        uri:Routes.CompanyGroupList,
+        icon: Icons.circle_outlined,
+        title: (context) => ' Company Group List', 
       ),
     ],
   ),
    SidebarMenuConfig(
     uri: '', 
     icon: Icons.charging_station,
-    title: (context) => 'Employee',
+    title: (context) => 'EMPLOYEE',
     children: [
       SidebarChildMenuConfig(
         uri:  Routes.EmployeeListAll,  
         icon: Icons.circle_outlined,
-        title: (context) => 'List All',
+        title: (context) => 'List Employees',
       ),
       SidebarChildMenuConfig(
         uri:  Routes.EmployeeMenu,
         icon: Icons.circle_outlined,
-        title: (context) => 'Employee Menu',
+        title: (context) => 'List Employee Menus',
       ),
     ]),
     SidebarMenuConfig(
     uri: '', 
     icon: Icons.interests_rounded,
-    title: (context) => 'Payroll',
+    title: (context) => 'PAYROLL',
     children: [
       SidebarChildMenuConfig(
-        uri:  Routes.AllowanceList,  
+        uri:  Routes.CompanyPayrollDate,  
         icon: Icons.circle_outlined,
-        title: (context) => 'Allowance List',
+        title: (context) => 'Companies Payroll Date',
       ),
        SidebarChildMenuConfig(
-        uri:  Routes.DeductionList,  
+        uri:  Routes.CompanyAllowanceDetails,  
         icon: Icons.circle_outlined,
-        title: (context) => 'Deduction List',
+        title: (context) => 'Companies Allowance Details',
       ),
      
       SidebarChildMenuConfig(
-        uri:  Routes.CompanyPayrollAllowance,
+        uri:  Routes.CompanyDeductionDetails,
         icon: Icons.circle_outlined,
-        title: (context) => 'Comapny Payroll Allowance',
+        title: (context) => 'Company Deduction Details',
       ),
-      SidebarChildMenuConfig(
-        uri:Routes.CompanyPayrollDeduction,
-        icon: Icons.circle_outlined,
-        title: (context) => 'Company Payroll Deduction',
-      ),
-        SidebarChildMenuConfig(
-        uri:Routes.PayrollProcessingDate,
-        icon: Icons.circle_outlined,
-        title: (context) => 'Payroll Processing Date',
-      ),
-      SidebarChildMenuConfig(
-        uri:Routes.MaxLeaveAllowed,
-        icon: Icons.circle_outlined,
-        title: (context) => 'Max Leave Allowed',
-      ),
+      // SidebarChildMenuConfig(
+      //   uri:Routes.CompanyPayrollDeduction,
+      //   icon: Icons.circle_outlined,
+      //   title: (context) => 'Companies Deduction Details',
+      // ),
+      //   SidebarChildMenuConfig(
+      //   uri:Routes.PayrollProcessingDate,
+      //   icon: Icons.circle_outlined,
+      //   title: (context) => 'Payroll Processing Date',
+      // ),
+      // SidebarChildMenuConfig(
+      //   uri:Routes.MaxLeaveAllowed,
+      //   icon: Icons.circle_outlined,
+      //   title: (context) => 'Max Leave Allowed',
+      // ),
     ],
   ),
     SidebarMenuConfig(
     uri: '', 
     icon: Icons.interests_rounded,
-    title: (context) => 'Settings', 
+    title: (context) => 'SETTINGS', 
     children: [
       SidebarChildMenuConfig(
         uri:  Routes.IndustryList,   
@@ -122,16 +132,31 @@ final sidebarMenuConfigs = [
        SidebarChildMenuConfig(
         uri:  Routes.EmployementCategoryList,   
         icon: Icons.circle_outlined,
-        title: (context) => 'Employement Category List',
+        title: (context) => 'Employee Category List',
+      ),
+       SidebarChildMenuConfig(
+        uri:  Routes.PayrollAllowanceList,   
+        icon: Icons.circle_outlined,
+        title: (context) => 'Payroll Allowance List',
+      ),
+       SidebarChildMenuConfig(
+        uri:  Routes.PayrollDeductionList,   
+        icon: Icons.circle_outlined,
+        title: (context) => 'Payroll Deduction List',
+      ),
+       SidebarChildMenuConfig(
+        uri:  Routes.SystemModules,   
+        icon: Icons.circle_outlined,
+        title: (context) => 'System Modules',
       ),
      
     ],
   ),
-  SidebarMenuConfig(
-    uri: Routes.PROFILE,
-    icon: Icons.person_2,
-    title: (context) =>Lang.of(context).profile 
-  ),
+  // SidebarMenuConfig(
+  //   uri: Routes.PROFILE,
+  //   icon: Icons.person_2,
+  //   title: (context) =>Lang.of(context).profile 
+  // ),
 ];
 
 var popupMenuItemIndex = 0;

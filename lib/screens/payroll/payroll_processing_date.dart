@@ -11,8 +11,8 @@ import 'package:get/get.dart';
 
 import '../../core/constants/dimens.dart';
 
-class PayrollProcessingDate extends StatelessWidget {
-  PayrollProcessingDate({super.key});
+class CompanyPayrollDate extends StatelessWidget {
+  CompanyPayrollDate({super.key});
   final _dataTableHorizontalScrollController = ScrollController();
   @override
   Widget build(BuildContext context) {

@@ -4,22 +4,17 @@ import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
-import 'package:flutter_dashboard/screens/settings_screen/controller/department_controller.dart';
-import 'package:flutter_dashboard/screens/settings_screen/controller/designation_controller.dart';
-import 'package:flutter_dashboard/screens/settings_screen/designation_list.dart';
+import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
-class AddDesignation extends StatelessWidget {
-  AddDesignation({super.key});
-
-  final screenController = Get.find<DesignationController>();
-  final departmentController=Get.put(SettingsController() );
-   final _formKey = GlobalKey<FormState>();
-
+class AddWorkingShifts extends StatelessWidget {
+  AddWorkingShifts({super.key});
+  final screenController = Get.put(EmployeeController());
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -62,7 +57,7 @@ class AddDesignation extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Add Designation',
+                            Text('Add Working Shifts',
                                 style: TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.bold)),
@@ -83,7 +78,7 @@ class AddDesignation extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Flexible(flex: 4, child: adddesignation()),
+                        Flexible(flex: 4, child: addworkingshifts()),
                         buildSizedboxW(kDefaultPadding),
                       ],
                     ),
@@ -94,7 +89,7 @@ class AddDesignation extends StatelessWidget {
                         vertical: kDefaultPadding + kTextPadding),
                     child: Column(
                       children: [
-                        adddesignation(),
+                        addworkingshifts(),
                         buildSizedBoxH(kDefaultPadding),
                       ],
                     ),
@@ -105,7 +100,7 @@ class AddDesignation extends StatelessWidget {
     )));
   }
 
-  Widget adddesignation() {
+  Widget addworkingshifts() {
     return Container(
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
@@ -119,13 +114,13 @@ class AddDesignation extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               // mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Add any Designation',
+                Text('Add Working Shifts',
                     style: GoogleFonts.montserrat(
                         fontSize: kDefaultPadding + kTextPadding,
                         fontWeight: FontWeight.bold)),
                 buildSizedBoxH(kDefaultPadding * 2),
                 FormBuilder(
-                    key: _formKey,
+                  //  key: _formKey,
                   autovalidateMode: AutovalidateMode.disabled,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,77 +128,39 @@ class AddDesignation extends StatelessWidget {
                       Row(
                         children: [
                           Flexible(
-                            child: FormBuilderDropdown(
-                              name: 'Category/Industry',
-                              // controller:
-                              //     screenController.categoryOrIndustryController,
-                              decoration: InputDecoration(
-                                labelText: 'Category/Industry',
-                                // hintText: 'test.user',
-                                // helperText: '* To test registration fail: admin',
-                                border: const OutlineInputBorder(),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
+                            child: Obx(
+                              () => FormBuilderDropdown<String>(
+                                // controller: widget.companyNameController,
+                                name: 'Company Name',
+                                decoration: const InputDecoration(
+                                  labelText: 'Company Name',
+                                  hintText: 'Company Name',
+                                  border: OutlineInputBorder(),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                // enableSuggestions: false,
+                                // keyboardType: TextInputType.name,
+                                validator: FormBuilderValidators.required(),
+                                items: screenController.companydetails
+                                    .map((company) => DropdownMenuItem(
+                                          value: company.id,
+                                          child: Text(company.companyName),
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {
+                                  screenController.setSelectedCompany(value!);
+                                },
+                                // onSaved: (value) => (_formData.firstname = value ?? ''),
                               ),
-                              //enableSuggestions: false,
-                              validator: FormBuilderValidators.required(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text('Item 1'),
-                                  value: 'item 1',
-                                ),
-                                DropdownMenuItem(
-                                  child: Text('Item 2'),
-                                  value: 'item 2',
-                                ),
-                                DropdownMenuItem(
-                                  child: Text('Item 3'),
-                                  value: 'item 3',
-                                )
-                              ],
-                              // onSaved: (value) => (_formData.username = value ?? ''),
                             ),
                           ),
                           buildSizedboxW(kDefaultPadding),
                           Flexible(
-                            child:  Obx(()=>
-                     FormBuilderDropdown(
-                      // controller: widget.statusController,
-                      name: 'Department',
-                      decoration: const InputDecoration(
-                        labelText: 'Department',
-                        hintText: 'Department',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      // enableSuggestions: false,
-                      // keyboardType: TextInputType.name,
-                      validator: FormBuilderValidators.required(),
-                      items: departmentController.departments
-                          .map((dept) => DropdownMenuItem(
-                                value: dept.id,
-                                child: Text(dept.departmentName),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                      //  screenController.setSelectedDesignation(value!);
-                      },
-                      // onSaved: (value) => (_formData.firstname = value ?? ''),
-                    ),
-                  ),
-                          ),
-                        ],
-                      ),
-                      buildSizedBoxH(kDefaultPadding * 3),
-                      Row(
-                        children: [
-                          Flexible(
                             child: FormBuilderTextField(
-                              name: 'Designation Name',
-                              controller:
-                                  screenController.designationController,
+                              name: 'Shift Name',
                               decoration: InputDecoration(
-                                labelText: 'Designation Name',
+                                labelText: 'Shift Name',
                                 // hintText: 'test.user',
                                 // helperText: '* To test registration fail: admin',
                                 border: const OutlineInputBorder(),
@@ -215,76 +172,94 @@ class AddDesignation extends StatelessWidget {
                               // onSaved: (value) => (_formData.username = value ?? ''),
                             ),
                           ),
+                        ],
+                      ),
+                      buildSizedBoxH(kDefaultPadding * 3),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: FormBuilderDateTimePicker(
+                              inputType: InputType.time,
+                              format: DateFormat("HH:mm"),
+                              name: 'Shift Start Time',
+                              // controller: screenController.designationController,
+                              decoration: InputDecoration(
+                                suffixIcon: Icon(Icons.access_time),
+                                labelText: 'Shift Start Time',
+                                // hintText: 'test.user',
+                                // helperText: '* To test registration fail: admin',
+                                border: const OutlineInputBorder(),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                              ),
+                              // enableSuggestions: false,
+                              validator: FormBuilderValidators.required(),
+                              // onSaved: (value) => (_formData.username = value ?? ''),
+                            ),
+                          ),
                           buildSizedboxW(kDefaultPadding),
                           Flexible(
-                            child: FormBuilderDropdown(
-                              name: 'Status',
+                            child: FormBuilderDateTimePicker(
+                              inputType: InputType.time,
+                              format: DateFormat("HH:mm"),
+                              name: 'Shift End Time',
+                              // controller: screenController.statusController,
                               decoration: InputDecoration(
-                                labelText: 'Status',
+                                suffixIcon: Icon(Icons.access_time),
+                                labelText: 'Shift End Time',
                                 // hintText: 'test@gmail.com',
                                 border: const OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                               ),
-                              // keyboardType: TextInputType.emailAddress,
+                              keyboardType: TextInputType.emailAddress,
                               validator: FormBuilderValidators.required(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text('Active'),
-                                  value: 'Active',
-                                ),
-                                DropdownMenuItem(
-                                  child: Text('InActive'),
-                                  value: 'InActive',
-                                ),
-                              ],
                               // onSaved: (value) => (_formData.email = value ?? ''),
                             ),
                           ),
                         ],
                       ),
                       buildSizedBoxH(kDefaultPadding * 3),
-                      Row(
-                        children: [
-                          Flexible(
-                            child: FormBuilderTextField(
-                              name: 'Remarks',
-                              controller: screenController.remarksController,
-                              decoration: const InputDecoration(
-                                labelText: 'Remarks',
-                                hintText: 'please add your remarks',
-                                border: OutlineInputBorder(),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                              ),
-                              enableSuggestions: false,
-                              keyboardType: TextInputType.name,
-                              validator: FormBuilderValidators.required(),
-                              // onSaved: (value) => (_formData.firstname = value ?? ''),
-                            ),
-                          ),
-                          buildSizedboxW(kDefaultPadding),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     Flexible(
+                      //       child: FormBuilderTextField(
+                      //         name: 'Remarks',
+                      //         controller: screenController.remarksController,
+                      //         decoration: const InputDecoration(
+                      //           labelText: 'Remarks',
+                      //           hintText: 'Test',
+                      //           border: OutlineInputBorder(),
+                      //           floatingLabelBehavior: FloatingLabelBehavior.always,
+                      //         ),
+                      //         enableSuggestions: false,
+                      //         keyboardType: TextInputType.name,
+                      //         validator: FormBuilderValidators.required(),
+                      //         // onSaved: (value) => (_formData.firstname = value ?? ''),
+                      //       ),
+                      //     ),
+                      //     buildSizedboxW(kDefaultPadding),
+                      //   ],
+                      // ),
                       buildSizedBoxH(kDefaultPadding * 3),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           DefaultAddButton(
-                              buttonname: 'Add Designation',
-                              onClick: () async {
-                                await screenController.addDesignation();
+                              buttonname: 'Add Working Shift',
+                              onClick: () {
+                                //await screenController.addDesignation();
                                 Get.back();
                               }),
                         ],
                       ),
-                      // buildSizedBoxH(kDefaultPadding * 3),
+                      buildSizedBoxH(kDefaultPadding * 3),
                       // Divider(
                       //   indent: kDefaultPadding * 2,
                       //   endIndent: kDefaultPadding * 2,
                       // ),
                       // buildSizedBoxH(kDefaultPadding * 3),
-                      buildSizedBoxH(kDefaultPadding * 3),
+                      // buildSizedBoxH(kDefaultPadding * 3),
                     ],
                   ),
                 ),

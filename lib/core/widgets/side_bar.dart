@@ -278,7 +278,7 @@ late String currentLocation;
                 color: isSelected?AppColors.hoverColor:AppColors.blackColor,
                 size: 20, 
               ),
-               SizedBox(width: kDefaultPadding * 0.5),
+               SizedBox(width: kDefaultPadding * 0.7 ),
               Text(
                 title,
                 style: TextStyle(

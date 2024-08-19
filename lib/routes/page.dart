@@ -1,9 +1,13 @@
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/company_screen/add_company.dart';
+import 'package:flutter_dashboard/screens/company_screen/add_company_modules.dart';
+import 'package:flutter_dashboard/screens/company_screen/add_working_shifts.dart';
 import 'package:flutter_dashboard/screens/company_screen/comapny_menu.dart';
-import 'package:flutter_dashboard/screens/company_screen/comapny_modules.dart';
+import 'package:flutter_dashboard/screens/company_screen/company_modules_list.dart';
+import 'package:flutter_dashboard/screens/company_screen/company_group_list.dart';
 import 'package:flutter_dashboard/screens/company_screen/company_holiday_list.dart';
 import 'package:flutter_dashboard/screens/company_screen/company_leave_type.dart';
+import 'package:flutter_dashboard/screens/company_screen/company_working_shift.dart';
 import 'package:flutter_dashboard/screens/company_screen/list_all_screen.dart';
 import 'package:flutter_dashboard/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:flutter_dashboard/screens/employee_screen/add_employee.dart';
@@ -32,220 +36,254 @@ import 'package:flutter_dashboard/screens/settings_screen/department_list.dart';
 import 'package:flutter_dashboard/screens/settings_screen/designation_list.dart';
 import 'package:flutter_dashboard/screens/settings_screen/employement_category.dart';
 import 'package:flutter_dashboard/screens/settings_screen/industry_list.dart';
+import 'package:flutter_dashboard/screens/settings_screen/payroll_allowance_list.dart';
+import 'package:flutter_dashboard/screens/settings_screen/payroll_deduction_list.dart';
+import 'package:flutter_dashboard/screens/settings_screen/system_modules.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 
 import '../screens/payroll/deduction_list.dart';
 
-
-
 class GetPages {
   static const INITAL = Routes.LOGIN;
 
   static final routes = [
-   // GetPage(name: Routes.SPLASH, page: () => const SplashScreen()),
+    // GetPage(name: Routes.SPLASH, page: () => const SplashScreen()),
     GetPage(
       name: Routes.LOGIN,
       page: () => LoginScreen(),
-     // binding: AuthBinding(),
-    transition: Transition.noTransition, 
+      // binding: AuthBinding(),
+      transition: Transition.noTransition,
     ),
     GetPage(
         name: Routes.COMAPANYMODULE,
         page: () => ComapnyModules(),
-      transition: Transition.noTransition
-        ),
+        transition: Transition.noTransition),
     GetPage(
         name: Routes.COMPANYHOLIDAY,
         page: () => CompanyHolidayList(),
-      transition: Transition.noTransition
-        ),
-        GetPage(
+        transition: Transition.noTransition),
+    GetPage(
         name: Routes.ADDCOMPANY,
-        page: () => AddCompany(),  
-      transition: Transition.noTransition
-        ),
+        page: () => AddCompany(),
+        transition: Transition.noTransition),
     GetPage(
       name: Routes.DASHBOARD,
       page: () => DashboardScreen(),
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition, 
-    ),
-     GetPage(
-      name: Routes.PROFILE,
-      page: () => ProfileSection(),
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition, 
-    ),
-     GetPage(
-      name: Routes.CLISTALL,
-      page: () => ListAll(), 
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
-    ),
-     GetPage(
-      name: Routes.COMPANYLEAVETYPE,
-      page: () => CompanyLeaveType(), 
-    //  binding: HomeBinding(),
-     transition: Transition.noTransition,
-    ),
-     GetPage(
-      name: Routes.COMPANYMENU,
-      page: () => ComapnyMenu(),  
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
-    ),
-     GetPage(
-      name: Routes.EmployeeListAll,
-      page: () => EmployeeListAll(),  
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
-    ),
-      GetPage(
-        name: Routes.AddEmployee,
-        page: () => AddEmployee(),  
-      transition: Transition.noTransition
-        ),
-     GetPage(
-      name: Routes.EmployeeMenu,
-      page: () => EmployeeMenu(),   
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
-    ),
-
-
-
-    ///payroll///
-    
-
-
-      GetPage(
-      name: Routes.AllowanceList,
-      page: () => AllowanceList(), 
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
-    ),
-     GetPage(
-      name: Routes.DeductionList,
-      page: () => DeductionList(), 
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
-    ),
-    
-     GetPage(
-      name: Routes.CompanyPayrollAllowance,
-      page: () => CompanyPayrollAllowance(),  
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
-    ),
-     GetPage(
-      name: Routes.CompanyPayrollDeduction,
-      page: () => CompanyPayrollDeduction(),   
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
     ),
     GetPage(
-      name: Routes.PayrollProcessingDate,
-      page: () => PayrollProcessingDate(),    
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
+      name: Routes.PROFILE,
+      page: () => ProfileSection(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
     ),
-     GetPage(
-      name: Routes.MaxLeaveAllowed,
-      page: () => MaxLeaveAllowed(),    
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
+    GetPage(
+      name: Routes.CLISTALL,
+      page: () => ListAll(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
     ),
-     GetPage(
-      name: Routes.AddAllowanceType,
-      page: () => AddAllowance(),    
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
+    GetPage(
+      name: Routes.COMPANYLEAVETYPE,
+      page: () => CompanyLeaveType(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
     ),
-      GetPage(
-      name: Routes.AddDeductionType,
-      page: () => AddDeduction(),    
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
-    ),
-     GetPage(
-      name: Routes.AddCompanyAllowanceDetails,
-      page: () => AddCompanyAllowanceDetails(),    
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
-    ),
-     GetPage(
-      name: Routes.AddCompanyDeductionDetails,
-      page: () => AddCompanyDeductionDetails(),    
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
-    ),
-     GetPage(
-      name: Routes.AddProcessingDate,
-      page: () => AddProcessingDate(),    
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
+    GetPage(
+      name: Routes.CompanyMenuList,
+      page: () => ComapnyMenuList(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
     ),
       GetPage(
-      name: Routes.AddMaxLeaveAllowed,
-      page: () => AddMaxLeaveAllowed(),    
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
+      name: Routes.CompanyWorkingShift,
+      page: () => CompanyWorkingShift(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+      GetPage(
+      name: Routes.CompanyGroupList,
+      page: () => CompanyGroupList(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+     GetPage(
+      name: Routes.ADDCOMPANYMODULELIST,
+      page: () => AddCompanyModules(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+     GetPage(
+      name: Routes.AddWorkingShifts,
+      page: () => AddWorkingShifts(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: Routes.EmployeeListAll,
+      page: () => EmployeeListAll(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+        name: Routes.AddEmployee,
+        page: () => AddEmployee(),
+        transition: Transition.noTransition),
+    GetPage(
+      name: Routes.EmployeeMenu,
+      page: () => EmployeeMenu(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
     ),
 
+    ///payroll///
+
+    // GetPage(
+    //   name: Routes.AllowanceList,
+    //   page: () => AllowanceList(),
+    //   //  binding: HomeBinding(),
+    //   transition: Transition.noTransition,
+    // ),
+    // GetPage(
+    //   name: Routes.DeductionList,
+    //   page: () => DeductionList(),
+    //   //  binding: HomeBinding(),
+    //   transition: Transition.noTransition,
+    // ),
+
+    GetPage(
+      name: Routes.CompanyAllowanceDetails,
+      page: () => CompanyAllowanceDetails(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: Routes.CompanyDeductionDetails,
+      page: () => CompanyDeductionDetails(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: Routes.CompanyPayrollDate,
+      page: () => CompanyPayrollDate(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+    // GetPage(
+    //   name: Routes.MaxLeaveAllowed,
+    //   page: () => MaxLeaveAllowed(),
+    //   //  binding: HomeBinding(),
+    //   transition: Transition.noTransition,
+    // ),
+    GetPage(
+      name: Routes.AddAllowanceType,
+      page: () => AddAllowance(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: Routes.AddDeductionType,
+      page: () => AddDeduction(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: Routes.AddCompanyAllowanceDetails,
+      page: () => AddCompanyAllowanceDetails(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: Routes.AddCompanyDeductionDetails,
+      page: () => AddCompanyDeductionDetails(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: Routes.AddProcessingDate,
+      page: () => AddProcessingDate(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+    // GetPage(
+    //   name: Routes.AddMaxLeaveAllowed,
+    //   page: () => AddMaxLeaveAllowed(),
+    //   //  binding: HomeBinding(),
+    //   transition: Transition.noTransition,
+    // ),
 
     ///settings///
 
-     GetPage(
+    GetPage(
       name: Routes.IndustryList,
-      page: () => IndustryList(),     
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
+      page: () => IndustryList(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
     ),
-    
-     GetPage(
+
+    GetPage(
       name: Routes.DepartmentList,
-      page: () => DepartmentList(),     
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
+      page: () => DepartmentList(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
     ),
-    
-     GetPage(
+
+    GetPage(
       name: Routes.DesignationList,
-      page: () => DesignationList(),     
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
+      page: () => DesignationList(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
     ),
-    
-     GetPage(
+
+    GetPage(
       name: Routes.EmployementCategoryList,
-      page: () => EmployementCategoryList(),     
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
+      page: () => EmployementCategoryList(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
     ),
-     GetPage(
+    GetPage(
       name: Routes.AddIndustry,
-      page: () => AddIndustry(),     
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
+      page: () => AddIndustry(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
     ),
-     GetPage(
+    GetPage(
       name: Routes.AddDepartment,
-      page: () => AddDepartment(),     
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
+      page: () => AddDepartment(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
     ),
-     GetPage(
+    GetPage(
       name: Routes.AddDesignation,
-      page: () => AddDesignation(),     
-    //  binding: HomeBinding(),
-    transition: Transition.noTransition,
+      page: () => AddDesignation(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
     ),
-     GetPage(
+    GetPage(
       name: Routes.AddEmployementCategory,
-      page: () => AddEmployementCategory(),     
-    //  binding: HomeBinding(),
-     transition: Transition.noTransition, 
+      page: () => AddEmployementCategory(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: Routes.PayrollAllowanceList,
+      page: () => PayrollAllowanceList(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: Routes.PayrollDeductionList,
+      page: () => PayrollDeductionList(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: Routes.SystemModules,
+      page: () => SystemModules(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
     ),
   ];
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
+import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:get/get.dart';
 
 class CompanyFormWidget extends StatefulWidget {
   final TextEditingController companyIdController;
@@ -42,6 +44,7 @@ class CompanyFormWidget extends StatefulWidget {
     required this.stateController,
     required this.countryController,
   });
+  final _formKey = GlobalKey<FormState>();
 
   @override
   State<CompanyFormWidget> createState() => _CompanyFormWidgetState();
@@ -54,7 +57,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
   @override
   Widget build(BuildContext context) {
     return FormBuilder(
-      // key: _formKey,
+      // key:_formKey,
       autovalidateMode: AutovalidateMode.disabled,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,19 +139,27 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
           Row(
             children: [
               Flexible(
-                child: FormBuilderTextField(
-                  controller: widget.statusController,
+                child: FormBuilderDropdown(
                   name: 'Status',
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Status',
-                    hintText: 'Test',
-                    border: OutlineInputBorder(),
+                    // hintText: 'test@gmail.com',
+                    border: const OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
-                  enableSuggestions: false,
-                  keyboardType: TextInputType.name,
+                  // keyboardType: TextInputType.emailAddress,
                   validator: FormBuilderValidators.required(),
-                  // onSaved: (value) => (_formData.firstname = value ?? ''),
+                  items: [
+                    DropdownMenuItem(
+                      child: Text('Active'),
+                      value: 'Active',
+                    ),
+                    DropdownMenuItem(
+                      child: Text('InActive'),
+                      value: 'InActive',
+                    ),
+                  ],
+                  // onSaved: (value) => (_formData.email = value ?? ''),
                 ),
               ),
               buildSizedboxW(kDefaultPadding),
@@ -340,7 +351,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
               buildSizedboxW(kDefaultPadding),
               Flexible(
                 child: FormBuilderTextField(
-                  controller: widget.stateController, 
+                  controller: widget.stateController,
                   name: 'State',
                   decoration: const InputDecoration(
                     labelText: 'State',
@@ -390,7 +401,6 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
               Expanded(
                 flex: 1,
                 child: FormBuilderCheckbox(
-                  
                   name: 'VAT',
                   initialValue: isVATSelected,
                   title: const Text('VAT'),
@@ -422,7 +432,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
               children: [
                 Flexible(
                   child: FormBuilderTextField(
-                   // controller: widget.,
+                    // controller: widget.,
                     name: 'VAT Number',
                     decoration: const InputDecoration(
                       labelText: 'VAT Number',
@@ -485,7 +495,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
                 ),
               ],
             ),
-          buildSizedboxW(kDefaultPadding)
+          buildSizedboxW(kDefaultPadding * 3),
         ],
       ),
     );
