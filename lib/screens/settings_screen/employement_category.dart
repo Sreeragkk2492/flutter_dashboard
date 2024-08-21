@@ -8,7 +8,7 @@ import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/core/widgets/ui_component_appbar.dart';
-import 'package:flutter_dashboard/models/employee_category_model.dart';
+import 'package:flutter_dashboard/models/settings/employee_category_model.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/settings_screen/controller/employee_category_controller.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -143,10 +143,10 @@ class EmployementCategoryList extends StatelessWidget {
                                         return DataRow.byIndex(
                                           index: index,
                                           cells: [
-                                            DataCell(Text('#${index + 1}')),
+                                            DataCell(Text('${index + 1}')),
                                             DataCell(Text(empcategories.name)),
                                             DataCell(Text(
-                                                'Employee category ${index + 1}')),
+                                                empcategories.status ?? '')),
                                             DataCell(TextButton(
                                                 onPressed: () {
                                                   showEditDialog(
@@ -194,6 +194,8 @@ class EmployementCategoryList extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     TextEditingController nameController =
         TextEditingController(text: empcategories.name);
+    TextEditingController remarksController =
+        TextEditingController(text: empcategories.remarks);
     final dialogWidth = screenWidth * 0.8;
     final dialog = AwesomeDialog(
         alignment: Alignment.center,
@@ -251,7 +253,7 @@ class EmployementCategoryList extends StatelessWidget {
                               ),
                               buildSizedboxW(kDefaultPadding),
                               Flexible(
-                                child: FormBuilderTextField(
+                                child: FormBuilderDropdown(
                                   name: 'Status',
                                   decoration: InputDecoration(
                                     labelText: 'Status',
@@ -260,8 +262,21 @@ class EmployementCategoryList extends StatelessWidget {
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                   ),
-                                  keyboardType: TextInputType.emailAddress,
+                                  // keyboardType: TextInputType.emailAddress,
                                   validator: FormBuilderValidators.required(),
+                                  items: [
+                                    DropdownMenuItem(
+                                      child: Text('Active'),
+                                      value: 'Active',
+                                    ),
+                                    DropdownMenuItem(
+                                      child: Text('InActive'),
+                                      value: 'InActive',
+                                    ),
+                                  ],
+                                  initialValue: empcategories.status,
+                                  onChanged: (value) =>
+                                      screenController.selectedStatus = value,
                                   // onSaved: (value) => (_formData.email = value ?? ''),
                                 ),
                               ),
@@ -272,6 +287,7 @@ class EmployementCategoryList extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: FormBuilderTextField(
+                                  controller: remarksController,
                                   name: 'Remarks',
                                   decoration: const InputDecoration(
                                     labelText: 'Remarks',
@@ -318,6 +334,9 @@ class EmployementCategoryList extends StatelessWidget {
 
             onPressed: () {
               empcategories.name = nameController.text;
+
+              empcategories.remarks = remarksController.text;
+              empcategories.status = screenController.selectedStatus.toString();
               screenController.updateEmpCategory(empcategories);
               Get.off(() => EmployementCategoryList());
             },

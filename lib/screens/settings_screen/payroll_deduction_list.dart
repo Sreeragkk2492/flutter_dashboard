@@ -1,6 +1,4 @@
 import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/animations/entrance_fader.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
@@ -9,14 +7,16 @@ import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/core/widgets/ui_component_appbar.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
+import 'package:flutter_dashboard/screens/settings_screen/controller/deduction_controller.dart';
 import 'package:get/get.dart';
 
 class PayrollDeductionList extends StatelessWidget {
-   PayrollDeductionList({super.key});
- final _dataTableHorizontalScrollController = ScrollController();
+  PayrollDeductionList({super.key});
+  final _dataTableHorizontalScrollController = ScrollController();
+  final screenController = Get.put(DeductionController());
   @override
   Widget build(BuildContext context) {
-    return  PortalMasterLayout(
+    return PortalMasterLayout(
         body: EntranceFader(
             child: ListView(
       children: [
@@ -28,7 +28,7 @@ class PayrollDeductionList extends StatelessWidget {
             icon: Icon(Icons.rocket),
             buttonTitle: 'Add Deduction Type',
             onClick: () {
-              Get.toNamed(Routes.AddDeductionType); 
+              Get.toNamed(Routes.AddDeductionType);
             },
           ),
         ),
@@ -75,65 +75,69 @@ class PayrollDeductionList extends StatelessWidget {
                                     _dataTableHorizontalScrollController,
                                 child: SizedBox(
                                   width: dataTableWidth,
-                                  child: DataTable(
-                                    border: TableBorder(
-                                        verticalInside: BorderSide(width: 0.5),
-                                        top: BorderSide(width: 0.5),
-                                        right: BorderSide(width: 0.5),
-                                        left: BorderSide(width: 0.5),
-                                        bottom: BorderSide(width: 0.5)),
-                                    dividerThickness: 2,
-                                    sortColumnIndex: 0,
-                                    sortAscending: true,
-                                    showCheckboxColumn: false,
-                                    showBottomBorder: true,
-                                    columns: [
-                                      DataColumn(
-                                          // numeric: true,
-                                          label: Row(
-                                        children: [
-                                          Text('#'),
+                                  child: Obx(
+                                    () => DataTable(
+                                      border: TableBorder(
+                                          verticalInside:
+                                              BorderSide(width: 0.5),
+                                          top: BorderSide(width: 0.5),
+                                          right: BorderSide(width: 0.5),
+                                          left: BorderSide(width: 0.5),
+                                          bottom: BorderSide(width: 0.5)),
+                                      dividerThickness: 2,
+                                      sortColumnIndex: 0,
+                                      sortAscending: true,
+                                      showCheckboxColumn: false,
+                                      showBottomBorder: true,
+                                      columns: [
+                                        DataColumn(
+                                            // numeric: true,
+                                            label: Row(
+                                          children: [
+                                            Text('#'),
 
-                                          //  IconButton(
-                                          //      onPressed: () {},
-                                          //      icon: Icon(Icons.arrow_drop_down ))
-                                        ],
-                                      )),
-                                      DataColumn(
-                                          label: Row(
-                                        children: [
-                                          Text('Deduction'),
-                                          //  IconButton(
-                                          //      onPressed: () {},
-                                          //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                        ],
-                                      )),
-                                      DataColumn(
-                                          label: Row(
-                                        children: [
-                                          Text('Status'),
-                                          //  IconButton(
-                                          //      onPressed: () {},
-                                          //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                        ],
-                                      )),
-                                    ],
-                                    rows: List.generate(5, (index) {
-                                      return DataRow.byIndex(
-                                        index: index,
-                                        cells: [
-                                          DataCell(Text('#${index + 1}')),
-                                          const DataCell(Text('2022-06-30')),
-                                          DataCell(Text(' ${index + 1}')),
-                                          // DataCell(Text(
-                                          //     '${Random().nextInt(50)}')),
-                                          // DataCell(Text(
-                                          //     '${Random().nextInt(100)}')),
-                                          // DataCell(Text(
-                                          //     '${Random().nextInt(10000)}')),
-                                        ],
-                                      );
-                                    }),
+                                            //  IconButton(
+                                            //      onPressed: () {},
+                                            //      icon: Icon(Icons.arrow_drop_down ))
+                                          ],
+                                        )),
+                                        DataColumn(
+                                            label: Row(
+                                          children: [
+                                            Text('Deduction'),
+                                            //  IconButton(
+                                            //      onPressed: () {},
+                                            //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                          ],
+                                        )),
+                                        DataColumn(
+                                            label: Row(
+                                          children: [
+                                            Text('Status'),
+                                            //  IconButton(
+                                            //      onPressed: () {},
+                                            //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                          ],
+                                        )),
+                                      ],
+                                      rows: List.generate(screenController.deduction.length, (index) {
+                                        var deduction=screenController.deduction[index];
+                                        return DataRow.byIndex(
+                                          index: index,
+                                          cells: [
+                                            DataCell(Text('${index + 1}')),
+                                             DataCell(Text(deduction.deductionName)),
+                                            DataCell(Text(deduction.status)),
+                                            // DataCell(Text(
+                                            //     '${Random().nextInt(50)}')),
+                                            // DataCell(Text(
+                                            //     '${Random().nextInt(100)}')),
+                                            // DataCell(Text(
+                                            //     '${Random().nextInt(10000)}')),
+                                          ],
+                                        );
+                                      }),
+                                    ),
                                   ),
                                 ),
                               ),

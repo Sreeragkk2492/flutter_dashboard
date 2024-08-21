@@ -4,16 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/api/networkManager.dart';
 import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
-import 'package:flutter_dashboard/models/department_model.dart';
+import 'package:flutter_dashboard/models/settings/department_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class SettingsController extends GetxController {
-  final categoryOrIndustryController = TextEditingController();
+  //final categoryOrIndustryController = TextEditingController();
   final departmentNameController = TextEditingController();
-  final statusController = TextEditingController();
+  //final statusController = TextEditingController();
   final remarksController = TextEditingController();
 
+   String? selectedStatus;
+    String? selectedCategory;
   var departments = <Department>[].obs;
 
   @override
@@ -28,9 +30,9 @@ class SettingsController extends GetxController {
         method: 'post',
         isAuthRequired: false,
         data: {
-          "categoryorindistry": categoryOrIndustryController.text,
+          "categoryorindistry": selectedCategory,
           "department_name": departmentNameController.text,
-          "status": statusController.text,
+          "status": selectedStatus,
           "remarks": remarksController.text,
           "isactive": true
         });

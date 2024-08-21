@@ -5,6 +5,7 @@ import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/screens/settings_screen/controller/department_controller.dart';
+import 'package:flutter_dashboard/screens/settings_screen/controller/industry_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -16,6 +17,7 @@ class AddDepartment extends StatelessWidget {
   AddDepartment({super.key});
 
   final screenController = Get.find<SettingsController>();
+   final industryController = Get.put(IndustryController());
    final _formKey = GlobalKey<FormState>();
 
   @override
@@ -145,36 +147,30 @@ class AddDepartment extends StatelessWidget {
                     Row(
                       children: [
                         Flexible(
-                          child: FormBuilderDropdown(
-                            name: 'Category/Industry',
-                            // controller:
-                            //     screenController.categoryOrIndustryController,
-                            decoration: InputDecoration(
-                              labelText: 'Category/Industry',
-                              // hintText: 'test.user',
-                              // helperText: '* To test registration fail: admin',
-                              border: const OutlineInputBorder(),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                            ),
-                            //enableSuggestions: false,
-                            validator: FormBuilderValidators.required(),
-                            items: [
-                              DropdownMenuItem(
-                                child: Text('Item 1'),
-                                value: 'item 1',
-                              ),
-                              DropdownMenuItem(
-                                child: Text('Item 2'),
-                                value: 'item 2',
-                              ),
-                              DropdownMenuItem(
-                                child: Text('Item 3'),
-                                value: 'item 3',
-                              )
-                            ],
-                            // onSaved: (value) => (_formData.username = value ?? ''),
-                          ),
+                          child: Obx(()=>
+                     FormBuilderDropdown(
+                      // controller: widget.statusController,
+                      name: 'Category/Industry',
+                      decoration: const InputDecoration(
+                        labelText: 'Category/Industry',
+                        hintText: 'Category/Industry',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      // enableSuggestions: false,
+                      // keyboardType: TextInputType.name,
+                      validator: FormBuilderValidators.required(),
+                      items: industryController.industries
+                          .map((industry) => DropdownMenuItem(
+                                value: industry.id,
+                                child: Text(industry.name),
+                              ))
+                          .toList(),
+                      initialValue: screenController.selectedCategory,
+                            onChanged: (value) =>
+                                screenController.selectedCategory = value,
+                    ),
+                  ),
                         ),
                       ],
                     ),
@@ -222,6 +218,9 @@ class AddDepartment extends StatelessWidget {
                                 value: 'InActive',
                               ),
                             ],
+                             initialValue: screenController.selectedStatus,
+                            onChanged: (value) =>
+                                screenController.selectedStatus = value,
                             // onSaved: (value) => (_formData.email = value ?? ''),
                           ),
                         ),

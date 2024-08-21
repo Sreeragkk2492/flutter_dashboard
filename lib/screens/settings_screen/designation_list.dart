@@ -8,9 +8,11 @@ import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/core/widgets/ui_component_appbar.dart';
-import 'package:flutter_dashboard/models/designation_model.dart';
+import 'package:flutter_dashboard/models/settings/designation_model.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
+import 'package:flutter_dashboard/screens/settings_screen/controller/department_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/controller/designation_controller.dart';
+import 'package:flutter_dashboard/screens/settings_screen/controller/industry_controller.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
@@ -20,6 +22,8 @@ class DesignationList extends StatelessWidget {
   DesignationList({super.key});
   final _dataTableHorizontalScrollController = ScrollController();
   final screenController = Get.put(DesignationController());
+  final departmentController = Get.put(SettingsController());
+  final industryController = Get.put(IndustryController());
   @override
   Widget build(BuildContext context) {
     return PortalMasterLayout(
@@ -121,7 +125,7 @@ class DesignationList extends StatelessWidget {
                                         DataColumn(
                                             label: Row(
                                           children: [
-                                            Text('Designation Name'),
+                                            Text('Department Name'),
                                             //  IconButton(
                                             //      onPressed: () {},
                                             //      icon: Icon(Icons.arrow_drop_down_sharp))
@@ -163,14 +167,12 @@ class DesignationList extends StatelessWidget {
                                         return DataRow.byIndex(
                                           index: index,
                                           cells: [
-                                            DataCell(Text('#${index + 1}')),
-                                            const DataCell(Text('2022-06-30')),
+                                            DataCell(Text('${index + 1}')),
+                                            const DataCell(Text('')),
+                                            DataCell(Text('')),
                                             DataCell(
                                                 Text(designations.designation)),
-                                            DataCell(Text(
-                                                '${Random().nextInt(50)}')),
-                                            DataCell(Text(
-                                                '${Random().nextInt(100)}')),
+                                            DataCell(Text(designations.status)),
                                             DataCell(TextButton(
                                                 onPressed: () {
                                                   showEditDialog(
@@ -214,6 +216,8 @@ class DesignationList extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     TextEditingController nameController =
         TextEditingController(text: designation.designation);
+    TextEditingController remarksController =
+        TextEditingController(text: designation.remarks);
     final dialogWidth = screenWidth * 0.8;
     final dialog = AwesomeDialog(
         alignment: Alignment.center,
@@ -229,7 +233,7 @@ class DesignationList extends StatelessWidget {
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
                 padding: EdgeInsets.all(kDefaultPadding),
-               // decoration: BoxDecoration(color: AppColors.bgGreyColor),
+                // decoration: BoxDecoration(color: AppColors.bgGreyColor),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   // mainAxisSize: MainAxisSize.min,
@@ -248,37 +252,62 @@ class DesignationList extends StatelessWidget {
                           Row(
                             children: [
                               Flexible(
-                                child: FormBuilderTextField(
-                                  name: 'Category/Industry',
-                                  decoration: InputDecoration(
-                                    labelText: 'Category/Industry',
-                                    // hintText: 'test.user',
-                                    // helperText: '* To test registration fail: admin',
-                                    border: const OutlineInputBorder(),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                child: Obx(
+                                  () => FormBuilderDropdown(
+                                    // controller: widget.statusController,
+                                    name: 'Category/Industry',
+                                    decoration: const InputDecoration(
+                                      labelText: 'Category/Industry',
+                                      hintText: 'Category/Industry',
+                                      border: OutlineInputBorder(),
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.always,
+                                    ),
+                                    // enableSuggestions: false,
+                                    // keyboardType: TextInputType.name,
+                                    validator: FormBuilderValidators.required(),
+                                    items: industryController.industries
+                                        .map((industry) => DropdownMenuItem(
+                                              value: industry.id,
+                                              child: Text(industry.name),
+                                            ))
+                                        .toList(),
+                                    initialValue:
+                                        screenController.selectedCategory,
+                                    onChanged: (value) => screenController
+                                        .selectedCategory = value,
+                                    // onSaved: (value) => (_formData.firstname = value ?? ''),
                                   ),
-                                  enableSuggestions: false,
-                                  validator: FormBuilderValidators.required(),
-                                  // onSaved: (value) => (_formData.username = value ?? ''),
                                 ),
                               ),
                               buildSizedboxW(kDefaultPadding),
                               Flexible(
-                                child: FormBuilderTextField(
-                                  name: 'Department Name',
-                                  
-                                  decoration: InputDecoration(
-                                    labelText: 'Department Name',
-                                    // hintText: 'test.user',
-                                    // helperText: '* To test registration fail: admin',
-                                    border: const OutlineInputBorder(),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                child: Obx(
+                                  () => FormBuilderDropdown(
+                                    // controller: widget.statusController,
+                                    name: 'Department',
+                                    decoration: const InputDecoration(
+                                      labelText: 'Department',
+                                      hintText: 'Department',
+                                      border: OutlineInputBorder(),
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.always,
+                                    ),
+                                    // enableSuggestions: false,
+                                    // keyboardType: TextInputType.name,
+                                    validator: FormBuilderValidators.required(),
+                                    items: departmentController.departments
+                                        .map((dept) => DropdownMenuItem(
+                                              value: dept.id,
+                                              child: Text(dept.departmentName),
+                                            ))
+                                        .toList(),
+                                    initialValue:
+                                        screenController.selectedDepartment,
+                                    onChanged: (value) => screenController
+                                        .selectedDepartment = value,
+                                    // onSaved: (value) => (_formData.firstname = value ?? ''),
                                   ),
-                                  enableSuggestions: false,
-                                  validator: FormBuilderValidators.required(),
-                                  // onSaved: (value) => (_formData.username = value ?? ''),
                                 ),
                               ),
                             ],
@@ -289,8 +318,7 @@ class DesignationList extends StatelessWidget {
                               Flexible(
                                 child: FormBuilderTextField(
                                   name: 'Designation Name',
-                                  controller:
-                                    nameController, 
+                                  controller: nameController,
                                   decoration: InputDecoration(
                                     labelText: 'Designation Name',
                                     // hintText: 'test.user',
@@ -306,9 +334,8 @@ class DesignationList extends StatelessWidget {
                               ),
                               buildSizedboxW(kDefaultPadding),
                               Flexible(
-                                child: FormBuilderTextField(
+                                child: FormBuilderDropdown(
                                   name: 'Status',
-                                  controller: screenController.statusController,
                                   decoration: InputDecoration(
                                     labelText: 'Status',
                                     // hintText: 'test@gmail.com',
@@ -316,8 +343,21 @@ class DesignationList extends StatelessWidget {
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                   ),
-                                  keyboardType: TextInputType.emailAddress,
+                                  // keyboardType: TextInputType.emailAddress,
                                   validator: FormBuilderValidators.required(),
+                                  items: [
+                                    DropdownMenuItem(
+                                      child: Text('Active'),
+                                      value: 'Active',
+                                    ),
+                                    DropdownMenuItem(
+                                      child: Text('InActive'),
+                                      value: 'InActive',
+                                    ),
+                                  ],
+                                  initialValue: designation.status,
+                                  onChanged: (value) =>
+                                      screenController.selectedStatus = value,
                                   // onSaved: (value) => (_formData.email = value ?? ''),
                                 ),
                               ),
@@ -330,8 +370,7 @@ class DesignationList extends StatelessWidget {
                                 child: FormBuilderTextField(
                                   name: 'Remarks',
 
-                                  controller:
-                                      screenController.remarksController,
+                                  controller: remarksController,
                                   decoration: const InputDecoration(
                                     labelText: 'Remarks',
                                     hintText: 'Test',
@@ -378,6 +417,8 @@ class DesignationList extends StatelessWidget {
 
             onPressed: () {
               designation.designation = nameController.text;
+              designation.remarks = remarksController.text;
+              designation.status = screenController.selectedStatus.toString();
               screenController.updateDesignation(designation);
               Get.off(() => DesignationList());
             },

@@ -4,18 +4,18 @@ import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
-import 'package:flutter_dashboard/screens/settings_screen/controller/industry_controller.dart';
+import 'package:flutter_dashboard/screens/payroll/widget/three_formfield.dart';
+import 'package:flutter_dashboard/screens/settings_screen/controller/allowance_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AddIndustry extends StatelessWidget {
-  AddIndustry({super.key});
-  final _formKey = GlobalKey<FormState>();
+class AddAllowance extends StatelessWidget {
+  AddAllowance({super.key});
 
-  final screenController = Get.put(IndustryController());
+  final screenController = Get.put(AllowanceController());
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class AddIndustry extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Add Industry',
+                            Text('Add Allowance Type',
                                 style: TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.bold)),
@@ -80,7 +80,7 @@ class AddIndustry extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Flexible(flex: 4, child: addindustry()),
+                        Flexible(flex: 4, child: addallowance()),
                         buildSizedboxW(kDefaultPadding),
                       ],
                     ),
@@ -91,7 +91,7 @@ class AddIndustry extends StatelessWidget {
                         vertical: kDefaultPadding + kTextPadding),
                     child: Column(
                       children: [
-                        addindustry(),
+                        addallowance(),
                         buildSizedBoxH(kDefaultPadding),
                       ],
                     ),
@@ -102,7 +102,7 @@ class AddIndustry extends StatelessWidget {
     )));
   }
 
-  Widget addindustry() {
+  Widget addallowance() {
     return Container(
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
@@ -116,7 +116,7 @@ class AddIndustry extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Add any Industry',
+              Text('Add Allowance Type',
                   style: GoogleFonts.montserrat(
                       fontSize: kDefaultPadding + kTextPadding,
                       fontWeight: FontWeight.bold)),
@@ -127,7 +127,7 @@ class AddIndustry extends StatelessWidget {
               // ),
               buildSizedBoxH(kDefaultPadding * 2),
               FormBuilder(
-                key: _formKey,
+                // key: _formKey,
                 autovalidateMode: AutovalidateMode.disabled,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,10 +136,11 @@ class AddIndustry extends StatelessWidget {
                       children: [
                         Flexible(
                           child: FormBuilderTextField(
-                            name: 'Industry Name',
-                            controller: screenController.industryname,
+                            controller:
+                                screenController.allowanceNameController,
+                            name: 'Allowance Name',
                             decoration: InputDecoration(
-                              labelText: 'Industry Name',
+                              labelText: 'Allowance Name',
                               // hintText: 'test.user',
                               // helperText: '* To test registration fail: admin',
                               border: const OutlineInputBorder(),
@@ -189,7 +190,7 @@ class AddIndustry extends StatelessWidget {
                           child: FormBuilderTextField(
                             controller: screenController.remarksController,
                             name: 'Remarks',
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               labelText: 'Remarks',
                               hintText: 'please add your remarks',
                               border: OutlineInputBorder(),
@@ -210,19 +211,20 @@ class AddIndustry extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         DefaultAddButton(
-                            buttonname: 'Add Industry',
-                            onClick: () async{
-                                await screenController.addIndustry();
-                              Get.back();
+                            buttonname: 'Add Allowance',
+                            onClick: ()async {
+                                await screenController.addAllowance();
+                                 Get.back();
                             }),
                       ],
                     ),
-                    // Divider(
-                    //   indent: kDefaultPadding * 2,
-                    //   endIndent: kDefaultPadding * 2,
-                    // ),
-                    // buildSizedBoxH(kDefaultPadding * 3),
+                    //  buildSizedBoxH(kDefaultPadding * 3),
+                    //   Divider(
+                    //     indent: kDefaultPadding * 2,
+                    //     endIndent: kDefaultPadding * 2,
+                    //   ),
                     buildSizedBoxH(kDefaultPadding * 3),
+                    // buildSizedBoxH(kDefaultPadding * 3),
                   ],
                 ),
               ),

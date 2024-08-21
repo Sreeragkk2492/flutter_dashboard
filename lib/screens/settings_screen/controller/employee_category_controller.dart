@@ -4,14 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/api/networkManager.dart';
 import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
-import 'package:flutter_dashboard/models/employee_category_model.dart';
+import 'package:flutter_dashboard/models/settings/employee_category_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class EmployeeCategoryController extends GetxController {
   final categoryNameController = TextEditingController();
   final remarksController = TextEditingController();
-  final statusController = TextEditingController();
+ 
+
+   String? selectedStatus;
 
   @override
   void onInit() {
@@ -28,7 +30,7 @@ class EmployeeCategoryController extends GetxController {
         data: {
           "name": categoryNameController.text,
           "remarks": remarksController.text,
-          "status": statusController.text,
+          "status": selectedStatus,
           "isactive": true
         });
 

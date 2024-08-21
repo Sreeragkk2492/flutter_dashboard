@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
-import 'package:flutter_dashboard/getx/company_list_controller.dart';
 import 'package:flutter_dashboard/models/user_model.dart';
 import 'package:flutter_dashboard/screens/company_screen/widget/company_form_widget.dart';
 import 'package:flutter_dashboard/screens/company_screen/widget/details_form_widgte.dart';
@@ -188,94 +187,94 @@ class DialogWidgets {
     dialog.show();
   }
 
-  static void showEditDialog(BuildContext context, DialogType dialogType,
-      CompanyListController controller, int index) {
-    TextEditingController namecontroller =
-        TextEditingController(text: controller.filteredCompany[index].name);
-    TextEditingController idcontroller =
-        TextEditingController(text: controller.filteredCompany[index].Comp_id);
-    TextEditingController codecontroller = TextEditingController(
-        text: controller.filteredCompany[index].Comp_code);
-    TextEditingController statuscontroller =
-        TextEditingController(text: controller.filteredCompany[index].Status);
-    TextEditingController whatsappcontroller =
-        TextEditingController(text: controller.filteredCompany[index].Whatsapp);
-    TextEditingController mobcontroller = TextEditingController(
-        text: controller.filteredCompany[index].Mobilenumber);
-    final screenWidth = MediaQuery.of(context).size.width;
-    final dialogWidth = screenWidth * 0.8;
-    final dialog = AwesomeDialog(
-        alignment: Alignment.center,
-        context: context,
-        transitionAnimationDuration: const Duration(microseconds: 300),
-        dialogType: dialogType,
-        title: 'Company Info',
-        desc: '',
-        body: Padding(
-          padding: EdgeInsets.all(kDefaultPadding),
-          child: SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('Basic information',
-                  style: GoogleFonts.montserrat(
-                      fontSize: kDefaultPadding + kTextPadding,
-                      fontWeight: FontWeight.bold)),
-              buildSizedBoxH(kDefaultPadding),
-              CompanyFormWidget(
-                companyIdController: idcontroller,
-                companyCodeController: codecontroller,
-                companyNameController: namecontroller,
-                statusController: statuscontroller,
-                whatsappController: whatsappcontroller,
-                phoneNumberController: mobcontroller,
-                industryController: TextEditingController(),
-                groupNameController: TextEditingController(),
-                legalNameController: TextEditingController(),
-                founderController: TextEditingController(),
-                emailController: TextEditingController(),
-                panController: TextEditingController(),
-                addressController: TextEditingController(),
-                landmarkController: TextEditingController(),
-                cityController: TextEditingController(),
-                stateController: TextEditingController(),
-                countryController: TextEditingController(),
-              )
-            ]),
-          ),
-        ),
-        //  width: dialogWidth,
-        btnOkOnPress: () {},
-        btnOk: Container(
-          alignment: Alignment.bottomRight,
-          width: 150,
-          //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-                // fixedSize: const Size.fromHeight(3),
-                padding: EdgeInsets.zero,
-                backgroundColor: AppColors
-                    .defaultColor // Change this color to your desired color
-                ),
+  // static void showEditDialog(BuildContext context, DialogType dialogType,
+  //     , int index) {
+  //   TextEditingController namecontroller =
+  //       TextEditingController(text: controller.filteredCompany[index].name);
+  //   TextEditingController idcontroller =
+  //       TextEditingController(text: controller.filteredCompany[index].Comp_id);
+  //   TextEditingController codecontroller = TextEditingController(
+  //       text: controller.filteredCompany[index].Comp_code);
+  //   TextEditingController statuscontroller =
+  //       TextEditingController(text: controller.filteredCompany[index].Status);
+  //   TextEditingController whatsappcontroller =
+  //       TextEditingController(text: controller.filteredCompany[index].Whatsapp);
+  //   TextEditingController mobcontroller = TextEditingController(
+  //       text: controller.filteredCompany[index].Mobilenumber);
+  //   final screenWidth = MediaQuery.of(context).size.width;
+  //   final dialogWidth = screenWidth * 0.8;
+  //   final dialog = AwesomeDialog(
+  //       alignment: Alignment.center,
+  //       context: context,
+  //       transitionAnimationDuration: const Duration(microseconds: 300),
+  //       dialogType: dialogType,
+  //       title: 'Company Info',
+  //       desc: '',
+  //       body: Padding(
+  //         padding: EdgeInsets.all(kDefaultPadding),
+  //         child: SingleChildScrollView(
+  //           child:
+  //               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+  //             Text('Basic information',
+  //                 style: GoogleFonts.montserrat(
+  //                     fontSize: kDefaultPadding + kTextPadding,
+  //                     fontWeight: FontWeight.bold)),
+  //             buildSizedBoxH(kDefaultPadding),
+  //             CompanyFormWidget(
+  //               companyIdController: idcontroller,
+  //               companyCodeController: codecontroller,
+  //               companyNameController: namecontroller,
+  //               statusController: statuscontroller,
+  //               whatsappController: whatsappcontroller,
+  //               phoneNumberController: mobcontroller,
+  //               industryController: TextEditingController(),
+  //               groupNameController: TextEditingController(),
+  //               legalNameController: TextEditingController(),
+  //               founderController: TextEditingController(),
+  //               emailController: TextEditingController(),
+  //               panController: TextEditingController(),
+  //               addressController: TextEditingController(),
+  //               landmarkController: TextEditingController(),
+  //               cityController: TextEditingController(),
+  //               stateController: TextEditingController(),
+  //               countryController: TextEditingController(),
+  //             )
+  //           ]),
+  //         ),
+  //       ),
+  //       //  width: dialogWidth,
+  //       btnOkOnPress: () {},
+  //       btnOk: Container(
+  //         alignment: Alignment.bottomRight,
+  //         width: 150,
+  //         //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+  //         child: ElevatedButton(
+  //           style: ElevatedButton.styleFrom(
+  //               shape: RoundedRectangleBorder(
+  //                   borderRadius: BorderRadius.circular(5)),
+  //               // fixedSize: const Size.fromHeight(3),
+  //               padding: EdgeInsets.zero,
+  //               backgroundColor: AppColors
+  //                   .defaultColor // Change this color to your desired color
+  //               ),
 
-            onPressed: () {
-              showDialog(context, DialogType.success);
-              // Get.back();
-            },
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Update',
-                style: TextStyle(color: AppColors.whiteColor),
-              ),
-            ),
-            // onPressed: widget.onClick
-          ),
-        ));
+  //           onPressed: () {
+  //             showDialog(context, DialogType.success);
+  //             // Get.back();
+  //           },
+  //           child: const Padding(
+  //             padding: EdgeInsets.all(8.0),
+  //             child: Text(
+  //               'Update',
+  //               style: TextStyle(color: AppColors.whiteColor),
+  //             ),
+  //           ),
+  //           // onPressed: widget.onClick
+  //         ),
+  //       ));
 
-    dialog.show();
-  }
+  //   dialog.show();
+  // }
 
   static void showEmpEditDialog(
       BuildContext context, DialogType dialogType, User user) {
@@ -319,7 +318,7 @@ class DialogWidgets {
                 ),
 
             onPressed: () {
-              screenController.updateEmployee(user);
+             // screenController.updateEmployee(user);
               Get.off(() => EmployeeListAll());
               // Get.back();
             },

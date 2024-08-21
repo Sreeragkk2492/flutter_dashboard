@@ -333,8 +333,18 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
           Row(
             children: [
               Flexible(
-                child: FormBuilderTextField(
-                  controller: widget.cityController,
+                child: FormBuilderDropdown(
+                  items: [
+                      DropdownMenuItem(
+                      child: Text('kannur'),
+                      value: 'kannur',
+                    ),
+                    DropdownMenuItem(
+                      child: Text('Ernakulam'),
+                      value: 'Ernakulam',
+                    ),
+                  ],
+                 // controller: widget.cityController,
                   name: 'City',
                   decoration: const InputDecoration(
                     labelText: 'City',
@@ -342,16 +352,30 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
-                  enableSuggestions: false,
-                  keyboardType: TextInputType.text,
+                 // enableSuggestions: false,
+                 // keyboardType: TextInputType.text,
                   validator: FormBuilderValidators.required(),
                   // onSaved: (value) => (_formData.city = value ?? '')
                 ),
               ),
               buildSizedboxW(kDefaultPadding),
               Flexible(
-                child: FormBuilderTextField(
-                  controller: widget.stateController,
+                child: FormBuilderDropdown(
+                  items: [
+                    DropdownMenuItem(
+                      child: Text('kerala'),
+                      value: 'kerala',
+                    ),
+                    DropdownMenuItem(
+                      child: Text('karnataka'),
+                      value: 'karnataka',
+                    ),
+                    DropdownMenuItem(
+                      child: Text('Delhi'),
+                      value: 'Delhi',
+                    )
+                  ],
+                  // controller: widget.stateController,
                   name: 'State',
                   decoration: const InputDecoration(
                     labelText: 'State',
@@ -359,7 +383,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
-                  keyboardType: TextInputType.text,
+                  //keyboardType: TextInputType.text,
                   validator: FormBuilderValidators.required(),
                   // onSaved: (value) => (_formData.country = value ?? ''),
                 ),
@@ -371,8 +395,22 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
           Row(
             children: [
               Flexible(
-                child: FormBuilderTextField(
-                  controller: widget.countryController,
+                child: FormBuilderDropdown(
+                  items: [
+                    DropdownMenuItem(
+                      child: Text('India'),
+                      value: 'India',
+                    ),
+                    DropdownMenuItem(
+                      child: Text('Usa'),
+                      value: 'Usa',
+                    ),
+                    DropdownMenuItem(
+                      child: Text('Uk'),
+                      value: 'Uk',
+                    )
+                  ],
+                  // controller: widget.countryController,
                   name: 'Country',
                   decoration: const InputDecoration(
                     labelText: 'Country',
@@ -380,7 +418,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
-                  keyboardType: TextInputType.text,
+                  // keyboardType: TextInputType.text,
                   validator: FormBuilderValidators.required(),
                   // onSaved: (value) => (_formData.country = value ?? ''),
                 ),

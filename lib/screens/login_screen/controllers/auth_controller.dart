@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/api/networkManager.dart';
 import 'package:flutter_dashboard/core/api/urls.dart';
+import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
 import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
@@ -52,7 +53,7 @@ class AuthController extends GetxController {
       awesomeOkDialog(message: result.left.message); 
     } else {
       final data = result.right;
-      final token = data['token'];
+       token= data['token'];
       final companyCode = data['company_code'];
 
        // Store token and company code securely
@@ -60,7 +61,7 @@ class AuthController extends GetxController {
       await StorageServices().write("company_code", companyCode);
 
       // Set global variables if needed
-      // this.token = token;
+     // this.token = token;
       // this.companyCode = companyCode;
 
       Get.toNamed(Routes.DASHBOARD);

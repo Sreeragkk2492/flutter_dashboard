@@ -172,6 +172,9 @@ class AddEmployementCategory extends StatelessWidget {
                                   value: 'InActive',
                                 ),
                               ],
+                               initialValue: screenController.selectedStatus,
+                            onChanged: (value) =>
+                                screenController.selectedStatus = value,
                               // onSaved: (value) => (_formData.email = value ?? ''),
                             ),
                         ),

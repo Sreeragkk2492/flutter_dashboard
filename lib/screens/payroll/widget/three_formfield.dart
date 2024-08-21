@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
+import 'package:flutter_dashboard/screens/settings_screen/controller/allowance_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -29,6 +31,8 @@ class ThreeFormfield extends StatelessWidget {
       required this.labelthree});
 
        final _formKey = GlobalKey<FormState>();
+
+       final screenController=Get.put(AllowanceController());
 
   @override
   Widget build(BuildContext context) {

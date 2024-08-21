@@ -21,20 +21,50 @@ class ApiUrls {
   static const UPDATE_DESIGNATION = "/designation/update_designation";
 
   ///employee category
-  static const ADD_EMPLOYEE_CATEGORY = "/employee_category/add_employee_category";
-  static const GET_ALL_EMPLOYEE_CATEGORY = "/employee_category/get_emplopyee_category";
-  static const UPDATE_EMPLOYEE_CATEGORY = "/employee_category/update_employee_category";
+  static const ADD_EMPLOYEE_CATEGORY =
+      "/employee_category/add_employee_category";
+  static const GET_ALL_EMPLOYEE_CATEGORY =
+      "/employee_category/get_emplopyee_category";
+  static const UPDATE_EMPLOYEE_CATEGORY =
+      "/employee_category/update_employee_category";
 
   ///user
-   static const ADD_USER = "/user/add_user";
-   static const GET_ALL_USER = "/user/get_users";
+  static const ADD_USER = "/user/add_user";
+  static const GET_ALL_USER = "/user/get_users";
   static const UPDATE_USER = "/user/update_user";
 
   ///company
-   static const GET_ALL_COMPANY = "/company/get_company";
+  static const GET_ALL_COMPANY = "/company/get_company";
+
+  ///prpayrollallowance
+  static const ADD_ALLOWANCE = "/payroll_allowance/create_allowance";
+  static const GET_ALL_ALLOWANCE = "/payroll_allowance/get_allowance";
+
+  ///prpayrolldeduction
+  
+   static const ADD_DEDUCTION = "/payroll_deduction/create_deduction";
+    static const GET_ALL_DEDUCTION = "/payroll_deduction/get_deduction";
+
+  ///usertype
+  static const GET_ALL_USERTYPE = "/user_type/get_user_type";
+
+  ///attendence
+
+  static const GET_ALL_ATTENDENCE =
+      "/attendance-statistics/app_attendance_page";
+
+  ///industry
+
+  static const ADD_INDUSTRY = "/company_types/add_company_type";
+  static const GET_ALL_INDUSTRY = "/company_types/get_company_type";
+  static const UPDATE_INDUSTRY = "/company_types/update_company_type";
+
+  ///payroll processing date
+   static const ADD_PROCESSING_DATE = "/payroll_processing_day/create";
 
 
-
-   ///usertype
-   static const GET_ALL_USERTYPE = "/user_type/get_user_type";
+   ///prcompanypayrollallowance
+    static const GET_ALL_PRCOMPANYPAYROLL_ALLOWANCE = "/company_payroll_allowance/get_company_payroll_allowance";
+   
+  
 }

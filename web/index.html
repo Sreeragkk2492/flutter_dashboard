@@ -57,22 +57,7 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
-    fetch('http://13.60.173.158', {
-      mode: 'cors',
-      credentials: 'include'
-    })
-    .then(response => {
-      if (!response.ok) {
-        return response.text().then(text => { throw new Error(text) });
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log(data);
-    })
-    .catch(error => {
-      console.error('There has been a problem with your fetch operation:', error.message);
-    });
+   
   </script>
 </body>
 </html>

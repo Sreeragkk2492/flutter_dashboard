@@ -11,19 +11,31 @@ String designationToJson(List<Designation> data) => json.encode(List<dynamic>.fr
 class Designation {
     String id;
     String designation;
+    String remarks;
+    String status;
+    bool isActive;
 
     Designation({
         required this.id,
         required this.designation,
+        required this.remarks,
+        required this.status,
+        required this.isActive,
     });
 
     factory Designation.fromJson(Map<String, dynamic> json) => Designation(
         id: json["id"],
         designation: json["designation"],
+        remarks: json["remarks"],
+        status: json["status"],
+        isActive: json["is_active"],
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
         "designation": designation,
+        "remarks": remarks,
+        "status": status,
+        "is_active": isActive,
     };
 }
