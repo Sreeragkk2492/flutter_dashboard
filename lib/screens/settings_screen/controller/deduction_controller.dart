@@ -8,7 +8,7 @@ import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
 import 'package:flutter_dashboard/models/settings/deduction_model.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart'as http;
+import 'package:http/http.dart' as http;
 
 class DeductionController extends GetxController {
   var deduction = <Deduction>[].obs;
@@ -39,6 +39,8 @@ class DeductionController extends GetxController {
       final message = response.right['message'];
       // awesomeOkDialog(message: message);
       await fetchDeduction();
+      deductionNameController.clear();
+      remarksController.clear();
     }
     // response.fold((error){
     //   awesomeOkDialog(message: error.message);
@@ -51,18 +53,15 @@ class DeductionController extends GetxController {
   fetchDeduction() async {
     try {
       //final token = await StorageServices().read('token');
-      final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_DEDUCTION)
-         ;
+      final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_DEDUCTION);
 
       print("Fetching users from URL: $url");
 
-      final response = await http.get(url,
-      headers: {
+      final response = await http.get(url, headers: {
         "Accept": "application/json",
-        "token":"$token",
-        "Authorization": "Bearer $token",
-      }
-      );
+        // "token":"$token",
+        // "Authorization": "Bearer $token",
+      });
 
       print("Response status code: ${response.statusCode}");
       print("Response body: ${response.body}");
@@ -106,7 +105,28 @@ class DeductionController extends GetxController {
       print("Stack trace: $stackTrace");
 
       // Show error dialog
-      awesomeOkDialog(message: e.toString());
+      // awesomeOkDialog(message: e.toString());
+    }
+  }
+
+  updateDeduction(Deduction deduction) async {
+    final result = await NetWorkManager.shared().request(
+        isAuthRequired: false,
+        method: 'put',
+        url: ApiUrls.BASE_URL + ApiUrls.UPDATE_DEDUCTION,
+        params: {
+          "deduction_id": deduction.id
+        },
+        data: {
+          "deduction_name": deduction.deductionName,
+          "status": deduction.status,
+          "is_active": true
+        });
+
+    if (result.isLeft) {
+      awesomeOkDialog(message: result.left.message);
+    } else {
+      awesomeOkDialog(message: result.right['message']);
     }
   }
 }

@@ -1,57 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
+import 'package:flutter_dashboard/core/widgets/dialog_widgets.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
-import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
+import 'package:flutter_dashboard/models/settings/industry_model.dart';
+import 'package:flutter_dashboard/screens/company_screen/controller/company_controller.dart';
+import 'package:flutter_dashboard/screens/settings_screen/controller/industry_controller.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 
-class CompanyFormWidget extends StatefulWidget {
-  final TextEditingController companyIdController;
-  final TextEditingController companyCodeController;
-  final TextEditingController companyNameController;
-  final TextEditingController industryController;
-  final TextEditingController statusController;
-  final TextEditingController groupNameController;
-  final TextEditingController legalNameController;
-  final TextEditingController founderController;
-  final TextEditingController emailController;
-  final TextEditingController panController;
-  final TextEditingController whatsappController;
-  final TextEditingController phoneNumberController;
-  final TextEditingController addressController;
-  final TextEditingController landmarkController;
-  final TextEditingController cityController;
-  final TextEditingController stateController;
-  final TextEditingController countryController;
+class CompanyFormWidget extends StatelessWidget {
   CompanyFormWidget({
     super.key,
-    required this.companyIdController,
-    required this.companyCodeController,
-    required this.companyNameController,
-    required this.industryController,
-    required this.statusController,
-    required this.groupNameController,
-    required this.legalNameController,
-    required this.founderController,
-    required this.emailController,
-    required this.panController,
-    required this.whatsappController,
-    required this.phoneNumberController,
-    required this.addressController,
-    required this.landmarkController,
-    required this.cityController,
-    required this.stateController,
-    required this.countryController,
   });
+  final screenController = Get.put(CompanyController());
+  final industryController = Get.put(IndustryController());
   final _formKey = GlobalKey<FormState>();
 
-  @override
-  State<CompanyFormWidget> createState() => _CompanyFormWidgetState();
-}
-
-class _CompanyFormWidgetState extends State<CompanyFormWidget> {
   bool isVATSelected = false;
+
   bool isGSTSelected = false;
 
   @override
@@ -65,25 +32,36 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
           Row(
             children: [
               Flexible(
-                child: FormBuilderTextField(
-                  controller: widget.companyIdController,
-                  name: 'Company ID',
-                  decoration: InputDecoration(
-                    labelText: 'Company ID',
-                    hintText: 'test.user',
-                    // helperText: '* To test registration fail: admin',
-                    border: const OutlineInputBorder(),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                child: Obx(
+                  () => FormBuilderDropdown(
+                    // controller: widget.companyNameController,
+                    name: 'Company ID',
+                    decoration: const InputDecoration(
+                      labelText: 'Company ID',
+                      hintText: 'Company ID',
+                      border: OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                    // enableSuggestions: false,
+                    // keyboardType: TextInputType.name,
+                    validator: FormBuilderValidators.required(),
+                    items: industryController.industries
+                        .map((industry) => DropdownMenuItem(
+                              value: industry.id,
+                              child: Text(industry.name),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      screenController.setSelectedCompanyTypeID(value!);
+                    },
+                    // onSaved: (value) => (_formData.firstname = value ?? ''),
                   ),
-                  enableSuggestions: false,
-                  validator: FormBuilderValidators.required(),
-                  // onSaved: (value) => (_formData.username = value ?? ''),
                 ),
               ),
               buildSizedboxW(kDefaultPadding),
               Flexible(
                 child: FormBuilderTextField(
-                  controller: widget.companyCodeController,
+                  controller: screenController.companyCodeController,
                   name: 'Company Code',
                   decoration: InputDecoration(
                     labelText: 'Company Code',
@@ -103,7 +81,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
             children: [
               Flexible(
                 child: FormBuilderTextField(
-                  controller: widget.companyNameController,
+                  controller:screenController.companyNameController,
                   name: 'Company Name',
                   decoration: const InputDecoration(
                     labelText: 'Company Name',
@@ -119,19 +97,31 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
               ),
               buildSizedboxW(kDefaultPadding),
               Flexible(
-                child: FormBuilderTextField(
-                  controller: widget.industryController,
-                  name: 'Industry/Category',
-                  decoration: const InputDecoration(
-                    labelText: 'Idustry/Category',
-                    hintText: 'User',
-                    border: OutlineInputBorder(),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                child:Obx(()=>
+                     FormBuilderDropdown(
+                      // controller: widget.statusController,
+                      name: 'Category/Industry',
+                      decoration: const InputDecoration(
+                        labelText: 'Category/Industry',
+                        hintText: 'Category/Industry',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      // enableSuggestions: false,
+                      // keyboardType: TextInputType.name,
+                      validator: FormBuilderValidators.required(),
+                      items: industryController.industries
+                          .map((industry) => DropdownMenuItem(
+                                value: industry.id,
+                                child: Text(industry.name),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                      //  screenController.setSelectedDesignation(value!);
+                      },
+                      // onSaved: (value) => (_formData.firstname = value ?? ''),
+                    ),
                   ),
-                  keyboardType: TextInputType.name,
-                  validator: FormBuilderValidators.required(),
-                  //  onSaved: (value) => (_formData.lastname = value ?? ''),
-                ),
               ),
             ],
           ),
@@ -139,33 +129,37 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
           Row(
             children: [
               Flexible(
-                child: FormBuilderDropdown(
-                  name: 'Status',
-                  decoration: InputDecoration(
-                    labelText: 'Status',
-                    // hintText: 'test@gmail.com',
-                    border: const OutlineInputBorder(),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                  ),
-                  // keyboardType: TextInputType.emailAddress,
-                  validator: FormBuilderValidators.required(),
-                  items: [
-                    DropdownMenuItem(
-                      child: Text('Active'),
-                      value: 'Active',
-                    ),
-                    DropdownMenuItem(
-                      child: Text('InActive'),
-                      value: 'InActive',
-                    ),
-                  ],
-                  // onSaved: (value) => (_formData.email = value ?? ''),
-                ),
+                child:  FormBuilderDropdown(
+                              name: 'Status',
+                              decoration: InputDecoration(
+                                labelText: 'Status',
+                                // hintText: 'test@gmail.com',
+                                border: const OutlineInputBorder(),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                              ),
+                              // keyboardType: TextInputType.emailAddress,
+                              validator: FormBuilderValidators.required(),
+                              items: [
+                                DropdownMenuItem(
+                                  child: Text('Active'),
+                                  value: 'Active',
+                                ),
+                                DropdownMenuItem(
+                                  child: Text('InActive'),
+                                  value: 'InActive',
+                                ),
+                              ],
+                                initialValue: screenController.selectedStatus,
+                            onChanged: (value) =>
+                                screenController.selectedStatus = value,
+                              // onSaved: (value) => (_formData.email = value ?? ''),
+                            ),
               ),
               buildSizedboxW(kDefaultPadding),
               Flexible(
                 child: FormBuilderTextField(
-                  controller: widget.groupNameController,
+                  controller: screenController.groupNameController,
                   name: 'Group Name',
                   decoration: const InputDecoration(
                     labelText: 'Group Name',
@@ -195,7 +189,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
             children: [
               Flexible(
                 child: FormBuilderTextField(
-                  controller: widget.legalNameController,
+                  controller: screenController.legalNameController,
                   name: 'Legal Name',
                   decoration: const InputDecoration(
                     labelText: 'Legal Name',
@@ -212,7 +206,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
               buildSizedboxW(kDefaultPadding),
               Flexible(
                 child: FormBuilderTextField(
-                  controller: widget.founderController,
+                  controller: screenController.founderorOwnerController,
                   name: 'Founder/Owner',
                   decoration: const InputDecoration(
                     labelText: 'Founder/Owner',
@@ -232,7 +226,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
             children: [
               Flexible(
                 child: FormBuilderTextField(
-                  controller: widget.emailController,
+                  controller: screenController.emailController,
                   name: 'Email',
                   decoration: const InputDecoration(
                     labelText: 'Email',
@@ -249,7 +243,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
               buildSizedboxW(kDefaultPadding),
               Flexible(
                 child: FormBuilderTextField(
-                  controller: widget.panController,
+                  controller: screenController.panController,
                   name: 'Pan',
                   decoration: const InputDecoration(
                     labelText: 'Pan',
@@ -269,7 +263,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
             children: [
               Flexible(
                 child: FormBuilderTextField(
-                  controller: widget.whatsappController,
+                  controller: screenController.whatsappController,
                   name: 'Whatsapp',
                   decoration: const InputDecoration(
                     labelText: 'Whatsapp',
@@ -286,7 +280,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
               buildSizedboxW(kDefaultPadding),
               Flexible(
                 child: FormBuilderTextField(
-                  controller: widget.phoneNumberController,
+                  controller: screenController.phonenumberController,
                   name: 'Phone Number',
                   decoration: const InputDecoration(
                     labelText: 'Phone Number',
@@ -303,7 +297,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
           ),
           buildSizedBoxH(kDefaultPadding * 2),
           FormBuilderTextField(
-            controller: widget.addressController,
+            controller: screenController.addressController,
             name: 'Address',
             decoration: const InputDecoration(
               labelText: 'Address',
@@ -317,7 +311,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
           ),
           buildSizedBoxH(kDefaultPadding * 2),
           FormBuilderTextField(
-            controller: widget.landmarkController,
+            controller: screenController.landmarkController,
             name: 'Landmark',
             decoration: const InputDecoration(
               labelText: 'Landmark',
@@ -335,7 +329,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
               Flexible(
                 child: FormBuilderDropdown(
                   items: [
-                      DropdownMenuItem(
+                    DropdownMenuItem(
                       child: Text('kannur'),
                       value: 'kannur',
                     ),
@@ -344,7 +338,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
                       value: 'Ernakulam',
                     ),
                   ],
-                 // controller: widget.cityController,
+                  // controller: widget.cityController,
                   name: 'City',
                   decoration: const InputDecoration(
                     labelText: 'City',
@@ -352,8 +346,8 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
-                 // enableSuggestions: false,
-                 // keyboardType: TextInputType.text,
+                  // enableSuggestions: false,
+                  // keyboardType: TextInputType.text,
                   validator: FormBuilderValidators.required(),
                   // onSaved: (value) => (_formData.city = value ?? '')
                 ),
@@ -438,15 +432,13 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
               buildSizedboxW(kDefaultPadding),
               Expanded(
                 flex: 1,
-                child: FormBuilderCheckbox(
-                  name: 'VAT',
-                  initialValue: isVATSelected,
-                  title: const Text('VAT'),
-                  onChanged: (value) {
-                    setState(() {
-                      isVATSelected = value ?? false;
-                    });
-                  },
+                child: Obx(
+                  () => FormBuilderCheckbox(
+                    name: 'VAT',
+                    initialValue: screenController.isVATSelected.value,
+                    title: const Text('VAT'),
+                    onChanged: screenController.toggleVAT,
+                  ),
                 ),
               ),
               buildSizedboxW(kDefaultPadding),
@@ -454,13 +446,9 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
                 flex: 1,
                 child: FormBuilderCheckbox(
                   name: 'GST',
-                  initialValue: isGSTSelected,
+                  initialValue: screenController.isGSTSelected.value,
                   title: const Text('GST'),
-                  onChanged: (value) {
-                    setState(() {
-                      isGSTSelected = value ?? false;
-                    });
-                  },
+                  onChanged: screenController.toggleGST,
                 ),
               ),
             ],
@@ -470,7 +458,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
               children: [
                 Flexible(
                   child: FormBuilderTextField(
-                    // controller: widget.,
+                     controller: screenController.vatnumberController,
                     name: 'VAT Number',
                     decoration: const InputDecoration(
                       labelText: 'VAT Number',
@@ -486,6 +474,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
                 buildSizedboxW(kDefaultPadding),
                 Flexible(
                   child: FormBuilderTextField(
+                    controller: screenController.vatrateController,
                     name: 'VAT Rate',
                     decoration: const InputDecoration(
                       labelText: 'VAT Rate',
@@ -505,6 +494,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
               children: [
                 Flexible(
                   child: FormBuilderTextField(
+                    controller: screenController.gstnumberController,
                     name: 'GST Number',
                     decoration: const InputDecoration(
                       labelText: 'GST Number',
@@ -520,6 +510,7 @@ class _CompanyFormWidgetState extends State<CompanyFormWidget> {
                 buildSizedboxW(kDefaultPadding),
                 Flexible(
                   child: FormBuilderTextField(
+                    controller: screenController.gstcompoundingController,
                     name: 'GST Compounding',
                     decoration: const InputDecoration(
                       labelText: 'GST Compounding',

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
+import 'package:flutter_dashboard/models/company_models.dart';
+import 'package:flutter_dashboard/screens/employee_screen/widget/company_dropdown_item.dart';
 import 'package:flutter_dashboard/screens/settings_screen/controller/designation_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/controller/employee_category_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
@@ -66,29 +68,41 @@ class EmployeeFormWidget extends StatelessWidget {
               children: [
                 Flexible(
                   child: Obx(()=>
-                      FormBuilderDropdown<String>(
-                      // controller: widget.companyNameController,
-                      name: 'Company Name',
-                      decoration: const InputDecoration(
-                        labelText: 'Company Name',
-                        hintText: 'Company Name',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      // enableSuggestions: false,
-                      // keyboardType: TextInputType.name,
-                      validator: FormBuilderValidators.required(),
-                      items: screenController.companydetails
-                          .map((company) => DropdownMenuItem(
-                                value: company.id,
-                                child: Text(company.companyName),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        screenController.setSelectedCompany(value!);
-                      },
-                      // onSaved: (value) => (_formData.firstname = value ?? ''),
-                    ),
+                      FormBuilderDropdown<Company>(
+                              // controller: widget.companyNameController,
+                              name: 'Company Name',
+                              decoration: InputDecoration(
+                                labelText: 'Company Name',
+                                hintText: 'Company Name',
+                                border: OutlineInputBorder(),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                              ),
+                              // enableSuggestions: false,
+                              // keyboardType: TextInputType.name,
+                              validator: FormBuilderValidators.required(),
+                              items: screenController.companydetails
+                                  .map((company) => DropdownMenuItem(
+                                        value: Company(
+                                            id: company.id,
+                                            companyName: company.companyName,
+                                            companyCode: company.companyCode,
+                                            databaseName: company.databaseName,
+                                            companyTypeId:
+                                                company.companyTypeId,
+                                            remarks: company.remarks,
+                                            status: company.status,
+                                            isActive: company.isActive,
+                                            companytype: company.companytype),
+                                        child: Text(company.companyName),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                screenController.setSelectedCompany(
+                                    value!.id, value.companyCode);
+                              },
+                              // onSaved: (value) => (_formData.firstname = value ?? ''),
+                            ),
                   ),
                 ),
                 buildSizedboxW(kDefaultPadding),
@@ -190,7 +204,7 @@ class EmployeeFormWidget extends StatelessWidget {
                 buildSizedboxW(kDefaultPadding),
                 Flexible(
                   child:Obx(()=>
-                     FormBuilderDropdown<String>(
+                     FormBuilderDropdown(
                       // controller: widget.companyNameController,
                       name: 'Employee Category',
                       decoration: const InputDecoration(
@@ -209,7 +223,7 @@ class EmployeeFormWidget extends StatelessWidget {
                               ))
                           .toList(),
                       onChanged: (value) {
-                        screenController.setSelectedCompany(value!);
+                        screenController.setSelectedEmployeeCategory(value!); 
                       },
                       // onSaved: (value) => (_formData.firstname = value ?? ''),
                     ),

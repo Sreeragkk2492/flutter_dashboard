@@ -1,45 +1,47 @@
-// To parse this JSON data, do
-//
-//     final prCompanyPayrollAllowance = prCompanyPayrollAllowanceFromJson(jsonString);
+class CompanyPayrollAllowancesModel {
+  String companyId;
+  List<Allowance> allowance;
+  String remarks;
+  String status;
+  bool isActive;
 
-import 'dart:convert';
+  CompanyPayrollAllowancesModel({
+    required this.companyId,
+    required this.allowance,
+    required this.remarks,
+    required this.status,
+    required this.isActive,
+  });
 
-List<PrCompanyPayrollAllowance> prCompanyPayrollAllowanceFromJson(String str) => List<PrCompanyPayrollAllowance>.from(json.decode(str).map((x) => PrCompanyPayrollAllowance.fromJson(x)));
-
-String prCompanyPayrollAllowanceToJson(List<PrCompanyPayrollAllowance> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class PrCompanyPayrollAllowance {
-    String id;
-    String companyId;
-    String payrollAllowanceId;
-    String rremarks;
-    String status;
-    bool isActive;
-
-    PrCompanyPayrollAllowance({
-        required this.id,
-        required this.companyId,
-        required this.payrollAllowanceId,
-        required this.rremarks,
-        required this.status,
-        required this.isActive,
-    });
-
-    factory PrCompanyPayrollAllowance.fromJson(Map<String, dynamic> json) => PrCompanyPayrollAllowance(
-        id: json["id"],
-        companyId: json["company_id"],
-        payrollAllowanceId: json["payroll_allowance_id"],
-        rremarks: json["rremarks"],
-        status: json["status"],
-        isActive: json["is_active"],
+  factory CompanyPayrollAllowancesModel.fromJson(Map<String, dynamic> json) {
+    return CompanyPayrollAllowancesModel(
+      companyId: json['company_id'] ?? '',
+      allowance: (json['allowance'] as List<dynamic>?)
+          ?.map((e) => Allowance.fromJson(e as Map<String, dynamic>))
+          .toList() ?? [],
+      remarks: json['remarks'] ?? '',
+      status: json['status'] ?? '',
+      isActive: json['is_active'] ?? false,
     );
+  }
+}
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "company_id": companyId,
-        "payroll_allowance_id": payrollAllowanceId,
-        "rremarks": rremarks,
-        "status": status,
-        "is_active": isActive,
-    };
+class Allowance {
+  String allowanceId;
+  String allowance;
+  bool isSelected;
+
+  Allowance({
+    required this.allowanceId,
+    required this.allowance,
+    required this.isSelected,
+  });
+
+  factory Allowance.fromJson(Map<String, dynamic> json) {
+    return Allowance(
+      allowanceId: json['allowance_id'] ?? '',
+      allowance: json['allowance'] ?? '',
+      isSelected: json['is_selected'] ?? false,
+    );
+  }
 }

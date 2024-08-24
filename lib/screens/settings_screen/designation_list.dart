@@ -115,7 +115,7 @@ class DesignationList extends StatelessWidget {
                                             // numeric: true,
                                             label: Row(
                                           children: [
-                                            Text('Category'),
+                                            Text('Industry'),
 
                                             //  IconButton(
                                             //      onPressed: () {},
@@ -168,8 +168,8 @@ class DesignationList extends StatelessWidget {
                                           index: index,
                                           cells: [
                                             DataCell(Text('${index + 1}')),
-                                            const DataCell(Text('')),
-                                            DataCell(Text('')),
+                                             DataCell(Text(designations.companyTypeName)),
+                                            DataCell(Text(designations.departmentName)),
                                             DataCell(
                                                 Text(designations.designation)),
                                             DataCell(Text(designations.status)),
@@ -273,9 +273,9 @@ class DesignationList extends StatelessWidget {
                                             ))
                                         .toList(),
                                     initialValue:
-                                        screenController.selectedCategory,
+                                        screenController.selectedCategory.value,
                                     onChanged: (value) => screenController
-                                        .selectedCategory = value,
+                                        .selectedCategory.value = value??'',
                                     // onSaved: (value) => (_formData.firstname = value ?? ''),
                                   ),
                                 ),
@@ -303,9 +303,9 @@ class DesignationList extends StatelessWidget {
                                             ))
                                         .toList(),
                                     initialValue:
-                                        screenController.selectedDepartment,
+                                        screenController.selectedDepartment.value,
                                     onChanged: (value) => screenController
-                                        .selectedDepartment = value,
+                                        .selectedDepartment.value = value??'',
                                     // onSaved: (value) => (_formData.firstname = value ?? ''),
                                   ),
                                 ),

@@ -34,7 +34,7 @@ class DefaultAddButton extends StatelessWidget {
         buttonname,
         style: const TextStyle(
           fontSize: 16,
-          fontWeight: FontWeight.w200,
+          fontWeight: FontWeight.w400, 
         ),
       ),
     );

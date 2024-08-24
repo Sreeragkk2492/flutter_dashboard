@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/animations/entrance_fader.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
+import 'package:flutter_dashboard/core/widgets/dialog_widgets.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
+import 'package:flutter_dashboard/screens/company_screen/controller/company_controller.dart';
+import 'package:flutter_dashboard/screens/company_screen/controller/company_module_controller.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
+import 'package:flutter_dashboard/screens/employee_screen/widget/company_dropdown_item.dart';
 import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -12,9 +16,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddCompanyModules extends StatelessWidget {
-   AddCompanyModules({super.key});
-    final screenController = Get.put(EmployeeController()); 
- final _formKey = GlobalKey<FormState>();
+  AddCompanyModules({super.key});
+  final screenController = Get.put(CompanyModuleController());
+
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -120,7 +125,7 @@ class AddCompanyModules extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
               buildSizedBoxH(kDefaultPadding * 2),
               FormBuilder(
-                  key: _formKey,
+                key: _formKey,
                 autovalidateMode: AutovalidateMode.disabled,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,63 +133,56 @@ class AddCompanyModules extends StatelessWidget {
                     Row(
                       children: [
                         Flexible(
-                          child: Obx(()=>
-                      FormBuilderDropdown<String>(
-                      // controller: widget.companyNameController,
-                      name: 'Company Name',
-                      decoration: const InputDecoration(
-                        labelText: 'Company Name',
-                        hintText: 'Company Name',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      // enableSuggestions: false,
-                      // keyboardType: TextInputType.name,
-                      validator: FormBuilderValidators.required(),
-                      items: screenController.companydetails
-                          .map((company) => DropdownMenuItem(
-                                value: company.id,
-                                child: Text(company.companyName),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        screenController.setSelectedCompany(value!);
-                      },
-                      // onSaved: (value) => (_formData.firstname = value ?? ''),
-                    ),
-                  ),
+                          child: Obx(
+                            () => FormBuilderDropdown(
+                              // controller: widget.companyNameController,
+                              name: 'Company Name',
+                              decoration: const InputDecoration(
+                                labelText: 'Company Name',
+                                hintText: 'Company Name',
+                                border: OutlineInputBorder(),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                              ),
+                              // enableSuggestions: false,
+                              // keyboardType: TextInputType.name,
+                              validator: FormBuilderValidators.required(),
+                              items: screenController.companydetails
+                                  .map((company) => DropdownMenuItem(
+                                        value: company.id,
+                                        child: Text(company.companyName),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                screenController.setSelectedCompany(value);
+                              },
+                              // onSaved: (value) => (_formData.firstname = value ?? ''),
+                            ),
+                          ),
                         ),
                       ],
                     ),
                     buildSizedBoxH(kDefaultPadding * 3),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: FormBuilderCheckbox(
-                            //   decoration: InputDecoration(border: OutlineInputBorder()),
-                            // enableSuggestions: false,
-                            validator: FormBuilderValidators.required(),
-                            title: Text(
-                              'Attendance & Leave Management',
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            name: 'test',
-                            // onSaved: (value) => (_formData.username = value ?? ''),
-                          ),
-                        ),
-                        buildSizedboxW(kDefaultPadding),
-                        Flexible(
-                          child: FormBuilderCheckbox(
-                            //   decoration: InputDecoration(border: OutlineInputBorder()),
-                            // enableSuggestions: false,
-                            validator: FormBuilderValidators.required(),
-                            title: Text('Payroll Management',
-                                style: TextStyle(fontSize: 17)),
-                            name: 'test',
-                            // onSaved: (value) => (_formData.username = value ?? ''),
-                          ),
-                        ),
-                      ],
+                    Obx(
+                      () => Column(
+                        children: screenController.applicationmodules
+                            .map(
+                              (modules) => RadioListTile<String>(
+                                groupValue:
+                                    screenController.selectedmodule.value,
+                                title: Text(
+                                  modules.moduleName,
+                                  style: TextStyle(fontSize: 17),
+                                ),
+                                onChanged: (value) {
+                                  screenController.selectedmodule.value =
+                                      value!;
+                                },
+                                value: modules.id,
+                              ),
+                            )
+                            .toList(),
+                      ),
                     ),
                     buildSizedBoxH(kDefaultPadding * 3),
                     // Row(
@@ -201,8 +199,8 @@ class AddCompanyModules extends StatelessWidget {
                       children: [
                         DefaultAddButton(
                             buttonname: 'Add Company Module',
-                            onClick: () {
-                              // await screenController.addDepartment();
+                            onClick: () async {
+                              await screenController.addCompanyModule();
                               Get.back();
                             }),
                       ],

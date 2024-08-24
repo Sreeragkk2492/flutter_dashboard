@@ -125,7 +125,7 @@ class CompanyAllowanceDetails extends StatelessWidget {
                                         DataColumn(
                                             label: Row(
                                           children: [
-                                            Text('Remarks'),
+                                            Text('Status'),
                                             //  IconButton(
                                             //      onPressed: () {},
                                             //      icon: Icon(Icons.arrow_drop_down_sharp))
@@ -144,20 +144,28 @@ class CompanyAllowanceDetails extends StatelessWidget {
                                       rows: List.generate(
                                           screenController
                                               .companypayrollallowance
+                                              .value
+                                              .allowance
                                               .length, (index) {
                                         var comppayrollallowance =
                                             screenController
-                                                .companypayrollallowance[index];
+                                                .companypayrollallowance
+                                                .value
+                                                .allowance[index];
                                         return DataRow.byIndex(
                                           index: index,
                                           cells: [
                                             DataCell(Text('#${index + 1}')),
-                                            DataCell(Text(comppayrollallowance
+                                            DataCell(Text(screenController
+                                                .companypayrollallowance
+                                                .value
                                                 .companyId)),
                                             DataCell(Text(comppayrollallowance
-                                                .payrollAllowanceId)),
-                                            DataCell(Text(
-                                                comppayrollallowance.rremarks)),
+                                                .allowanceId)),
+                                            DataCell(Text(screenController
+                                                .companypayrollallowance
+                                                .value
+                                                .status)),
                                             DataCell(TextButton(
                                                 onPressed: () {
                                                   // showEditDialog(

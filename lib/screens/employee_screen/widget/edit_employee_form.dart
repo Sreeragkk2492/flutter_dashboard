@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
+import 'package:flutter_dashboard/screens/employee_screen/widget/company_dropdown_item.dart';
 import 'package:flutter_dashboard/screens/settings_screen/controller/designation_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/controller/employee_category_controller.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -62,7 +63,7 @@ class EditEmployeeForm extends StatelessWidget {
             Row(
               children: [
                 Flexible(
-                  child: FormBuilderDropdown<String>(
+                  child: FormBuilderDropdown<CompanyDropdownItem>(
                     // controller: widget.companyNameController,
                     name: 'Company Name',
                     decoration: const InputDecoration(
@@ -77,12 +78,12 @@ class EditEmployeeForm extends StatelessWidget {
 
                     items: screenController.companydetails
                         .map((company) => DropdownMenuItem(
-                              value: company.id,
+                              value: CompanyDropdownItem(id: company.id, code: company.companyCode),
                               child: Text(company.companyName),
                             ))
                         .toList(),
                     onChanged: (value) {
-                      screenController.setSelectedCompany(value!);
+                      screenController.setSelectedCompany(value!.id,value.code);
                     },
                     // onSaved: (value) => (_formData.firstname = value ?? ''),
                   ),

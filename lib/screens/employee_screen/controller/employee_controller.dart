@@ -18,6 +18,7 @@ class EmployeeController extends GetxController {
   var companydetails = <Company>[].obs;
   var usertype = <UserType>[].obs;
   var selectedCompanyId = ''.obs;
+  var selectedCompanycode = ''.obs;
   var selectedUserTypeId = ''.obs;
   var selectedDesignationId = ''.obs;
   var selectedEmployeeCategoryId = ''.obs;
@@ -62,8 +63,9 @@ class EmployeeController extends GetxController {
 
   
 
-  setSelectedCompany(String companyId) {
+  setSelectedCompany(String companyId,String companycode) {
     selectedCompanyId.value = companyId;
+    selectedCompanycode.value=companycode;
   }
 
   setSelectedUserTypeId(String userTypeId) {
@@ -82,7 +84,7 @@ class EmployeeController extends GetxController {
     var result = await NetWorkManager.shared().request(
         url: ApiUrls.BASE_URL + ApiUrls.ADD_USER,
         params: {
-          'company_code': '126',
+          'company_code': selectedCompanycode.value,
         },
         method: 'post',
         data: {
@@ -101,7 +103,7 @@ class EmployeeController extends GetxController {
           "company_id": selectedCompanyId.value,
           "user_type_id": selectedUserTypeId.value,
           "designation_id": selectedDesignationId.value,
-          "emp_category_id": selectedEmployeeCategoryId.value,
+          "emp_category_id": selectedEmployeeCategoryId.value, 
           "biometric_id": biometricIdController.text,
           "reporting_to_id": reportingIdController.text
         });

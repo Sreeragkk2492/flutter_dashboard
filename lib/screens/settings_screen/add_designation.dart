@@ -18,9 +18,9 @@ class AddDesignation extends StatelessWidget {
   AddDesignation({super.key});
 
   final screenController = Get.find<DesignationController>();
-  final departmentController=Get.put(SettingsController() );
-    final industryController = Get.put(IndustryController());
-   final _formKey = GlobalKey<FormState>();
+  final departmentController = Get.put(SettingsController());
+  final industryController = Get.put(IndustryController());
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +127,7 @@ class AddDesignation extends StatelessWidget {
                         fontWeight: FontWeight.bold)),
                 buildSizedBoxH(kDefaultPadding * 2),
                 FormBuilder(
-                    key: _formKey,
+                  key: _formKey,
                   autovalidateMode: AutovalidateMode.disabled,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,59 +135,65 @@ class AddDesignation extends StatelessWidget {
                       Row(
                         children: [
                           Flexible(
-                            child:  Obx(()=>
-                     FormBuilderDropdown(
-                      // controller: widget.statusController,
-                      name: 'Category/Industry',
-                      decoration: const InputDecoration(
-                        labelText: 'Category/Industry',
-                        hintText: 'Category/Industry',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      // enableSuggestions: false,
-                      // keyboardType: TextInputType.name,
-                      validator: FormBuilderValidators.required(),
-                      items: industryController.industries
-                          .map((industry) => DropdownMenuItem(
-                                value: industry.id,
-                                child: Text(industry.name),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                      //  screenController.setSelectedDesignation(value!);
-                      },
-                      // onSaved: (value) => (_formData.firstname = value ?? ''),
-                    ),
-                  ),
+                            child: Obx(
+                              () => FormBuilderDropdown(
+                                // controller: widget.statusController,
+                                name: 'Category/Industry',
+                                decoration: const InputDecoration(
+                                  labelText: 'Category/Industry',
+                                  hintText: 'Category/Industry',
+                                  border: OutlineInputBorder(),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                // enableSuggestions: false,
+                                // keyboardType: TextInputType.name,
+                                validator: FormBuilderValidators.required(),
+                                items: industryController.industries
+                                    .map((industry) => DropdownMenuItem(
+                                          value: industry.id,
+                                          child: Text(industry.name),
+                                        ))
+                                    .toList(),
+                                initialValue: screenController.selectedCategory.value,
+                                onChanged: (value) {
+                                  screenController.selectedCategory.value = value??'';
+                                  screenController.fetchDepartmentByCompanyId();
+                                  screenController.selectedDepartment.value = '';
+                                },
+                                // onSaved: (value) => (_formData.firstname = value ?? ''),
+                              ),
+                            ),
                           ),
                           buildSizedboxW(kDefaultPadding),
                           Flexible(
-                            child:  Obx(()=>
-                     FormBuilderDropdown(
-                      // controller: widget.statusController,
-                      name: 'Department',
-                      decoration: const InputDecoration(
-                        labelText: 'Department',
-                        hintText: 'Department',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      // enableSuggestions: false,
-                      // keyboardType: TextInputType.name,
-                      validator: FormBuilderValidators.required(),
-                      items: departmentController.departments
-                          .map((dept) => DropdownMenuItem(
-                                value: dept.id,
-                                child: Text(dept.departmentName),
-                              ))
-                          .toList(),
-                       initialValue: screenController.selectedDepartment,
-                            onChanged: (value) =>
-                                screenController.selectedDepartment = value,
-                      // onSaved: (value) => (_formData.firstname = value ?? ''),
-                    ),
-                  ),
+                            child: Obx(
+                              () => FormBuilderDropdown(
+                                // controller: widget.statusController,
+                                name: 'Department',
+                                decoration: const InputDecoration(
+                                  labelText: 'Department',
+                                  hintText: 'Department',
+                                  border: OutlineInputBorder(),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                // enableSuggestions: false,
+                                // keyboardType: TextInputType.name,
+                                validator: FormBuilderValidators.required(),
+                                items: screenController.departmentsbycompanyid
+                                    .map((dept) => DropdownMenuItem(
+                                          value: dept.id,
+                                          child: Text(dept.departmentName),
+                                        ))
+                                    .toList(),
+                                initialValue:
+                                    screenController.selectedDepartment.value,
+                                onChanged: (value) =>
+                                    screenController.selectedDepartment.value = value ?? "",
+                                // onSaved: (value) => (_formData.firstname = value ?? ''),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -235,9 +241,9 @@ class AddDesignation extends StatelessWidget {
                                   value: 'InActive',
                                 ),
                               ],
-                                initialValue: screenController.selectedStatus,
-                            onChanged: (value) =>
-                                screenController.selectedStatus = value,
+                              initialValue: screenController.selectedStatus,
+                              onChanged: (value) =>
+                                  screenController.selectedStatus = value,
                               // onSaved: (value) => (_formData.email = value ?? ''),
                             ),
                           ),

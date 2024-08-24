@@ -13,7 +13,7 @@ import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/company_screen/controller/company_controller.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:get/get.dart';
-import 'package:data_table_2/data_table_2.dart'; 
+import 'package:data_table_2/data_table_2.dart';
 
 class ListAll extends StatefulWidget {
   ListAll({super.key});
@@ -23,9 +23,7 @@ class ListAll extends StatefulWidget {
 }
 
 class _ListAllState extends State<ListAll> {
- 
-
-       final screenController = Get.put(CompanyController()); 
+  final screenController = Get.put(CompanyController());
 
   final ScrollController _dataTableHorizontalScrollController =
       ScrollController();
@@ -48,9 +46,10 @@ class _ListAllState extends State<ListAll> {
                 children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-            child: Obx(()=>
-                UIComponenetsAppBar(
-                title: 'Total Companies : ${screenController.companydetails.length}',
+            child: Obx(
+              () => UIComponenetsAppBar(
+                title:
+                    'Total Companies : ${screenController.companydetails.length}',
                 subtitle: '',
                 icon: const Icon(Icons.rocket),
                 buttonTitle: 'Add Company',
@@ -95,160 +94,156 @@ class _ListAllState extends State<ListAll> {
                             builder: (context, constraints) {
                               final double dataTableWidth =
                                   max(kScreenWidthXxl, constraints.maxWidth);
-                              return Column(
-                                children: [
-                                  
-                                  SingleChildScrollView(
-                                    controller: _dataTableHorizontalScrollController,
-                                    scrollDirection: Axis.horizontal, 
-                                    child: SizedBox(
-                                      width: dataTableWidth,
-                                      child: Obx(()=>
-                                          DataTable(
-                                            
-                                          border: const TableBorder(
-                                              verticalInside:
-                                                  BorderSide(width: 0.2),
-                                              top: BorderSide(width: 0.5),
-                                              right: BorderSide(width: 0.5),
-                                              left: BorderSide(width: 0.5),
-                                              bottom: BorderSide(width: 0.5)),
-                                          dividerThickness: 2,
-                                          sortColumnIndex: 0  ,
-                                          sortAscending: true,
-                                          showCheckboxColumn: true,
-                                          showBottomBorder: true,
-                                          columns: [
-                                            DataColumn(
-                                                // numeric: true,
-                                                label: Row(
+                              return Scrollbar(
+                                thumbVisibility: true,
+                                trackVisibility: true,
+                                // interactive: true,
+                                controller:
+                                    _dataTableHorizontalScrollController,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  controller:
+                                      _dataTableHorizontalScrollController,
+                                  child: SizedBox(
+                                    width: dataTableWidth,
+                                    child: Obx(
+                                      () => DataTable(
+                                        border: const TableBorder(
+                                            verticalInside:
+                                                BorderSide(width: 0.2),
+                                            top: BorderSide(width: 0.5),
+                                            right: BorderSide(width: 0.5),
+                                            left: BorderSide(width: 0.5),
+                                            bottom: BorderSide(width: 0.5)),
+                                        dividerThickness: 2,
+                                        sortColumnIndex: 0,
+                                        sortAscending: true,
+                                        showCheckboxColumn: true,
+                                        showBottomBorder: true,
+                                        columns: [
+                                          DataColumn(
+                                              // numeric: true,
+                                              label: Row(
+                                            children: [
+                                              const Text('Name'),
+                                              IconButton(
+                                                  onPressed: () {},
+                                                  icon: const Icon(
+                                                      Icons.arrow_drop_down))
+                                            ],
+                                          )),
+                                          DataColumn(
+                                              label: Row(
+                                            children: [
+                                              const Text('Comp_Id'),
+                                              IconButton(
+                                                  onPressed: () {},
+                                                  icon: const Icon(Icons
+                                                      .arrow_drop_down_sharp))
+                                            ],
+                                          )),
+                                          DataColumn(
+                                              label: Row(
+                                            children: [
+                                              const Text('Comp_Code'),
+                                              IconButton(
+                                                  onPressed: () {},
+                                                  icon: const Icon(Icons
+                                                      .arrow_drop_down_sharp))
+                                            ],
+                                          )),
+                                          DataColumn(
+                                            label: Row(
                                               children: [
-                                                const Text('Name'),
-                                                IconButton(
-                                                    onPressed: () {},
-                                                    icon: const Icon(
-                                                        Icons.arrow_drop_down))
-                                              ],
-                                            )),
-                                            DataColumn(
-                                                label: Row(
-                                              children: [
-                                                const Text('Comp_Id'),
+                                                const Text('Status'),
                                                 IconButton(
                                                     onPressed: () {},
                                                     icon: const Icon(Icons
                                                         .arrow_drop_down_sharp))
                                               ],
-                                            )),
-                                            DataColumn(
-                                                label: Row(
+                                            ),
+                                          ),
+                                          DataColumn(
+                                            label: Row(
                                               children: [
-                                                const Text('Comp_Code'),
+                                                const Text('WhatsApp'),
                                                 IconButton(
                                                     onPressed: () {},
                                                     icon: const Icon(Icons
                                                         .arrow_drop_down_sharp))
                                               ],
-                                            )),
-                                            DataColumn(
-                                              label: Row(
-                                                children: [
-                                                  const Text('Status'),
-                                                  IconButton(
-                                                      onPressed: () {},
-                                                      icon: const Icon(Icons
-                                                          .arrow_drop_down_sharp))
-                                                ],
-                                              ),
                                             ),
-                                            DataColumn(
-                                              label: Row(
-                                                children: [
-                                                  const Text('WhatsApp'),
-                                                  IconButton(
-                                                      onPressed: () {},
-                                                      icon: const Icon(Icons
-                                                          .arrow_drop_down_sharp))
-                                                ],
-                                              ),
+                                          ),
+                                          DataColumn(
+                                            label: Row(
+                                              children: [
+                                                const Text('Mob_No'),
+                                                IconButton(
+                                                    onPressed: () {},
+                                                    icon: const Icon(Icons
+                                                        .arrow_drop_down_sharp))
+                                              ],
                                             ),
-                                            DataColumn(
-                                              label: Row(
-                                                children: [
-                                                  const Text('Mob_No'),
-                                                  IconButton(
-                                                      onPressed: () {},
-                                                      icon: const Icon(Icons
-                                                          .arrow_drop_down_sharp))
-                                                ],
-                                              ),
-                                            ),
-                                            const DataColumn(
-                                              label: Text(''),
-                                            ),
-                                          ],
-                                          rows: List<DataRow>.generate(
-                                              screenController.companydetails.length , (index) {
-                                            return DataRow(
-                                              cells: [
-                                                DataCell(
-                                                                            
-                                                    // showEditIcon: true,
-                                                    Text(screenController.companydetails[index].companyName)),
-                                                DataCell(GestureDetector(
-                                                  onTap: () {
-                                                    print('tapped');
-                                                    DialogWidgets
-                                                        .showDetailsDialog(
-                                                            context,
-                                                            DialogType.info);
+                                          ),
+                                          const DataColumn(
+                                            label: Text(''),
+                                          ),
+                                        ],
+                                        rows: List<DataRow>.generate(
+                                            screenController.companydetails
+                                                .length, (index) {
+                                          return DataRow(
+                                            cells: [
+                                              DataCell(
+
+                                                  // showEditIcon: true,
+                                                  Text(screenController
+                                                      .companydetails[index]
+                                                      .companyName)),
+                                              DataCell(GestureDetector(
+                                                onTap: () {
+                                                  print('tapped');
+                                                  DialogWidgets
+                                                      .showDetailsDialog(
+                                                          context,
+                                                          DialogType.info);
+                                                },
+                                                child: Text(screenController
+                                                    .companydetails[index].id),
+                                              )),
+                                              DataCell(Text(screenController
+                                                  .companydetails[index]
+                                                  .companyCode)),
+                                              DataCell(Text(screenController
+                                                      .companydetails[index]
+                                                      .status ??
+                                                  '')),
+                                              DataCell(Text('')),
+                                              DataCell(Text('')),
+                                              DataCell(TextButton(
+                                                  onPressed: () {
+                                                    // DialogWidgets
+                                                    //     .showEditDialog(
+                                                    //         context,
+                                                    //         DialogType.info,
+                                                    //        screenController,
+                                                    //         index);
                                                   },
-                                                  child: Text(screenController.companydetails[index].id),
-                                                )),
-                                                DataCell(Text(screenController.companydetails[index].companyCode)),
-                                                DataCell(Text(screenController.companydetails[index].status??'')),
-                                                DataCell(Text('')),
-                                                DataCell(Text('')),
-                                                DataCell(TextButton(
-                                                    onPressed: () {
-                                                      // DialogWidgets
-                                                      //     .showEditDialog(
-                                                      //         context,
-                                                      //         DialogType.info,
-                                                      //        screenController, 
-                                                      //         index);
-                                                    },
-                                                    child: const Text(
-                                                      'Edit',
-                                                      style: TextStyle(
-                                                          color: AppColors
-                                                              .blackColor,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )))
-                                              ],
-                                            );
-                                          }),
-                                        ),
+                                                  child: const Text(
+                                                    'Edit',
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .blackColor,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )))
+                                            ],
+                                          );
+                                        }),
                                       ),
                                     ),
                                   ),
-                                  Scrollbar(
-                                    thumbVisibility: true,
-                                    trackVisibility: true,
-                                   // interactive: true,
-                                    controller:
-                                        _dataTableHorizontalScrollController,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      controller: _dataTableHorizontalScrollController, 
-                                      child: SizedBox( 
-                                        width: dataTableWidth,
-                                        height: 17,
-                                      ),
-                                    ),
-                                  ), 
-                                ],
+                                ),
                               );
                             },
                           ),

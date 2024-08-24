@@ -146,7 +146,7 @@ class EmployementCategoryList extends StatelessWidget {
                                             DataCell(Text('${index + 1}')),
                                             DataCell(Text(empcategories.name)),
                                             DataCell(Text(
-                                                empcategories.status ?? '')),
+                                                empcategories.status??"" )),
                                             DataCell(TextButton(
                                                 onPressed: () {
                                                   showEditDialog(
@@ -274,7 +274,7 @@ class EmployementCategoryList extends StatelessWidget {
                                       value: 'InActive',
                                     ),
                                   ],
-                                  initialValue: empcategories.status,
+                                  initialValue: screenController.selectedStatus,
                                   onChanged: (value) =>
                                       screenController.selectedStatus = value,
                                   // onSaved: (value) => (_formData.email = value ?? ''),

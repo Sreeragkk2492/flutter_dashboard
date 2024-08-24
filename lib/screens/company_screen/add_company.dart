@@ -4,6 +4,7 @@ import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
+import 'package:flutter_dashboard/screens/company_screen/controller/company_controller.dart';
 import 'package:flutter_dashboard/screens/company_screen/widget/company_form_widget.dart';
 import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 class AddCompany extends StatelessWidget {
   AddCompany({super.key});
   final _formKey = GlobalKey<FormState>();
+  final screenController = Get.put(CompanyController());
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -116,25 +118,7 @@ class AddCompany extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
               buildSizedBoxH(kDefaultPadding),
               buildSizedBoxH(kDefaultPadding * 2),
-              CompanyFormWidget(
-                companyIdController: TextEditingController(),
-                companyCodeController: TextEditingController(),
-                companyNameController: TextEditingController(),
-                industryController: TextEditingController(),
-                statusController: TextEditingController(),
-                groupNameController: TextEditingController(),
-                legalNameController: TextEditingController(),
-                founderController: TextEditingController(),
-                emailController: TextEditingController(),
-                panController: TextEditingController(),
-                whatsappController: TextEditingController(),
-                phoneNumberController: TextEditingController(),
-                addressController: TextEditingController(),
-                landmarkController: TextEditingController(),
-                cityController: TextEditingController(),
-                stateController: TextEditingController(),
-                countryController: TextEditingController(),
-              ),
+              CompanyFormWidget(),
               buildSizedBoxH(kDefaultPadding * 3),
               buildSizedboxW(kDefaultPadding * 3),
               Row(
@@ -142,8 +126,8 @@ class AddCompany extends StatelessWidget {
                 children: [
                   DefaultAddButton(
                       buttonname: 'Add Company',
-                      onClick: () {
-                        // await screenController.addDepartment();
+                      onClick: () async {
+                        await screenController.addCompany();
                         Get.back();
                       }),
                 ],

@@ -5,6 +5,7 @@ import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
+import 'package:flutter_dashboard/screens/employee_screen/widget/company_dropdown_item.dart';
 import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -129,7 +130,7 @@ class AddWorkingShifts extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Obx(
-                              () => FormBuilderDropdown<String>(
+                              () => FormBuilderDropdown<CompanyDropdownItem>(
                                 // controller: widget.companyNameController,
                                 name: 'Company Name',
                                 decoration: const InputDecoration(
@@ -144,12 +145,12 @@ class AddWorkingShifts extends StatelessWidget {
                                 validator: FormBuilderValidators.required(),
                                 items: screenController.companydetails
                                     .map((company) => DropdownMenuItem(
-                                          value: company.id,
+                                          value: CompanyDropdownItem(id: company.id, code: company.companyCode),
                                           child: Text(company.companyName),
                                         ))
                                     .toList(),
                                 onChanged: (value) {
-                                  screenController.setSelectedCompany(value!);
+                                  screenController.setSelectedCompany(value!.id,value.code);
                                 },
                                 // onSaved: (value) => (_formData.firstname = value ?? ''),
                               ),

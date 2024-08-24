@@ -118,7 +118,7 @@ class DepartmentList extends StatelessWidget {
                                             // numeric: true,
                                             label: Row(
                                           children: [
-                                            Text('Category'),
+                                            Text('Industry'),
 
                                             //  IconButton(
                                             //      onPressed: () {},
@@ -163,7 +163,7 @@ class DepartmentList extends StatelessWidget {
                                           index: index,
                                           cells: [
                                             DataCell(Text('${index + 1}')),
-                                            const DataCell(Text('')),
+                                             DataCell(Text(department.categoryIndustry)),
                                             DataCell(Text(
                                                 department.departmentName)),
                                             DataCell(Text(
@@ -209,7 +209,7 @@ class DepartmentList extends StatelessWidget {
   }
 
    showEditDialog(BuildContext context, DialogType dialogType, int index,
-      Department department) {
+      DepartmentModel department) {
     final screenWidth = MediaQuery.of(context).size.width;
     TextEditingController nameController =
         TextEditingController(text: department.departmentName);
@@ -325,7 +325,7 @@ class DepartmentList extends StatelessWidget {
                               value: 'InActive',
                             ),
                           ],
-                           initialValue: department.status,
+                           initialValue: screenController.selectedStatus,
                             onChanged: (value) =>
                                 screenController.selectedStatus = value,
                           // onSaved: (value) => (_formData.email = value ?? ''),

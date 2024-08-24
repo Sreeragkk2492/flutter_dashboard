@@ -25,7 +25,7 @@ class User {
     dynamic designationId;
     String empCategoryId;
     String biometricId;
-    String reportingToId;
+    String? reportingToId;
 
     User({
         required this.userName,
@@ -44,7 +44,7 @@ class User {
         required this.designationId,
         required this.empCategoryId,
         required this.biometricId,
-        required this.reportingToId,
+        this.reportingToId,
     });
 
     factory User.fromJson(Map<String, dynamic> json) => User(

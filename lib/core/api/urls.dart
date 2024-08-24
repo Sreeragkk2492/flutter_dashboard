@@ -14,11 +14,14 @@ class ApiUrls {
   static const ADD_DEPARTMENT = "/department/add_department";
   static const GET_ALL_DEPARTMENT = "/department/get_departments";
   static const UPDATE_DEPARTMENT = "/department/update_department";
+   static const GET_ALL_DEPARTMENTBYCOMPANYID = "/designation/department_by_company_id/";
 
   ///designation
   static const ADD_DESIGNATION = "/designation/add_designation";
   static const GET_ALL_DESIGNATION = "/designation/get_designations";
   static const UPDATE_DESIGNATION = "/designation/update_designation";
+  
+ 
 
   ///employee category
   static const ADD_EMPLOYEE_CATEGORY =
@@ -34,16 +37,22 @@ class ApiUrls {
   static const UPDATE_USER = "/user/update_user";
 
   ///company
+
+  static const ADD_COMPANY = "/company/add_company";
   static const GET_ALL_COMPANY = "/company/get_company";
 
   ///prpayrollallowance
-  static const ADD_ALLOWANCE = "/payroll_allowance/create_allowance";
-  static const GET_ALL_ALLOWANCE = "/payroll_allowance/get_allowance";
+  static const ADD_ALLOWANCE = "/meta_payroll_allowance/create_allowance";
+  static const GET_ALL_ALLOWANCE = "/meta_payroll_allowance/get_allowance";
+  static const UPDATE_ALLOWANCE = "/meta_payroll_allowance/update_allowance";
+  
 
   ///prpayrolldeduction
-  
-   static const ADD_DEDUCTION = "/payroll_deduction/create_deduction";
-    static const GET_ALL_DEDUCTION = "/payroll_deduction/get_deduction";
+
+  static const ADD_DEDUCTION = "/meta_payroll_deduction/create_deduction";
+  static const GET_ALL_DEDUCTION = "/meta_payroll_deduction/get_deduction";
+ 
+   static const UPDATE_DEDUCTION = "/meta_payroll_deduction/update_deduction";
 
   ///usertype
   static const GET_ALL_USERTYPE = "/user_type/get_user_type";
@@ -60,11 +69,22 @@ class ApiUrls {
   static const UPDATE_INDUSTRY = "/company_types/update_company_type";
 
   ///payroll processing date
-   static const ADD_PROCESSING_DATE = "/payroll_processing_day/create";
-
-
-   ///prcompanypayrollallowance
-    static const GET_ALL_PRCOMPANYPAYROLL_ALLOWANCE = "/company_payroll_allowance/get_company_payroll_allowance";
+  static const ADD_PROCESSING_DATE = "/payroll_processing_day/create";
+   static const GET_ALL_PROCESSING_DATE = "/payroll_processing_day/";
    
   
+
+  ///prcompanypayrollallowance
+  
+   static const ADD_COMPANY_PAYROLL_ALLOWANCE = "/company_payroll_allowance/create_company_payroll_allowance";
+  static const GET_ALL_PRCOMPANYPAYROLL_ALLOWANCE =
+      "/company_payroll_allowance/get_company_payroll_allowance";
+
+  ///companymodule
+  static const GET_ALL_PRAPPLICATION_MODULE =
+      "/application_modules/get_application_module";
+ static const ADD_COMPANY_MODULE = "/company_modules/add_company_module";
+
+  static const GET_ALL_COMPANY_MODULE = "/company_modules/get_company_module";
+      
 }

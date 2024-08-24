@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_dashboard/core/api/networkManager.dart';
 import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
@@ -9,22 +10,65 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class CompanyPayrollAllowanceController extends GetxController {
-  var companypayrollallowance = <PrCompanyPayrollAllowance>[].obs;
+  var companypayrollallowance = CompanyPayrollAllowancesModel(
+    companyId: '',
+    allowance: [],
+    remarks: '',
+    status: '',
+    isActive: false,
+  ).obs;
+  var selectedCompanyId = ''.obs;
+   final selectedAllowances = <String>[].obs;
+  var allowanceName = ''.obs;
+  var remarks = ''.obs;
 
-
-    @override
+  @override
   void onInit() {
-    fetchCompanyPayrollAllowance(); 
+    fetchCompanyPayrollAllowance();
     super.onInit();
   }
 
-  fetchCompanyPayrollAllowance() async {
+   void toggleAllowance(String allowanceId) {
+    if (selectedAllowances.contains(allowanceId)) {
+      selectedAllowances.remove(allowanceId);
+    } else {
+      selectedAllowances.add(allowanceId);
+    }
+  }
+
+ addCompanyPayrollAllowance() async {
+   for (var allowance in selectedAllowances) {
+        final requestBody = {
+          "company_id": selectedCompanyId.value,
+          "payroll_allowance_id": allowance,
+          "allowance_name": allowanceName.value,
+          "remarks": remarks.value,
+          "status": "Active",  // You might want to make this configurable
+          "is_active": true
+        };
+    final result = await NetWorkManager.shared().request(
+        url: ApiUrls.BASE_URL + ApiUrls.ADD_COMPANY_PAYROLL_ALLOWANCE,
+        method: 'post',
+        isAuthRequired: true,
+        data: requestBody);
+
+    if (result.isLeft) {
+      awesomeOkDialog(message: result.left.message);
+    } else {
+      final message = result.right['message'];
+      // awesomeOkDialog(message: message);
+       await fetchCompanyPayrollAllowance();
+    }
+  }
+ }
+
+  
+  Future<void> fetchCompanyPayrollAllowance() async {
     try {
-      // final token = await StorageServices().read('token');
       final url = Uri.parse(
           ApiUrls.BASE_URL + ApiUrls.GET_ALL_PRCOMPANYPAYROLL_ALLOWANCE);
 
-      print("Fetching users from URL: $url");
+      print("Fetching company payroll allowances from URL: $url");
 
       final response = await http.get(url, headers: {
         "Accept": "application/json",
@@ -36,43 +80,24 @@ class CompanyPayrollAllowanceController extends GetxController {
       print("Response body: ${response.body}");
 
       if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body) as List;
-        companypayrollallowance.value = jsonData.map((jsonItem) {
-          if (jsonItem is Map<String, dynamic>) {
-            return PrCompanyPayrollAllowance.fromJson(jsonItem);
-          } else {
-            throw FormatException("Unexpected data format: $jsonItem");
-          }
-        }).toList();
+        // Parse the response into the model
+        final Map<String, dynamic> jsonData = json.decode(response.body);
+
+        // Now parse the Map into the model
+        final companyPayrollAllowance =
+            CompanyPayrollAllowancesModel.fromJson(jsonData);
+
+        // Update your observable with the entire model
+        companypayrollallowance.value = companyPayrollAllowance;
+
         print(
-            "Fetched ${companypayrollallowance.value.length} users successfully");
+            "Fetched ${companypayrollallowance.value.allowance.length} allowances successfully");
       } else {
         throw HttpException(
-            "Failed to fetch users. Status code: ${response.statusCode}");
+            "Failed to fetch company payroll allowances. Status code: ${response.statusCode}");
       }
-      //   var response = await NetWorkManager.shared().request(
-      //       url: ApiUrls.BASE_URL + ApiUrls.GET_ALL_ALLOWANCE,
-      //       params: {'token': token},
-      //       method: 'get',
-      //       isAuthRequired: true);
-      //  response.fold((error){
-      //   awesomeOkDialog(message: error.message,title: error.title);
-      //  }, (success){
-      //   var data = response.right;
-
-      //     allowance.value = (data as List).map((jsonItem) {
-      //       if (jsonItem is Map<String, dynamic>) {
-      //         return Allowance.fromJson(jsonItem);
-      //       } else {
-      //         throw Exception("Unexpected data format");
-      //       }
-      //     }).toList();
-
-      //     print("Fetched ${allowance.value.length} allowances successfully");
-      //   }
-      //  );
     } catch (e, stackTrace) {
-      print("Error fetching users: $e");
+      print("Error fetching company payroll allowances: $e");
       print("Stack trace: $stackTrace");
 
       // Show error dialog

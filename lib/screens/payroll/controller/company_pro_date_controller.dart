@@ -6,33 +6,30 @@ import 'package:flutter_dashboard/core/api/networkManager.dart';
 import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
-import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
-import 'package:flutter_dashboard/models/settings/allowance_model.dart';
+import 'package:flutter_dashboard/models/payroll/company_process_date_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-class AllowanceController extends GetxController {
-  var allowance = <Allowance>[].obs;
-  final allowanceNameController = TextEditingController();
+class CompanyProccesingDateController extends GetxController {
+  var companypayrollprocessingdate = <CompanyProcessingDate>[].obs;
+  final processingdayController = TextEditingController();
   final remarksController = TextEditingController();
   String? selectedStatus;
-
-  // var attendence = <Attendence>[].obs;
-
+  String? selectedCompany;
   @override
   void onInit() {
-    fetchAllowance();
+    fetchCompanyPayrollProcessingDate();
     super.onInit();
   }
 
-  addAllowance() async {
+  addProcessingDate() async {
     var response = await NetWorkManager.shared().request(
-        url: ApiUrls.BASE_URL + ApiUrls.ADD_ALLOWANCE,
+        url: ApiUrls.BASE_URL + ApiUrls.ADD_PROCESSING_DATE,
         method: 'post',
         isAuthRequired: true,
         data: {
-          "allowance_name": allowanceNameController.text,
-          "remarks": remarksController.text,
+          "company_id": selectedCompany,
+          "processing_day": processingdayController.text,
           "status": selectedStatus,
           "is_active": true
         });
@@ -41,8 +38,8 @@ class AllowanceController extends GetxController {
     } else {
       final message = response.right['message'];
       // awesomeOkDialog(message: message);
-      await fetchAllowance();
-      allowanceNameController.clear();
+      await fetchCompanyPayrollProcessingDate();
+      processingdayController.clear();
       remarksController.clear();
     }
     // response.fold((error){
@@ -53,17 +50,17 @@ class AllowanceController extends GetxController {
     // });
   }
 
-  fetchAllowance() async {
+  fetchCompanyPayrollProcessingDate() async {
     try {
       // final token = await StorageServices().read('token');
-      final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_ALLOWANCE);
+      final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_PROCESSING_DATE);
 
       print("Fetching users from URL: $url");
 
       final response = await http.get(url, headers: {
         "Accept": "application/json",
-        // "token":"$token",
-        // "Authorization": "Bearer $token",
+        "token": "$token",
+        "Authorization": "Bearer $token",
       });
 
       print("Response status code: ${response.statusCode}");
@@ -71,14 +68,15 @@ class AllowanceController extends GetxController {
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body) as List;
-        allowance.value = jsonData.map((jsonItem) {
+        companypayrollprocessingdate.value = jsonData.map((jsonItem) {
           if (jsonItem is Map<String, dynamic>) {
-            return Allowance.fromJson(jsonItem);
+            return CompanyProcessingDate.fromJson(jsonItem);
           } else {
             throw FormatException("Unexpected data format: $jsonItem");
           }
         }).toList();
-        print("Fetched ${allowance.value.length} users successfully");
+        print(
+            "Fetched ${companypayrollprocessingdate.value.length} processing date successfully");
       } else {
         throw HttpException(
             "Failed to fetch users. Status code: ${response.statusCode}");
@@ -109,28 +107,7 @@ class AllowanceController extends GetxController {
       print("Stack trace: $stackTrace");
 
       // Show error dialog
-      //  awesomeOkDialog(message: e.toString());
-    }
-  }
-
-  updateAllowance(Allowance allowance) async {
-    final result = await NetWorkManager.shared().request(
-        isAuthRequired: false,
-        method: 'put',
-        url: ApiUrls.BASE_URL + ApiUrls.UPDATE_ALLOWANCE,
-        params: {
-          "allowance_id": allowance.id
-        },
-        data: {
-          "allowance_name": allowance.allowanceName,
-          "status": allowance.status,
-          "is_active": true
-        });
-
-    if (result.isLeft) {
-      awesomeOkDialog(message: result.left.message);
-    } else {
-      awesomeOkDialog(message: result.right['message']);
+     // awesomeOkDialog(message: e.toString());
     }
   }
 }

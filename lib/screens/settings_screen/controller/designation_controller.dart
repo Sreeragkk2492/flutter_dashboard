@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/api/networkManager.dart';
 import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
+import 'package:flutter_dashboard/models/settings/department_company_id.dart';
 import 'package:flutter_dashboard/models/settings/designation_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -13,13 +14,15 @@ class DesignationController extends GetxController {
   final remarksController = TextEditingController();
  // final statusController = TextEditingController();
   String? selectedStatus;
-  String? selectedCategory;
-  String? selectedDepartment;
+  var selectedCategory = ''.obs;
+  var selectedDepartment = ''.obs;
   var designations = <Designation>[].obs;
+  var departmentsbycompanyid = <DepartmentByCompanyId>[].obs;
 
   @override
   void onInit() {
     fetchDesignaation();
+    fetchDepartmentByCompanyId();
     super.onInit();
   }
 
@@ -30,6 +33,8 @@ class DesignationController extends GetxController {
         isAuthRequired: false,
         data: {
           "designation": designationController.text,
+          "department_id": selectedDepartment.value,
+          "company_type_id": selectedCategory.value,
           "remarks": remarksController.text,
           "status": selectedStatus,
           "isactive": true
@@ -42,6 +47,25 @@ class DesignationController extends GetxController {
       await fetchDesignaation();
     }
   }
+
+  fetchDepartmentByCompanyId() async {
+  try {
+    var response = await http.get(
+      Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_DEPARTMENTBYCOMPANYID)
+          .replace(queryParameters: {"company_type_id": selectedCategory.value})
+    );
+    print("API Response: ${response.body}"); // Add this line
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body) as List;
+      departmentsbycompanyid.value = jsonData
+          .map((json) => DepartmentByCompanyId.fromJson(json))
+          .toList();
+      print("Parsed Departments: ${departmentsbycompanyid.length}"); // Add this line
+    }
+  } catch (e) {
+    print("Error: $e");
+  }
+}
 
   fetchDesignaation() async {
     try {
@@ -59,6 +83,7 @@ class DesignationController extends GetxController {
       print("Error");
     }
   }
+   
 
   updateDesignation(Designation designation) async {
     final result = await NetWorkManager.shared().request(

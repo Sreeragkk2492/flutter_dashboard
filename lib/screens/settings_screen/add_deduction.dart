@@ -116,7 +116,7 @@ class AddDeduction extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Add Allowance Type',
+              Text('Add Deduction Type',
                   style: GoogleFonts.montserrat(
                       fontSize: kDefaultPadding + kTextPadding,
                       fontWeight: FontWeight.bold)),
