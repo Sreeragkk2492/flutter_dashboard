@@ -162,9 +162,9 @@ class CompanyPayrollDate extends StatelessWidget {
                                             cells: [
                                               DataCell(Text('#${index + 1}')),
                                               DataCell(Text(
-                                                  processingdate.companyId)),
+                                                  processingdate.companyName)),
                                               DataCell(Text(processingdate
-                                                  .processingDay)),
+                                                  .processingDay.toString())),
                                               DataCell(
                                                   Text(processingdate.status)),
                                               DataCell(TextButton(

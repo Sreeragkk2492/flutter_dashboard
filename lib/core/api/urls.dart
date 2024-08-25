@@ -70,15 +70,22 @@ class ApiUrls {
 
   ///payroll processing date
   static const ADD_PROCESSING_DATE = "/payroll_processing_day/create";
-   static const GET_ALL_PROCESSING_DATE = "/payroll_processing_day/";
+   static const GET_ALL_PROCESSING_DATE = "/payroll_processing_day/get_payroll_processing_dates";
    
   
 
   ///prcompanypayrollallowance
   
-   static const ADD_COMPANY_PAYROLL_ALLOWANCE = "/company_payroll_allowance/create_company_payroll_allowance";
+   static const ADD_COMPANY_PAYROLL_ALLOWANCE = "/company_payroll_allowance/select_allowance_for_company";
   static const GET_ALL_PRCOMPANYPAYROLL_ALLOWANCE =
       "/company_payroll_allowance/get_company_payroll_allowance";
+
+  ///companydeduction
+    
+   static const ADD_COMPANY_PAYROLL_DEDUCTION = "/company_payroll_deduction/create_payroll_deduction"; 
+    static const GET_ALL_PRCOMPANYPAYROLL_DEDUCTION =
+      "/company_payroll_deduction/get_payroll_deduction";
+
 
   ///companymodule
   static const GET_ALL_PRAPPLICATION_MODULE =

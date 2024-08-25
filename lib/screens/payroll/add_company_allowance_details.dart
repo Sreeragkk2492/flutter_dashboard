@@ -150,7 +150,7 @@ class AddCompanyAllowanceDetails extends StatelessWidget {
                                       ))
                                   .toList(),
                               onChanged: (value) {
-                                screenController.selectedCompanyId.value=value??'';
+                                screenController.onCompanySelected(value);
                               },
                               // onSaved: (value) => (_formData.firstname = value ?? ''),
                             ),
@@ -159,17 +159,35 @@ class AddCompanyAllowanceDetails extends StatelessWidget {
                       ],
                     ),
                     buildSizedBoxH(kDefaultPadding * 3),
-                    Obx(() => Column(
-                    children: screenController.companypayrollallowance.value.allowance
-                        .map((allowance) => CheckboxListTile(
-                              title: Text(allowance.allowance),
-                              value: screenController.selectedAllowances.contains(allowance.allowanceId),
-                              onChanged: (bool? value) {
-                                screenController.toggleAllowance(allowance.allowanceId);
-                              },
-                            ))
-                        .toList(),
-                  )),
+                    Obx(() {
+                      // Check if a company is selected
+                      if (screenController.isLoading.value) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (!screenController.isCompanySelected.value) {
+                        return Center(
+                            child: Text(
+                                "Please select a company to view allowances."));
+                      } else if (screenController.companyAllowances.isEmpty) {
+                        return Center(
+                            child: Text(
+                                "No allowances available for the selected company."));
+                      } else {
+                        // Display the list of allowances as checkboxes
+                        return Column(
+                          children: screenController.companyAllowances
+                              .map((allowance) => CheckboxListTile(
+                                    title: Text(allowance.allowance),
+                                    value: allowance.isSelected
+                                       ,
+                                    onChanged: (bool? value) {
+                                      screenController.toggleAllowance(
+                                          allowance.allowanceId);
+                                    },
+                                  ))
+                              .toList(),
+                        );
+                      }
+                    }),
                     buildSizedBoxH(kDefaultPadding * 3),
                     // Row(
                     //   children: [
@@ -186,7 +204,8 @@ class AddCompanyAllowanceDetails extends StatelessWidget {
                         DefaultAddButton(
                             buttonname: 'Add Company Allowance',
                             onClick: () async {
-                              await screenController.addCompanyPayrollAllowance();
+                              await screenController
+                                  .addCompanyPayrollAllowance();
                               Get.back();
                             }),
                       ],
