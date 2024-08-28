@@ -31,10 +31,15 @@ class ApiUrls {
   static const UPDATE_EMPLOYEE_CATEGORY =
       "/employee_category/update_employee_category";
 
-  ///user
+  ///employee
   static const ADD_USER = "/user/add_user";
   static const GET_ALL_USER = "/user/get_users";
   static const UPDATE_USER = "/user/update_user";
+  static const GET_EMPLOYEE_MENU = "/user_menu_permission/get_all_menus";
+
+   static const GET_ALL_USER_BY_COMPANY_ID = "/user/get_users_by_company_id";
+
+  static const ADD_EMPLOYEE_MENU = "/user_menu_permission/add_user_menu_permissions";
 
   ///company
 
@@ -82,7 +87,7 @@ class ApiUrls {
 
   ///companydeduction
     
-   static const ADD_COMPANY_PAYROLL_DEDUCTION = "/company_payroll_deduction/create_payroll_deduction"; 
+   static const ADD_COMPANY_PAYROLL_DEDUCTION = "/company_payroll_deduction/select_deduction_for_company"; 
     static const GET_ALL_PRCOMPANYPAYROLL_DEDUCTION =
       "/company_payroll_deduction/get_payroll_deduction";
 
@@ -92,6 +97,9 @@ class ApiUrls {
       "/application_modules/get_application_module";
  static const ADD_COMPANY_MODULE = "/company_modules/add_company_module";
 
-  static const GET_ALL_COMPANY_MODULE = "/company_modules/get_company_module";
+  static const GET_ALL_COMPANY_MODULE = "/company_modules/get_company_module_for_admins";
+///company leave type
+ static const GET_ALL_COMPANY_LEAVE_TYPE = "/leave-type/get_leave_type_for_superadmin";
       
+      static const ADD_COMPANY_LEAVETYPE = "/leave-type/create_leave_type";
 }

@@ -14,7 +14,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class EmployeeController extends GetxController {
-  RxList<User> users = <User>[].obs;
+  RxList<UserModel> users = <UserModel>[].obs;
   var companydetails = <Company>[].obs;
   var usertype = <UserType>[].obs;
   var selectedCompanyId = ''.obs;
@@ -136,7 +136,7 @@ class EmployeeController extends GetxController {
         final jsonData = json.decode(response.body) as List;
         users.value = jsonData.map((jsonItem) {
           if (jsonItem is Map<String, dynamic>) {
-            return User.fromJson(jsonItem);
+            return UserModel.fromJson(jsonItem);
           } else {
             throw FormatException("Unexpected data format: $jsonItem");
           }

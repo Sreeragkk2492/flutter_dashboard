@@ -159,7 +159,7 @@ class EmployeeListAll extends StatelessWidget {
                                                             DialogType.info);
                                                   },
                                                   child: Text(user.name))),
-                                              DataCell(Text(user.employeeId)),
+                                              DataCell(Text(user.employeeId.toString())),
                                               DataCell(Text('')),
                                               DataCell(Text(
                                                   user.phoneNumber.toString())),

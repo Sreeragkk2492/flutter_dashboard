@@ -25,25 +25,54 @@ class CompanyPayrollAllowanceController extends GetxController {
 
   var isCompanySelected = false.obs;
   var isLoading = false.obs;
+  var selectedCompanycode = ''.obs;
+   var hasExplicitlySelectedCompany = false.obs;
 
-  void onCompanySelected(String? companyId) {
-    if (companyId != null && companyId.isNotEmpty) {
+    @override
+  void onInit() {
+    super.onInit();
+    resetSelection();
+  }
+
+
+  void resetSelection() {
+    isCompanySelected.value = false;
+    hasExplicitlySelectedCompany.value = false;
+    companyAllowances.clear();
+    selectedAllowances.clear();
+    selectedCompanyId.value = '';
+    selectedCompanycode.value = '';
+  }
+
+  void onCompanySelected(String? companyId, String? companycode) {
+    if (companyId != null &&
+        companyId.isNotEmpty &&
+        companycode != null &&
+        companycode.isNotEmpty) {
       selectedCompanyId.value = companyId;
+      selectedCompanycode.value = companycode;
       isCompanySelected.value = true;
+       hasExplicitlySelectedCompany.value = true;
       fetchCompanyPayrollAllowance();
     } else {
-      isCompanySelected.value = false;
-      companyAllowances.clear();
-      selectedAllowances.clear();
+     resetSelection();
     }
   }
+
+  //  setSelectedCompany(String companyId,String companycode) {
+  //   selectedCompanyId.value = companyId;
+  //   selectedCompanycode.value=companycode;
+  // }
 
   Future<void> fetchCompanyPayrollAllowance() async {
     isLoading.value = true;
     try {
       final url = Uri.parse(
               ApiUrls.BASE_URL + ApiUrls.GET_ALL_PRCOMPANYPAYROLL_ALLOWANCE)
-          .replace(queryParameters: {"company_id": selectedCompanyId.value});
+          .replace(queryParameters: {
+        "company_id": selectedCompanyId.value,
+        "company_code": selectedCompanycode.value
+      });
 
       print("Fetching company payroll allowances from URL: $url");
 
@@ -121,6 +150,9 @@ class CompanyPayrollAllowanceController extends GetxController {
         url: ApiUrls.BASE_URL + ApiUrls.ADD_COMPANY_PAYROLL_ALLOWANCE,
         method: 'post',
         isAuthRequired: true,
+        params: {
+          "company_code":selectedCompanycode.value
+        },
         data: requestBody);
 
     if (result.isLeft) {

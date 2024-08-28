@@ -1,5 +1,11 @@
+import 'package:flutter_dashboard/core/middlewares/employee_reset.dart';
+import 'package:flutter_dashboard/core/middlewares/resetAllowance.dart';
+import 'package:flutter_dashboard/core/middlewares/reset_company_leave_type.dart';
+import 'package:flutter_dashboard/core/middlewares/reset_deduction.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/company_screen/add_company.dart';
+import 'package:flutter_dashboard/screens/company_screen/add_company_holiday.dart';
+import 'package:flutter_dashboard/screens/company_screen/add_company_leavetype.dart';
 import 'package:flutter_dashboard/screens/company_screen/add_company_modules.dart';
 import 'package:flutter_dashboard/screens/company_screen/add_working_shifts.dart';
 import 'package:flutter_dashboard/screens/company_screen/comapny_menu.dart';
@@ -11,6 +17,7 @@ import 'package:flutter_dashboard/screens/company_screen/company_working_shift.d
 import 'package:flutter_dashboard/screens/company_screen/list_all_screen.dart';
 import 'package:flutter_dashboard/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:flutter_dashboard/screens/employee_screen/add_employee.dart';
+import 'package:flutter_dashboard/screens/employee_screen/add_employee_menu.dart';
 import 'package:flutter_dashboard/screens/employee_screen/employee_list_all.dart';
 import 'package:flutter_dashboard/screens/employee_screen/employee_menu.dart';
 import 'package:flutter_dashboard/screens/login_screen/login_screen.dart';
@@ -84,46 +91,65 @@ class GetPages {
       page: () => ListAll(),
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
+      middlewares: [ResetCompanyLeaveType()]
     ),
     GetPage(
       name: Routes.COMPANYLEAVETYPE,
       page: () => CompanyLeaveType(),
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
+      middlewares: [ResetCompanyLeaveType()]
     ),
     GetPage(
       name: Routes.CompanyMenuList,
       page: () => ComapnyMenuList(),
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
+      middlewares: [ResetCompanyLeaveType()]
     ),
-      GetPage(
+    GetPage(
       name: Routes.CompanyWorkingShift,
       page: () => CompanyWorkingShift(),
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
+      middlewares: [ResetCompanyLeaveType()]
     ),
-      GetPage(
+    GetPage(
       name: Routes.CompanyGroupList,
       page: () => CompanyGroupList(),
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
+      middlewares: [ResetCompanyLeaveType()]
     ),
-     GetPage(
+    GetPage(
       name: Routes.ADDCOMPANYMODULELIST,
       page: () => AddCompanyModules(),
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
     ),
-     GetPage(
+    GetPage(
       name: Routes.AddWorkingShifts,
       page: () => AddWorkingShifts(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+     GetPage(
+      name: Routes.AddCompanyLeavetype,
+      page: () => AddCompanyLeavetype(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+      middlewares: [ResetCompanyLeaveType()]
+    ),
+     GetPage(
+      name: Routes.AddCompanyHoliday,
+      page: () => AddCompanyHoliday(),
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.EmployeeListAll,
       page: () => EmployeeListAll(),
+      middlewares: [ResetEmployeeMenuMiddleware()],
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
     ),
@@ -134,6 +160,14 @@ class GetPages {
     GetPage(
       name: Routes.EmployeeMenu,
       page: () => EmployeeMenu(),
+      middlewares: [ResetEmployeeMenuMiddleware()],
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: Routes.AddEmployeeMenu,
+      page: () => AddEmployeeMenu(),
+      middlewares: [ResetEmployeeMenuMiddleware()],
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
     ),
@@ -157,17 +191,20 @@ class GetPages {
       name: Routes.CompanyAllowanceDetails,
       page: () => CompanyAllowanceDetails(),
       //  binding: HomeBinding(),
+      middlewares: [ResetAllowanceMiddleware(), ResetDeductionMiddleware()],
       transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.CompanyDeductionDetails,
       page: () => CompanyDeductionDetails(),
+      middlewares: [ResetDeductionMiddleware(), ResetAllowanceMiddleware()],
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.CompanyPayrollDate,
       page: () => CompanyPayrollDate(),
+
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
     ),

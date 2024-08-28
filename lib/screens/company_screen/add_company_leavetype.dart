@@ -1,31 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_dashboard/core/animations/entrance_fader.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
+import 'package:flutter_dashboard/models/company_models.dart';
+import 'package:flutter_dashboard/screens/company_screen/controller/company_leavetype_controller.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
-import 'package:flutter_dashboard/screens/payroll/controller/company_payroll_deduction_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../models/company_models.dart';
+class AddCompanyLeavetype extends StatelessWidget {
+   AddCompanyLeavetype({super.key});
 
-class AddCompanyDeductionDetails extends StatelessWidget {
-  AddCompanyDeductionDetails({super.key});
+  final _formKey = GlobalKey<FormState>();
 
-  final employeeController = Get.put(EmployeeController());
-  final screenController = Get.put(CompanyPayrollDeductionController());
+  final screenController=Get.put(CompanyLeavetypeController());
+   final employeeController = Get.put(EmployeeController());
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
+     Size screenSize = MediaQuery.of(context).size;
     return PortalMasterLayout(
-        body: ListView(
+        body: EntranceFader(
+            child: ListView(
       children: [
-        Column(
+         Column(
           children: [
             Stack(
               alignment: Alignment.bottomCenter,
@@ -60,7 +64,7 @@ class AddCompanyDeductionDetails extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Add Company Deduction',
+                            Text('Add Company Leave Type',
                                 style: TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.bold)),
@@ -81,7 +85,7 @@ class AddCompanyDeductionDetails extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Flexible(flex: 4, child: addCompanydeduction()),
+                        Flexible(flex: 4, child: addCompanyLeaveType()),
                         buildSizedboxW(kDefaultPadding),
                       ],
                     ),
@@ -92,7 +96,7 @@ class AddCompanyDeductionDetails extends StatelessWidget {
                         vertical: kDefaultPadding + kTextPadding),
                     child: Column(
                       children: [
-                        addCompanydeduction(),
+                        addCompanyLeaveType(),
                         buildSizedBoxH(kDefaultPadding),
                       ],
                     ),
@@ -100,10 +104,10 @@ class AddCompanyDeductionDetails extends StatelessWidget {
           ],
         ),
       ],
-    ));
+    )));
   }
 
-  Widget addCompanydeduction() {
+   Widget addCompanyLeaveType() {
     return Container(
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
@@ -117,13 +121,13 @@ class AddCompanyDeductionDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Add Company Deduction',
+              Text('Add Company Leave Type',
                   style: GoogleFonts.montserrat(
                       fontSize: kDefaultPadding + kTextPadding,
                       fontWeight: FontWeight.bold)),
               buildSizedBoxH(kDefaultPadding * 2),
               FormBuilder(
-                //  key: _formKey,
+                key: _formKey,
                 autovalidateMode: AutovalidateMode.disabled,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,81 +136,91 @@ class AddCompanyDeductionDetails extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Obx(
-                            () => FormBuilderDropdown(
-                              // controller: widget.companyNameController,
-                              name: 'Company Name',
-                              decoration: const InputDecoration(
-                                labelText: 'Company Name',
-                                hintText: 'Company Name',
-                                border: OutlineInputBorder(),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                              ),
-                              // enableSuggestions: false,
-                              // keyboardType: TextInputType.name,
-                              validator: FormBuilderValidators.required(),
-                              items: employeeController.companydetails
-                                  .map((company) => DropdownMenuItem(
-                                        value: Company(
-                                            id: company.id,
-                                            companyName: company.companyName,
-                                            companyCode: company.companyCode,
-                                            databaseName: company.databaseName,
-                                            companyTypeId:
-                                                company.companyTypeId,
-                                            remarks: company.remarks,
-                                            status: company.status,
-                                            isActive: company.isActive,
-                                            companytype: company.companytype),
-                                        child: Text(company.companyName),
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                screenController.onCompanySelected(
-                                    value!.id, value.companyCode);
-                              },
-                              // onSaved: (value) => (_formData.firstname = value ?? ''),
-                            ),
+                            () =>FormBuilderDropdown<Company>(
+              name: 'Company',
+              decoration: const InputDecoration(
+                labelText: 'Company',
+                hintText: 'Select Company',
+                border: OutlineInputBorder(),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+              validator: FormBuilderValidators.required(),
+              items: employeeController.companydetails
+                  .map((company) => DropdownMenuItem(
+                        value: Company(
+                            id: company.id,
+                            companyName: company.companyName,
+                            companyCode: company.companyCode,
+                            databaseName: company.databaseName,
+                            companyTypeId: company.companyTypeId,
+                            remarks: company.remarks,
+                            status: company.status,
+                            isActive: company.isActive,
+                            companytype: company.companytype),
+                        child: Text(company.companyName),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                screenController.onCompanySelected(value!.id);
+              },
+            ),
                           ),
                         ),
                       ],
                     ),
                     buildSizedBoxH(kDefaultPadding * 3),
-                    Obx(() {
-                      if (screenController.isLoading.value) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (!screenController.isCompanySelected.value) {
-                        return Center(
-                            child: Text(
-                                "Please select a company to view deduction."));
-                      } else if (screenController.companyDeduction.isEmpty) {
-                        return Center(
-                            child: Text(
-                                "No deduction available for the selected company."));
-                      }
-                      return GridView.count(
-                        crossAxisCount: 3,
-                        childAspectRatio: 10,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        children: screenController.companyDeduction
-                            .map((deduction) => CheckboxListTile(
-                                  title: Text(deduction.deduction),
-                                  value: deduction.isSelected,
-                                  onChanged: (bool? value) {
-                                    screenController
-                                        .toggleDeduction(deduction.deductionId);
-                                  },
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                ))
-                            .toList(),
-                      );
-                    }),
+                   
+                       Obx(()=>
+                          Column(
+                          children: [
+                              ...screenController.leaveTypeControllers.asMap().entries.map((entry) {
+                            int index = entry.key;
+                           
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: kDefaultPadding),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: 
+                                     FormBuilderTextField(
+                                        name: 'Leave Type',
+                                       controller: entry.value,
+                                        decoration: InputDecoration(
+                                          labelText: 'Leave Type',
+                                          border: OutlineInputBorder(),
+                                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                                        ),
+                                        validator: FormBuilderValidators.required(),
+                                      ),
+                                    
+                                  ),
+                                  SizedBox(width: kDefaultPadding),
+                                  if (index == screenController.leaveTypeControllers.length - 1)
+                                    ElevatedButton(
+                                      onPressed: () {
+                                         screenController.addLeaveType();
+                                      },
+                                       
+                                      child: Text('Add New'),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppColors.defaultColor,
+                                        foregroundColor: AppColors.whiteColor,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                            buildSizedboxW(kDefaultPadding),
+                            
+                          ],
+                                               ),
+                       ),
+                    
                     buildSizedBoxH(kDefaultPadding * 3),
                     // Row(
                     //   children: [
-                    //     Flexible(
+                    //     Flexible( 
                     //       child:
                     //     ),
                     //     buildSizedboxW(kDefaultPadding),
@@ -217,10 +231,9 @@ class AddCompanyDeductionDetails extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         DefaultAddButton(
-                            buttonname: 'Add Company Deduction',
+                            buttonname: 'Add Company Leave Type',
                             onClick: () async {
-                              await screenController
-                                  .addCompanyPayrollDeduction();
+                              await screenController.addCompanyLeaveTypes();
                               Get.back();
                             }),
                       ],

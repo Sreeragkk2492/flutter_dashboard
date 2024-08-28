@@ -11,6 +11,8 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../models/company_models.dart';
+
 class AddCompanyAllowanceDetails extends StatelessWidget {
   AddCompanyAllowanceDetails({super.key});
 
@@ -145,12 +147,23 @@ class AddCompanyAllowanceDetails extends StatelessWidget {
                               validator: FormBuilderValidators.required(),
                               items: employeeController.companydetails
                                   .map((company) => DropdownMenuItem(
-                                        value: company.id,
+                                        value: Company(
+                                            id: company.id,
+                                            companyName: company.companyName,
+                                            companyCode: company.companyCode,
+                                            databaseName: company.databaseName,
+                                            companyTypeId:
+                                                company.companyTypeId,
+                                            remarks: company.remarks,
+                                            status: company.status,
+                                            isActive: company.isActive,
+                                            companytype: company.companytype),
                                         child: Text(company.companyName),
                                       ))
                                   .toList(),
                               onChanged: (value) {
-                                screenController.onCompanySelected(value);
+                                screenController.onCompanySelected(
+                                    value!.id, value.companyCode);
                               },
                               // onSaved: (value) => (_formData.firstname = value ?? ''),
                             ),
@@ -173,16 +186,21 @@ class AddCompanyAllowanceDetails extends StatelessWidget {
                                 "No allowances available for the selected company."));
                       } else {
                         // Display the list of allowances as checkboxes
-                        return Column(
+                        return GridView.count(
+                          crossAxisCount: 3,
+                          childAspectRatio: 10,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
                           children: screenController.companyAllowances
                               .map((allowance) => CheckboxListTile(
                                     title: Text(allowance.allowance),
-                                    value: allowance.isSelected
-                                       ,
+                                    value: allowance.isSelected,
                                     onChanged: (bool? value) {
                                       screenController.toggleAllowance(
                                           allowance.allowanceId);
                                     },
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
                                   ))
                               .toList(),
                         );

@@ -5,6 +5,7 @@ import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/dialog_widgets.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
+import 'package:flutter_dashboard/models/company_models.dart';
 import 'package:flutter_dashboard/screens/company_screen/controller/company_controller.dart';
 import 'package:flutter_dashboard/screens/company_screen/controller/company_module_controller.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
@@ -17,6 +18,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AddCompanyModules extends StatelessWidget {
   AddCompanyModules({super.key});
+  final employeeController = Get.put(EmployeeController());
   final screenController = Get.put(CompanyModuleController());
 
   final _formKey = GlobalKey<FormState>();
@@ -134,7 +136,7 @@ class AddCompanyModules extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Obx(
-                            () => FormBuilderDropdown(
+                            () => FormBuilderDropdown<Company>(
                               // controller: widget.companyNameController,
                               name: 'Company Name',
                               decoration: const InputDecoration(
@@ -147,14 +149,24 @@ class AddCompanyModules extends StatelessWidget {
                               // enableSuggestions: false,
                               // keyboardType: TextInputType.name,
                               validator: FormBuilderValidators.required(),
-                              items: screenController.companydetails
+                              items: employeeController.companydetails
                                   .map((company) => DropdownMenuItem(
-                                        value: company.id,
+                                        value: Company(
+                                            id: company.id,
+                                            companyName: company.companyName,
+                                            companyCode: company.companyCode,
+                                            databaseName: company.databaseName,
+                                            companyTypeId:
+                                                company.companyTypeId,
+                                            remarks: company.remarks,
+                                            status: company.status,
+                                            isActive: company.isActive,
+                                            companytype: company.companytype),
                                         child: Text(company.companyName),
                                       ))
                                   .toList(),
                               onChanged: (value) {
-                                screenController.setSelectedCompany(value);
+                                screenController.onCompanySelected(value!.id);
                               },
                               // onSaved: (value) => (_formData.firstname = value ?? ''),
                             ),
@@ -163,27 +175,38 @@ class AddCompanyModules extends StatelessWidget {
                       ],
                     ),
                     buildSizedBoxH(kDefaultPadding * 3),
-                    Obx(
-                      () => Column(
-                        children: screenController.applicationmodules
-                            .map(
-                              (modules) => RadioListTile<String>(
-                                groupValue:
-                                    screenController.selectedmodule.value,
-                                title: Text(
-                                  modules.moduleName,
-                                  style: TextStyle(fontSize: 17),
-                                ),
-                                onChanged: (value) {
-                                  screenController.selectedmodule.value =
-                                      value!;
-                                },
-                                value: modules.id,
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    ),
+                    Obx(() {
+                      if (screenController.isLoading.value) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (!screenController.isCompanySelected.value) {
+                        return Center(
+                            child: Text(
+                                "Please select a company to view allowances."));
+                      } else if (screenController.companyModules.isEmpty) {
+                        return Center(
+                            child: Text(
+                                "No allowances available for the selected company."));
+                      } else {
+                        return GridView.count(
+                          crossAxisCount: 3,
+                          childAspectRatio: 10,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          children: screenController.companyModules
+                              .map((modules) => CheckboxListTile(
+                                    title: Text(modules.moduleName),
+                                    value: modules.isSelected,
+                                    onChanged: (bool? value) {
+                                      screenController
+                                          .toggleAllowance(modules.moduleId);
+                                    },
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                  ))
+                              .toList(),
+                        );
+                      }
+                    }),
                     buildSizedBoxH(kDefaultPadding * 3),
                     // Row(
                     //   children: [

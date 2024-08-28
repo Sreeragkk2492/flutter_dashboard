@@ -16,6 +16,8 @@ class Routes {
   static const String ADDCOMPANY = "/addcompany";
   static const String ADDCOMPANYMODULELIST = "/addcompanymodulelist";
    static const String AddWorkingShifts= "/addworkingshifts";
+  static const String AddCompanyLeavetype= "/addcompanyleavetype";
+  static const String AddCompanyHoliday= "/addcompanyholiday";
    static const String CompanyWorkingShift = "/companyworkingshift";
     static const String CompanyGroupList = "/companygrouplist";
 
@@ -24,6 +26,7 @@ class Routes {
   static const String EmployeeListAll = "/employeelistall";
   static const String EmployeeMenu = "/employeemenu";
   static const String AddEmployee = "/addemployee";
+   static const String AddEmployeeMenu = "/addemployeemenu";
 
 
  //payroll

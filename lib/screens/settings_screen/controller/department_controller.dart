@@ -69,33 +69,7 @@ class SettingsController extends GetxController {
     } catch (e) {
       print("Error$e");
     }
-    //   try {
-    //   final result = await NetWorkManager.shared().request(
-    //     url: ApiUrls.BASE_URL + ApiUrls.GET_ALL_DEPARTMENT,
-    //     isAuthRequired: false,
-    //     method: 'get'
-    //   );
-    //   if (result.isLeft) {
-    //     print("Error fetching departments: ${result.left.message}");
-    //     awesomeOkDialog(message: result.left.message);
-    //   } else {
-    //     print("Raw API response: ${result.right}");
-    //     print("Type of result.right: ${result.right.runtimeType}");
-    //    if (result.right is String) {
-    //       var data = json.decode(result.right as String) as List;
-    //       departments.value = data.map((item) => Department.fromJson(item as Map<String, dynamic>)).toList();
-    //     } else if (result.right is List) {
-    //       departments.value = (result.right as List).map((item) => Department.fromJson(item as Map<String, dynamic>)).toList();
-    //     } else {
-    //       print("Unexpected type for result.right");
-    //     }
-
-    //     print("Parsed departments: ${departments.value}");
-    //   }
-    // } catch(e, stackTrace) {
-    //   print("Exception while fetching departments: $e");
-    //   print("Stack trace: $stackTrace");
-    // }
+   
   }
 
   fetchDepartmentByCompanyId() async {

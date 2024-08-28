@@ -277,7 +277,7 @@ class DialogWidgets {
   // }
 
   static void showEmpEditDialog(
-      BuildContext context, DialogType dialogType, User user) {
+      BuildContext context, DialogType dialogType, UserModel user) {
     final screenWidth = MediaQuery.of(context).size.width;
     final dialogWidth = screenWidth * 0.8;
     final dialog = AwesomeDialog(
