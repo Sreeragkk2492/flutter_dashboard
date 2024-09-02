@@ -29,7 +29,7 @@ class ErrorObject {
     // Note: http package doesn't provide status codes directly
     // You might need to parse the exception message or use a custom approach
     // to determine the status code
-    
+
     if (exception.message.contains('404')) {
       return NotFoundException();
     } else if (exception.message.contains('500')) {
@@ -77,12 +77,14 @@ class ErrorObject {
           message: 'The requested resource was not found (404).',
         );
       case http.ClientException:
-       final clientException = exception as http.ClientException;
-  print('ClientException details: ${clientException.message}, URI: ${clientException.uri}');
-  return ErrorObject(
-    title: 'Error Code: HTTP_ERROR',
-    message: 'Network request failed: ${clientException.message}. URI: ${clientException.uri}',
-  );
+        final clientException = exception as http.ClientException;
+        print(
+            'ClientException details: ${clientException.message}, URI: ${clientException.uri}');
+        return ErrorObject(
+          title: 'Error Code: HTTP_ERROR',
+          message:
+              'Network request failed: ${clientException.message}. URI: ${clientException.uri}',
+        );
       default:
         if (exception is ErrorObject) return exception;
         return const ErrorObject(

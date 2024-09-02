@@ -11,7 +11,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../models/company_models.dart';
+import '../../models/company_models/company_models.dart';
 
 class AddCompanyDeductionDetails extends StatelessWidget {
   AddCompanyDeductionDetails({super.key});

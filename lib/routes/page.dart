@@ -1,11 +1,15 @@
 import 'package:flutter_dashboard/core/middlewares/employee_reset.dart';
 import 'package:flutter_dashboard/core/middlewares/resetAllowance.dart';
+import 'package:flutter_dashboard/core/middlewares/reset_company_holiday.dart';
 import 'package:flutter_dashboard/core/middlewares/reset_company_leave_type.dart';
+import 'package:flutter_dashboard/core/middlewares/reset_company_menu.dart';
+import 'package:flutter_dashboard/core/middlewares/reset_company_modules.dart';
 import 'package:flutter_dashboard/core/middlewares/reset_deduction.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/company_screen/add_company.dart';
 import 'package:flutter_dashboard/screens/company_screen/add_company_holiday.dart';
 import 'package:flutter_dashboard/screens/company_screen/add_company_leavetype.dart';
+import 'package:flutter_dashboard/screens/company_screen/add_company_menu.dart';
 import 'package:flutter_dashboard/screens/company_screen/add_company_modules.dart';
 import 'package:flutter_dashboard/screens/company_screen/add_working_shifts.dart';
 import 'package:flutter_dashboard/screens/company_screen/comapny_menu.dart';
@@ -87,63 +91,90 @@ class GetPages {
       transition: Transition.noTransition,
     ),
     GetPage(
-      name: Routes.CLISTALL,
-      page: () => ListAll(),
-      //  binding: HomeBinding(),
-      transition: Transition.noTransition,
-      middlewares: [ResetCompanyLeaveType()]
-    ),
+        name: Routes.CLISTALL,
+        page: () => ListAll(),
+        //  binding: HomeBinding(),
+        transition: Transition.noTransition,
+        middlewares: [
+          ResetCompanyLeaveType(),
+          ResetCompanyModule(),
+          ResetCompanyHoliday(),
+          ResetCompanyMenu()
+        ]),
     GetPage(
-      name: Routes.COMPANYLEAVETYPE,
-      page: () => CompanyLeaveType(),
-      //  binding: HomeBinding(),
-      transition: Transition.noTransition,
-      middlewares: [ResetCompanyLeaveType()]
-    ),
+        name: Routes.COMPANYLEAVETYPE,
+        page: () => CompanyLeaveType(),
+        //  binding: HomeBinding(),
+        transition: Transition.noTransition,
+        middlewares: [
+          ResetCompanyLeaveType(),
+          ResetCompanyModule(),
+          ResetCompanyHoliday(),
+          ResetCompanyMenu()
+        ]),
     GetPage(
-      name: Routes.CompanyMenuList,
-      page: () => ComapnyMenuList(),
-      //  binding: HomeBinding(),
-      transition: Transition.noTransition,
-      middlewares: [ResetCompanyLeaveType()]
-    ),
+        name: Routes.CompanyMenuList,
+        page: () => CompanyMenuList(),
+        //  binding: HomeBinding(),
+        transition: Transition.noTransition,
+        middlewares: [
+          ResetCompanyLeaveType(),
+          ResetCompanyModule(),
+          ResetCompanyHoliday(),
+          ResetCompanyMenu()
+        ]),
     GetPage(
-      name: Routes.CompanyWorkingShift,
-      page: () => CompanyWorkingShift(),
-      //  binding: HomeBinding(),
-      transition: Transition.noTransition,
-      middlewares: [ResetCompanyLeaveType()]
-    ),
+        name: Routes.CompanyWorkingShift,
+        page: () => CompanyWorkingShift(),
+        //  binding: HomeBinding(),
+        transition: Transition.noTransition,
+        middlewares: [
+          ResetCompanyLeaveType(),
+          ResetCompanyModule(),
+          ResetCompanyHoliday(),
+          ResetCompanyMenu()
+        ]),
     GetPage(
-      name: Routes.CompanyGroupList,
-      page: () => CompanyGroupList(),
-      //  binding: HomeBinding(),
-      transition: Transition.noTransition,
-      middlewares: [ResetCompanyLeaveType()]
-    ),
+        name: Routes.CompanyGroupList,
+        page: () => CompanyGroupList(),
+        //  binding: HomeBinding(),
+        transition: Transition.noTransition,
+        middlewares: [
+          ResetCompanyLeaveType(),
+          ResetCompanyModule(),
+          ResetCompanyHoliday(),
+          ResetCompanyMenu()
+        ]),
     GetPage(
-      name: Routes.ADDCOMPANYMODULELIST,
-      page: () => AddCompanyModules(),
-      //  binding: HomeBinding(),
-      transition: Transition.noTransition,
-    ),
+        name: Routes.ADDCOMPANYMODULELIST,
+        page: () => AddCompanyModules(),
+        //  binding: HomeBinding(),
+        transition: Transition.noTransition,
+        middlewares: [ResetCompanyModule()]),
     GetPage(
       name: Routes.AddWorkingShifts,
       page: () => AddWorkingShifts(),
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
     ),
-     GetPage(
-      name: Routes.AddCompanyLeavetype,
-      page: () => AddCompanyLeavetype(),
-      //  binding: HomeBinding(),
-      transition: Transition.noTransition,
-      middlewares: [ResetCompanyLeaveType()]
-    ),
-     GetPage(
+    GetPage(
+        name: Routes.AddCompanyLeavetype,
+        page: () => AddCompanyLeavetype(),
+        //  binding: HomeBinding(),
+        transition: Transition.noTransition,
+        middlewares: [ResetCompanyLeaveType()]),
+    GetPage(
       name: Routes.AddCompanyHoliday,
       page: () => AddCompanyHoliday(),
       //  binding: HomeBinding(),
+      middlewares: [ResetCompanyHoliday()],
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: Routes.AddCompanyMenu,
+      page: () => AddCompanyMenu(),
+      //  binding: HomeBinding(),
+      middlewares: [ResetCompanyHoliday(),ResetCompanyMenu()],
       transition: Transition.noTransition,
     ),
     GetPage(

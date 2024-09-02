@@ -3,6 +3,10 @@ import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/payroll/controller/company_payroll_deduction_controller.dart';
 import 'package:get/get.dart';
 
+
+
+//to clear the page when navigated
+
 class ResetDeductionMiddleware extends GetMiddleware {
   @override
   RouteSettings? redirect(String? route) {

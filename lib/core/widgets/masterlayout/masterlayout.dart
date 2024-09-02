@@ -1,10 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/generated/l10n.dart';
 
 import 'package:flutter_dashboard/core/widgets/side_bar.dart';
-
-
 
 import 'package:flutter_dashboard/routes/routes.dart';
 
@@ -13,82 +10,82 @@ final sidebarMenuConfigs = [
       uri: Routes.DASHBOARD,
       icon: Icons.dashboard_rounded,
       title: (context) => Lang.of(context).dashboard),
-       SidebarMenuConfig(
-    uri: '', 
+  SidebarMenuConfig(
+    uri: '',
     icon: Icons.interests_rounded,
     title: (context) => 'COMPANY',
     children: [
       SidebarChildMenuConfig(
-        uri:  Routes.CLISTALL,   
+        uri: Routes.CLISTALL,
         icon: Icons.circle_outlined,
         title: (context) => 'List Companies',
       ),
       SidebarChildMenuConfig(
-        uri:  Routes.COMAPANYMODULE,
+        uri: Routes.COMAPANYMODULE,
         icon: Icons.circle_outlined,
         title: (context) => 'Company Modules List',
       ),
       SidebarChildMenuConfig(
-        uri:  Routes.COMPANYLEAVETYPE,
+        uri: Routes.COMPANYLEAVETYPE,
         icon: Icons.circle_outlined,
         title: (context) => ' Company Leave Types',
       ),
       SidebarChildMenuConfig(
-        uri:Routes.COMPANYHOLIDAY,
+        uri: Routes.COMPANYHOLIDAY,
         icon: Icons.circle_outlined,
         title: (context) => ' Company Holiday List',
       ),
-       SidebarChildMenuConfig(
-        uri:Routes.CompanyMenuList,
+      SidebarChildMenuConfig(
+        uri: Routes.CompanyMenuList,
         icon: Icons.circle_outlined,
-        title: (context) => 'Company Menu List', 
+        title: (context) => 'Company Menu List',
       ),
-       SidebarChildMenuConfig(
-        uri:Routes.CompanyWorkingShift,
+      SidebarChildMenuConfig(
+        uri: Routes.CompanyWorkingShift,
         icon: Icons.circle_outlined,
-        title: (context) => 'Company Working Shift', 
+        title: (context) => 'Company Working Shift',
       ),
-       SidebarChildMenuConfig(
-        uri:Routes.CompanyGroupList,
+      SidebarChildMenuConfig(
+        uri: Routes.CompanyGroupList,
         icon: Icons.circle_outlined,
-        title: (context) => ' Company Group List', 
+        title: (context) => ' Company Group List',
       ),
     ],
   ),
-   SidebarMenuConfig(
-    uri: '', 
-    icon: Icons.charging_station,
-    title: (context) => 'EMPLOYEE',
-    children: [
-      SidebarChildMenuConfig(
-        uri:  Routes.EmployeeListAll,  
-        icon: Icons.circle_outlined,
-        title: (context) => 'List Employees',
-      ),
-      SidebarChildMenuConfig(
-        uri:  Routes.EmployeeMenu,
-        icon: Icons.circle_outlined,
-        title: (context) => 'List Employee Menus',
-      ),
-    ]),
-    SidebarMenuConfig(
-    uri: '', 
+  SidebarMenuConfig(
+      uri: '',
+      icon: Icons.charging_station,
+      title: (context) => 'EMPLOYEE',
+      children: [
+        SidebarChildMenuConfig(
+          uri: Routes.EmployeeListAll,
+          icon: Icons.circle_outlined,
+          title: (context) => 'List Employees',
+        ),
+        SidebarChildMenuConfig(
+          uri: Routes.EmployeeMenu,
+          icon: Icons.circle_outlined,
+          title: (context) => 'List Employee Menus',
+        ),
+      ]),
+  SidebarMenuConfig(
+    uri: '',
     icon: Icons.interests_rounded,
     title: (context) => 'PAYROLL',
     children: [
       SidebarChildMenuConfig(
-        uri:  Routes.CompanyPayrollDate,  
+        uri: Routes.CompanyPayrollDate,
         icon: Icons.circle_outlined,
         title: (context) => 'Companies Payroll Date',
       ),
-       SidebarChildMenuConfig(
-        uri:  Routes.CompanyAllowanceDetails,  
+      SidebarChildMenuConfig(
+        uri: Routes.CompanyAllowanceDetails,
         icon: Icons.circle_outlined,
         title: (context) => 'Companies Allowance Details',
       ),
-     
+
       SidebarChildMenuConfig(
-        uri:  Routes.CompanyDeductionDetails,
+        uri: Routes.CompanyDeductionDetails,
         icon: Icons.circle_outlined,
         title: (context) => 'Company Deduction Details',
       ),
@@ -109,53 +106,52 @@ final sidebarMenuConfigs = [
       // ),
     ],
   ),
-    SidebarMenuConfig(
-    uri: '', 
+  SidebarMenuConfig(
+    uri: '',
     icon: Icons.interests_rounded,
-    title: (context) => 'SETTINGS', 
+    title: (context) => 'SETTINGS',
     children: [
       SidebarChildMenuConfig(
-        uri:  Routes.IndustryList,   
+        uri: Routes.IndustryList,
         icon: Icons.circle_outlined,
         title: (context) => 'Industry List',
       ),
-       SidebarChildMenuConfig(
-        uri:  Routes.DepartmentList,   
+      SidebarChildMenuConfig(
+        uri: Routes.DepartmentList,
         icon: Icons.circle_outlined,
         title: (context) => 'Department List',
       ),
-       SidebarChildMenuConfig(
-        uri:  Routes.DesignationList,   
+      SidebarChildMenuConfig(
+        uri: Routes.DesignationList,
         icon: Icons.circle_outlined,
         title: (context) => 'Designation List',
       ),
-       SidebarChildMenuConfig(
-        uri:  Routes.EmployementCategoryList,   
+      SidebarChildMenuConfig(
+        uri: Routes.EmployementCategoryList,
         icon: Icons.circle_outlined,
         title: (context) => 'Employee Category List',
       ),
-       SidebarChildMenuConfig(
-        uri:  Routes.PayrollAllowanceList,   
+      SidebarChildMenuConfig(
+        uri: Routes.PayrollAllowanceList,
         icon: Icons.circle_outlined,
         title: (context) => 'Payroll Allowance List',
       ),
-       SidebarChildMenuConfig(
-        uri:  Routes.PayrollDeductionList,   
+      SidebarChildMenuConfig(
+        uri: Routes.PayrollDeductionList,
         icon: Icons.circle_outlined,
         title: (context) => 'Payroll Deduction List',
       ),
-       SidebarChildMenuConfig(
-        uri:  Routes.SystemModules,   
+      SidebarChildMenuConfig(
+        uri: Routes.SystemModules,
         icon: Icons.circle_outlined,
         title: (context) => 'System Modules',
       ),
-     
     ],
   ),
   // SidebarMenuConfig(
   //   uri: Routes.PROFILE,
   //   icon: Icons.person_2,
-  //   title: (context) =>Lang.of(context).profile 
+  //   title: (context) =>Lang.of(context).profile
   // ),
 ];
 
@@ -185,7 +181,7 @@ var popupMenuItemIndex = 0;
 //         ),
 //         const Icon(
 //           Icons.arrow_drop_down,
-//           color: AppColors.textgreyColor, 
+//           color: AppColors.textgreyColor,
 //         ),
 //       ],
 //     ),
@@ -197,7 +193,7 @@ var popupMenuItemIndex = 0;
 //     value: position,
 //     onTap: () {
 //       if (title == 'Setting') {
-        
+
 //       } else if (title == 'chat') {
 //         GoRouter.of(context).go(RouteUri.chatscreen);
 //       }

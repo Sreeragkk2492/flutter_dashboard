@@ -3,6 +3,10 @@ import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/payroll/controller/company_payroll_allowance_controller.dart';
 import 'package:get/get.dart';
 
+
+
+//to clear the page when navigated
+
 class ResetAllowanceMiddleware extends GetMiddleware {
   @override
   RouteSettings? redirect(String? route) {

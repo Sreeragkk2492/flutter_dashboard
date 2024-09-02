@@ -1,20 +1,18 @@
 import 'dart:convert';
+
 import 'package:flutter_dashboard/core/api/networkManager.dart';
 import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
-import 'package:flutter_dashboard/models/company_models/company_models.dart';
-import 'package:flutter_dashboard/models/employee_menu_model.dart';
-import 'package:flutter_dashboard/models/user_model.dart';
+import 'package:flutter_dashboard/models/company_models/company_menu_model.dart';
 import 'package:flutter_dashboard/models/usertype_model.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart'as http;
 
-class EmployeeMenuController extends GetxController {
-  var employeemenus = EmployeeMenuModel(
+class CompanyMenuController extends GetxController {
+  var employeemenus = CompanyMenuModel(
           userTypeId: '',
           companyId: '',
-          userId: '',
           menus: [],
           remarks: '',
           status: '',
@@ -31,122 +29,84 @@ class EmployeeMenuController extends GetxController {
   var selectedUserTypeId = ''.obs;
   var selectedCompanyId = ''.obs;
   var selectedUserId = ''.obs;
-  var filteredUsers = <UserModel>[].obs;
-  var companydetails = <Company>[].obs;
-  var users = <UserModel>[].obs;
   var filteredMenus = <Menu>[].obs;
   var remarks = ''.obs;
   var isCompanySelected = false.obs;
   var isUserSelected = false.obs;
 
-  @override
+@override
   void onInit() {
     super.onInit();
-    fetchCompanies();
+   //fetchUserType();
     resetMenuSelectionState();
     resetSelectionState();
   }
 
-  void resetMenuSelectionState() {
+   void resetMenuSelectionState() {
     menus.clear();
     filteredMenus.clear();
-    isUserSelected.value = false;
-    selectedUserId.value = '';
+    isUserTypeSelected.value = false;
     selectedUserTypeId.value = '';
   }
 
   void resetSelectionState() {
     isCompanySelected.value = false;
-    isUserSelected.value = false;
+    isUserTypeSelected.value = false;
     selectedCompanyId.value = '';
-    selectedUserId.value = '';
+    selectedUserTypeId.value = '';
     filteredMenus.clear();
   }
 
-  void onCompanySelected(String companyId) {
+   void onCompanySelected(String companyId) {
     selectedCompanyId.value = companyId;
     isCompanySelected.value = true;
     isUserSelected.value = false;
-    selectedUserId.value = '';
+    selectedUserTypeId.value = '';
     filteredMenus.clear();
-    fetchUsersForCompany(companyId);
+    fetchUserType();
   }
 
-  Future<void> fetchCompanies() async {
-    isLoading.value = true;
-    try {
-      final response = await http.get(
-        Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_COMPANY),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": "Bearer $token",
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        companydetails.value =
-            data.map((json) => Company.fromJson(json)).toList();
-      } else {
-        throw Exception('Failed to load companies');
-      }
-    } catch (e) {
-      print("Error fetching companies: $e");
-      awesomeOkDialog(message: e.toString());
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  Future<void> fetchUsersForCompany(String companyId) async {
-    isLoading.value = true;
-    try {
-      final response = await http.get(
-        Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USER_BY_COMPANY_ID)
-            .replace(queryParameters: {"company_id": selectedCompanyId.value}),
-        headers: {
-          "Accept": "application/json",
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        print("Raw JSON data: $data");
-        users.value = data.map((json) => UserModel.fromJson(json)).toList();
-        //sort users in alphabetic order
-        users.sort((a, b) => a.name.compareTo(b.name));
-
-        filteredUsers.value = users;
-      } else {
-        throw Exception('Failed to load users for company');
-      }
-    } catch (e) {
-      print("Error fetching users: $e");
-      awesomeOkDialog(message: e.toString());
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  void onUserSelected(String userTypeId, String companyId, String userId) {
+  void onUserTypeSelected(String userTypeId,) {
     selectedUserTypeId.value = userTypeId;
-    selectedCompanyId.value = companyId;
-    selectedUserId.value = userId;
-    isUserSelected.value = true;
-    if (isCompanySelected.value && isUserSelected.value) {
+    isUserTypeSelected.value = true;
+  
+      if (isCompanySelected.value && isUserTypeSelected.value) {
       fetchMenusForUser();
     }
+  
   }
 
-  Future<void> fetchMenusForUser() async {
+   fetchUserType() async {
+    try {
+      // Making the GET request to the API
+      var response = await http
+          .get(Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USERTYPE));
+      if (response.statusCode == 200) {
+        // Decoding the JSON response body into a List
+        var jsonData = json.decode(response.body) as List;
+        // Mapping the List to a List of Department objects
+        userTypes.value = jsonData.map((jsonItem) {
+          if (jsonItem is Map<String, dynamic>) {
+            return UserType.fromJson(jsonItem);
+          } else {
+            throw Exception("Unexpected data format");
+          }
+        }).toList();
+      }
+    } catch (e) {
+      print("Error$e");
+    }
+  }
+
+
+   Future<void> fetchMenusForUser() async {
     isLoading.value = true;
     try {
       final response = await http.get(
-        Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_EMPLOYEE_MENU)
+        Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_COMPANY_MENU)
             .replace(queryParameters: {
           "user_type_id": selectedUserTypeId.value,
           "company_id": selectedCompanyId.value,
-          "user_id": selectedUserId.value
         }),
         headers: {
           "Accept": "application/json",
@@ -156,7 +116,7 @@ class EmployeeMenuController extends GetxController {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
-        final employeemenulist = EmployeeMenuModel.fromJson(data);
+        final employeemenulist = CompanyMenuModel.fromJson(data);
         employeemenus.value = employeemenulist;
         menus.value = employeemenulist.menus;
 
@@ -227,7 +187,6 @@ class EmployeeMenuController extends GetxController {
       final requestBody = {
         "user_type_id": selectedUserTypeId.value,
         "company_id": selectedCompanyId.value,
-        "user_id": selectedUserId.value,
         "menus": menus
             .map((menu) => {
                   "main_menu_id": menu.mainMenuId,
@@ -253,7 +212,7 @@ class EmployeeMenuController extends GetxController {
       };
 
       final result = await NetWorkManager.shared().request(
-          url: ApiUrls.BASE_URL + ApiUrls.ADD_EMPLOYEE_MENU,
+          url: ApiUrls.BASE_URL + ApiUrls.ADD_COMPANY_MENU,
           method: 'post',
           isAuthRequired: true,
           data: requestBody);

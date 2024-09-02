@@ -5,8 +5,8 @@ import 'package:flutter_dashboard/core/api/networkManager.dart';
 import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
-import 'package:flutter_dashboard/models/company_leave_type_model.dart';
-import 'package:flutter_dashboard/models/company_models.dart';
+import 'package:flutter_dashboard/models/company_models/company_leave_type_model.dart';
+import 'package:flutter_dashboard/models/company_models/company_models.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -45,6 +45,7 @@ class CompanyLeavetypeController extends GetxController {
     fetchLeavesForCompany();
   }
 
+//to fetch all the leave type for the specific company
   fetchLeavesForCompany() async {
     isLoading.value = true;
     try {
@@ -75,7 +76,7 @@ class CompanyLeavetypeController extends GetxController {
     }
   }
 
-
+//to add leave type for the specific company
   Future<void> addCompanyLeaveTypes() async {
     if (selectedCompanyId.value.isEmpty) {
       return;

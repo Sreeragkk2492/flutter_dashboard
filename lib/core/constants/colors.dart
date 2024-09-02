@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-    static const hoverColor = Color.fromARGB(214, 118, 214, 158);     
-        static const defaultColor = Color.fromARGB(175, 52, 151, 74);
-  static const greycolor=Colors.grey;
+  static const hoverColor = Color.fromARGB(214, 118, 214, 158);
+  static const defaultColor = Color.fromARGB(175, 52, 151, 74);
+  static const greycolor = Colors.grey;
   static const primaryColor = Color(0XFF4a2fbd);
   static const secondaryColor = Color(0xFFFE53BB);
   static const textColor = Color(0xFF2B2B2B);

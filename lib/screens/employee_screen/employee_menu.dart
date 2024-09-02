@@ -7,7 +7,7 @@ import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/core/widgets/ui_component_appbar.dart';
-import 'package:flutter_dashboard/models/company_models.dart';
+import 'package:flutter_dashboard/models/company_models/company_models.dart';
 import 'package:flutter_dashboard/models/user_model.dart';
 import 'package:flutter_dashboard/models/usertype_model.dart';
 

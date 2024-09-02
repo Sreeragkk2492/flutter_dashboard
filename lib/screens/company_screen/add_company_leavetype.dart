@@ -5,7 +5,7 @@ import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
-import 'package:flutter_dashboard/models/company_models.dart';
+import 'package:flutter_dashboard/models/company_models/company_models.dart';
 import 'package:flutter_dashboard/screens/company_screen/controller/company_leavetype_controller.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
@@ -180,7 +180,8 @@ class AddCompanyLeavetype extends StatelessWidget {
                               padding: EdgeInsets.only(bottom: kDefaultPadding),
                               child: Row(
                                 children: [
-                                  Expanded(
+                                  Flexible(
+                                    flex: 2,
                                     child: 
                                      FormBuilderTextField(
                                         name: 'Leave Type',
@@ -194,8 +195,10 @@ class AddCompanyLeavetype extends StatelessWidget {
                                       ),
                                     
                                   ),
-                                  SizedBox(width: kDefaultPadding),
-                                  if (index == screenController.leaveTypeControllers.length - 1)
+                                 buildSizedboxW(kDefaultPadding * 4),
+                                  Flexible(
+                                    flex: 1,
+                                    child:index == screenController.leaveTypeControllers.length - 1?
                                     ElevatedButton(
                                       onPressed: () {
                                          screenController.addLeaveType();
@@ -206,7 +209,9 @@ class AddCompanyLeavetype extends StatelessWidget {
                                         backgroundColor: AppColors.defaultColor,
                                         foregroundColor: AppColors.whiteColor,
                                       ),
-                                    ),
+                                    ):SizedBox(),
+                                  )
+                                 
                                 ],
                               ),
                             );

@@ -7,7 +7,7 @@ import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
 import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
-import 'package:flutter_dashboard/models/company_models.dart';
+import 'package:flutter_dashboard/models/company_models/company_models.dart';
 import 'package:flutter_dashboard/models/user_model.dart';
 import 'package:flutter_dashboard/models/usertype_model.dart';
 import 'package:get/get.dart';

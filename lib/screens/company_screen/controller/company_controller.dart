@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/api/networkManager.dart';
 import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
-import 'package:flutter_dashboard/models/company_models.dart';
+import 'package:flutter_dashboard/models/company_models/company_models.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -54,6 +54,7 @@ class CompanyController extends GetxController {
     selectedCompanyTypecode.value = companyTypeId;
   }
 
+//to add company
   addCompany() async {
     final result = await NetWorkManager.shared().request(
         url: ApiUrls.BASE_URL + ApiUrls.ADD_COMPANY,
@@ -76,6 +77,8 @@ class CompanyController extends GetxController {
       await fetchCompanyDetails();
     }
   }
+
+//to fetch all company
 
   fetchCompanyDetails() async {
     try {

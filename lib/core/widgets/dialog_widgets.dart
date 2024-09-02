@@ -4,7 +4,6 @@ import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/models/user_model.dart';
-import 'package:flutter_dashboard/screens/company_screen/widget/company_form_widget.dart';
 import 'package:flutter_dashboard/screens/company_screen/widget/details_form_widgte.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/employee_screen/employee_list_all.dart';
@@ -58,7 +57,7 @@ class DialogWidgets {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Flexible(flex: 4, child: DetailsFormWidget()),
+                          const Flexible(flex: 4, child: DetailsFormWidget()),
                           buildSizedboxW(kDefaultPadding),
                         ],
                       ),
@@ -69,7 +68,7 @@ class DialogWidgets {
                           vertical: kDefaultPadding + kTextPadding),
                       child: Column(
                         children: [
-                          DetailsFormWidget(),
+                          const DetailsFormWidget(),
                           buildSizedBoxH(kDefaultPadding),
                         ],
                       ),

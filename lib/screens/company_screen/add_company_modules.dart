@@ -5,7 +5,7 @@ import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/dialog_widgets.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
-import 'package:flutter_dashboard/models/company_models.dart';
+import 'package:flutter_dashboard/models/company_models/company_models.dart';
 import 'package:flutter_dashboard/screens/company_screen/controller/company_controller.dart';
 import 'package:flutter_dashboard/screens/company_screen/controller/company_module_controller.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';

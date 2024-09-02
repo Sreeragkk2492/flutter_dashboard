@@ -5,7 +5,7 @@ import 'package:flutter_dashboard/core/api/networkManager.dart';
 import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
-import 'package:flutter_dashboard/models/company_module_list_model.dart';
+import 'package:flutter_dashboard/models/company_models/company_module_list_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -55,6 +55,8 @@ class CompanyModuleController extends GetxController {
     }
   }
 
+
+//to fetch all the company modules of specific company
   Future<void> fetchCompanyModules() async {
     isLoading.value = true;
     try {
@@ -118,6 +120,8 @@ class CompanyModuleController extends GetxController {
     }
   }
 
+
+//to add the modules for specific company
   addCompanyModule() async {
     final requestBody = {
       "company_id": selectedCompanyId.value,

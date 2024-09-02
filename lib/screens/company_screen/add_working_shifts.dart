@@ -4,6 +4,8 @@ import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
+import 'package:flutter_dashboard/models/company_models/company_models.dart';
+import 'package:flutter_dashboard/screens/company_screen/controller/company_workingshift_controller.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/employee_screen/widget/company_dropdown_item.dart';
 import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
@@ -15,7 +17,8 @@ import 'package:intl/intl.dart';
 
 class AddWorkingShifts extends StatelessWidget {
   AddWorkingShifts({super.key});
-  final screenController = Get.put(EmployeeController());
+  final employeeController = Get.put(EmployeeController());
+  final screenController = Get.put(CompanyWorkingshiftController());
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -130,35 +133,41 @@ class AddWorkingShifts extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Obx(
-                              () => FormBuilderDropdown<CompanyDropdownItem>(
-                                // controller: widget.companyNameController,
-                                name: 'Company Name',
-                                decoration: const InputDecoration(
-                                  labelText: 'Company Name',
-                                  hintText: 'Company Name',
-                                  border: OutlineInputBorder(),
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                ),
-                                // enableSuggestions: false,
-                                // keyboardType: TextInputType.name,
-                                validator: FormBuilderValidators.required(),
-                                items: screenController.companydetails
-                                    .map((company) => DropdownMenuItem(
-                                          value: CompanyDropdownItem(id: company.id, code: company.companyCode),
-                                          child: Text(company.companyName),
-                                        ))
-                                    .toList(),
-                                onChanged: (value) {
-                                  screenController.setSelectedCompany(value!.id,value.code);
-                                },
-                                // onSaved: (value) => (_formData.firstname = value ?? ''),
-                              ),
+                              () =>  FormBuilderDropdown<Company>(
+              name: 'Company',
+              decoration: const InputDecoration(
+                labelText: 'Company',
+                hintText: 'Select Company',
+                border: OutlineInputBorder(),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+              validator: FormBuilderValidators.required(),
+              items: employeeController.companydetails
+                  .map((company) => DropdownMenuItem(
+                        value: Company(
+                            id: company.id,
+                            companyName: company.companyName,
+                            companyCode: company.companyCode,
+                            databaseName: company.databaseName,
+                            companyTypeId: company.companyTypeId,
+                            remarks: company.remarks,
+                            status: company.status,
+                            isActive: company.isActive,
+                            companytype: company.companytype),
+                        child: Text(company.companyName),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                screenController.onCompanySelected(
+                    value!.id, value.companyCode);
+              },
+            ),
                             ),
                           ),
                           buildSizedboxW(kDefaultPadding),
                           Flexible(
                             child: FormBuilderTextField(
+                              controller: screenController.shiftNameController,
                               name: 'Shift Name',
                               decoration: InputDecoration(
                                 labelText: 'Shift Name',
@@ -180,6 +189,7 @@ class AddWorkingShifts extends StatelessWidget {
                         children: [
                           Flexible(
                             child: FormBuilderDateTimePicker(
+                              controller: screenController.startTimeController,
                               inputType: InputType.time,
                               format: DateFormat("HH:mm"),
                               name: 'Shift Start Time',
@@ -201,6 +211,7 @@ class AddWorkingShifts extends StatelessWidget {
                           buildSizedboxW(kDefaultPadding),
                           Flexible(
                             child: FormBuilderDateTimePicker(
+                              controller: screenController.endTimeController,
                               inputType: InputType.time,
                               format: DateFormat("HH:mm"),
                               name: 'Shift End Time',
@@ -248,8 +259,8 @@ class AddWorkingShifts extends StatelessWidget {
                         children: [
                           DefaultAddButton(
                               buttonname: 'Add Working Shift',
-                              onClick: () {
-                                //await screenController.addDesignation();
+                              onClick: () async{
+                                await screenController.addWorkingShifts();
                                 Get.back();
                               }),
                         ],
