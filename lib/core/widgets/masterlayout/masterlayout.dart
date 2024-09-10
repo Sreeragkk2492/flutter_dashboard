@@ -7,47 +7,57 @@ import 'package:flutter_dashboard/routes/routes.dart';
 
 final sidebarMenuConfigs = [
   SidebarMenuConfig(
+    parentTitle: 'MAIN MENU',
       uri: Routes.DASHBOARD,
       icon: Icons.dashboard_rounded,
-      title: (context) => Lang.of(context).dashboard),
+      title: (context) => Lang.of(context).dashboard,
+      children: [
+         SidebarChildMenuConfig(
+        uri: Routes.DASHBOARD,
+        icon: Icons.dashboard_sharp,
+        title: (context) => 'Dashboard',
+      ),
+      ]),
+      
   SidebarMenuConfig(
     uri: '',
     icon: Icons.interests_rounded,
     title: (context) => 'COMPANY',
+    parentTitle: 'COMPANY',
     children: [
       SidebarChildMenuConfig(
         uri: Routes.CLISTALL,
-        icon: Icons.circle_outlined,
+        icon: Icons.list_alt,
         title: (context) => 'List Companies',
       ),
       SidebarChildMenuConfig(
         uri: Routes.COMAPANYMODULE,
-        icon: Icons.circle_outlined,
+         icon: Icons.view_module,
         title: (context) => 'Company Modules List',
       ),
       SidebarChildMenuConfig(
         uri: Routes.COMPANYLEAVETYPE,
-        icon: Icons.circle_outlined,
+         icon: Icons.line_weight_outlined,
         title: (context) => ' Company Leave Types',
       ),
       SidebarChildMenuConfig(
         uri: Routes.COMPANYHOLIDAY,
-        icon: Icons.circle_outlined,
+        icon: Icons.holiday_village,
         title: (context) => ' Company Holiday List',
       ),
       SidebarChildMenuConfig(
         uri: Routes.CompanyMenuList,
-        icon: Icons.circle_outlined,
+        icon: Icons.menu,
         title: (context) => 'Company Menu List',
       ),
       SidebarChildMenuConfig(
         uri: Routes.CompanyWorkingShift,
-        icon: Icons.circle_outlined,
+        icon: Icons.work_history,
         title: (context) => 'Company Working Shift',
       ),
       SidebarChildMenuConfig(
         uri: Routes.CompanyGroupList,
-        icon: Icons.circle_outlined,
+         icon: Icons.group,
         title: (context) => ' Company Group List',
       ),
     ],
@@ -56,15 +66,16 @@ final sidebarMenuConfigs = [
       uri: '',
       icon: Icons.charging_station,
       title: (context) => 'EMPLOYEE',
+      parentTitle: 'EMPLOYEE',
       children: [
         SidebarChildMenuConfig(
           uri: Routes.EmployeeListAll,
-          icon: Icons.circle_outlined,
+          icon: Icons.list,
           title: (context) => 'List Employees',
         ),
         SidebarChildMenuConfig(
           uri: Routes.EmployeeMenu,
-          icon: Icons.circle_outlined,
+          icon: Icons.menu,
           title: (context) => 'List Employee Menus',
         ),
       ]),
@@ -72,28 +83,39 @@ final sidebarMenuConfigs = [
     uri: '',
     icon: Icons.interests_rounded,
     title: (context) => 'PAYROLL',
+    parentTitle: 'PAYROLL',
     children: [
       SidebarChildMenuConfig(
         uri: Routes.CompanyPayrollDate,
-        icon: Icons.circle_outlined,
+        icon: Icons.date_range,
         title: (context) => 'Companies Payroll Date',
       ),
       SidebarChildMenuConfig(
         uri: Routes.CompanyAllowanceDetails,
-        icon: Icons.circle_outlined,
+        icon: Icons.details,
         title: (context) => 'Companies Allowance Details',
       ),
 
       SidebarChildMenuConfig(
         uri: Routes.CompanyDeductionDetails,
-        icon: Icons.circle_outlined,
+        icon: Icons.details,
         title: (context) => 'Company Deduction Details',
       ),
-      // SidebarChildMenuConfig(
-      //   uri:Routes.CompanyPayrollDeduction,
-      //   icon: Icons.circle_outlined,
-      //   title: (context) => 'Companies Deduction Details',
-      // ),
+       SidebarChildMenuConfig(
+        uri: Routes.EmployeePayrollSettings,
+        icon: Icons.details,
+        title: (context) => 'Employee Payroll Settings',
+      ),
+      SidebarChildMenuConfig(
+        uri:Routes.EmployeePayslippDetails,
+        icon: Icons.settings,
+        title: (context) => 'Employee Payslip Details',
+      ),
+       SidebarChildMenuConfig(
+        uri:Routes.PayslipGenerator,
+        icon: Icons.payment,
+        title: (context) => 'Employee Payslip Generator',
+      ),
       //   SidebarChildMenuConfig(
       //   uri:Routes.PayrollProcessingDate,
       //   icon: Icons.circle_outlined,
@@ -110,40 +132,41 @@ final sidebarMenuConfigs = [
     uri: '',
     icon: Icons.interests_rounded,
     title: (context) => 'SETTINGS',
+    parentTitle: 'SETTINGS',
     children: [
       SidebarChildMenuConfig(
         uri: Routes.IndustryList,
-        icon: Icons.circle_outlined,
+        icon: Icons.list,
         title: (context) => 'Industry List',
       ),
       SidebarChildMenuConfig(
         uri: Routes.DepartmentList,
-        icon: Icons.circle_outlined,
+        icon: Icons.list,
         title: (context) => 'Department List',
       ),
       SidebarChildMenuConfig(
         uri: Routes.DesignationList,
-        icon: Icons.circle_outlined,
+        icon: Icons.list,
         title: (context) => 'Designation List',
       ),
       SidebarChildMenuConfig(
         uri: Routes.EmployementCategoryList,
-        icon: Icons.circle_outlined,
+        icon: Icons.list,
         title: (context) => 'Employee Category List',
       ),
       SidebarChildMenuConfig(
         uri: Routes.PayrollAllowanceList,
-        icon: Icons.circle_outlined,
+        icon: Icons.list,
         title: (context) => 'Payroll Allowance List',
       ),
       SidebarChildMenuConfig(
         uri: Routes.PayrollDeductionList,
-        icon: Icons.circle_outlined,
+        icon: Icons.list,
         title: (context) => 'Payroll Deduction List',
       ),
       SidebarChildMenuConfig(
         uri: Routes.SystemModules,
-        icon: Icons.circle_outlined,
+        icon: Icons.view_module_sharp,
         title: (context) => 'System Modules',
       ),
     ],

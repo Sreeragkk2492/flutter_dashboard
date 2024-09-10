@@ -127,4 +127,21 @@ class ApiUrls {
    static const ADD_COMPANY_WORKING_SHIFTS =
       "/shift/create_shift";
 
+      //payslip
+      
+       static const GET_ALL_EMPLOYEE_PAYSLIP_DETAILS =
+      "/employee_payslip_details/get_employee_payslip";
+      static const GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION =
+      "/employee_payroll_allowance/show_allowances_and_deductions_of_user";
+       static const GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION_IN_ADD =
+      "/employee_payroll_allowance/show_allowance_and_deduction_for_user";
+      
+      static const ADD_EMPLOYEE_PAYROLL =
+      "/employee_payroll_allowance/add_allowances_and_deductions_of_user";
+       static const ADD_PAYSLIP_DETAILS =
+      "/employee_payslip_details/create_combined_payslip";
+
+      
+
+
 }

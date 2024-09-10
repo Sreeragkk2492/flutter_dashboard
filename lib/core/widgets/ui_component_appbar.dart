@@ -8,7 +8,7 @@ class UIComponenetsAppBar extends StatefulWidget {
       {super.key,
       required this.title,
       required this.subtitle,
-      required this.icon, required this.buttonTitle, required this.onClick});
+      required this.icon,  required this.buttonTitle,  required this.onClick});
   final String title;
   final String subtitle;
   final Widget icon;

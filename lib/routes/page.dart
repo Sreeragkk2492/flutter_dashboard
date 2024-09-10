@@ -5,6 +5,7 @@ import 'package:flutter_dashboard/core/middlewares/reset_company_leave_type.dart
 import 'package:flutter_dashboard/core/middlewares/reset_company_menu.dart';
 import 'package:flutter_dashboard/core/middlewares/reset_company_modules.dart';
 import 'package:flutter_dashboard/core/middlewares/reset_deduction.dart';
+import 'package:flutter_dashboard/core/middlewares/reset_employee_payroll.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/company_screen/add_company.dart';
 import 'package:flutter_dashboard/screens/company_screen/add_company_holiday.dart';
@@ -25,6 +26,11 @@ import 'package:flutter_dashboard/screens/employee_screen/add_employee_menu.dart
 import 'package:flutter_dashboard/screens/employee_screen/employee_list_all.dart';
 import 'package:flutter_dashboard/screens/employee_screen/employee_menu.dart';
 import 'package:flutter_dashboard/screens/login_screen/login_screen.dart';
+import 'package:flutter_dashboard/screens/payroll/add_employee_payroll_settings.dart';
+import 'package:flutter_dashboard/screens/payroll/add_employee_payslip.dart';
+import 'package:flutter_dashboard/screens/payroll/employee_payroll_settings.dart';
+import 'package:flutter_dashboard/screens/payroll/payroll_settings.dart';
+import 'package:flutter_dashboard/screens/payroll/payslip_generator.dart';
 import 'package:flutter_dashboard/screens/settings_screen/add_allowance.dart';
 import 'package:flutter_dashboard/screens/payroll/add_company_allowance_details.dart';
 import 'package:flutter_dashboard/screens/payroll/add_company_deduction_details.dart';
@@ -222,20 +228,20 @@ class GetPages {
       name: Routes.CompanyAllowanceDetails,
       page: () => CompanyAllowanceDetails(),
       //  binding: HomeBinding(),
-      middlewares: [ResetAllowanceMiddleware(), ResetDeductionMiddleware()],
+      middlewares: [ResetAllowanceMiddleware(), ResetDeductionMiddleware(),ResetEmployeePayroll()],
       transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.CompanyDeductionDetails,
       page: () => CompanyDeductionDetails(),
-      middlewares: [ResetDeductionMiddleware(), ResetAllowanceMiddleware()],
+       middlewares: [ResetAllowanceMiddleware(), ResetDeductionMiddleware(),ResetEmployeePayroll()],
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
     ),
     GetPage(
       name: Routes.CompanyPayrollDate,
       page: () => CompanyPayrollDate(),
-
+      middlewares: [ResetAllowanceMiddleware(), ResetDeductionMiddleware(),ResetEmployeePayroll()],
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
     ),
@@ -275,12 +281,40 @@ class GetPages {
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
     ),
-    // GetPage(
-    //   name: Routes.AddMaxLeaveAllowed,
-    //   page: () => AddMaxLeaveAllowed(),
-    //   //  binding: HomeBinding(),
-    //   transition: Transition.noTransition,
-    // ),
+    GetPage(
+      name: Routes.EmployeePayslippDetails,
+      page: () => PayslipDetails(),
+      //  binding: HomeBinding(),
+       middlewares: [ResetAllowanceMiddleware(), ResetDeductionMiddleware(),ResetEmployeePayroll()],
+      transition: Transition.noTransition,
+    ),
+     GetPage(
+      name: Routes.AddEmployeePayslipDetails,
+      page: () =>AddEmployeePayslip(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: Routes.AddEmployeePayrollSettings,
+      page: () =>AddEmployeePayrollSettings(),
+      //  binding: HomeBinding(),
+       middlewares: [ResetAllowanceMiddleware(), ResetDeductionMiddleware(),ResetEmployeePayroll()],
+      transition: Transition.noTransition,
+    ),
+     GetPage(
+      name: Routes.EmployeePayrollSettings,
+      page: () =>EmployeePayrollSettings(),
+      //  binding: HomeBinding(),
+       middlewares: [ResetAllowanceMiddleware(), ResetDeductionMiddleware(),ResetEmployeePayroll()],
+      transition: Transition.noTransition,
+    ),
+     GetPage(
+      name: Routes.PayslipGenerator,
+      page: () =>PayslipGenerator(),
+      //  binding: HomeBinding(),
+       middlewares: [ResetAllowanceMiddleware(), ResetDeductionMiddleware(),ResetEmployeePayroll()],
+      transition: Transition.noTransition,
+    ),
 
     ///settings///
 

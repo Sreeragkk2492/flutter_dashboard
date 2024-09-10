@@ -34,7 +34,10 @@ class Routes {
   // static const String DeductionList= "/deductionlist";
   // static const String CompanyPayrollDeduction = "/companypayrolldeduction";
   // static const String PayrollProcessingDate = "/PayrollProcessingDate";
-  // static const String MaxLeaveAllowed = "/maxleavealoowed";
+  static const String EmployeePayslippDetails = "/employeepayslipdetails";
+  static const String AddEmployeePayslipDetails = "/addemployeepayslipdetails";
+  static const String EmployeePayrollSettings = "/employeepayrollsettings";
+   static const String AddEmployeePayrollSettings = "/addemployeepayrollsettings";
 
   static const String AddCompanyAllowanceDetails =
       "/addcompanyallowancedetails";
@@ -45,6 +48,7 @@ class Routes {
   static const String CompanyPayrollDate = "/companypayrolldate";
   static const String CompanyAllowanceDetails = "/companyallowancedetails";
   static const String CompanyDeductionDetails = "/companydeductiondetails";
+  static const String PayslipGenerator = "/payslipgenerator";
 
 //settings
 

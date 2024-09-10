@@ -53,6 +53,7 @@ dependencies:
   dio: ^5.5.0+1
   flutter_secure_storage: ^9.2.2
   data_table_2: ^2.5.15
+  custom_sliding_segmented_control: ^1.8.3
    
   
  
