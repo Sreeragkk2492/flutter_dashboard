@@ -341,8 +341,10 @@ class PayrollSettingsController extends GetxController {
       awesomeOkDialog(message: result.left.message);
     } else {
       // Show success message
+      final message=result.right['message'];
+      print(message);
       awesomeOkDialog(message: "Updated successfully");
-      fetchPayslipDetails();
+      
 
       // Navigate back
       Get.back();

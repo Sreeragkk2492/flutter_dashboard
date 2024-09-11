@@ -56,6 +56,7 @@ class GeneratorController extends GetxController {
   void onInit() {
     resetSelectionState();
     super.onInit();
+    fetchAllowanceAndDeductionDetails();
     ever(getaddallowances, (_) => _updateAllowanceControllers());
      ever(getadddeduction, (_) => _updateDeductionControllers());
   }

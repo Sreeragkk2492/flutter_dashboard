@@ -31,6 +31,7 @@ import 'package:flutter_dashboard/screens/payroll/add_employee_payslip.dart';
 import 'package:flutter_dashboard/screens/payroll/employee_payroll_settings.dart';
 import 'package:flutter_dashboard/screens/payroll/payroll_settings.dart';
 import 'package:flutter_dashboard/screens/payroll/payslip_generator.dart';
+import 'package:flutter_dashboard/screens/payroll/payslip_invoice.dart';
 import 'package:flutter_dashboard/screens/settings_screen/add_allowance.dart';
 import 'package:flutter_dashboard/screens/payroll/add_company_allowance_details.dart';
 import 'package:flutter_dashboard/screens/payroll/add_company_deduction_details.dart';
@@ -311,6 +312,13 @@ class GetPages {
      GetPage(
       name: Routes.PayslipGenerator,
       page: () =>PayslipGenerator(),
+      //  binding: HomeBinding(),
+       middlewares: [ResetAllowanceMiddleware(), ResetDeductionMiddleware(),ResetEmployeePayroll()],
+      transition: Transition.noTransition,
+    ),
+     GetPage(
+      name: Routes.InvoicePage,
+      page: () =>PayslipInvoice(),
       //  binding: HomeBinding(),
        middlewares: [ResetAllowanceMiddleware(), ResetDeductionMiddleware(),ResetEmployeePayroll()],
       transition: Transition.noTransition,

@@ -49,6 +49,7 @@ class Routes {
   static const String CompanyAllowanceDetails = "/companyallowancedetails";
   static const String CompanyDeductionDetails = "/companydeductiondetails";
   static const String PayslipGenerator = "/payslipgenerator";
+   static const String InvoicePage = "/invoicepage";
 
 //settings
 

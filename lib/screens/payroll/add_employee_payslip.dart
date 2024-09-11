@@ -6,8 +6,10 @@ import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
 import 'package:flutter_dashboard/models/user_model.dart';
+import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/payroll/controller/employee_payroll_settings_controller.dart';
+import 'package:flutter_dashboard/screens/payroll/controller/invoice_controller.dart';
 import 'package:flutter_dashboard/screens/payroll/controller/payroll_settings_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -20,6 +22,7 @@ class AddEmployeePayslip extends StatelessWidget {
 
   final employeeController = Get.put(EmployeeController());
   final screenController = Get.put(PayrollSettingsController());
+  final invoiceController = Get.put(InvoiceController());
 
   @override
   Widget build(BuildContext context) {
@@ -220,6 +223,7 @@ class AddEmployeePayslip extends StatelessWidget {
                                   .toList(),
                               onChanged: (value) {
                                 screenController.onYearSelected(value!);
+                                invoiceController.selectedYear.value = value;
                               },
                             ),
                           ),
@@ -248,6 +252,7 @@ class AddEmployeePayslip extends StatelessWidget {
                                   .toList(),
                               onChanged: (value) {
                                 screenController.onMonthSelected(value!);
+                                invoiceController.selectedMonth.value = value;
                               },
                             ),
                           ),
@@ -288,10 +293,12 @@ class AddEmployeePayslip extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       buildPayslipField(
+                                          editable: false,
                                           'Year',
                                           TextInputType.number,
                                           screenController.yearController),
                                       buildPayslipField(
+                                          editable: false,
                                           'Month',
                                           TextInputType.number,
                                           screenController.monthController),
@@ -326,6 +333,7 @@ class AddEmployeePayslip extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       buildPayslipField(
+                                          editable: false,
                                           'Total Amount',
                                           TextInputType.number,
                                           screenController
@@ -336,6 +344,7 @@ class AddEmployeePayslip extends StatelessWidget {
                                           screenController
                                               .overtimeHoursController),
                                       buildPayslipField(
+                                          editable: false,
                                           'Regular Hours',
                                           TextInputType.number,
                                           screenController
@@ -515,7 +524,15 @@ class AddEmployeePayslip extends StatelessWidget {
                           buttonname: 'Generate',
                           onClick: () async {
                              await screenController.addPayslipDetails();
-                            Get.back();
+                            invoiceController.setSelectedValues(
+                                invoiceController.selectedCompanyId.value,
+                                invoiceController.selectedUserId.value,
+                                invoiceController.selectedYear.value,
+                                invoiceController.selectedMonth.value);
+                            await invoiceController.fetchPayslipDetails();
+                            if (!invoiceController.noDataFound.value) {
+                              Get.toNamed(Routes.InvoicePage);
+                            }
                           },
                         ),
                       ],
@@ -532,7 +549,8 @@ class AddEmployeePayslip extends StatelessWidget {
   }
 
   Widget buildPayslipField(String label, TextInputType keyboardType,
-      TextEditingController controller) {
+      TextEditingController controller,
+      {bool editable = true}) {
     return Padding(
       padding: EdgeInsets.only(bottom: kDefaultPadding),
       child: Column(
@@ -543,18 +561,33 @@ class AddEmployeePayslip extends StatelessWidget {
             // style: TextStyle(fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 4),
-          FormBuilderTextField(
-            name: label.toLowerCase().replaceAll(' ', '_'),
-            controller: controller,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          if (editable)
+            FormBuilderTextField(
+              name: label.toLowerCase().replaceAll(' ', '_'),
+              controller: controller,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              ),
+              keyboardType: keyboardType,
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(),
+              ]),
+            )
+          else
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(
+                controller.text,
+                style: TextStyle(fontSize: 14),
+              ),
             ),
-            keyboardType: keyboardType,
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(),
-            ]),
-          ),
         ],
       ),
     );
@@ -564,27 +597,29 @@ class AddEmployeePayslip extends StatelessWidget {
       String label, TextEditingController controller) {
     return Padding(
       padding: EdgeInsets.only(bottom: kDefaultPadding),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            // style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 4),
-          FormBuilderTextField(
-            name: label.toLowerCase().replaceAll(' ', '_'),
-            controller: controller,
-            decoration: InputDecoration(
-            // labelText: 'Amount',
-              border: OutlineInputBorder(),
-              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          Expanded(
+            flex: 2,
+            child: Text(
+              label,
+              style: TextStyle(fontWeight: FontWeight.w500),
             ),
-            keyboardType: TextInputType.number,
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(),
-              FormBuilderValidators.numeric(),
-            ]),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(
+                controller.text,
+                style: TextStyle(fontSize: 14),
+              ),
+            ),
           ),
         ],
       ),
