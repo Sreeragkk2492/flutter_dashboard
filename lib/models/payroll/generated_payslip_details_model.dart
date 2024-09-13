@@ -1,21 +1,21 @@
 // To parse this JSON data, do
 //
-//     final employeePayroll = employeePayrollFromJson(jsonString);
+//     final generatedPayslipDetails = generatedPayslipDetailsFromJson(jsonString);
 
 import 'dart:convert';
 
-EmployeePayroll employeePayrollFromJson(String str) => EmployeePayroll.fromJson(json.decode(str));
+GeneratedPayslipDetails generatedPayslipDetailsFromJson(String str) => GeneratedPayslipDetails.fromJson(json.decode(str));
 
-String employeePayrollToJson(EmployeePayroll data) => json.encode(data.toJson());
+String generatedPayslipDetailsToJson(GeneratedPayslipDetails data) => json.encode(data.toJson());
 
-class EmployeePayroll {
+class GeneratedPayslipDetails {
     PayslipDetails payslipDetails;
 
-    EmployeePayroll({
+    GeneratedPayslipDetails({
         required this.payslipDetails,
     });
 
-    factory EmployeePayroll.fromJson(Map<String, dynamic> json) => EmployeePayroll(
+    factory GeneratedPayslipDetails.fromJson(Map<String, dynamic> json) => GeneratedPayslipDetails(
         payslipDetails: PayslipDetails.fromJson(json["payslip_details"]),
     );
 
@@ -25,6 +25,7 @@ class EmployeePayroll {
 }
 
 class PayslipDetails {
+    String id;
     String companyId;
     String userId;
     String employeeId;
@@ -42,7 +43,7 @@ class PayslipDetails {
     int workfromhomeDays;
     String projectCode;
     String location;
-    dynamic department;
+    String department;
     String remarks;
     bool approved;
     String approvedBy;
@@ -53,6 +54,7 @@ class PayslipDetails {
     List<Deduction> deductions;
 
     PayslipDetails({
+        required this.id,
         required this.companyId,
         required this.userId,
         required this.employeeId,
@@ -82,6 +84,7 @@ class PayslipDetails {
     });
 
     factory PayslipDetails.fromJson(Map<String, dynamic> json) => PayslipDetails(
+        id: json["id"],
         companyId: json["company_id"],
         userId: json["user_id"],
         employeeId: json["employee_id"],
@@ -111,6 +114,7 @@ class PayslipDetails {
     );
 
     Map<String, dynamic> toJson() => {
+        "id": id,
         "company_id": companyId,
         "user_id": userId,
         "employee_id": employeeId,

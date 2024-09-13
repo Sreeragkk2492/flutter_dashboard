@@ -130,7 +130,7 @@ class ApiUrls {
       //payslip
       
        static const GET_ALL_EMPLOYEE_PAYSLIP_DETAILS =
-      "/employee_payslip_details/get_employee_payslip";
+      "/employee_payslip_details/get_employee_payslip_for_generation";
       static const GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION =
       "/employee_payroll_allowance/show_allowances_and_deductions_of_user";
        static const GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION_IN_ADD =
@@ -139,7 +139,10 @@ class ApiUrls {
       static const ADD_EMPLOYEE_PAYROLL =
       "/employee_payroll_allowance/add_allowances_and_deductions_of_user";
        static const ADD_PAYSLIP_DETAILS =
-      "/employee_payslip_details/create_combined_payslip";
+      "/employee_payslip_details/generate_employee_payslip";
+      
+       static const GET_ALL_EMPLOYEE_GENERATED_PAYSLIP_DETAILS =
+      "/employee_payslip_details/get_generated_employee_payslip";
 
       
 

@@ -128,7 +128,7 @@ class DashboardScreen extends StatelessWidget {
                                       width: dataTableWidth,
                                       child: DataTable(
                                         showCheckboxColumn: false,
-                                        showBottomBorder: true,
+                                       // showBottomBorder: true,
                                         columns: const [
                                           DataColumn(label: Text('No.')),
                                           DataColumn(label: Text('Date')),

@@ -37,7 +37,7 @@ class _ListAllState extends State<ListAll> {
 
   @override
   Widget build(BuildContext context) {
-    final themedata = Theme.of(context);
+   final themedata = Theme.of(context);
     return PortalMasterLayout(
         body: EntranceFader(
             child: ListView(

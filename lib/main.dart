@@ -3,6 +3,7 @@ import 'package:flutter_dashboard/core/generated/l10n.dart';
 import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
 import 'package:flutter_dashboard/routes/page.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
+import 'package:flutter_dashboard/themes/apptheme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+       
       supportedLocales: Lang.delegate.supportedLocales,
       localizationsDelegates: const [
         Lang.delegate,
@@ -30,6 +32,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       getPages: GetPages.routes,
       initialRoute: Routes.LOGIN,
+     
     );
   }
 }

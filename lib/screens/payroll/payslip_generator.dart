@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_dashboard/core/animations/entrance_fader.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/core/widgets/ui_component_appbar.dart';
+import 'package:flutter_dashboard/core/widgets/ui_component_appbar_without_button.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
 import 'package:flutter_dashboard/models/user_model.dart';
+import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/payroll/controller/generator_controller.dart';
+import 'package:flutter_dashboard/screens/payroll/controller/invoice_controller.dart';
+import 'package:flutter_dashboard/screens/payroll/controller/payroll_settings_controller.dart';
 import 'package:flutter_dashboard/screens/payroll/widget/sheet.dart';
 import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -19,7 +24,7 @@ import 'package:google_fonts/google_fonts.dart';
 class PayslipGenerator extends StatelessWidget {
   PayslipGenerator({super.key});
 
-  final screenController = Get.put(GeneratorController());
+  final screenController = Get.put(InvoiceController());
   final employeeController = Get.put(EmployeeController());
 
   @override
@@ -29,56 +34,21 @@ class PayslipGenerator extends StatelessWidget {
         body: EntranceFader(
             child: ListView(
       children: [
-        Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Container(
-              height: 150,
-              color: AppColors.defaultColor.withOpacity(0.6),
-            ),
-            Align(
-              // heightFactor: 0.01,
-              child: Container(
-                height: 100,
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                margin: EdgeInsets.all(kDefaultPadding),
-                decoration: BoxDecoration(
-                    color: AppColors.bgGreyColor,
-                    borderRadius: BorderRadius.circular(12)),
-                child: Row(
-                  children: [
-                    Container(
-                      height: 70,
-                      width: 70,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          image: DecorationImage(
-                              image: AssetImage('assets/profile3.jpg'),
-                              fit: BoxFit.cover)),
-                    ),
-                    buildSizedboxW(kDefaultPadding),
-                    const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Employee Payslip Generator',
-                            style: TextStyle(
-                                fontSize: 16.0, fontWeight: FontWeight.bold)),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ],
+       Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+          child: UIComponenetsAppBarNoButton(
+            title: 'Employee Generated Payslip',
+            subtitle: '',
+            icon: Icon(Icons.rocket),
+
+          ),
         ),
-        buildSizedBoxH(kDefaultPadding * 3),
+        buildSizedBoxH(kDefaultPadding  ),
         screenSize.width >= kScreenWidthLg
             ? Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: kDefaultPadding,
-                    vertical: kDefaultPadding + kTextPadding),
+                    //  horizontal: kDefaultPadding,
+                    ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -105,199 +75,261 @@ class PayslipGenerator extends StatelessWidget {
   Widget addPayrollForm(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.bgGreyColor,
-            spreadRadius: 5,
-            blurRadius: 7,
-          )
-        ],
-      ),
-      child: Card(
-        color: AppColors.whiteColor,
-        clipBehavior: Clip.antiAlias,
-        child: Padding(
-          padding: EdgeInsets.all(kDefaultPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Employee Payslip Generator',
-                style: GoogleFonts.montserrat(
-                  fontSize: kDefaultPadding + kTextPadding,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              buildSizedBoxH(kDefaultPadding * 2),
-              FormBuilder(
-                autovalidateMode: AutovalidateMode.disabled,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(kDefaultPadding),
-                            child: Obx(() => FormBuilderDropdown<Company>(
-                                  name: 'Company Name',
-                                  decoration: const InputDecoration(
-                                    labelText: 'Company Name',
-                                    hintText: 'Company Name',
-                                    border: OutlineInputBorder(),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                  ),
-                                  validator: FormBuilderValidators.required(),
-                                  items: employeeController.companydetails
-                                      .map((company) => DropdownMenuItem(
-                                            value: company,
-                                            child: Text(company.companyName),
-                                          ))
-                                      .toList(),
-                                  onChanged: (value) {
-                                    screenController
-                                        .onCompanySelected(value!.id);
-                                  },
-                                )),
-                          ),
+      // decoration: BoxDecoration(
+      //   boxShadow: [
+      //     BoxShadow(
+      //       color: AppColors.bgGreyColor,
+      //       spreadRadius: 5,
+      //       blurRadius: 7,
+      //     )
+      //   ],
+      // ),
+      child: Padding(
+        padding: EdgeInsets.all(kDefaultPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Text(
+            //   'Employee Generated Payslip',
+            //   // style: GoogleFonts.montserrat(
+            //   //   fontSize: kDefaultPadding + kTextPadding,
+            //   //   fontWeight: FontWeight.bold,
+            //   // ),
+            //   style: TextStyle(
+            //       fontSize: kDefaultPadding + kTextPadding,
+            //       fontWeight: FontWeight.w700),
+            // ),
+            buildSizedBoxH(kDefaultPadding * 2),
+            FormBuilder(
+              autovalidateMode: AutovalidateMode.disabled,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(kDefaultPadding),
+                          child: Obx(() => FormBuilderDropdown<Company>(
+                                name: 'Company Name',
+                                decoration: const InputDecoration(
+                                  labelText: 'Company Name',
+                                  hintText: 'Company Name',
+                                  border: OutlineInputBorder(),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                validator: FormBuilderValidators.required(),
+                                items: employeeController.companydetails
+                                    .map((company) => DropdownMenuItem(
+                                          value: company,
+                                          child: Text(company.companyName),
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {
+                                  screenController
+                                      .onCompanySelected(value!.id);
+                                },
+                              )),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(kDefaultPadding),
-                            child: Obx(() => FormBuilderDropdown<UserModel>(
-                                  name: 'Employee',
-                                  decoration: const InputDecoration(
-                                    labelText: 'Employee',
-                                    hintText: 'Employee',
-                                    border: OutlineInputBorder(),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                  ),
-                                  validator: FormBuilderValidators.required(),
-                                  items: screenController.filteredUsers
-                                      .map((user) => DropdownMenuItem(
-                                            value: user,
-                                            child: Text(user.name),
-                                          ))
-                                      .toList(),
-                                  onChanged: (value) {
-                                    screenController.onUserSelected(
-                                        value!.userTypeId,
-                                        value.companyId,
-                                        value.id);
-                                  },
-                                )),
-                          ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(kDefaultPadding),
+                          child: Obx(() => FormBuilderDropdown<UserModel>(
+                                name: 'Employee',
+                                decoration: const InputDecoration(
+                                  labelText: 'Employee',
+                                  hintText: 'Employee',
+                                  border: OutlineInputBorder(),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                validator: FormBuilderValidators.required(),
+                                items: screenController.filteredUsers
+                                    .map((user) => DropdownMenuItem(
+                                          value: user,
+                                          child: Text(user.name),
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {
+                                  screenController.onUserSelected(
+                                      value!.userTypeId,
+                                      value.companyId,
+                                      value.id);
+                                },
+                              )),
                         ),
-                      ],
-                    ),
-                    buildSizedBoxH(kDefaultPadding * 3),
-                    Obx(() {
-                      if (!screenController.isCompanySelected.value ||
-                          !screenController.isUserSelected.value) {
-                        return Center(
-                            child: Text(
-                                "Please select all the dropdowns to view."));
-                      } else if (screenController.isLoading.value) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else {
-                        buildSizedboxW(kDefaultPadding * 3);
-                        return A4PayslipSheet(
-                            content: IntrinsicHeight(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Zylker',
-                                style: TextStyle(
-                                    fontSize: 21, fontWeight: FontWeight.bold),
-                              ),
-                              buildSizedBoxH(kDefaultPadding * 1),
-                              Text(
-                                  '123 Elm Street Springfield, IL 62704 United States'),
-                              Divider(),
-                              screenSize.width >= kScreenWidthLg
-                                  ? buildEmployeeDetails(
-                                      'Payslip for the month of january 2018',
-                                      context)
-                                  : buildEmployeeDetailsMobile(
-                                      'Payslip for the month of january 2018',
-                                      context),
-                              Divider(),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        screenSize.width >= kScreenWidthLg
-                                            ? buildPayrollSection(
-                                                'Allowance',
-                                              )
-                                            : buildPayrollSectionMobile(
-                                                'Allowance'),
-                                      ],
-                                    ),
-                                  ),
-                                  buildSizedboxW(kDefaultPadding * 2),
-                                  VerticalDivider(
-                                    width: 20,
-                                    thickness: 1,
-                                    color: Colors.grey,
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        screenSize.width >= kScreenWidthLg
-                                            ? buildPayrollDeductionSection(
-                                                'Deduction')
-                                            : buildPayrollDeductionSectionMobile(
-                                                'Deduction')
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              buildSizedBoxH(kDefaultPadding * 3),
-                              Expanded(
-                                  child: buildreimbersment('Reimbursement')),
-                            ],
-                          ),
-                        ));
-                      }
-                    }),
-                    buildSizedBoxH(kDefaultPadding * 3),
-                    Obx(() {
-                      if (screenController.isCompanySelected.value &&
-                          screenController.isUserSelected.value) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            DefaultAddButton(
-                              buttonname: 'Generate',
-                              onClick: () async {
-                                // await screenController.addPayroll();
-                                Get.back();
-                              },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(kDefaultPadding),
+                          child: FormBuilderDropdown<String>(
+                            name: 'Select Year',
+                            decoration: const InputDecoration(
+                              labelText: 'Select Year',
+                              hintText: 'Select Year',
+                              border: OutlineInputBorder(),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
                             ),
+                            validator: FormBuilderValidators.required(),
+                            items: List.generate(10,
+                                    (index) => DateTime.now().year - index)
+                                .map((year) => DropdownMenuItem(
+                                    value: year.toString(),
+                                    child: Text(year.toString())))
+                                .toList(),
+                            onChanged: (value) {
+                              screenController.onYearSelected(value!);
+                              // invoiceController.selectedYear.value = value;
+                            },
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(kDefaultPadding),
+                          child: FormBuilderDropdown<String>(
+                            name: 'Select Month',
+                            decoration: const InputDecoration(
+                              labelText: 'Select Month',
+                              hintText: 'Select Month',
+                              border: OutlineInputBorder(),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                            ),
+                            validator: FormBuilderValidators.required(),
+                            items: List.generate(12, (index) => index + 1)
+                                .map((month) => DropdownMenuItem(
+                                      value: month.toString(),
+                                      child: Text(DateTime(2022, month)
+                                          .toString()
+                                          .split(' ')[0]
+                                          .split('-')[1]),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              screenController.onMonthSelected(value!);
+                              // invoiceController.selectedMonth.value = value;
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  buildSizedBoxH(kDefaultPadding * 3),
+                  Obx(() {
+                    if (!screenController.isCompanySelected.value ||
+                        !screenController.isUserSelected.value ||
+                        !screenController.isYearSelected.value ||
+                        !screenController.isMonthSelected.value) {
+                      return Center(
+                          child: Text(
+                              "Please select all the dropdowns to view."));
+                    } else if (screenController.isLoading.value) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (screenController.noDataFound.value) {
+                      return Center(child: Text("No Generated Data Found!"));
+                    } else {
+                      buildSizedboxW(kDefaultPadding * 3);
+                      return A4PayslipSheet(
+                          content: IntrinsicHeight(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Zylker',
+                              style: TextStyle(
+                                  fontSize: 21, fontWeight: FontWeight.bold),
+                            ),
+                            buildSizedBoxH(kDefaultPadding * 1),
+                            Text(
+                                '123 Elm Street Springfield, IL 62704 United States'),
+                            Divider(),
+                            screenSize.width >= kScreenWidthLg
+                                ? buildEmployeeDetails(
+                                    'Payslip for the month of ${screenController.payslipDetails.value.month},${screenController.payslipDetails.value.year}',
+                                    context)
+                                : buildEmployeeDetailsMobile(
+                                    'Payslip for the month of ${screenController.payslipDetails.value.month},${screenController.payslipDetails.value.year}',
+                                    context),
+                            Divider(),
+                            Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      screenSize.width >= kScreenWidthLg
+                                          ? buildPayrollSection(
+                                              'Allowance',
+                                            )
+                                          : buildPayrollSectionMobile(
+                                              'Allowance'),
+                                    ],
+                                  ),
+                                ),
+                                buildSizedboxW(kDefaultPadding * 2),
+                                VerticalDivider(
+                                  width: 20,
+                                  thickness: 1,
+                                  color: Colors.grey,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      screenSize.width >= kScreenWidthLg
+                                          ? buildPayrollDeductionSection(
+                                              'Deduction')
+                                          : buildPayrollDeductionSectionMobile(
+                                              'Deduction')
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            buildSizedBoxH(kDefaultPadding * 3),
+                            Expanded(
+                                child: buildreimbersment('Reimbursement')),
                           ],
-                        );
-                      } else {
-                        return SizedBox.shrink();
-                      }
-                    }),
-                    buildSizedBoxH(kDefaultPadding * 5),
-                  ],
-                ),
+                        ),
+                      ));
+                    }
+                  }),
+                  buildSizedBoxH(kDefaultPadding * 3),
+                  // Obx(() {
+                  //   if (screenController.isCompanySelected.value &&
+                  //       screenController.isUserSelected.value) {
+                  //     return Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         DefaultAddButton(
+                  //           buttonname: 'Generate',
+                  //           onClick: () async {
+                  //             // await screenController.addPayroll();
+                  //             Get.back();
+                  //           },
+                  //         ),
+                  //       ],
+                  //     );
+                  //   } else {
+                  //     return SizedBox.shrink();
+                  //   }
+                  // }),
+                  buildSizedBoxH(kDefaultPadding * 5),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -326,18 +358,78 @@ class PayslipGenerator extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               buildSizedBoxH(kDefaultPadding * 2),
-              ...screenController.allowances.map((item) => Padding(
-                    padding: EdgeInsets.only(bottom: kDefaultPadding / 2),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(item.allowance),
-                        buildSizedboxW(kDefaultPadding * 4),
-                        Text(item.amount.toString()),
-                        buildSizedBoxH(kDefaultPadding * 1),
-                      ],
+              Padding(
+                padding: EdgeInsets.only(bottom: kDefaultPadding / 2),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        // style: DefaultTextStyle.of(context).style,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: "Employee Id: ",
+                            style: TextStyle(fontWeight: FontWeight.w400),
+                          ),
+                          TextSpan(
+                            text:
+                                "${screenController.payslipDetails.value.employeeId}",
+                          ),
+                        ],
+                      ),
                     ),
-                  )),
+                    buildSizedBoxH(kDefaultPadding * 1),
+                    RichText(
+                      text: TextSpan(
+                        // style: DefaultTextStyle.of(context).style,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: "Leave Days: ",
+                            style: TextStyle(fontWeight: FontWeight.w400),
+                          ),
+                          TextSpan(
+                            text:
+                                "${screenController.payslipDetails.value.leavedays}",
+                          ),
+                        ],
+                      ),
+                    ),
+                    buildSizedBoxH(kDefaultPadding * 1),
+                    RichText(
+                      text: TextSpan(
+                        // style: DefaultTextStyle.of(context).style,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: "Overtime Hour: ",
+                            style: TextStyle(fontWeight: FontWeight.w400),
+                          ),
+                          TextSpan(
+                            text:
+                                "${screenController.payslipDetails.value.overtimeHours}",
+                          ),
+                        ],
+                      ),
+                    ),
+                    buildSizedBoxH(kDefaultPadding * 1),
+                    RichText(
+                      text: TextSpan(
+                        // style: DefaultTextStyle.of(context).style,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: "Regular Hours: ",
+                            style: TextStyle(fontWeight: FontWeight.w400),
+                          ),
+                          TextSpan(
+                            text:
+                                "${screenController.payslipDetails.value.regularHours}",
+                          ),
+                        ],
+                      ),
+                    ),
+                    buildSizedBoxH(kDefaultPadding * 1),
+                  ],
+                ),
+              ),
               buildSizedBoxH(kDefaultPadding * 3),
             ],
           ),
@@ -410,7 +502,7 @@ class PayslipGenerator extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 2,
-                    child: Text(item.allowance),
+                    child: Text(item.allowanceName),
                   ),
                   Expanded(
                     flex: 1,
@@ -502,7 +594,7 @@ class PayslipGenerator extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 5,
-                    child: Text(item.allowance),
+                    child: Text(item.allowanceName),
                   ),
                   buildSizedBoxH(kDefaultPadding * 2),
                   Expanded(flex: 2, child: Text(item.amount.toString())),
@@ -531,78 +623,46 @@ class PayslipGenerator extends StatelessWidget {
   }
 
   Widget buildPayrollSectionMobile(String title) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Padding(
-        //   padding: EdgeInsets.symmetric(vertical: 16.0),
-        //   child: Text(
-        //     title,
-        //     style: TextStyle(
-        //       fontSize: 18,
-        //       fontWeight: FontWeight.bold,
-        //     ),
-        //   ),
-        // ),
-        Row(
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+      buildSizedBoxH(kDefaultPadding / 2),
+      Row(
+        children: [
+          Expanded(flex: 3, child: Text('Item', style: TextStyle(fontWeight: FontWeight.bold))),
+          Expanded(flex: 2, child: Text('Amount', style: TextStyle(fontWeight: FontWeight.bold))),
+          Expanded(flex: 1, child: Text('YTD', style: TextStyle(fontWeight: FontWeight.bold))),
+        ],
+      ),
+      buildSizedBoxH(kDefaultPadding / 2),
+      ...screenController.allowances.map((item) => Padding(
+        padding: EdgeInsets.symmetric(vertical: 8),
+        child: Row(
           children: [
-            Expanded(
-              flex: 22,
-              child: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            Expanded(
-              flex: 16,
-              child:
-                  Text('Amount', style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            Expanded(
-              flex: 10,
-              child: Text('YTD', style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
+            Expanded(flex: 3, child: Text(item.allowanceName, overflow: TextOverflow.ellipsis)),
+            Expanded(flex: 2, child: Text(item.amount.toString(), textAlign: TextAlign.right)),
+            Expanded(flex: 1, child: Text('0.00', textAlign: TextAlign.right)),
           ],
         ),
-        buildSizedBoxH(kDefaultPadding / 2),
-        ...screenController.allowances.map((item) => Padding(
-              padding: EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 22,
-                    child: Text(item.allowance),
-                  ),
-                  Expanded(
-                    flex: 16,
-                    child: Text(item.amount.toString()),
-                  ),
-                  Expanded(
-                    flex: 10,
-                    child: Text('0.00'), // Placeholder for YTD value
-                  ),
-                ],
-              ),
-            )),
-        SizedBox(height: 24),
-        Row(
-          children: [
-            Expanded(
-              flex: 5,
-              child: Text(
-                'Total Allowance',
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
+      )),
+      Divider(),
+      Row(
+        children: [
+          Expanded(flex: 3, child: Text('Total Allowance', style: TextStyle(fontWeight: FontWeight.w600))),
+          Expanded(
+            flex: 3,
+            child: Text(
+              '500', // Replace with actual total
+              style: TextStyle(fontWeight: FontWeight.w600),
+              textAlign: TextAlign.right,
             ),
-            Expanded(
-              flex: 5,
-              child: Text(
-                '500', // Replace with actual total
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
-            ),
-          ],
-        )
-      ],
-    );
-  }
+          ),
+        ],
+      )
+    ],
+  );
+}
 
   Widget buildPayrollDeductionSection(
     String title,
@@ -642,7 +702,7 @@ class PayslipGenerator extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 5,
-                    child: Text(item.deduction),
+                    child: Text(item.deductionName),
                   ),
                   buildSizedBoxH(kDefaultPadding * 2),
                   Expanded(flex: 2, child: Text(item.amount.toString())),
@@ -654,7 +714,7 @@ class PayslipGenerator extends StatelessWidget {
                 ],
               ),
             )),
-        buildSizedBoxH(kDefaultPadding * 3),
+        buildSizedBoxH(kDefaultPadding * 5),
         Row(
           children: [
             Expanded(
@@ -670,79 +730,47 @@ class PayslipGenerator extends StatelessWidget {
     );
   }
 
-  Widget buildPayrollDeductionSectionMobile(String title) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Padding(
-        //   padding: EdgeInsets.symmetric(vertical: 16.0),
-        //   child: Text(
-        //     title,
-        //     style: TextStyle(
-        //       fontSize: 18,
-        //       fontWeight: FontWeight.bold,
-        //     ),
-        //   ),
-        // ),
-        Row(
+ Widget buildPayrollDeductionSectionMobile(String title) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+      buildSizedBoxH(kDefaultPadding / 2),
+      Row(
+        children: [
+          Expanded(flex: 3, child: Text('Item', style: TextStyle(fontWeight: FontWeight.bold))),
+          Expanded(flex: 2, child: Text('Amount', style: TextStyle(fontWeight: FontWeight.bold))),
+          Expanded(flex: 1, child: Text('YTD', style: TextStyle(fontWeight: FontWeight.bold))),
+        ],
+      ),
+      buildSizedBoxH(kDefaultPadding / 2),
+      ...screenController.deductions.map((item) => Padding(
+        padding: EdgeInsets.symmetric(vertical: 8),
+        child: Row(
           children: [
-            Expanded(
-              flex: 22,
-              child: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            Expanded(
-              flex: 16,
-              child:
-                  Text('Amount', style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            Expanded(
-              flex: 10,
-              child: Text('YTD', style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
+            Expanded(flex: 3, child: Text(item.deductionName, overflow: TextOverflow.ellipsis)),
+            Expanded(flex: 2, child: Text(item.amount.toString(), textAlign: TextAlign.right)),
+            Expanded(flex: 1, child: Text('0.00', textAlign: TextAlign.right)),
           ],
         ),
-        buildSizedBoxH(kDefaultPadding / 2),
-        ...screenController.deductions.map((item) => Padding(
-              padding: EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 22,
-                    child: Text(item.deduction),
-                  ),
-                  Expanded(
-                    flex: 16,
-                    child: Text(item.amount.toString()),
-                  ),
-                  Expanded(
-                    flex: 10,
-                    child: Text('0.00'), // Placeholder for YTD value
-                  ),
-                ],
-              ),
-            )),
-        SizedBox(height: 24),
-        Row(
-          children: [
-            Expanded(
-              flex: 5,
-              child: Text(
-                'Total Deduction',
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
+      )),
+      Divider(),
+      Row(
+        children: [
+          Expanded(flex: 3, child: Text('Total Deduction', style: TextStyle(fontWeight: FontWeight.w600))),
+          Expanded(
+            flex: 3,
+            child: Text(
+              '500', // Replace with actual total
+              style: TextStyle(fontWeight: FontWeight.w600),
+              textAlign: TextAlign.right,
             ),
-            Expanded(
-              flex: 5,
-              child: Text(
-                '500', // Replace with actual total
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
-            ),
-          ],
-        )
-      ],
-    );
-  }
+          ),
+        ],
+      )
+    ],
+  );
+}
 
   Widget buildreimbersment(
     String title,

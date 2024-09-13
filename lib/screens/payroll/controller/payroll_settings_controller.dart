@@ -25,7 +25,7 @@ class PayrollSettingsController extends GetxController {
   var selectedYear = ''.obs;
   var selectedMonth = ''.obs;
   var payslipDetails = PayslipDetails(
-      id: '',
+     
       employeeId: '',
       year: 0,
       month: 0,
@@ -34,21 +34,21 @@ class PayrollSettingsController extends GetxController {
       paydate: DateTime.now(),
       paymentMethod: '',
       totalAmount: 0,
-      overtimeHours: '',
+      overtimeHours: 0,
       regularHours: 0,
       leavedays: 0,
       holidays: 0,
       workfromhomeDays: 0,
       projectCode: '',
       location: '',
-      department: '',
+      department: null,
       remarks: '',
       approved: false,
       approvedBy: '',
       payslipFileName: '',
       status: '',
       allowances: [],
-      deductions: []).obs;
+      deductions: [], companyId: '', userId: '', isActive: false).obs;
   var showTabBar = false.obs;
   var payslip = <PayslipDetails>[].obs;
   var allowances = <Allowance>[].obs;
@@ -77,6 +77,7 @@ class PayrollSettingsController extends GetxController {
   final payslipFileNameController = TextEditingController();
   final statusController = TextEditingController();
   var noDataFound = false.obs;
+  var isGenerated=false.obs;
 
   @override
   void onInit() {
@@ -89,8 +90,8 @@ class PayrollSettingsController extends GetxController {
 
   void _updatePayslipControllers() {
     for (var payslip in payslip) {
-      if (!payslipController.containsKey(payslip.id)) {
-        payslipController[payslip.id] = TextEditingController();
+      if (!payslipController.containsKey(payslip.companyId)) {
+        payslipController[payslip.companyId] = TextEditingController();
       }
     }
   }
@@ -242,7 +243,7 @@ class PayrollSettingsController extends GetxController {
             DateFormat('yyyy-MM-dd').format(payslipData.paydate);
         paymentMethodController.text = payslipData.paymentMethod;
         totalAmountController.text = payslipData.totalAmount.toString();
-        overtimeHoursController.text = payslipData.overtimeHours;
+        overtimeHoursController.text = payslipData.overtimeHours.toString();
         regularHoursController.text = payslipData.regularHours.toString();
         leaveDaysController.text = payslipData.leavedays.toString();
         holidaysController.text = payslipData.holidays.toString();
@@ -250,7 +251,7 @@ class PayrollSettingsController extends GetxController {
             payslipData.workfromhomeDays.toString();
         projectCodeController.text = payslipData.projectCode;
         locationController.text = payslipData.location;
-        departmentController.text = payslipData.department;
+        departmentController.text = 'null';
         remarksController.text = payslipData.remarks;
         approvedController.text = payslipData.approved.toString();
         approvedByController.text = payslipData.approvedBy;
@@ -303,34 +304,31 @@ class PayrollSettingsController extends GetxController {
         "approved_by": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         "payslip_file_name": payslipFileNameController.text,
         "status": statusController.text,
-        "is_active": true
-      },
-      "allowances": {
-        "allowance": allowances.map((allowances) {
+        "is_active": true,
+      
+      
+        "allowances": allowances.map((allowances) {
           return {
-            "allowance_id": allowances.id,
-            "allowance": allowances.allowanceName,
+            "id": allowances.id,
+            "allowance_name": allowances.allowanceName,
             "amount": allowanceControllers[allowances.id]?.text ?? '0'
           };
         }).toList(),
-        "remarks": "string",
-        "status": "string",
-        "is_active": true
-      },
-      "deductions": {
-        "deduction": deductions.map((deductions) {
+       
+      
+      
+        "deductions": deductions.map((deductions) {
           return {
-            "deduction_id": deductions.id,
-            "deduction": deductions.deductionName,
+            "id": deductions.id,
+            "deduction_name": deductions.deductionName,
             "amount": deductionControllers[deductions.id]?.text ?? '0'
           };
         }).toList(),
-        "remarks": "string",
-        "status": "string",
-        "is_active": true
+       
       }
+      
     };
-
+    isGenerated.value=false;
     final result = await NetWorkManager.shared().request(
         url: ApiUrls.BASE_URL + ApiUrls.ADD_PAYSLIP_DETAILS,
         method: 'post',
@@ -338,7 +336,8 @@ class PayrollSettingsController extends GetxController {
         data: requestBody);
 
     if (result.isLeft) {
-      awesomeOkDialog(message: result.left.message);
+      isGenerated.value=true;
+      awesomeOkDialog(message: "Payslip already generated for this month");
     } else {
       // Show success message
       final message=result.right['message'];

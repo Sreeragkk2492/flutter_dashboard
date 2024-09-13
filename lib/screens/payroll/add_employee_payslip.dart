@@ -530,7 +530,7 @@ class AddEmployeePayslip extends StatelessWidget {
                                 invoiceController.selectedYear.value,
                                 invoiceController.selectedMonth.value);
                             await invoiceController.fetchPayslipDetails();
-                            if (!invoiceController.noDataFound.value) {
+                            if (!invoiceController.noDataFound.value && !screenController.isGenerated.value) {
                               Get.toNamed(Routes.InvoicePage);
                             }
                           },
@@ -597,28 +597,23 @@ class AddEmployeePayslip extends StatelessWidget {
       String label, TextEditingController controller) {
     return Padding(
       padding: EdgeInsets.only(bottom: kDefaultPadding),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+       crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            flex: 2,
-            child: Text(
-              label,
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
+          Text(
+            label,
+            style: TextStyle(fontWeight: FontWeight.w500),
           ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Text(
-                controller.text,
-                style: TextStyle(fontSize: 14),
-              ),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              controller.text,
+              style: TextStyle(fontSize: 14),
             ),
           ),
         ],
