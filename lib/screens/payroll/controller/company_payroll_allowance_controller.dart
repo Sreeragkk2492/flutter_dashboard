@@ -6,6 +6,7 @@ import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
 import 'package:flutter_dashboard/models/payroll/prcompany_payroll_allowance_model.dart';
+import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,14 +27,19 @@ class CompanyPayrollAllowanceController extends GetxController {
   var isCompanySelected = false.obs;
   var isLoading = false.obs;
   var selectedCompanycode = ''.obs;
-   var hasExplicitlySelectedCompany = false.obs;
+  var hasExplicitlySelectedCompany = false.obs;
 
-    @override
+  @override
   void onInit() {
     super.onInit();
-    resetSelection();
+    final employeeController = Get.put(EmployeeController());
+    if (!employeeController.isSuperAdmin.value &&
+        employeeController.companydetails.isNotEmpty) {
+      final company = employeeController.companydetails[0];
+      onCompanySelected(company.id, company.companyCode);
+    }
+   
   }
-
 
   void resetSelection() {
     isCompanySelected.value = false;
@@ -44,18 +50,15 @@ class CompanyPayrollAllowanceController extends GetxController {
     selectedCompanycode.value = '';
   }
 
-  void onCompanySelected(String? companyId, String? companycode) {
-    if (companyId != null &&
-        companyId.isNotEmpty &&
-        companycode != null &&
-        companycode.isNotEmpty) {
+  void onCompanySelected(String? companyId, String? companyCode) {
+    if (companyId != null && companyId.isNotEmpty && companyCode != null && companyCode.isNotEmpty) {
       selectedCompanyId.value = companyId;
-      selectedCompanycode.value = companycode;
+      selectedCompanycode.value = companyCode;
       isCompanySelected.value = true;
-       hasExplicitlySelectedCompany.value = true;
+      hasExplicitlySelectedCompany.value = true;
       fetchCompanyPayrollAllowance();
     } else {
-     resetSelection();
+      resetSelection();
     }
   }
 
@@ -150,9 +153,7 @@ class CompanyPayrollAllowanceController extends GetxController {
         url: ApiUrls.BASE_URL + ApiUrls.ADD_COMPANY_PAYROLL_ALLOWANCE,
         method: 'post',
         isAuthRequired: true,
-        params: {
-          "company_code":selectedCompanycode.value
-        },
+        params: {"company_code": selectedCompanycode.value},
         data: requestBody);
 
     if (result.isLeft) {

@@ -26,9 +26,11 @@ class CompanyHolidayListController extends GetxController {
   }
 
 //to reset the selection state
+ 
   void resetSelectionState() {
     isCompanySelected.value = false;
     selectedCompanyId.value = '';
+    holiday.clear(); // Clear the holiday list
     leaveTypeEntries.clear();
     leaveTypeEntries.add(HolidayTypeEntry(
       typeController: TextEditingController(),
@@ -44,9 +46,12 @@ class CompanyHolidayListController extends GetxController {
   }
 
   void onCompanySelected(String companyId) {
-    selectedCompanyId.value = companyId;
-    isCompanySelected.value = true;
-    fetchHolidayForCompany();
+    if (selectedCompanyId.value != companyId) {
+      selectedCompanyId.value = companyId;
+      isCompanySelected.value = true;
+      holiday.clear(); // Clear the previous company's holiday data
+      fetchHolidayForCompany();
+    }
   }
 
 

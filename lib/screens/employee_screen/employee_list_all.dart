@@ -19,6 +19,9 @@ class EmployeeListAll extends StatelessWidget {
   EmployeeListAll({super.key});
   final screenController = Get.put(EmployeeController());
   final _dataTableHorizontalScrollController = ScrollController();
+
+ 
+  
   @override
   Widget build(BuildContext context) {
     return PortalMasterLayout(
@@ -47,157 +50,168 @@ class EmployeeListAll extends StatelessWidget {
                 left: kDefaultPadding / 2,
                 right: kDefaultPadding / 2),
             child: Container(
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                    color: AppColors.bgGreyColor,
-                    spreadRadius: 5,
-                    blurRadius: 7)
-              ]),
-              child: Card(
-                color: AppColors.whiteColor,
-                clipBehavior: Clip.antiAlias,
-                child: Padding(
-                  padding: EdgeInsets.all(kDefaultPadding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const CardHeader(
-                        title: 'Employee Details',
-                        showDivider: false,
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            final double dataTableWidth =
-                                max(kScreenWidthXxl, constraints.maxWidth);
-
-                            return Scrollbar(
-                              controller: _dataTableHorizontalScrollController,
-                              thumbVisibility: true,
-                              trackVisibility: true,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                controller:
-                                    _dataTableHorizontalScrollController,
-                                child: SizedBox(
-                                  width: dataTableWidth,
-                                  child:  Obx(()=>
-                                   DataTable(
-                                        border: const TableBorder(
-                                            verticalInside:
-                                                BorderSide(width: 0.2),
-                                            top: BorderSide(width: 0.5),
-                                            right: BorderSide(width: 0.5),
-                                            left: BorderSide(width: 0.5),
-                                            bottom: BorderSide(width: 0.5)),
-                                       dividerThickness: 2,
-                                        sortColumnIndex: 0,
-                                        sortAscending: true,
-                                        showCheckboxColumn: false,
-                                        showBottomBorder: true,
-                                        columns: [
-                                          DataColumn(
-                                              // numeric: true,
-                                              label: Row(
-                                            children: [
-                                              const Text('Emp Name'),
-                                              IconButton(
-                                                  onPressed: () {},
-                                                  icon: const Icon(
-                                                      Icons.arrow_drop_down))
-                                            ],
-                                          )),
-                                          DataColumn(
-                                              label: Row(
-                                            children: [
-                                              const Text('Emp Id'),
-                                              IconButton(
-                                                  onPressed: () {},
-                                                  icon: const Icon(Icons
-                                                      .arrow_drop_down_sharp))
-                                            ],
-                                          )),
-                                          DataColumn(
-                                              label: Row(
-                                            children: [
-                                              const Text('Status'),
-                                              IconButton(
-                                                  onPressed: () {},
-                                                  icon: const Icon(Icons
-                                                      .arrow_drop_down_sharp))
-                                            ],
-                                          )),
+              // decoration: BoxDecoration(boxShadow: [
+              //   BoxShadow(
+              //       color: AppColors.bgGreyColor,
+              //       spreadRadius: 5,
+              //       blurRadius: 7)
+              // ]),
+              child: Padding(
+                padding: EdgeInsets.all(kDefaultPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // const CardHeader(
+                    //   title: 'Employee Details',
+                    //   showDivider: false,
+                    // ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final double dataTableWidth =
+                              max(kScreenWidthXxl, constraints.maxWidth);
+              
+                          return Scrollbar(
+                            controller: _dataTableHorizontalScrollController,
+                            thumbVisibility: true,
+                            trackVisibility: true,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              controller:
+                                  _dataTableHorizontalScrollController,
+                              child: SizedBox(
+                                width: dataTableWidth,
+                                child:  Obx(()=>
+                                 DataTable(
+                                  headingTextStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+                                  headingRowHeight: 50,
+                                    headingRowColor: WidgetStateProperty.all(AppColors.bgGreyColor),
+                                     dividerThickness: 2,
+                                      sortColumnIndex: 0,
+                                      sortAscending: true,
+                                      showCheckboxColumn: false,
+                                      showBottomBorder: true,
+                                      columns: [
+                                        DataColumn(
+                                          onSort: (columnIndex, _) {
+                                            if(screenController.isSortasc.value){
+                                              screenController.users.sort((a, b) => a.name.compareTo(b.name));
+                                            }else{
+                                               screenController.users.sort((a, b) => b.name.compareTo(a.name));
+                                            }
+                                            screenController.isSortasc.value=!screenController.isSortasc.value;
+                                          },
+                                            // numeric: true,
+                                            label: Row(
+                                          children: [
+                                            const Text('Employee Name'),
+                                           
+                                          ],
+                                        )),
+                                        DataColumn(
+                                            label: Row(
+                                          children: [
+                                            const Text('Employee Id'),
+                                           
+                                          ],
+                                        )),
                                           DataColumn(
                                             label: Row(
-                                              children: [
-                                                const Text('Mob Number'),
-                                                IconButton(
-                                                    onPressed: () {},
-                                                    icon: const Icon(Icons
-                                                        .arrow_drop_down_sharp))
-                                              ],
-                                            ),
-                                          ),
-                                          const DataColumn(
-                                            label: Text(''),
-                                          ),
-                                        ],
-                                        rows: List.generate(
-                                            screenController.users.length,
-                                            (index) {
-                                          var user =
-                                              screenController.users[index];
-                                          return DataRow.byIndex(
-                                            index: index,
-                                            cells: [
-                                              DataCell(GestureDetector(
-                                                  onTap: () {
-                                                    DialogWidgets
-                                                        .showEmpDetailsDialog(
-                                                            context,
-                                                            DialogType.info);
-                                                  },
-                                                  child: Text(user.name))),
-                                              DataCell(Text(user.employeeId.toString())),
-                                              DataCell(Text('')),
-                                              DataCell(Text(
-                                                  user.phoneNumber.toString())),
-                                              DataCell(TextButton(
-                                                  onPressed: () {
-                                                    DialogWidgets
-                                                        .showEmpEditDialog(
-                                                            context,
-                                                            DialogType.info,
-                                                            user);
-                                                  },
-                                                  child: const Text(
-                                                    'Edit',
-                                                    style: TextStyle(
-                                                        color:
-                                                            AppColors.blackColor,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )))
+                                          children: [
+                                            const Text('Date of Birth'),
+                                            
+                                          ],
+                                        )),
+                                        DataColumn(
+                                            label: Row(
+                                          children: [
+                                            const Text('Address'),
+                                           
+                                          ],
+                                        )),
+                                        DataColumn(
+                                          label: Row(
+                                            children: [
+                                              const Text('Mob Number'),
+                                             
                                             ],
-                                          );
-                                        }), 
-                                       // source: EmployeeDataSource(screenController.users, context),
-                                      
-                                    ),
+                                          ),
+                                        ),
+                                        const DataColumn(
+                                          label: Text(''),
+                                        ),
+                                      ],
+                                      rows: List.generate(
+                                          screenController.users.length,
+                                          (index) {
+                                        var user =
+                                            screenController.users[index];
+                                        return DataRow.byIndex(
+                                          index: index,
+                                          cells: [
+                                            DataCell(GestureDetector(
+                                                onTap: () {
+                                                  DialogWidgets
+                                                      .showEmpDetailsDialog(
+                                                          context,
+                                                          DialogType.info);
+                                                },
+                                                child: Text(user.name))),
+                                            DataCell(Text(user.employeeId.toString())),
+                                             DataCell(Text(user.dob.toString())),
+                                           DataCell(_buildAddressCell(user.address.toString())),
+                                            DataCell(Text(
+                                                user.phoneNumber.toString())),
+                                            DataCell(TextButton(
+                                                onPressed: () {
+                                                  DialogWidgets
+                                                      .showEmpEditDialog(
+                                                          context,
+                                                          DialogType.info,
+                                                          user);
+                                                },
+                                                child: const Text(
+                                                  'Edit',
+                                                  style: TextStyle(
+                                                      color:
+                                                          AppColors.blackColor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )))
+                                          ],
+                                        );
+                                      }), 
+                                     // source: EmployeeDataSource(screenController.users, context),
+                                    
                                   ),
                                 ),
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             )),
       ],
     )));
+  }
+
+    Widget _buildAddressCell(String address) {
+       // Truncate the address to show only the first half
+  String truncatedAddress = address.length > 20
+      ? '${address.substring(0, 20)}...'
+      : address;
+    return Tooltip(
+      message: address,
+      child: Text(
+        truncatedAddress,
+        overflow: TextOverflow.ellipsis,
+       // maxLines: 1,
+      ),
+    );
   }
 }

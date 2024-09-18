@@ -40,40 +40,47 @@ class AuthController extends GetxController {
 //     }
 // }
   login() async {
-    try{
-    final result = await NetWorkManager.shared().request(
-        url: ApiUrls.BASE_URL + ApiUrls.COMPANY_ADMIN_LOGIN_PAGE,
-        params: {
-          'username': usernameController.text,
-          'password': passwordController.text
-        },
-        method: 'get',
-        isAuthRequired: false);
-    if (result.isLeft) {
-      awesomeOkDialog(message: result.left.message); 
-    } else {
-      final data = result.right;
-       token= data['token'];
-      final companyCode = data['company_code'];
+    try {
+      final result = await NetWorkManager.shared().request(
+          url: ApiUrls.BASE_URL + ApiUrls.COMPANY_ADMIN_LOGIN_PAGE,
+          params: {
+            'username': usernameController.text,
+            'password': passwordController.text
+          },
+          method: 'get',
+          isAuthRequired: false);
+      if (result.isLeft) {
+        awesomeOkDialog(message: result.left.message);
+        print(result.left.message);
+      } else {
+        final data = result.right;
 
-       // Store token and company code securely
-      await StorageServices().write("token", token);
-      await StorageServices().write("company_code", companyCode);
+       
+        token = data['token'];
+        companyId = data['company_id'];
+        userType = data['user_type'];
 
-      // Set global variables if needed
-     // this.token = token;
-      // this.companyCode = companyCode;
+        // Store token and company code securely
+        await StorageServices().write("token", token);
+        await StorageServices().write("company_id", companyId);
+        await StorageServices().write('user_type', userType);
 
-      Get.toNamed(Routes.DASHBOARD);
+        // Set global variables if needed
+        // this.token = token;
+        // this.companyCode = companyCode;
+
+        Get.toNamed(Routes.DASHBOARD, );
+      }
+    } on SocketException catch (e) {
+      awesomeOkDialog(
+          message:
+              "Network error: ${e.message}. Please check your internet connection.");
+    } on HttpException catch (e) {
+      awesomeOkDialog(message: "HTTP error: ${e.message}");
+    } on ClientException catch (e) {
+      awesomeOkDialog(message: "Client exception: ${e.message}. URI: ${e.uri}");
+    } catch (e) {
+      awesomeOkDialog(message: "Unexpected error: $e");
     }
-  }on SocketException catch (e) {
-    awesomeOkDialog(message: "Network error: ${e.message}. Please check your internet connection.");
-  } on HttpException catch (e) {
-    awesomeOkDialog(message: "HTTP error: ${e.message}");
-  } on ClientException catch (e) {
-    awesomeOkDialog(message: "Client exception: ${e.message}. URI: ${e.uri}");
-  } catch (e) {
-    awesomeOkDialog(message: "Unexpected error: $e");
   }
 }
-} 

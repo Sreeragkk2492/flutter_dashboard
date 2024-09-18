@@ -14,7 +14,7 @@ String roleId = "";
 String roleName = "";
 
 String deviceId = "";
-
+String userType="";
 String companyId = "";
 
 bool isBiometricAuthEnabled = false;

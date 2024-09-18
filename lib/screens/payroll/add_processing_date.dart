@@ -4,6 +4,7 @@ import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
+import 'package:flutter_dashboard/models/company_models/company_models.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/payroll/controller/company_pro_date_controller.dart';
 import 'package:flutter_dashboard/screens/payroll/widget/four_formfield.dart';
@@ -134,30 +135,51 @@ class AddProcessingDate extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Obx(
-                            () => FormBuilderDropdown(
-                              // controller: widget.companyNameController,
-                              name: 'Company Name',
-                              decoration: InputDecoration(
-                                labelText: 'Company Name',
-                                hintText: 'Company Name',
-                                border: OutlineInputBorder(),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                              ),
-                              // enableSuggestions: false,
-                              // keyboardType: TextInputType.name,
-                              validator: FormBuilderValidators.required(),
-                              items: employeeController.companydetails
-                                  .map((company) => DropdownMenuItem(
-                                        value: company.id,
-                                        child: Text(company.companyName),
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                screenController.selectedCompany = value;
-                              },
-                              // onSaved: (value) => (_formData.firstname = value ?? ''),
-                            ),
+                            () {
+                               // Check if there's only one company (the logged-in user's company)
+                  if (employeeController.companydetails.isEmpty) {
+                    // Show loading indicator while fetching company details
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (employeeController.isSuperAdmin.value) {
+                    // Dropdown for superadmin
+                    return FormBuilderDropdown<Company>(
+                      name: 'Company Name',
+                      decoration: InputDecoration(
+                        labelText: 'Company Name',
+                        hintText: 'Select Company',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      validator: FormBuilderValidators.required(),
+                      items: employeeController.companydetails
+                          .map((company) => DropdownMenuItem(
+                                value: company,
+                                child: Text(company.companyName),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        employeeController.setSelectedCompany(value!.id, value.companyCode);
+                      },
+                    );
+                  } else {
+                    // Single company display for company admin
+                    final company = employeeController.companydetails[0];
+                    // employeeController.setSelectedCompany(
+                    //     company.id, company.companyCode);
+                    return FormBuilderTextField(
+                      name: 'Company Name',
+                      initialValue: company.companyName,
+                      decoration: InputDecoration(
+                        labelText: 'Company Name',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      readOnly: true,
+                    );
+                  }
+                            }
                           ),
                         ),
                         buildSizedboxW(kDefaultPadding),

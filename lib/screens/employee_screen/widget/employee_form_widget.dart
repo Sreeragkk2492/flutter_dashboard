@@ -67,43 +67,52 @@ class EmployeeFormWidget extends StatelessWidget {
             Row(
               children: [
                 Flexible(
-                  child: Obx(()=>
-                      FormBuilderDropdown<Company>(
-                              // controller: widget.companyNameController,
-                              name: 'Company Name',
-                              decoration: InputDecoration(
-                                labelText: 'Company Name',
-                                hintText: 'Company Name',
-                                border: OutlineInputBorder(),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                              ),
-                              // enableSuggestions: false,
-                              // keyboardType: TextInputType.name,
-                              validator: FormBuilderValidators.required(),
-                              items: screenController.companydetails
-                                  .map((company) => DropdownMenuItem(
-                                        value: Company(
-                                            id: company.id,
-                                            companyName: company.companyName,
-                                            companyCode: company.companyCode,
-                                            databaseName: company.databaseName,
-                                            companyTypeId:
-                                                company.companyTypeId,
-                                            remarks: company.remarks,
-                                            status: company.status,
-                                            isActive: company.isActive,
-                                            companytype: company.companytype),
-                                        child: Text(company.companyName),
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                screenController.setSelectedCompany(
-                                    value!.id, value.companyCode);
-                              },
-                              // onSaved: (value) => (_formData.firstname = value ?? ''),
-                            ),
-                  ),
+                  child: Obx(() {
+                    
+                      if (screenController.companydetails.isEmpty) {
+                    // Show loading indicator while fetching company details
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (screenController.isSuperAdmin.value) {
+                    // Dropdown for superadmin
+                    return FormBuilderDropdown<Company>(
+                      name: 'Company Name',
+                      decoration: InputDecoration(
+                        labelText: 'Company Name',
+                        hintText: 'Select Company',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      validator: FormBuilderValidators.required(),
+                      items: screenController.companydetails
+                          .map((company) => DropdownMenuItem(
+                                value: company,
+                                child: Text(company.companyName),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        screenController.setSelectedCompany(value!.id, value.companyCode);
+                      },
+                    );
+                  } else {
+                    // Single company display for company admin
+                    final company = screenController.companydetails[0];
+                    // screenController.setSelectedCompany(
+                    //     company.id, company.companyCode);
+                    return FormBuilderTextField(
+                      name: 'Company Name',
+                      initialValue: company.companyName,
+                      decoration: InputDecoration(
+                        labelText: 'Company Name',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      readOnly: true,
+                    );
+                  }
+                    
+                  }),
                 ),
                 buildSizedboxW(kDefaultPadding),
               ],
@@ -203,8 +212,8 @@ class EmployeeFormWidget extends StatelessWidget {
                 ),
                 buildSizedboxW(kDefaultPadding),
                 Flexible(
-                  child:Obx(()=>
-                     FormBuilderDropdown(
+                  child: Obx(
+                    () => FormBuilderDropdown(
                       // controller: widget.companyNameController,
                       name: 'Employee Category',
                       decoration: const InputDecoration(
@@ -223,7 +232,7 @@ class EmployeeFormWidget extends StatelessWidget {
                               ))
                           .toList(),
                       onChanged: (value) {
-                        screenController.setSelectedEmployeeCategory(value!); 
+                        screenController.setSelectedEmployeeCategory(value!);
                       },
                       // onSaved: (value) => (_formData.firstname = value ?? ''),
                     ),
@@ -235,8 +244,8 @@ class EmployeeFormWidget extends StatelessWidget {
             Row(
               children: [
                 Flexible(
-                  child: Obx(()=>
-                     FormBuilderDropdown(
+                  child: Obx(
+                    () => FormBuilderDropdown(
                       // controller: widget.statusController,
                       name: 'Designation',
                       decoration: const InputDecoration(
@@ -263,8 +272,8 @@ class EmployeeFormWidget extends StatelessWidget {
                 ),
                 buildSizedboxW(kDefaultPadding),
                 Flexible(
-                  child: Obx(()=>
-                     FormBuilderDropdown(
+                  child: Obx(
+                    () => FormBuilderDropdown(
                       // controller: widget.statusController,
                       name: 'Usertype',
                       decoration: const InputDecoration(

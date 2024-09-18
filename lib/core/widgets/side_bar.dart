@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
+import 'package:flutter_dashboard/core/widgets/masterlayout/masterlayout.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,14 +13,16 @@ class SidebarMenuConfig {
   final IconData icon;
   final String Function(BuildContext context) title;
   final List<SidebarChildMenuConfig> children;
-  final String? parentTitle; // New property
+  final String? parentTitle;
+  final List<String> visibleFor; // New property
 
   const SidebarMenuConfig({
     required this.uri,
     required this.icon,
     required this.title,
     List<SidebarChildMenuConfig>? children,
-    this.parentTitle, // New property
+    this.parentTitle,
+     required this.visibleFor, // New property
   }) : children = children ?? const [];
 }
 
@@ -27,25 +30,30 @@ class SidebarChildMenuConfig {
   final String uri;
   final IconData icon;
   final String Function(BuildContext context) title;
-  final String? parentTitle; // New property
+  final String? parentTitle; 
+  final List<String> visibleFor;// New property
 
   const SidebarChildMenuConfig({
     required this.uri,
     required this.icon,
     required this.title,
-    this.parentTitle, // New property
+    this.parentTitle,
+    required this.visibleFor // New property
   });
 }
 
 class Sidebar extends StatefulWidget {
   final bool autoSelectMenu;
   final String? selectedMenuUri; 
+  final String? userType;
+  
   final List<SidebarMenuConfig> sidebarConfigs;
 
    Sidebar({
     Key? key,
     this.autoSelectMenu = true,
     this.selectedMenuUri, 
+     this.userType,
     required this.sidebarConfigs,
   }) : super(key: key);
 
@@ -175,40 +183,42 @@ late String currentLocation;
 //     );
 //   }
 
- Widget _sidebarMenuList(BuildContext context, String currentLocation) {
+  Widget _sidebarMenuList(BuildContext context, String currentLocation) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: widget.sidebarConfigs
+          .where((menu) => menu.visibleFor.contains(widget.userType))
           .expand((menu) {
-            List<Widget> widgets = [];
-            if (menu.parentTitle != null) {
-              widgets.add(
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0, bottom: 4.0),
-                  child: Text(
-                    menu.parentTitle!,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textgreyColor ,
-                    ),
-                  ),
+        List<Widget> widgets = [];
+        if (menu.parentTitle != null) {
+          widgets.add(
+            Padding(
+              padding: const EdgeInsets.only(left: 12.0, top: 16.0, bottom: 8.0),
+              child: Text(
+                menu.parentTitle!,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textgreyColor,
                 ),
-              );
-            }
-            widgets.addAll(menu.children.map((childMenu) {
-              return _sidebarMenu(
-                context,
-                EdgeInsets.fromLTRB(2, 8, 12, 8),
-                childMenu.uri,
-                childMenu.icon,
-                childMenu.title(context),
-                currentLocation.startsWith(childMenu.uri),
-              );
-            }));
-            return widgets;
-          })
-          .toList(),
+              ),
+            ),
+          );
+        }
+        widgets.addAll(menu.children
+            .where((childMenu) => childMenu.visibleFor.contains(widget.userType))
+            .map((childMenu) {
+          return _sidebarMenu(
+            context,
+            EdgeInsets.fromLTRB(12, 8, 12, 8),
+            childMenu.uri,
+            childMenu.icon,
+            childMenu.title(context),
+            currentLocation.startsWith(childMenu.uri),
+          );
+        }));
+        return widgets;
+      }).toList(),
     );
   }
 

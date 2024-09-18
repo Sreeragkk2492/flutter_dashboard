@@ -30,7 +30,7 @@ class CardHeader extends StatelessWidget {
             padding: EdgeInsets.all(kDefaultPadding),
             child: Text(
               title,
-              style: TextStyle(fontWeight: FontWeight.bold)
+              style: TextStyle(fontWeight: FontWeight.bold,fontSize: 19)
             ),
           ),
           Visibility(

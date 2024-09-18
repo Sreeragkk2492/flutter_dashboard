@@ -1,48 +1,86 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:html' as html;
 
 class StorageServices extends GetxService {
-  late FlutterSecureStorage storage;
+  late SharedPreferences? _prefs;
+  final _isInitialized = false.obs;
+  final _isWeb = GetPlatform.isWeb;
 
-  StorageServices() {
-    // Initialize with web-specific options
-    storage = FlutterSecureStorage(
-      webOptions: WebOptions(
-        dbName: 'myDb',
-        publicKey: 'some_public_key',
-      ),
-    );
+  StorageServices();
+
+  static Future<StorageServices> init() async {
+    final service = StorageServices();
+    await service._initStorage();
+    return service;
   }
 
-  static Future<void> init() async {
-    await Get.putAsync(() async => StorageServices());
+  Future<void> _initStorage() async {
+    try {
+      if (_isWeb) {
+        _isInitialized.value = true;
+      } else {
+        _prefs = await SharedPreferences.getInstance();
+        _isInitialized.value = true;
+      }
+    } catch (e) {
+      print('Error initializing storage: $e');
+    }
   }
 
   Future<String> read(String key) async {
+    if (!_isInitialized.value) {
+      print('StorageServices not initialized. Initializing now...');
+      await _initStorage();
+    }
     try {
-      final result = await storage.read(key: key);
-      return result ?? "";
+      if (_isWeb) {
+        return html.window.localStorage[key] ?? "";
+      } else {
+        return _prefs?.getString(key) ?? "";
+      }
     } catch (e) {
       print('Error reading from storage: $e');
       return "";
     }
   }
 
-  Future<String> write(String key, String? value) async {
+  Future<bool> write(String key, String? value) async {
+    if (!_isInitialized.value) {
+      print('StorageServices not initialized. Initializing now...');
+      await _initStorage();
+    }
     try {
-      await storage.write(key: key, value: value);
-      return value ?? "";
+      if (value == null) {
+        return await delete(key);
+      }
+      if (_isWeb) {
+        html.window.localStorage[key] = value;
+        return true;
+      } else {
+        return await _prefs!.setString(key, value);
+      }
     } catch (e) {
       print('Error writing to storage: $e');
-      return "";
+      return false;
     }
   }
 
-  Future<void> delete(String key) async {
+  Future<bool> delete(String key) async {
+    if (!_isInitialized.value) {
+      print('StorageServices not initialized. Initializing now...');
+      await _initStorage();
+    }
     try {
-      await storage.delete(key: key);
+      if (_isWeb) {
+        html.window.localStorage.remove(key);
+        return true;
+      } else {
+        return await _prefs!.remove(key);
+      }
     } catch (e) {
       print('Error deleting from storage: $e');
+      return false;
     }
   }
 }

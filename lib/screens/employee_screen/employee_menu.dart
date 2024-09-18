@@ -14,6 +14,7 @@ import 'package:flutter_dashboard/models/usertype_model.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_menu_controller.dart';
+import 'package:flutter_dashboard/screens/employee_screen/widget/condition_widget.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
@@ -21,7 +22,7 @@ import 'package:get/get.dart';
 class EmployeeMenu extends StatelessWidget {
   EmployeeMenu({super.key});
   final _dataTableHorizontalScrollController = ScrollController();
-  //final employeeController = Get.put(EmployeeController());
+  final employeeController = Get.put(EmployeeController());
   final screenController = Get.put(EmployeeMenuController());
   @override
   Widget build(BuildContext context) {
@@ -46,35 +47,8 @@ class EmployeeMenu extends StatelessWidget {
           children: [
             Expanded(
               child: Padding(
-                padding: EdgeInsets.all(kDefaultPadding),
-                child: Obx(
-                  () => FormBuilderDropdown<Company>(
-                    // controller: widget.companyNameController,
-                    name: 'Company Name',
-                    decoration: const InputDecoration(
-                      labelText: 'Company Name',
-                      hintText: 'Company Name',
-                      border: OutlineInputBorder(),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                    // enableSuggestions: false,
-                    // keyboardType: TextInputType.name,
-                    validator: FormBuilderValidators.required(),
-                    items: screenController.companydetails
-                        .map((company) => DropdownMenuItem(
-                              value: company,
-                              child: Text(company.companyName),
-                            ))
-                        .toList(),
-                    onChanged: (value) {
-                      screenController.onCompanySelected(
-                        value!.id,
-                      );
-                    },
-                    // onSaved: (value) => (_formData.firstname = value ?? ''),
-                  ),
-                ),
-              ),
+                  padding: EdgeInsets.all(kDefaultPadding),
+                  child: ConditionalCompanyWidget()),
             ),
             Expanded(
               child: Padding(
@@ -111,8 +85,7 @@ class EmployeeMenu extends StatelessWidget {
         ),
         buildSizedBoxH(kDefaultPadding),
         Obx(() {
-          if (!screenController.isCompanySelected.value ||
-              !screenController.isUserSelected.value) {
+          if (!screenController.isUserSelected.value) {
             return Center(
                 child: Text(
                     "Please select both a company and a user to view menus."));

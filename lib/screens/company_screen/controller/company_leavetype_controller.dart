@@ -31,8 +31,9 @@ class CompanyLeavetypeController extends GetxController {
   void resetSelectionState() {
     isCompanySelected.value = false;
     selectedCompanyId.value = '';
+    leaveTypes.clear(); // Clear the leave types list
     leaveTypeControllers.clear();
-     leaveTypeControllers.add(TextEditingController());
+    leaveTypeControllers.add(TextEditingController());
   }
 
   void addLeaveType() {
@@ -40,9 +41,12 @@ class CompanyLeavetypeController extends GetxController {
   }
 
   void onCompanySelected(String companyId) {
-    selectedCompanyId.value = companyId;
-    isCompanySelected.value = true;
-    fetchLeavesForCompany();
+    if (selectedCompanyId.value != companyId) {
+      selectedCompanyId.value = companyId;
+      isCompanySelected.value = true;
+      leaveTypes.clear(); // Clear the previous company's leave type data
+      fetchLeavesForCompany();
+    }
   }
 
 //to fetch all the leave type for the specific company

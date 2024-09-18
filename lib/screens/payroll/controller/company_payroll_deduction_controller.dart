@@ -7,6 +7,7 @@ import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
 import 'package:flutter_dashboard/models/payroll/company_payroll_deduc_model.dart';
 import 'package:flutter_dashboard/models/payroll/prcompany_payroll_allowance_model.dart';
+import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -33,7 +34,13 @@ class CompanyPayrollDeductionController extends GetxController {
     @override
   void onInit() {
     super.onInit();
-    resetSelection();
+    final employeeController = Get.put(EmployeeController());
+    if (!employeeController.isSuperAdmin.value &&
+        employeeController.companydetails.isNotEmpty) {
+      final company = employeeController.companydetails[0];
+      onCompanySelected(company.id, company.companyCode);
+    }
+   // resetSelection();
   }
 
 
@@ -46,18 +53,15 @@ class CompanyPayrollDeductionController extends GetxController {
     selectedCompanycode.value = '';
   }
 
-  void onCompanySelected(String? companyId, String? companycode) {
-    if (companyId != null &&
-        companyId.isNotEmpty &&
-        companycode != null &&
-        companycode.isNotEmpty) {
+ void onCompanySelected(String? companyId, String? companyCode) {
+    if (companyId != null && companyId.isNotEmpty && companyCode != null && companyCode.isNotEmpty) {
       selectedCompanyId.value = companyId;
-      selectedCompanycode.value = companycode;
+      selectedCompanycode.value = companyCode;
       isCompanySelected.value = true;
       hasExplicitlySelectedCompany.value = true;
       fetchCompanyPayrollDeduction();
     } else {
-     resetSelection();
+      resetSelection();
     }
   }
 

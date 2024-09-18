@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
+import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/masterlayout.dart';
 import 'package:flutter_dashboard/core/widgets/side_bar.dart';
@@ -31,6 +32,7 @@ class PortalMasterLayout extends StatelessWidget {
   final FloatingActionButtonLocation? floatingActionButtonLocation;
   final FloatingActionButtonAnimator? floatingActionButtonAnimator;
   final Widget? bottomNavigationBar;
+  String? usertype;
   final List<Widget>? persistentFooterButtons;
 
   PortalMasterLayout({
@@ -44,6 +46,7 @@ class PortalMasterLayout extends StatelessWidget {
     this.floatingActionButtonAnimator,
     this.persistentFooterButtons,
     this.bottomNavigationBar,
+    this.usertype
   }) : super(key: key);
 
   final ThemeController themeController = Get.put(ThemeController());
@@ -104,7 +107,9 @@ class PortalMasterLayout extends StatelessWidget {
                     buildSizedboxW(kDefaultPadding),
                     Padding(
                       padding: EdgeInsets.only(top: kTextPadding * 2),
-                      child: SizedBox(),
+                      child: TextButton(onPressed: (){
+                      Get.offAllNamed(Routes.LOGIN);
+                      }, child: Text('Sign Out',style: TextStyle(color: AppColors.blackColor),)),
                     ),
                     buildSizedboxW(kDefaultPadding),
                   ],
@@ -125,6 +130,8 @@ class PortalMasterLayout extends StatelessWidget {
       );
     });
   }
+
+  
 
   Widget _layoutBody(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -178,6 +185,8 @@ class PortalMasterLayout extends StatelessWidget {
     );
   }
 
+  
+
   Widget _responsiveBody(BuildContext context) {
     if (MediaQuery.of(context).size.width <= kScreenWidthLg) {
       return body;
@@ -222,8 +231,8 @@ class PortalMasterLayout extends StatelessWidget {
   Widget _sidebar(BuildContext context) {
     return Sidebar(
       autoSelectMenu: autoSelectMenu,
-      selectedMenuUri: selectedMenuUri,
-      sidebarConfigs: sidebarMenuConfigs,
+      selectedMenuUri: selectedMenuUri, 
+      sidebarConfigs: sidebarMenuConfigs, userType: userType, 
     );
    
   }

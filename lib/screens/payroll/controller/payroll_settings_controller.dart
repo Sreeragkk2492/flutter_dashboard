@@ -82,6 +82,7 @@ class PayrollSettingsController extends GetxController {
   @override
   void onInit() {
     // resetSelectionState();
+    fetchUsersForCompany(companyId);
     super.onInit();
     ever(payslip, (_) => _updatePayslipControllers());
     ever(allowances, (_) => _updateAllowanceControllers());
@@ -121,7 +122,7 @@ class PayrollSettingsController extends GetxController {
     print("Year selected: ${isYearSelected.value}");
     print("Month selected: ${isMonthSelected.value}");
 
-    if (isCompanySelected.value &&
+    if (
         isUserSelected.value &&
         isYearSelected.value &&
         isMonthSelected.value) {
@@ -174,7 +175,7 @@ class PayrollSettingsController extends GetxController {
     try {
       final response = await http.get(
         Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USER_BY_COMPANY_ID)
-            .replace(queryParameters: {"company_id": selectedCompanyId.value}),
+            .replace(queryParameters: {"company_id": companyId}),
         headers: {
           "Accept": "application/json",
         },

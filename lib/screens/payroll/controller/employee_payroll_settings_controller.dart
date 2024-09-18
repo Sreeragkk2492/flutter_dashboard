@@ -56,6 +56,7 @@ class EmployeePayrollSettingsController extends GetxController {
   void onInit() {
     resetSelectionState();
     super.onInit();
+    fetchUsersForCompany(companyId);
     ever(getaddallowances, (_) => _updateAllowanceControllers());
      ever(getadddeduction, (_) => _updateDeductionControllers());
   }
@@ -98,7 +99,7 @@ class EmployeePayrollSettingsController extends GetxController {
     print("Company selected: ${isCompanySelected.value}");
     print("User selected: ${isUserSelected.value}");
 
-    if (isCompanySelected.value && isUserSelected.value) {
+    if ( isUserSelected.value) {
       print("All selections made, fetching payslip details");
       fetchAllowanceAndDeductionDetails();
       fetchAllowanceAndDeductionDetailsForAdding();
@@ -131,7 +132,7 @@ class EmployeePayrollSettingsController extends GetxController {
     try {
       final response = await http.get(
         Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USER_BY_COMPANY_ID)
-            .replace(queryParameters: {"company_id": selectedCompanyId.value}),
+            .replace(queryParameters: {"company_id": companyId}),
         headers: {
           "Accept": "application/json",
         },

@@ -100,11 +100,19 @@ class EmployeePayrollSettings extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.all(kDefaultPadding),
-                child: Obx(() => FormBuilderDropdown<Company>(
+                child: Obx(() {
+                   if (employeeController.companydetails.isEmpty) {
+                    // Show loading indicator while fetching company details
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (employeeController.isSuperAdmin.value) {
+                    // Dropdown for superadmin
+                    return FormBuilderDropdown<Company>(
                       name: 'Company Name',
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Company Name',
-                        hintText: 'Company Name',
+                        hintText: 'Select Company',
                         border: OutlineInputBorder(),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
@@ -118,7 +126,24 @@ class EmployeePayrollSettings extends StatelessWidget {
                       onChanged: (value) {
                         screenController.onCompanySelected(value!.id);
                       },
-                    )),
+                    );
+                  } else {
+                    // Single company display for company admin
+                    final company = employeeController.companydetails[0];
+                    // employeeController.setSelectedCompany(
+                    //     company.id, company.companyCode);
+                    return FormBuilderTextField(
+                      name: 'Company Name',
+                      initialValue: company.companyName,
+                      decoration: InputDecoration(
+                        labelText: 'Company Name',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      readOnly: true,
+                    );
+                  }
+                }),
               ),
             ),
             Expanded(
@@ -154,7 +179,7 @@ class EmployeePayrollSettings extends StatelessWidget {
 
   Widget buildAllowanceTable(BuildContext context) {
     return Obx(() {
-      if (!screenController.isCompanySelected.value ||
+      if (
           !screenController.isUserSelected.value) {
         return Center(child: Text("Please select all the dropdowns to view."));
       } else if (screenController.isLoading.value) {
@@ -309,7 +334,7 @@ class EmployeePayrollSettings extends StatelessWidget {
 
   Widget buildDeductionTable(BuildContext context) {
     return Obx(() {
-      if (!screenController.isCompanySelected.value ||
+      if (
           !screenController.isUserSelected.value) {
         return Center(child: Text("Please select all the dropdowns to view."));
       } else if (screenController.isLoading.value) {

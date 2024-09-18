@@ -44,6 +44,7 @@ class EmployeeMenuController extends GetxController {
     super.onInit();
     fetchCompanies();
     resetMenuSelectionState();
+    fetchUsersForCompany(companyId);
     resetSelectionState();
   }
 
@@ -103,7 +104,7 @@ class EmployeeMenuController extends GetxController {
     try {
       final response = await http.get(
         Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USER_BY_COMPANY_ID)
-            .replace(queryParameters: {"company_id": selectedCompanyId.value}),
+            .replace(queryParameters: {"company_id": companyId}),
         headers: {
           "Accept": "application/json",
         },
@@ -133,9 +134,9 @@ class EmployeeMenuController extends GetxController {
     selectedCompanyId.value = companyId;
     selectedUserId.value = userId;
     isUserSelected.value = true;
-    if (isCompanySelected.value && isUserSelected.value) {
+   
       fetchMenusForUser();
-    }
+    
   }
 
   Future<void> fetchMenusForUser() async {

@@ -137,36 +137,49 @@ class AddCompanyHoliday extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Obx(
-                            () => FormBuilderDropdown<Company>(
-                              name: 'Company',
-                              decoration: const InputDecoration(
-                                labelText: 'Company',
-                                hintText: 'Select Company',
-                                border: OutlineInputBorder(),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                              ),
-                              validator: FormBuilderValidators.required(),
-                              items: employeeController.companydetails
-                                  .map((company) => DropdownMenuItem(
-                                        value: Company(
-                                            id: company.id,
-                                            companyName: company.companyName,
-                                            companyCode: company.companyCode,
-                                            databaseName: company.databaseName,
-                                            companyTypeId:
-                                                company.companyTypeId,
-                                            remarks: company.remarks,
-                                            status: company.status,
-                                            isActive: company.isActive,
-                                            companytype: company.companytype),
-                                        child: Text(company.companyName),
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                screenController.onCompanySelected(value!.id);
-                              },
-                            ),
+                            (){
+                               if (employeeController.companydetails.isEmpty) {
+                      // Show loading indicator while fetching company details
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    if (employeeController.isSuperAdmin.value) {
+                      // Dropdown for superadmin
+                      return FormBuilderDropdown<Company>(
+                        name: 'Company Name',
+                        decoration: InputDecoration(
+                          labelText: 'Company Name',
+                          hintText: 'Select Company',
+                          border: OutlineInputBorder(),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                        ),
+                        validator: FormBuilderValidators.required(),
+                        items: employeeController.companydetails
+                            .map((company) => DropdownMenuItem(
+                                  value: company,
+                                  child: Text(company.companyName),
+                                ))
+                            .toList(),
+                        onChanged: (value) {
+                          screenController.onCompanySelected(value!.id);
+                        },
+                      );
+                    } else {
+                      // Single company display for company admin
+                      final company = employeeController.companydetails[0];
+                    // screenController.onCompanySelected(company.id);
+                      return FormBuilderTextField(
+                        name: 'Company Name',
+                        initialValue: company.companyName,
+                        decoration: InputDecoration(
+                          labelText: 'Company Name',
+                          border: OutlineInputBorder(),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                        ),
+                        readOnly: true,
+                      );
+                    }
+                            }
                           ),
                         ),
                       ],

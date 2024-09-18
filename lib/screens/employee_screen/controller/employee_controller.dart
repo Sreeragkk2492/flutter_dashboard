@@ -36,6 +36,14 @@ class EmployeeController extends GetxController {
   final employeeIdController = TextEditingController();
   final biometricIdController = TextEditingController();
   final reportingIdController = TextEditingController();
+  // Add this line to store the logged-in user's company ID
+  final Rx<String?> loggedInCompanyId = Rx<String?>(null);
+  final Rx<String?> loggedInUserType = Rx<String?>(null);
+  var filteredUsers = <UserModel>[].obs;
+  final RxBool isSuperAdmin = false.obs;
+  final RxBool isLoading = true.obs;
+   RxBool isSortasc=true.obs;
+ 
 
   // //test
   //  final _currentPage = 0.obs;
@@ -55,17 +63,15 @@ class EmployeeController extends GetxController {
 
   @override
   void onInit() {
+    initializeController();
     fetchUsers();
-    fetchCompanyDetails();
-    fetchUserType();
     super.onInit();
   }
 
-  
-
-  setSelectedCompany(String companyId,String companycode) {
+void setSelectedCompany(String companyId, String companyCode) {
     selectedCompanyId.value = companyId;
-    selectedCompanycode.value=companycode;
+    selectedCompanycode.value = companyCode;
+    print("Selected company set - ID: $companyId, Code: $companyCode");
   }
 
   setSelectedUserTypeId(String userTypeId) {
@@ -79,6 +85,47 @@ class EmployeeController extends GetxController {
   setSelectedEmployeeCategory(String empCategoryId) {
     selectedEmployeeCategoryId.value = empCategoryId;
   }
+
+    Future<void> initializeController() async {
+    try {
+      await fetchLoggedInCompanyId();
+      await fetchLoggedInUserType();
+      await fetchCompanyDetails();
+    } catch (e) {
+      print("Error initializing controller: $e");
+      awesomeOkDialog(message: "Failed to initialize. Please try again later.");
+    }
+  }
+
+  Future<void> fetchLoggedInCompanyId() async {
+    try {
+      final companyId = await StorageServices().read('company_id');
+      print("Fetched logged in company ID: $companyId");
+      loggedInCompanyId.value = companyId;
+    } catch (e) {
+      print("Error fetching logged in company ID: $e");
+      loggedInCompanyId.value = null;
+    }
+  }
+
+  Future<void> fetchLoggedInUserType() async {
+  try {
+    // Fetch the user type from storage and store it in `loggedInUserType`
+    final userType = await StorageServices().read('user_type');
+    print("Fetched logged in user type: $userType");
+
+    // Update the Rx variable
+    loggedInUserType.value = userType;
+
+    // Set isSuperAdmin based on the fetched user type
+    isSuperAdmin.value = loggedInUserType.value == 'QTS_ADMIN';
+    print("Is super admin: ${isSuperAdmin.value}");
+  } catch (e) {
+    print("Error fetching logged in user type: $e");
+    loggedInUserType.value = null;
+    isSuperAdmin.value = false;
+  }
+}
 
   addUser(Map<String, dynamic> employeeData) async {
     var result = await NetWorkManager.shared().request(
@@ -103,7 +150,7 @@ class EmployeeController extends GetxController {
           "company_id": selectedCompanyId.value,
           "user_type_id": selectedUserTypeId.value,
           "designation_id": selectedDesignationId.value,
-          "emp_category_id": selectedEmployeeCategoryId.value, 
+          "emp_category_id": selectedEmployeeCategoryId.value,
           "biometric_id": biometricIdController.text,
           "reporting_to_id": reportingIdController.text
         });
@@ -118,15 +165,15 @@ class EmployeeController extends GetxController {
 
   fetchUsers() async {
     try {
-     // final token = await StorageServices().read('token');
+      // final token = await StorageServices().read('token');
       final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USER)
           .replace(queryParameters: {'token': token});
 
       print("Fetching users from URL: $url");
 
-      final response = await http.get(url,headers: {
-         "Accept": "application/json",
-        "token": "$token", 
+      final response = await http.get(url, headers: {
+        "Accept": "application/json",
+        "token": "$token",
       });
 
       print("Response status code: ${response.statusCode}");
@@ -141,6 +188,10 @@ class EmployeeController extends GetxController {
             throw FormatException("Unexpected data format: $jsonItem");
           }
         }).toList();
+        //sort users in alphabetic order
+        users.sort((a, b) => a.name.compareTo(b.name));
+
+        filteredUsers.value = users;
         print("Fetched ${users.value.length} users successfully");
       } else {
         throw HttpException(
@@ -155,47 +206,55 @@ class EmployeeController extends GetxController {
     }
   }
 
-  fetchCompanyDetails() async {
+  Future<void> fetchCompanyDetails() async {
+    isLoading.value = true;
     try {
-      // Making the GET request to the API
-      var response =
-          await http.get(Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_COMPANY));
-      if (response.statusCode == 200) {
-        // Decoding the JSON response body into a List
-        var jsonData = json.decode(response.body) as List;
-        // Mapping the List to a List of Department objects
-        companydetails.value = jsonData.map((jsonItem) {
-          if (jsonItem is Map<String, dynamic>) {
-            return Company.fromJson(jsonItem);
-          } else {
-            throw Exception("Unexpected data format");
-          }
-        }).toList();
-      }
-    } catch (e) {
-      print("Error$e");
-    }
-  }
+      print("Fetching company details...");
+      final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_COMPANY);
+      print("API URL: $url");
+      
+     // final token = await StorageServices().read('token');
+      
+      var response = await http.get(
+        url,
+        headers: {
+          "accept": "application/json",
+         /// "Authorization": "Bearer $token",
+        },
+      );
+      
+      print("Response status code: ${response.statusCode}");
+      print("Response body: ${response.body}");
 
-  fetchUserType() async {
-    try {
-      // Making the GET request to the API
-      var response = await http
-          .get(Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USERTYPE));
       if (response.statusCode == 200) {
-        // Decoding the JSON response body into a List
         var jsonData = json.decode(response.body) as List;
-        // Mapping the List to a List of Department objects
-        usertype.value = jsonData.map((jsonItem) {
-          if (jsonItem is Map<String, dynamic>) {
-            return UserType.fromJson(jsonItem);
-          } else {
-            throw Exception("Unexpected data format");
-          }
-        }).toList();
+        print("Parsed JSON data: $jsonData");
+
+        if (isSuperAdmin.value) {
+          companydetails.value = jsonData.map((jsonItem) => Company.fromJson(jsonItem)).toList();
+        } else {
+          companydetails.value = jsonData
+              .map((jsonItem) => Company.fromJson(jsonItem))
+              .where((company) => company.id == loggedInCompanyId.value)
+              .toList();
+        }
+
+        print("Fetched ${companydetails.length} companies");
+        print("Is super admin: ${isSuperAdmin.value}");
+        print("Logged in company ID: ${loggedInCompanyId.value}");
+        
+        if (companydetails.isEmpty) {
+          print("Warning: No companies fetched. This might be due to filtering or empty response.");
+        }
+      } else {
+        throw Exception("Failed to load companies. Status code: ${response.statusCode}");
       }
     } catch (e) {
-      print("Error$e");
+      print("Error fetching company details: $e");
+      companydetails.value = []; // Clear the list on error
+      awesomeOkDialog(message: "Failed to fetch company details. Please try again later.");
+    } finally {
+      isLoading.value = false;
     }
   }
 

@@ -110,27 +110,50 @@ class PayslipGenerator extends StatelessWidget {
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.all(kDefaultPadding),
-                          child: Obx(() => FormBuilderDropdown<Company>(
-                                name: 'Company Name',
-                                decoration: const InputDecoration(
-                                  labelText: 'Company Name',
-                                  hintText: 'Company Name',
-                                  border: OutlineInputBorder(),
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                ),
-                                validator: FormBuilderValidators.required(),
-                                items: employeeController.companydetails
-                                    .map((company) => DropdownMenuItem(
-                                          value: company,
-                                          child: Text(company.companyName),
-                                        ))
-                                    .toList(),
-                                onChanged: (value) {
-                                  screenController
-                                      .onCompanySelected(value!.id);
-                                },
-                              )),
+                          child: Obx(() {
+                             if (employeeController.companydetails.isEmpty) {
+                    // Show loading indicator while fetching company details
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (employeeController.isSuperAdmin.value) {
+                    // Dropdown for superadmin
+                    return FormBuilderDropdown<Company>(
+                      name: 'Company Name',
+                      decoration: InputDecoration(
+                        labelText: 'Company Name',
+                        hintText: 'Select Company',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      validator: FormBuilderValidators.required(),
+                      items: employeeController.companydetails
+                          .map((company) => DropdownMenuItem(
+                                value: company,
+                                child: Text(company.companyName),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        screenController.onCompanySelected(value!.id);
+                      },
+                    );
+                  } else {
+                    // Single company display for company admin
+                    final company = employeeController.companydetails[0];
+                    // employeeController.setSelectedCompany(
+                    //     company.id, company.companyCode);
+                    return FormBuilderTextField(
+                      name: 'Company Name',
+                      initialValue: company.companyName,
+                      decoration: InputDecoration(
+                        labelText: 'Company Name',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      readOnly: true,
+                    );
+                  }
+                          }),
                         ),
                       ),
                       Expanded(
@@ -224,7 +247,7 @@ class PayslipGenerator extends StatelessWidget {
                   ),
                   buildSizedBoxH(kDefaultPadding * 3),
                   Obx(() {
-                    if (!screenController.isCompanySelected.value ||
+                    if (
                         !screenController.isUserSelected.value ||
                         !screenController.isYearSelected.value ||
                         !screenController.isMonthSelected.value) {

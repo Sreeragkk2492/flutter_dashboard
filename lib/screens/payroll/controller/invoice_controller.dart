@@ -59,6 +59,7 @@ class InvoiceController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    fetchUsersForCompany(companyId);
     ever(payslipDetails, (_) => update());
   }
 
@@ -77,7 +78,7 @@ class InvoiceController extends GetxController {
     print("Year selected: ${isYearSelected.value}");
     print("Month selected: ${isMonthSelected.value}");
 
-    if (isCompanySelected.value &&
+    if (
         isUserSelected.value &&
         isYearSelected.value &&
         isMonthSelected.value) {
@@ -130,7 +131,7 @@ class InvoiceController extends GetxController {
     try {
       final response = await http.get(
         Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USER_BY_COMPANY_ID)
-            .replace(queryParameters: {"company_id": selectedCompanyId.value}),
+            .replace(queryParameters: {"company_id": companyId}),
         headers: {
           "Accept": "application/json",
         },

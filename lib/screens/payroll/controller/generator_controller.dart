@@ -55,6 +55,7 @@ class GeneratorController extends GetxController {
    @override
   void onInit() {
     resetSelectionState();
+    fetchUsersForCompany(companyId);
     super.onInit();
     fetchAllowanceAndDeductionDetails();
     ever(getaddallowances, (_) => _updateAllowanceControllers());
@@ -132,7 +133,7 @@ class GeneratorController extends GetxController {
     try {
       final response = await http.get(
         Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USER_BY_COMPANY_ID)
-            .replace(queryParameters: {"company_id": selectedCompanyId.value}),
+            .replace(queryParameters: {"company_id": companyId}),
         headers: {
           "Accept": "application/json",
         },

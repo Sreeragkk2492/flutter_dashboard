@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
+import 'package:flutter_dashboard/themes/apptheme.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 class UIComponenetsAppBar extends StatefulWidget {
   const UIComponenetsAppBar(
@@ -25,7 +26,7 @@ class _UIComponenetsAppBarState extends State<UIComponenetsAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    final themedata = Theme.of(context);
+    final themedata = Theme.of(context).extension<AppButtonTheme>();
     final mediaQueryData = MediaQuery.of(context);
     return Container(
       decoration: BoxDecoration(
@@ -118,13 +119,15 @@ class _UIComponenetsAppBarState extends State<UIComponenetsAppBar> {
                               buildSizedboxW(kDefaultPadding),
                               ElevatedButton(
                                 onHover: (value) {},
+                               // style: themedata?.primaryElevated,
                                 style: ElevatedButton.styleFrom(
                                   shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(5)), 
                                    // fixedSize: const Size.fromHeight(3),
                                     padding: EdgeInsets.all(kDefaultPadding),
                                     backgroundColor: AppColors
                                         .defaultColor // Change this color to your desired color
-                                    ),
+                                    ), 
+                                
                                 // child: PopupMenuButton(
                                 //   onSelected: (value) {
                                 //     _onMenuItemSelected(value as int);
@@ -197,6 +200,7 @@ class _UIComponenetsAppBarState extends State<UIComponenetsAppBar> {
                 // ),
                 buildSizedboxW(kDefaultPadding),
                 ElevatedButton(
+                 // style: themedata?.primaryElevated,
                   style: ElevatedButton.styleFrom(
                     shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(5)), 
                      // fixedSize: const Size.fromHeight(3),

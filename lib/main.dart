@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/generated/l10n.dart';
 import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/themes/apptheme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 
 void main() async{
    WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +34,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       getPages: GetPages.routes,
       initialRoute: Routes.LOGIN,
-     
+   // theme: AppTheme.themeData(true, context),
     );
   }
 }
