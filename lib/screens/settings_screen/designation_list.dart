@@ -50,160 +50,214 @@ class DesignationList extends StatelessWidget {
                 left: kDefaultPadding / 2,
                 right: kDefaultPadding / 2),
             child: Container(
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                    color: AppColors.bgGreyColor,
-                    spreadRadius: 5,
-                    blurRadius: 7)
-              ]),
-              child: Card(
-                color: AppColors.whiteColor,
-                clipBehavior: Clip.antiAlias,
-                child: Padding(
-                  padding: EdgeInsets.all(kDefaultPadding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // CardHeader(
-                      //   title: 'Company Details',
-                      //   showDivider: false,
-                      // ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            final double dataTableWidth =
-                                max(kScreenWidthMd, constraints.maxWidth);
+              // decoration: BoxDecoration(boxShadow: [
+              //   BoxShadow(
+              //       color: AppColors.bgGreyColor,
+              //       spreadRadius: 5,
+              //       blurRadius: 7)
+              // ]),
+              child: Padding(
+                padding: EdgeInsets.all(kDefaultPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // CardHeader(
+                    //   title: 'Company Details',
+                    //   showDivider: false,
+                    // ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final double dataTableWidth =
+                              max(kScreenWidthMd, constraints.maxWidth);
 
-                            return Scrollbar(
+                          return Scrollbar(
+                            controller: _dataTableHorizontalScrollController,
+                            thumbVisibility: true,
+                            trackVisibility: true,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
                               controller: _dataTableHorizontalScrollController,
-                              thumbVisibility: true,
-                              trackVisibility: true,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                controller:
-                                    _dataTableHorizontalScrollController,
-                                child: SizedBox(
-                                  width: dataTableWidth,
-                                  child: Obx(
-                                    () => DataTable(
-                                      border: TableBorder(
-                                          verticalInside:
-                                              BorderSide(width: 0.5),
-                                          top: BorderSide(width: 0.5),
-                                          right: BorderSide(width: 0.5),
-                                          left: BorderSide(width: 0.5),
-                                          bottom: BorderSide(width: 0.5)),
-                                      dividerThickness: 2,
-                                      sortColumnIndex: 0,
-                                      sortAscending: true,
-                                      showCheckboxColumn: false,
-                                      showBottomBorder: true,
-                                      columns: [
-                                        DataColumn(
-                                            // numeric: true,
-                                            label: Row(
-                                          children: [
-                                            Text('#'),
+                              child: SizedBox(
+                                width: dataTableWidth,
+                                child: Obx(
+                                  () => DataTable(
+                                    headingTextStyle: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                    headingRowHeight: 50,
+                                    headingRowColor: WidgetStateProperty.all(
+                                        AppColors.bgGreyColor),
+                                    // border: TableBorder(
+                                    //     verticalInside:
+                                    //         BorderSide(width: 0.5),
+                                    //     top: BorderSide(width: 0.5),
+                                    //     right: BorderSide(width: 0.5),
+                                    //     left: BorderSide(width: 0.5),
+                                    //     bottom: BorderSide(width: 0.5)),
+                                    dividerThickness: 2,
+                                    sortColumnIndex: 0,
+                                    sortAscending: true,
+                                    showCheckboxColumn: false,
+                                    showBottomBorder: true,
+                                    columns: [
+                                      DataColumn(
+                                          // numeric: true,
+                                          label: Row(
+                                        children: [
+                                          Text('No'),
 
-                                            //  IconButton(
-                                            //      onPressed: () {},
-                                            //      icon: Icon(Icons.arrow_drop_down ))
-                                          ],
-                                        )),
-                                        DataColumn(
-                                            // numeric: true,
-                                            label: Row(
-                                          children: [
-                                            Text('Industry'),
+                                          //  IconButton(
+                                          //      onPressed: () {},
+                                          //      icon: Icon(Icons.arrow_drop_down ))
+                                        ],
+                                      )),
+                                      DataColumn(
+                                          onSort: (columnIndex, _) {
+                                            if (industryController
+                                                .isSortasc.value) {
+                                              industryController.industries
+                                                  .sort((a, b) =>
+                                                      a.name.compareTo(b.name));
+                                            } else {
+                                              industryController.industries
+                                                  .sort((a, b) =>
+                                                      b.name.compareTo(a.name));
+                                            }
+                                            industryController.isSortasc.value =
+                                                !industryController
+                                                    .isSortasc.value;
+                                          },
+                                          // numeric: true,
+                                          label: Row(
+                                            children: [
+                                              Text('Industry'),
 
-                                            //  IconButton(
-                                            //      onPressed: () {},
-                                            //      icon: Icon(Icons.arrow_drop_down ))
-                                          ],
-                                        )),
-                                        DataColumn(
-                                            label: Row(
-                                          children: [
-                                            Text('Department Name'),
-                                            //  IconButton(
-                                            //      onPressed: () {},
-                                            //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                          ],
-                                        )),
-                                        DataColumn(
-                                            label: Row(
-                                          children: [
-                                            Text('Designation List'),
-                                            //  IconButton(
-                                            //      onPressed: () {},
-                                            //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                          ],
-                                        )),
-                                        DataColumn(
-                                            label: Row(
-                                          children: [
-                                            Text('Status'),
-                                            //  IconButton(
-                                            //      onPressed: () {},
-                                            //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                          ],
-                                        )),
-                                        DataColumn(
-                                            label: Row(
-                                          children: [
-                                            //  Text('Status'),
-                                            //  IconButton(
-                                            //      onPressed: () {},
-                                            //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                          ],
-                                        )),
-                                      ],
-                                      rows: List.generate(
-                                          screenController.designations.length,
-                                          (index) {
-                                        var designations = screenController
-                                            .designations[index];
-                                        return DataRow.byIndex(
-                                          index: index,
-                                          cells: [
-                                            DataCell(Text('${index + 1}')),
-                                             DataCell(Text(designations.companyTypeName)),
-                                            DataCell(Text(designations.departmentName)),
-                                            DataCell(
-                                                Text(designations.designation)),
-                                            DataCell(Text(designations.status)),
-                                            DataCell(TextButton(
-                                                onPressed: () {
-                                                  showEditDialog(
-                                                      context,
-                                                      DialogType.info,
-                                                      index,
-                                                      designations);
-                                                },
-                                                child: const Text(
-                                                  'Edit',
-                                                  style: TextStyle(
-                                                      color:
-                                                          AppColors.blackColor,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )))
-                                            // DataCell(Text(
-                                            //     '${Random().nextInt(10000)}')),
-                                          ],
-                                        );
-                                      }),
-                                    ),
+                                              //  IconButton(
+                                              //      onPressed: () {},
+                                              //      icon: Icon(Icons.arrow_drop_down ))
+                                            ],
+                                          )),
+                                      DataColumn(
+                                          onSort: (columnIndex, _) {
+                                            if (departmentController
+                                                .isSortasc.value) {
+                                              departmentController.departments
+                                                  .sort((a, b) => a
+                                                      .departmentName
+                                                      .compareTo(
+                                                          b.departmentName));
+                                            } else {
+                                              departmentController.departments
+                                                  .sort((a, b) => b
+                                                      .departmentName
+                                                      .compareTo(
+                                                          a.departmentName));
+                                            }
+                                            departmentController
+                                                    .isSortasc.value =
+                                                !departmentController
+                                                    .isSortasc.value;
+                                          },
+                                          label: Row(
+                                            children: [
+                                              Text('Department Name'),
+                                              //  IconButton(
+                                              //      onPressed: () {},
+                                              //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                            ],
+                                          )),
+                                      DataColumn(
+                                          onSort: (columnIndex, _) {
+                                            if (screenController
+                                                .isSortasc.value) {
+                                              screenController.designations
+                                                  .sort((a, b) => a.designation
+                                                      .compareTo(
+                                                          b.designation));
+                                            } else {
+                                              screenController.designations
+                                                  .sort((a, b) => b.designation
+                                                      .compareTo(
+                                                          a.designation));
+                                            }
+                                            screenController.isSortasc.value =
+                                                !screenController
+                                                    .isSortasc.value;
+                                          },
+                                          label: Row(
+                                            children: [
+                                              Text('Designation Name'),
+                                              //  IconButton(
+                                              //      onPressed: () {},
+                                              //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                            ],
+                                          )),
+                                      DataColumn(
+                                          label: Row(
+                                        children: [
+                                          Text('Status'),
+                                          //  IconButton(
+                                          //      onPressed: () {},
+                                          //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                        ],
+                                      )),
+                                      DataColumn(
+                                          label: Row(
+                                        children: [
+                                          //  Text('Status'),
+                                          //  IconButton(
+                                          //      onPressed: () {},
+                                          //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                        ],
+                                      )),
+                                    ],
+                                    rows: List.generate(
+                                        screenController.designations.length,
+                                        (index) {
+                                      var designations =
+                                          screenController.designations[index];
+                                      return DataRow.byIndex(
+                                        index: index,
+                                        cells: [
+                                          DataCell(Text('${index + 1}')),
+                                          DataCell(Text(
+                                              designations.companyTypeName)),
+                                          DataCell(Text(
+                                              designations.departmentName)),
+                                          DataCell(
+                                              Text(designations.designation)),
+                                          DataCell(Text(designations.isActive.toString())),
+                                          DataCell(TextButton(
+                                              onPressed: () {
+                                                showEditDialog(
+                                                    context,
+                                                    DialogType.info,
+                                                    index,
+                                                    designations);
+                                              },
+                                              child: const Text(
+                                                'Edit',
+                                                style: TextStyle(
+                                                    color: AppColors.blackColor,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )))
+                                          // DataCell(Text(
+                                          //     '${Random().nextInt(10000)}')),
+                                        ],
+                                      );
+                                    }),
                                   ),
                                 ),
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             )),
@@ -275,7 +329,7 @@ class DesignationList extends StatelessWidget {
                                     initialValue:
                                         screenController.selectedCategory.value,
                                     onChanged: (value) => screenController
-                                        .selectedCategory.value = value??'',
+                                        .selectedCategory.value = value ?? '',
                                     // onSaved: (value) => (_formData.firstname = value ?? ''),
                                   ),
                                 ),
@@ -302,10 +356,10 @@ class DesignationList extends StatelessWidget {
                                               child: Text(dept.departmentName),
                                             ))
                                         .toList(),
-                                    initialValue:
-                                        screenController.selectedDepartment.value,
+                                    initialValue: screenController
+                                        .selectedDepartment.value,
                                     onChanged: (value) => screenController
-                                        .selectedDepartment.value = value??'',
+                                        .selectedDepartment.value = value ?? '',
                                     // onSaved: (value) => (_formData.firstname = value ?? ''),
                                   ),
                                 ),

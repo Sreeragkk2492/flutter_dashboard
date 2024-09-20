@@ -18,6 +18,7 @@ class DesignationController extends GetxController {
   var selectedDepartment = ''.obs;
   var designations = <Designation>[].obs;
   var departmentsbycompanyid = <DepartmentByCompanyId>[].obs;
+  RxBool isSortasc=true.obs;
 
   @override
   void onInit() {

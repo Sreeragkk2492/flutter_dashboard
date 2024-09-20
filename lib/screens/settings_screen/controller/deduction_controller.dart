@@ -15,6 +15,7 @@ class DeductionController extends GetxController {
   final deductionNameController = TextEditingController();
   final remarksController = TextEditingController();
   String? selectedStatus;
+  RxBool isSortasc =true.obs;
 
   @override
   void onInit() {

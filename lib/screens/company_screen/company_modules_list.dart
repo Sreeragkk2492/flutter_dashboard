@@ -105,134 +105,135 @@ class ComapnyModules extends StatelessWidget {
                       left: kDefaultPadding / 2,
                       right: kDefaultPadding / 2),
                   child: Container(
-                    decoration: BoxDecoration(
-                        // color: AppColors.whiteColor,
-                        //borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                              color: AppColors.bgGreyColor,
-                              spreadRadius: 5,
-                              blurRadius: 7)
-                        ]),
-                    child: Card(
-                      color: AppColors.whiteColor,
-                      clipBehavior: Clip.antiAlias,
-                      child: Padding(
-                        padding: EdgeInsets.all(kDefaultPadding),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const CardHeader(
-                              title: 'Company Modules Details',
-                              showDivider: false,
-                            ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: LayoutBuilder(
-                                builder: (context, constraints) {
-                                  final double dataTableWidth = max(
-                                      kScreenWidthXxl, constraints.maxWidth);
-                                  return Scrollbar(
-                                    thumbVisibility: true,
-                                    trackVisibility: true,
-                                    // interactive: true,
+                    // decoration: BoxDecoration(
+                    //     // color: AppColors.whiteColor,
+                    //     //borderRadius: BorderRadius.circular(10),
+                    //     boxShadow: [
+                    //       BoxShadow(
+                    //           color: AppColors.bgGreyColor,
+                    //           spreadRadius: 5,
+                    //           blurRadius: 7)
+                    //     ]),
+                    child: Padding(
+                      padding: EdgeInsets.all(kDefaultPadding),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // const CardHeader(
+                          //   title: 'Company Modules Details',
+                          //   showDivider: false,
+                          // ),
+                          SizedBox(
+                            width: double.infinity,
+                            child: LayoutBuilder(
+                              builder: (context, constraints) {
+                                final double dataTableWidth =
+                                    max(kScreenWidthXxl, constraints.maxWidth);
+                                return Scrollbar(
+                                  thumbVisibility: true,
+                                  trackVisibility: true,
+                                  // interactive: true,
+                                  controller:
+                                      _dataTableHorizontalScrollController,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
                                     controller:
                                         _dataTableHorizontalScrollController,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      controller:
-                                          _dataTableHorizontalScrollController,
-                                      child: SizedBox(
-                                        width: dataTableWidth,
-                                        child: DataTable(
-                                          border: const TableBorder(
-                                              verticalInside:
-                                                  BorderSide(width: 0.2),
-                                              top: BorderSide(width: 0.5),
-                                              right: BorderSide(width: 0.5),
-                                              left: BorderSide(width: 0.5),
-                                              bottom: BorderSide(width: 0.5)),
-                                          dividerThickness: 2,
-                                          sortColumnIndex: 0,
-                                          sortAscending: true,
-                                          showCheckboxColumn: true,
-                                          showBottomBorder: true,
-                                          columns: [
-                                            DataColumn(
-                                                label: Row(
-                                              children: [
-                                                const Text(
-                                                    'Company Module Name'),
-                                                IconButton(
-                                                    onPressed: () {},
-                                                    icon: const Icon(Icons
-                                                        .arrow_drop_down_sharp))
-                                              ],
-                                            )),
-                                            DataColumn(
-                                                label: Row(
-                                              children: [
-                                                const Text('Status'),
-                                                IconButton(
-                                                    onPressed: () {},
-                                                    icon: const Icon(Icons
-                                                        .arrow_drop_down_sharp))
-                                              ],
-                                            )),
-                                            const DataColumn(
-                                              label: Text(''),
-                                            ),
-                                          ],
-                                          rows: List<DataRow>.generate(
-                                              selectedModules.length, (index) {
-                                            var modules =
-                                                selectedModules[index];
-                                            return DataRow(
-                                              cells: [
-                                                DataCell(GestureDetector(
-                                                  onTap: () {
-                                                    print('tapped');
-                                                    DialogWidgets
-                                                        .showDetailsDialog(
-                                                            context,
-                                                            DialogType.info);
+                                    child: SizedBox(
+                                      width: dataTableWidth,
+                                      child: DataTable(
+                                        headingTextStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                        headingRowHeight: 50,
+                                        headingRowColor:
+                                            WidgetStateProperty.all(
+                                                AppColors.bgGreyColor),
+                                        // border: const TableBorder(
+                                        //     verticalInside:
+                                        //         BorderSide(width: 0.2),
+                                        //     top: BorderSide(width: 0.5),
+                                        //     right: BorderSide(width: 0.5),
+                                        //     left: BorderSide(width: 0.5),
+                                        //     bottom: BorderSide(width: 0.5)),
+                                        dividerThickness: 2,
+                                        sortColumnIndex: 0,
+                                        sortAscending: true,
+                                        showCheckboxColumn: true,
+                                        showBottomBorder: true,
+                                        columns: [
+                                          DataColumn(
+                                              label: Row(
+                                            children: [
+                                              const Text('Company Module Name'),
+                                              // IconButton(
+                                              //     onPressed: () {},
+                                              //     icon: const Icon(Icons
+                                              //         .arrow_drop_down_sharp))
+                                            ],
+                                          )),
+                                          DataColumn(
+                                              label: Row(
+                                            children: [
+                                              const Text('Status'),
+                                              // IconButton(
+                                              //     onPressed: () {},
+                                              //     icon: const Icon(Icons
+                                              //         .arrow_drop_down_sharp))
+                                            ],
+                                          )),
+                                          const DataColumn(
+                                            label: Text(''),
+                                          ),
+                                        ],
+                                        rows: List<DataRow>.generate(
+                                            selectedModules.length, (index) {
+                                          var modules = selectedModules[index];
+                                          return DataRow(
+                                            cells: [
+                                              DataCell(GestureDetector(
+                                                onTap: () {
+                                                  print('tapped');
+                                                  DialogWidgets
+                                                      .showDetailsDialog(
+                                                          context,
+                                                          DialogType.info);
+                                                },
+                                                child: Text(modules.moduleName),
+                                              )),
+                                              DataCell(Text(screenController
+                                                  .companyModuleList
+                                                  .value
+                                                  .isActive
+                                                  .toString())),
+                                              DataCell(TextButton(
+                                                  onPressed: () {
+                                                    // DialogWidgets
+                                                    //     .showEditDialog(
+                                                    //         context,
+                                                    //         DialogType.info,
+                                                    //        screenController,
+                                                    //         index);
                                                   },
-                                                  child:
-                                                      Text(modules.moduleName),
-                                                )),
-                                                DataCell(Text(screenController
-                                                    .companyModuleList
-                                                    .value
-                                                    .status)),
-                                                DataCell(TextButton(
-                                                    onPressed: () {
-                                                      // DialogWidgets
-                                                      //     .showEditDialog(
-                                                      //         context,
-                                                      //         DialogType.info,
-                                                      //        screenController,
-                                                      //         index);
-                                                    },
-                                                    child: const Text(
-                                                      'Edit',
-                                                      style: TextStyle(
-                                                          color: AppColors
-                                                              .blackColor,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )))
-                                              ],
-                                            );
-                                          }),
-                                        ),
+                                                  child: const Text(
+                                                    'Edit',
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .blackColor,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )))
+                                            ],
+                                          );
+                                        }),
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
+                                  ),
+                                );
+                              },
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ));

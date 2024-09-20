@@ -12,6 +12,7 @@ class CompanyController extends GetxController {
   RxBool isVATSelected = false.obs;
   RxBool isGSTSelected = false.obs;
   var companydetails = <Company>[].obs;
+  RxBool isSortasc=true.obs;
   
   final companyNameController = TextEditingController();
   final companyCodeController = TextEditingController();

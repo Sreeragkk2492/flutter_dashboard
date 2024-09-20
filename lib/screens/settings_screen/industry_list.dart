@@ -20,7 +20,7 @@ class IndustryList extends StatelessWidget {
   IndustryList({super.key});
   final _dataTableHorizontalScrollController = ScrollController();
   final screenController = Get.put(IndustryController());
-   final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return PortalMasterLayout(
@@ -47,140 +47,156 @@ class IndustryList extends StatelessWidget {
                 left: kDefaultPadding / 2,
                 right: kDefaultPadding / 2),
             child: Container(
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                    color: AppColors.bgGreyColor,
-                    spreadRadius: 5,
-                    blurRadius: 7)
-              ]),
-              child: Card(
-                color: AppColors.whiteColor,
-                clipBehavior: Clip.antiAlias,
-                child: Padding(
-                  padding: EdgeInsets.all(kDefaultPadding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // CardHeader(
-                      //   title: 'Company Details',
-                      //   showDivider: false,
-                      // ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            final double dataTableWidth =
-                                max(kScreenWidthMd, constraints.maxWidth);
+              // decoration: BoxDecoration(boxShadow: [
+              //   BoxShadow(
+              //       color: AppColors.bgGreyColor,
+              //       spreadRadius: 5,
+              //       blurRadius: 7)
+              // ]),
+              child: Padding(
+                padding: EdgeInsets.all(kDefaultPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // CardHeader(
+                    //   title: 'Company Details',
+                    //   showDivider: false,
+                    // ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final double dataTableWidth =
+                              max(kScreenWidthMd, constraints.maxWidth);
 
-                            return Scrollbar(
+                          return Scrollbar(
+                            controller: _dataTableHorizontalScrollController,
+                            thumbVisibility: true,
+                            trackVisibility: true,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
                               controller: _dataTableHorizontalScrollController,
-                              thumbVisibility: true,
-                              trackVisibility: true,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                controller:
-                                    _dataTableHorizontalScrollController,
-                                child: SizedBox(
-                                  width: dataTableWidth,
-                                  child: Obx(()=>
-                                     DataTable(
-                                      border: TableBorder(
-                                          verticalInside: BorderSide(width: 0.5),
-                                          top: BorderSide(width: 0.5),
-                                          right: BorderSide(width: 0.5),
-                                          left: BorderSide(width: 0.5),
-                                          bottom: BorderSide(width: 0.5)),
-                                      dividerThickness: 2,
-                                      sortColumnIndex: 0,
-                                      sortAscending: true,
-                                      showCheckboxColumn: false,
-                                      showBottomBorder: true,
-                                      columns: [
-                                        DataColumn(
-                                            // numeric: true,
-                                            label: Row(
-                                          children: [
-                                            Text('#'),
-                                    
-                                            //  IconButton(
-                                            //      onPressed: () {},
-                                            //      icon: Icon(Icons.arrow_drop_down ))
-                                          ],
-                                        )),
-                                        DataColumn(
-                                            label: Row(
-                                          children: [
-                                            Text('Industry Name'),
-                                            //  IconButton(
-                                            //      onPressed: () {},
-                                            //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                          ],
-                                        )),
-                                        DataColumn(
-                                            label: Row(
-                                          children: [
-                                            Text('Status'),
-                                            //  IconButton(
-                                            //      onPressed: () {},
-                                            //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                          ],
-                                        )),
-                                         DataColumn(
-                                            label: Row(
-                                          children: [
-                                            Text(''),
-                                            //  IconButton(
-                                            //      onPressed: () {},
-                                            //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                          ],
-                                        )),
-                                      ],
-                                      rows: List.generate(
-                                          screenController.industries.length,
-                                          (index) {
-                                        var industry =
-                                            screenController.industries[index];
-                                        return DataRow.byIndex(
-                                          index: index,
-                                          cells: [
-                                            DataCell(Text('${index + 1}')),
-                                            DataCell(Text(industry.name)),
-                                            DataCell(Text(industry.status)),
-                                              DataCell(TextButton(
-                                                onPressed: () {
-                                                  showEditDialog(
-                                                      context,
-                                                      DialogType.info,
-                                                      index,
-                                                      industry);
-                                                },
-                                                child: const Text(
-                                                  'Edit',
-                                                  style: TextStyle(
-                                                      color:
-                                                          AppColors.blackColor,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )))
-                                            // DataCell(Text(
-                                            //     '${Random().nextInt(50)}')),
-                                            // DataCell(Text(
-                                            //     '${Random().nextInt(100)}')),
-                                            // DataCell(Text(
-                                            //     '${Random().nextInt(10000)}')),
-                                          ],
-                                        );
-                                      }),
-                                    ),
+                              child: SizedBox(
+                                width: dataTableWidth,
+                                child: Obx(
+                                  () => DataTable(
+                                    headingTextStyle: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                    headingRowHeight: 50,
+                                    headingRowColor: WidgetStateProperty.all(
+                                        AppColors.bgGreyColor),
+                                    // border: TableBorder(
+                                    //     verticalInside: BorderSide(width: 0.5),
+                                    //     top: BorderSide(width: 0.5),
+                                    //     right: BorderSide(width: 0.5),
+                                    //     left: BorderSide(width: 0.5),
+                                    //     bottom: BorderSide(width: 0.5)),
+                                    dividerThickness: 2,
+                                    sortColumnIndex: 0,
+                                    sortAscending: true,
+                                    showCheckboxColumn: false,
+                                    showBottomBorder: true,
+                                    columns: [
+                                      DataColumn(
+                                          // numeric: true,
+                                          label: Row(
+                                        children: [
+                                          Text('No'),
+
+                                          //  IconButton(
+                                          //      onPressed: () {},
+                                          //      icon: Icon(Icons.arrow_drop_down ))
+                                        ],
+                                      )),
+                                      DataColumn(
+                                          onSort: (columnIndex, _) {
+                                            if (screenController
+                                                .isSortasc.value) {
+                                              screenController.industries.sort(
+                                                  (a, b) =>
+                                                      a.name.compareTo(b.name));
+                                            } else {
+                                              screenController.industries.sort(
+                                                  (a, b) =>
+                                                      b.name.compareTo(a.name));
+                                            }
+                                            screenController.isSortasc.value =
+                                                !screenController
+                                                    .isSortasc.value;
+                                          },
+                                          label: Row(
+                                            children: [
+                                              Text('Industry Name'),
+                                              //  IconButton(
+                                              //      onPressed: () {},
+                                              //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                            ],
+                                          )),
+                                      DataColumn(
+                                          label: Row(
+                                        children: [
+                                          Text('Status'),
+                                          //  IconButton(
+                                          //      onPressed: () {},
+                                          //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                        ],
+                                      )),
+                                      DataColumn(
+                                          label: Row(
+                                        children: [
+                                          Text(''),
+                                          //  IconButton(
+                                          //      onPressed: () {},
+                                          //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                        ],
+                                      )),
+                                    ],
+                                    rows: List.generate(
+                                        screenController.industries.length,
+                                        (index) {
+                                      var industry =
+                                          screenController.industries[index];
+                                      return DataRow.byIndex(
+                                        index: index,
+                                        cells: [
+                                          DataCell(Text('${index + 1}')),
+                                          DataCell(Text(industry.name)),
+                                          DataCell(Text(
+                                              industry.isActive.toString())),
+                                          DataCell(TextButton(
+                                              onPressed: () {
+                                                showEditDialog(
+                                                    context,
+                                                    DialogType.info,
+                                                    index,
+                                                    industry);
+                                              },
+                                              child: const Text(
+                                                'Edit',
+                                                style: TextStyle(
+                                                    color: AppColors.blackColor,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )))
+                                          // DataCell(Text(
+                                          //     '${Random().nextInt(50)}')),
+                                          // DataCell(Text(
+                                          //     '${Random().nextInt(100)}')),
+                                          // DataCell(Text(
+                                          //     '${Random().nextInt(10000)}')),
+                                        ],
+                                      );
+                                    }),
                                   ),
                                 ),
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             )),
@@ -188,14 +204,14 @@ class IndustryList extends StatelessWidget {
     )));
   }
 
-   showEditDialog(BuildContext context, DialogType dialogType, int index,
+  showEditDialog(BuildContext context, DialogType dialogType, int index,
       Industry industry) {
     final screenWidth = MediaQuery.of(context).size.width;
     TextEditingController nameController =
         TextEditingController(text: industry.name);
-        //  TextEditingController statusController =
-        // TextEditingController(text: industry.status);
-        TextEditingController remarksController =
+    //  TextEditingController statusController =
+    // TextEditingController(text: industry.status);
+    TextEditingController remarksController =
         TextEditingController(text: industry.remarks);
     final dialogWidth = screenWidth * 0.8;
     final dialog = AwesomeDialog(
@@ -210,118 +226,118 @@ class IndustryList extends StatelessWidget {
           child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-             Container(
-              padding: EdgeInsets.all(kDefaultPadding),
-      // decoration: BoxDecoration(boxShadow: [
-      //   BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
-      // ]),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        // mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('Update Industry',
-              style: GoogleFonts.montserrat(
-                  fontSize: kDefaultPadding + kTextPadding,
-                  fontWeight: FontWeight.bold)),
-          // buildSizedBoxH(kDefaultPadding),
-          // Text(
-          //   'USER INFORMATION',
-          //   style: themeData.textTheme.labelLarge,
-          // ),
-          buildSizedBoxH(kDefaultPadding * 2),
-          FormBuilder(
-            key: _formKey, 
-            autovalidateMode: AutovalidateMode.disabled,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+              Container(
+                padding: EdgeInsets.all(kDefaultPadding),
+                // decoration: BoxDecoration(boxShadow: [
+                //   BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
+                // ]),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisSize: MainAxisSize.min,
                   children: [
-                    Flexible(
-                      child: FormBuilderTextField(
-                        name: 'Industry Name',
-                        controller: nameController,
-                        decoration: InputDecoration(
-                          labelText: 'Industry Name',
-                          // hintText: 'test.user',
-                          // helperText: '* To test registration fail: admin',
-                          border: const OutlineInputBorder(),
-                          floatingLabelBehavior:
-                              FloatingLabelBehavior.always,
-                        ),
-                        enableSuggestions: false,
-                        validator: FormBuilderValidators.required(),
-                        // onSaved: (value) => (_formData.username = value ?? ''),
-                      ),
-                    ),
-                    buildSizedboxW(kDefaultPadding),
-                    Flexible(
-                      child: FormBuilderDropdown(
-                        name: 'Status',
-                        decoration: InputDecoration(
-                          labelText: 'Status',
-                          // hintText: 'test@gmail.com',
-                          border: const OutlineInputBorder(),
-                          floatingLabelBehavior:
-                              FloatingLabelBehavior.always,
-                        ),
-                        // keyboardType: TextInputType.emailAddress,
-                        validator: FormBuilderValidators.required(),
-                        items: [
-                          DropdownMenuItem(
-                            child: Text('Active'),
-                            value: 'Active',
+                    Text('Update Industry',
+                        style: GoogleFonts.montserrat(
+                            fontSize: kDefaultPadding + kTextPadding,
+                            fontWeight: FontWeight.bold)),
+                    // buildSizedBoxH(kDefaultPadding),
+                    // Text(
+                    //   'USER INFORMATION',
+                    //   style: themeData.textTheme.labelLarge,
+                    // ),
+                    buildSizedBoxH(kDefaultPadding * 2),
+                    FormBuilder(
+                      key: _formKey,
+                      autovalidateMode: AutovalidateMode.disabled,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Flexible(
+                                child: FormBuilderTextField(
+                                  name: 'Industry Name',
+                                  controller: nameController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Industry Name',
+                                    // hintText: 'test.user',
+                                    // helperText: '* To test registration fail: admin',
+                                    border: const OutlineInputBorder(),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                  ),
+                                  enableSuggestions: false,
+                                  validator: FormBuilderValidators.required(),
+                                  // onSaved: (value) => (_formData.username = value ?? ''),
+                                ),
+                              ),
+                              buildSizedboxW(kDefaultPadding),
+                              Flexible(
+                                child: FormBuilderDropdown(
+                                  name: 'Status',
+                                  decoration: InputDecoration(
+                                    labelText: 'Status',
+                                    // hintText: 'test@gmail.com',
+                                    border: const OutlineInputBorder(),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                  ),
+                                  // keyboardType: TextInputType.emailAddress,
+                                  validator: FormBuilderValidators.required(),
+                                  items: [
+                                    DropdownMenuItem(
+                                      child: Text('Active'),
+                                      value: 'Active',
+                                    ),
+                                    DropdownMenuItem(
+                                      child: Text('InActive'),
+                                      value: 'InActive',
+                                    ),
+                                  ],
+                                  initialValue: industry.status,
+                                  onChanged: (value) =>
+                                      screenController.selectedStatus = value,
+                                  // onSaved: (value) => (_formData.email = value ?? ''),
+                                ),
+                              ),
+                            ],
                           ),
-                          DropdownMenuItem(
-                            child: Text('InActive'),
-                            value: 'InActive',
+                          buildSizedBoxH(kDefaultPadding * 3),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: FormBuilderTextField(
+                                  controller: remarksController,
+                                  name: 'Remarks',
+                                  decoration: const InputDecoration(
+                                    labelText: 'Remarks',
+                                    hintText: 'please add your remarks',
+                                    border: OutlineInputBorder(),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                  ),
+                                  enableSuggestions: false,
+                                  keyboardType: TextInputType.name,
+                                  validator: FormBuilderValidators.required(),
+                                  // onSaved: (value) => (_formData.firstname = value ?? ''),
+                                ),
+                              ),
+                              buildSizedboxW(kDefaultPadding),
+                            ],
                           ),
+                          buildSizedBoxH(kDefaultPadding * 3),
+
+                          // Divider(
+                          //   indent: kDefaultPadding * 2,
+                          //   endIndent: kDefaultPadding * 2,
+                          // ),
+                          // buildSizedBoxH(kDefaultPadding * 3),
+                          buildSizedBoxH(kDefaultPadding * 3),
                         ],
-                        initialValue: industry.status, 
-                        onChanged: (value) =>
-                            screenController.selectedStatus = value,
-                        // onSaved: (value) => (_formData.email = value ?? ''),
                       ),
                     ),
                   ],
                 ),
-                buildSizedBoxH(kDefaultPadding * 3),
-                Row(
-                  children: [
-                    Flexible(
-                      child: FormBuilderTextField(
-                        controller: remarksController,
-                        name: 'Remarks',
-                        decoration: const InputDecoration(
-                          labelText: 'Remarks',
-                          hintText: 'please add your remarks',
-                          border: OutlineInputBorder(),
-                          floatingLabelBehavior:
-                              FloatingLabelBehavior.always,
-                        ),
-                        enableSuggestions: false,
-                        keyboardType: TextInputType.name,
-                        validator: FormBuilderValidators.required(),
-                        // onSaved: (value) => (_formData.firstname = value ?? ''),
-                      ),
-                    ),
-                    buildSizedboxW(kDefaultPadding),
-                  ],
-                ),
-                buildSizedBoxH(kDefaultPadding * 3),
-               
-                // Divider(
-                //   indent: kDefaultPadding * 2,
-                //   endIndent: kDefaultPadding * 2,
-                // ),
-                // buildSizedBoxH(kDefaultPadding * 3),
-                buildSizedBoxH(kDefaultPadding * 3),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
+              ),
               buildSizedBoxH(kDefaultPadding),
             ]),
           ),
@@ -344,8 +360,8 @@ class IndustryList extends StatelessWidget {
 
             onPressed: () {
               industry.name = nameController.text;
-              industry.remarks=remarksController.text;
-              industry.status=screenController.selectedStatus.toString();
+              industry.remarks = remarksController.text;
+              industry.status = screenController.selectedStatus.toString();
               screenController.updateIndustry(industry);
               Get.off(() => IndustryList());
             },

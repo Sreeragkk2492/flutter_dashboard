@@ -16,6 +16,7 @@ class AllowanceController extends GetxController {
   final allowanceNameController = TextEditingController();
   final remarksController = TextEditingController();
   String? selectedStatus;
+  RxBool isSortasc=true.obs;
 
   // var attendence = <Attendence>[].obs;
 

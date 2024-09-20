@@ -20,6 +20,7 @@ class CompanyLeavetypeController extends GetxController {
   final leavenameController = TextEditingController();
   final RxList<TextEditingController> leaveTypeControllers =
       <TextEditingController>[TextEditingController()].obs;
+ RxBool isSortasc=true.obs;
 
   @override
   void onInit() {

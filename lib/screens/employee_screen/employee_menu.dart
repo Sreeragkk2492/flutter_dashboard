@@ -109,123 +109,128 @@ class EmployeeMenu extends StatelessWidget {
                       left: kDefaultPadding / 2,
                       right: kDefaultPadding / 2),
                   child: Container(
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                          color: AppColors.bgGreyColor,
-                          spreadRadius: 5,
-                          blurRadius: 7)
-                    ]),
-                    child: Card(
-                      color: AppColors.whiteColor,
-                      clipBehavior: Clip.antiAlias,
-                      child: Padding(
-                        padding: EdgeInsets.all(kDefaultPadding),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: double.infinity,
-                              child: LayoutBuilder(
-                                builder: (context, constraints) {
-                                  final double dataTableWidth =
-                                      max(kScreenWidthMd, constraints.maxWidth);
-
-                                  return Scrollbar(
+                    // decoration: BoxDecoration(boxShadow: [
+                    //   BoxShadow(
+                    //       color: AppColors.bgGreyColor,
+                    //       spreadRadius: 5,
+                    //       blurRadius: 7)
+                    // ]),
+                    child: Padding(
+                      padding: EdgeInsets.all(kDefaultPadding),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child: LayoutBuilder(
+                              builder: (context, constraints) {
+                                final double dataTableWidth =
+                                    max(kScreenWidthMd, constraints.maxWidth);
+                    
+                                return Scrollbar(
+                                  controller:
+                                      _dataTableHorizontalScrollController,
+                                  thumbVisibility: true,
+                                  trackVisibility: true,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
                                     controller:
                                         _dataTableHorizontalScrollController,
-                                    thumbVisibility: true,
-                                    trackVisibility: true,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      controller:
-                                          _dataTableHorizontalScrollController,
-                                      child: SizedBox(
-                                          width: dataTableWidth,
-                                          child: DataTable(
-                                            border: const TableBorder(
-                                                verticalInside:
-                                                    BorderSide(width: 0.5),
-                                                top: BorderSide(width: 0.5),
-                                                right: BorderSide(width: 0.5),
-                                                left: BorderSide(width: 0.5),
-                                                bottom: BorderSide(width: 0.5)),
-                                            dividerThickness: 2,
-                                            sortColumnIndex: 0,
-                                            sortAscending: true,
-                                            showCheckboxColumn: false,
-                                            showBottomBorder: true,
-                                            columns: [
-                                              // DataColumn(
-                                              //     // numeric: true,
-                                              //     label: Row(
-                                              //   children: [
-                                              //     Text('#'),
-
-                                              //     //  IconButton(
-                                              //     //      onPressed: () {},
-                                              //     //      icon: Icon(Icons.arrow_drop_down ))
-                                              //   ],
-                                              // )),
-                                              DataColumn(
-                                                  // numeric: true,
-                                                  label: Row(
-                                                children: [
-                                                  Text('Main menu'),
-
-                                                  //  IconButton(
-                                                  //      onPressed: () {},
-                                                  //      icon: Icon(Icons.arrow_drop_down ))
-                                                ],
-                                              )),
-                                              DataColumn(
-                                                  label: Row(
-                                                children: [
-                                                  Text('Sub Menu'),
-                                                  //  IconButton(
-                                                  //      onPressed: () {},
-                                                  //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                                ],
-                                              )),
-                                              // DataColumn(
-                                              //     label: Row(
-                                              //   children: [
-                                              //     Text('Status'),
-                                              //     //  IconButton(
-                                              //     //      onPressed: () {},
-                                              //     //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                              //   ],
-                                              // )),
-                                              // DataColumn(
-                                              //     label: Row(
-                                              //   children: [
-                                              //     Text(''),
-                                              //     //  IconButton(
-                                              //     //      onPressed: () {},
-                                              //     //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                              //   ],
-                                              // )),
-                                            ],
-                                            // ... (keep the existing DataTable properties)
-                                            rows: screenController.filteredMenus
-                                                .map((menu) {
-                                              return DataRow(cells: [
-                                                DataCell(
-                                                    Text(menu.mainMenuName)),
-                                                DataCell(Text(menu.subMenus
-                                                    .map((subMenu) =>
-                                                        subMenu.subMenuName)
-                                                    .join(', '))),
-                                                // DataCell(Text(menu.)),
-                                              ]);
-                                            }).toList(),
-                                          )),
-                                    ),
-                                  );
-                                },
-                              ),
+                                    child: SizedBox(
+                                        width: dataTableWidth,
+                                        child: DataTable(
+                                          headingTextStyle: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600),
+                                          headingRowHeight: 50,
+                                          headingRowColor:
+                                              WidgetStateProperty.all(
+                                                  AppColors.bgGreyColor),
+                                          // border: const TableBorder(
+                                          //     verticalInside:
+                                          //         BorderSide(width: 0.5),
+                                          //     top: BorderSide(width: 0.5),
+                                          //     right: BorderSide(width: 0.5),
+                                          //     left: BorderSide(width: 0.5),
+                                          //     bottom: BorderSide(width: 0.5)),
+                                          dividerThickness: 2,
+                                          sortColumnIndex: 0,
+                                          sortAscending: true,
+                                          showCheckboxColumn: false,
+                                          showBottomBorder: true,
+                                          columns: [
+                                            // DataColumn(
+                                            //     // numeric: true,
+                                            //     label: Row(
+                                            //   children: [
+                                            //     Text('#'),
+                    
+                                            //     //  IconButton(
+                                            //     //      onPressed: () {},
+                                            //     //      icon: Icon(Icons.arrow_drop_down ))
+                                            //   ],
+                                            // )),
+                                            DataColumn(
+                                                // numeric: true,
+                                                label: Row(
+                                              children: [
+                                                Text('Main menu'),
+                    
+                                                //  IconButton(
+                                                //      onPressed: () {},
+                                                //      icon: Icon(Icons.arrow_drop_down ))
+                                              ],
+                                            )),
+                                            DataColumn(
+                                                label: Row(
+                                              children: [
+                                                Text('Sub Menu'),
+                                                //  IconButton(
+                                                //      onPressed: () {},
+                                                //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                              ],
+                                            )),
+                                            DataColumn(
+                                                label: Row(
+                                              children: [
+                                                Text('Status'),
+                                                //  IconButton(
+                                                //      onPressed: () {},
+                                                //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                              ],
+                                            )),
+                                            // DataColumn(
+                                            //     label: Row(
+                                            //   children: [
+                                            //     Text(''),
+                                            //     //  IconButton(
+                                            //     //      onPressed: () {},
+                                            //     //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                            //   ],
+                                            // )),
+                                          ],
+                                          // ... (keep the existing DataTable properties)
+                                          rows: screenController.filteredMenus
+                                              .map((menu) {
+                                            return DataRow(cells: [
+                                              DataCell(
+                                                  Text(menu.mainMenuName)),
+                                              DataCell(_buildSubMenuCell(menu
+                                                  .subMenus
+                                                  .map((subMenu) =>
+                                                      subMenu.subMenuName)
+                                                  .join(', '))),
+                                              DataCell(Text(menu.isSelected
+                                                  .toString())),
+                                            ]);
+                                          }).toList(),
+                                        )),
+                                  ),
+                                );
+                              },
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ));
@@ -234,5 +239,18 @@ class EmployeeMenu extends StatelessWidget {
         })
       ],
     )));
+  }
+
+  Widget _buildSubMenuCell(String subMenus) {
+    // Truncate the address to show only the first half
+    String truncatedSubmenu =
+        subMenus.length > 20 ? '${subMenus.substring(0, 20)}...' : subMenus;
+    return Tooltip(
+      message: subMenus,
+      child: Text(
+        truncatedSubmenu,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
   }
 }

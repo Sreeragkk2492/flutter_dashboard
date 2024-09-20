@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 class EmployeeCategoryController extends GetxController {
   final categoryNameController = TextEditingController();
   final remarksController = TextEditingController();
+  RxBool isSortasc=true.obs;
  
 
    String? selectedStatus;

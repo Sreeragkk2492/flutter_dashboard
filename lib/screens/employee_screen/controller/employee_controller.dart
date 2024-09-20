@@ -43,6 +43,12 @@ class EmployeeController extends GetxController {
   final RxBool isSuperAdmin = false.obs;
   final RxBool isLoading = true.obs;
    RxBool isSortasc=true.obs;
+
+
+   // Add these new properties for pagination
+  final currentPage = 0.obs;
+  final itemsPerPage = 10.obs;
+  final totalPages = 0.obs;
  
 
   // //test
@@ -61,11 +67,34 @@ class EmployeeController extends GetxController {
   //   _rowsPerPage.value = rows;
   // }
 
+  
+
   @override
   void onInit() {
     initializeController();
     fetchUsers();
     super.onInit();
+  }
+
+
+   // Add this computed property to get paginated users
+  List<UserModel> get paginatedUsers {
+    int start = currentPage.value * itemsPerPage.value;
+    int end = start + itemsPerPage.value;
+    if (end > filteredUsers.length) end = filteredUsers.length;
+    return filteredUsers.sublist(start, end);
+  }
+
+  // Add this method to change the current page
+  void changePage(int page) {
+    if (page >= 0 && page < totalPages.value) {
+      currentPage.value = page;
+    }
+  }
+
+  // Add this method to update the total number of pages
+  void updateTotalPages() {
+    totalPages.value = (filteredUsers.length / itemsPerPage.value).ceil();
   }
 
 void setSelectedCompany(String companyId, String companyCode) {
@@ -192,6 +221,9 @@ void setSelectedCompany(String companyId, String companyCode) {
         users.sort((a, b) => a.name.compareTo(b.name));
 
         filteredUsers.value = users;
+          // Update pagination info
+        updateTotalPages();
+        currentPage.value = 0; // Reset to first page when fetching new data
         print("Fetched ${users.value.length} users successfully");
       } else {
         throw HttpException(
@@ -256,6 +288,34 @@ void setSelectedCompany(String companyId, String companyCode) {
     } finally {
       isLoading.value = false;
     }
+  }
+
+   // Modify the existing sorting logic
+  void sortUsers() {
+    if (isSortasc.value) {
+      filteredUsers.sort((a, b) => a.name.compareTo(b.name));
+    } else {
+      filteredUsers.sort((a, b) => b.name.compareTo(a.name));
+    }
+    isSortasc.value = !isSortasc.value;
+    
+    // Reset to first page and update pagination info after sorting
+    currentPage.value = 0;
+    updateTotalPages();
+  }
+
+  // Add this method to handle searching/filtering
+  void searchUsers(String query) {
+    if (query.isEmpty) {
+      filteredUsers.value = users;
+    } else {
+      filteredUsers.value = users.where((user) =>
+          user.name.toLowerCase().contains(query.toLowerCase())).toList();
+    }
+    
+    // Reset to first page and update pagination info after filtering
+    currentPage.value = 0;
+    updateTotalPages();
   }
 
   // updateEmployee(User user) async {

@@ -28,6 +28,7 @@ class CompanyPayrollDeductionController extends GetxController {
   var isLoading = false.obs;
   var selectedCompanycode = ''.obs;
    var hasExplicitlySelectedCompany = false.obs;
+   RxBool isSortasc=true.obs;
 
 
   

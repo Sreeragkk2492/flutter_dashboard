@@ -14,6 +14,7 @@ class SettingsController extends GetxController {
   final departmentNameController = TextEditingController();
   //final statusController = TextEditingController();
   final remarksController = TextEditingController();
+  RxBool isSortasc=true.obs;
 
   String? selectedStatus;
   String? selectedCategory;

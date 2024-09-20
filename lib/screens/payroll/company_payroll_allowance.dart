@@ -75,10 +75,11 @@ class CompanyAllowanceDetails extends StatelessWidget {
             } else {
               // Single company display for company admin
               final company = employeeController.companydetails[0];
-               // Automatically select the company for the admin
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    screenController.onCompanySelected(company.id, company.companyCode);
-                  });
+              // Automatically select the company for the admin
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                screenController.onCompanySelected(
+                    company.id, company.companyCode);
+              });
               return FormBuilderTextField(
                 name: 'Company Name',
                 initialValue: company.companyName,
@@ -122,147 +123,167 @@ class CompanyAllowanceDetails extends StatelessWidget {
                       left: kDefaultPadding / 2,
                       right: kDefaultPadding / 2),
                   child: Container(
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                          color: AppColors.bgGreyColor,
-                          spreadRadius: 5,
-                          blurRadius: 7)
-                    ]),
-                    child: Card(
-                      color: AppColors.whiteColor,
-                      clipBehavior: Clip.antiAlias,
-                      child: Padding(
-                        padding: EdgeInsets.all(kDefaultPadding),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: double.infinity,
-                              child: LayoutBuilder(
-                                builder: (context, constraints) {
-                                  final double dataTableWidth =
-                                      max(kScreenWidthMd, constraints.maxWidth);
+                    // decoration: BoxDecoration(boxShadow: [
+                    //   BoxShadow(
+                    //       color: AppColors.bgGreyColor,
+                    //       spreadRadius: 5,
+                    //       blurRadius: 7)
+                    // ]),
+                    child: Padding(
+                      padding: EdgeInsets.all(kDefaultPadding),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child: LayoutBuilder(
+                              builder: (context, constraints) {
+                                final double dataTableWidth =
+                                    max(kScreenWidthMd, constraints.maxWidth);
 
-                                  return Scrollbar(
+                                return Scrollbar(
+                                  controller:
+                                      _dataTableHorizontalScrollController,
+                                  thumbVisibility: true,
+                                  trackVisibility: true,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
                                     controller:
                                         _dataTableHorizontalScrollController,
-                                    thumbVisibility: true,
-                                    trackVisibility: true,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      controller:
-                                          _dataTableHorizontalScrollController,
-                                      child: SizedBox(
-                                          width: dataTableWidth,
-                                          child: DataTable(
-                                            border: const TableBorder(
-                                                verticalInside:
-                                                    BorderSide(width: 0.5),
-                                                top: BorderSide(width: 0.5),
-                                                right: BorderSide(width: 0.5),
-                                                left: BorderSide(width: 0.5),
-                                                bottom: BorderSide(width: 0.5)),
-                                            dividerThickness: 2,
-                                            sortColumnIndex: 0,
-                                            sortAscending: true,
-                                            showCheckboxColumn: false,
-                                            showBottomBorder: true,
-                                            columns: [
-                                              DataColumn(
-                                                  // numeric: true,
-                                                  label: Row(
-                                                children: [
-                                                  Text('#'),
+                                    child: SizedBox(
+                                        width: dataTableWidth,
+                                        child: DataTable(
+                                          headingTextStyle: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600),
+                                          headingRowHeight: 50,
+                                          headingRowColor:
+                                              WidgetStateProperty.all(
+                                                  AppColors.bgGreyColor),
+                                          // border: const TableBorder(
+                                          //     verticalInside:
+                                          //         BorderSide(width: 0.5),
+                                          //     top: BorderSide(width: 0.5),
+                                          //     right: BorderSide(width: 0.5),
+                                          //     left: BorderSide(width: 0.5),
+                                          //     bottom: BorderSide(width: 0.5)),
+                                          dividerThickness: 2,
+                                          sortColumnIndex: 0,
+                                          sortAscending: true,
+                                          showCheckboxColumn: false,
+                                          showBottomBorder: true,
+                                          columns: [
+                                            DataColumn(
+                                                // numeric: true,
+                                                label: Row(
+                                              children: [
+                                                Text('No'),
 
-                                                  //  IconButton(
-                                                  //      onPressed: () {},
-                                                  //      icon: Icon(Icons.arrow_drop_down ))
-                                                ],
-                                              )),
-                                              DataColumn(
-                                                  // numeric: true,
-                                                  label: Row(
-                                                children: [
-                                                  Text('Company Name'),
+                                                //  IconButton(
+                                                //      onPressed: () {},
+                                                //      icon: Icon(Icons.arrow_drop_down ))
+                                              ],
+                                            )),
+                                            // DataColumn(
+                                            //     // numeric: true,
+                                            //     label: Row(
+                                            //   children: [
+                                            //     Text('Company Name'),
 
-                                                  //  IconButton(
-                                                  //      onPressed: () {},
-                                                  //      icon: Icon(Icons.arrow_drop_down ))
-                                                ],
-                                              )),
-                                              DataColumn(
-                                                  label: Row(
-                                                children: [
-                                                  Text('Payroll Allowance '),
-                                                  //  IconButton(
-                                                  //      onPressed: () {},
-                                                  //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                                ],
-                                              )),
-                                              DataColumn(
-                                                  label: Row(
-                                                children: [
-                                                  Text('Status'),
-                                                  //  IconButton(
-                                                  //      onPressed: () {},
-                                                  //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                                ],
-                                              )),
-                                              DataColumn(
-                                                  label: Row(
-                                                children: [
-                                                  Text(''),
-                                                  //  IconButton(
-                                                  //      onPressed: () {},
-                                                  //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                                ],
-                                              )),
-                                            ],
-                                            // ... (keep the existing DataTable properties)
-                                            rows: List.generate(
-                                                selectedAllowances.length,
-                                                (index) {
-                                              var allowance =
-                                                  selectedAllowances[index];
-                                              return DataRow.byIndex(
-                                                index: index,
-                                                cells: [
-                                                  DataCell(
-                                                      Text('#${index + 1}')),
-                                                  DataCell(Text(screenController
-                                                      .companypayrollallowance
-                                                      .value
-                                                      .companyId)),
-                                                  DataCell(Text(
-                                                      allowance.allowance)),
-                                                  DataCell(Text(screenController
-                                                      .companypayrollallowance
-                                                      .value
-                                                      .status)),
-                                                  DataCell(TextButton(
-                                                      onPressed: () {
-                                                        // Edit functionality
-                                                      },
-                                                      child: const Text(
-                                                        'Edit',
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .blackColor,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      )))
-                                                ],
-                                              );
-                                            }),
-                                          )),
-                                    ),
-                                  );
-                                },
-                              ),
+                                            //     //  IconButton(
+                                            //     //      onPressed: () {},
+                                            //     //      icon: Icon(Icons.arrow_drop_down ))
+                                            //   ],
+                                            // )),
+                                            DataColumn(
+                                                onSort: (columnIndex, _) {
+                                                  if (screenController
+                                                      .isSortasc.value) {
+                                                    selectedAllowances.sort(
+                                                        (a, b) => a.allowance
+                                                            .compareTo(
+                                                                b.allowance));
+                                                  } else {
+                                                    selectedAllowances.sort(
+                                                        (a, b) => b.allowance
+                                                            .compareTo(
+                                                                a.allowance));
+                                                  }
+                                                  screenController
+                                                          .isSortasc.value =
+                                                      !screenController
+                                                          .isSortasc.value;
+                                                },
+                                                label: Row(
+                                                  children: [
+                                                    Text('Payroll Allowance '),
+                                                    //  IconButton(
+                                                    //      onPressed: () {},
+                                                    //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                                  ],
+                                                )),
+                                            DataColumn(
+                                                label: Row(
+                                              children: [
+                                                Text('Status'),
+                                                //  IconButton(
+                                                //      onPressed: () {},
+                                                //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                              ],
+                                            )),
+                                            DataColumn(
+                                                label: Row(
+                                              children: [
+                                                Text(''),
+                                                //  IconButton(
+                                                //      onPressed: () {},
+                                                //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                              ],
+                                            )),
+                                          ],
+                                          // ... (keep the existing DataTable properties)
+                                          rows: List.generate(
+                                              selectedAllowances.length,
+                                              (index) {
+                                            var allowance =
+                                                selectedAllowances[index];
+                                            return DataRow.byIndex(
+                                              index: index,
+                                              cells: [
+                                                DataCell(Text('${index + 1}')),
+                                                // DataCell(Text(screenController
+                                                //     .companypayrollallowance
+                                                //     .value.companyId
+                                                //     )),
+                                                DataCell(
+                                                    Text(allowance.allowance)),
+                                                DataCell(Text(screenController
+                                                    .companypayrollallowance
+                                                    .value
+                                                    .isActive
+                                                    .toString())),
+                                                DataCell(TextButton(
+                                                    onPressed: () {
+                                                      // Edit functionality
+                                                    },
+                                                    child: const Text(
+                                                      'Edit',
+                                                      style: TextStyle(
+                                                          color: AppColors
+                                                              .blackColor,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )))
+                                              ],
+                                            );
+                                          }),
+                                        )),
+                                  ),
+                                );
+                              },
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ));

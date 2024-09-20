@@ -29,16 +29,16 @@ class _UIComponenetsAppBarState extends State<UIComponenetsAppBar> {
     final themedata = Theme.of(context).extension<AppButtonTheme>();
     final mediaQueryData = MediaQuery.of(context);
     return Container(
-      decoration: BoxDecoration(
-        color: AppColors.whiteColor,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.bgGreyColor,
-            spreadRadius: 5,
-            blurRadius: 7, 
-          )
-        ],
-          borderRadius: BorderRadius.circular(kDefaultPadding / 2)),
+      // decoration: BoxDecoration(
+      //   color: AppColors.whiteColor,
+      //   boxShadow: [
+      //     BoxShadow(
+      //       color: AppColors.bgGreyColor,
+      //       spreadRadius: 5,
+      //       blurRadius: 7, 
+      //     )
+      //   ],
+      //     borderRadius: BorderRadius.circular(kDefaultPadding / 2)),
       padding: EdgeInsets.symmetric(
           horizontal: mediaQueryData.size.width > kScreenWidthSm
               ? kDefaultPadding * 1.5
@@ -82,16 +82,16 @@ class _UIComponenetsAppBarState extends State<UIComponenetsAppBar> {
                       Text(
                         widget.title,
                         style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      buildSizedboxW(kTextPadding),
-                      Text(
-                        widget.subtitle,
-                        textAlign: mediaQueryData.size.width >= kScreenWidthLg
-                            ? TextAlign.start
-                            : TextAlign.center,
-                        style: const TextStyle(fontSize: 11),
-                      ),
+                      // buildSizedboxW(kTextPadding),
+                      // Text(
+                      //   widget.subtitle,
+                      //   textAlign: mediaQueryData.size.width >= kScreenWidthLg
+                      //       ? TextAlign.start
+                      //       : TextAlign.center,
+                      //   style: const TextStyle(fontSize: 11),
+                      // ),
                       Visibility(
                         visible: mediaQueryData.size.width <= kScreenWidthLg,
                         child: Padding(

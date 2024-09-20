@@ -45,149 +45,168 @@ class PayrollDeductionList extends StatelessWidget {
                 left: kDefaultPadding / 2,
                 right: kDefaultPadding / 2),
             child: Container(
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                    color: AppColors.bgGreyColor,
-                    spreadRadius: 5,
-                    blurRadius: 7)
-              ]),
-              child: Card(
-                color: AppColors.whiteColor,
-                clipBehavior: Clip.antiAlias,
-                child: Padding(
-                  padding: EdgeInsets.all(kDefaultPadding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // CardHeader(
-                      //   title: 'Company Details',
-                      //   showDivider: false,
-                      // ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            final double dataTableWidth =
-                                max(kScreenWidthMd, constraints.maxWidth);
+              // decoration: BoxDecoration(boxShadow: [
+              //   BoxShadow(
+              //       color: AppColors.bgGreyColor,
+              //       spreadRadius: 5,
+              //       blurRadius: 7)
+              // ]),
+              child: Padding(
+                padding: EdgeInsets.all(kDefaultPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // CardHeader(
+                    //   title: 'Company Details',
+                    //   showDivider: false,
+                    // ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final double dataTableWidth =
+                              max(kScreenWidthMd, constraints.maxWidth);
 
-                            return Scrollbar(
+                          return Scrollbar(
+                            controller: _dataTableHorizontalScrollController,
+                            thumbVisibility: true,
+                            trackVisibility: true,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
                               controller: _dataTableHorizontalScrollController,
-                              thumbVisibility: true,
-                              trackVisibility: true,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                controller:
-                                    _dataTableHorizontalScrollController,
-                                child: SizedBox(
-                                  width: dataTableWidth,
-                                  child: Obx(() {
-                                    if (screenController.deduction.isEmpty) {
-                                      return Center(
-                                        child:
-                                            Text('No payroll_deductions found'),
-                                      );
-                                    } else {
-                                      return DataTable(
-                                        border: TableBorder(
-                                            verticalInside:
-                                                BorderSide(width: 0.5),
-                                            top: BorderSide(width: 0.5),
-                                            right: BorderSide(width: 0.5),
-                                            left: BorderSide(width: 0.5),
-                                            bottom: BorderSide(width: 0.5)),
-                                        dividerThickness: 2,
-                                        sortColumnIndex: 0,
-                                        sortAscending: true,
-                                        showCheckboxColumn: false,
-                                        showBottomBorder: true,
-                                        columns: [
-                                          DataColumn(
-                                              // numeric: true,
-                                              label: Row(
-                                            children: [
-                                              Text('#'),
+                              child: SizedBox(
+                                width: dataTableWidth,
+                                child: Obx(() {
+                                  if (screenController.deduction.isEmpty) {
+                                    return Center(
+                                      child:
+                                          Text('No payroll_deductions found'),
+                                    );
+                                  } else {
+                                    return DataTable(
+                                      headingTextStyle: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                      headingRowHeight: 50,
+                                      headingRowColor: WidgetStateProperty.all(
+                                          AppColors.bgGreyColor),
+                                      // border: TableBorder(
+                                      //     verticalInside:
+                                      //         BorderSide(width: 0.5),
+                                      //     top: BorderSide(width: 0.5),
+                                      //     right: BorderSide(width: 0.5),
+                                      //     left: BorderSide(width: 0.5),
+                                      //     bottom: BorderSide(width: 0.5)),
+                                      dividerThickness: 2,
+                                      sortColumnIndex: 0,
+                                      sortAscending: true,
+                                      showCheckboxColumn: false,
+                                      showBottomBorder: true,
+                                      columns: [
+                                        DataColumn(
+                                            // numeric: true,
+                                            label: Row(
+                                          children: [
+                                            Text('No'),
 
-                                              //  IconButton(
-                                              //      onPressed: () {},
-                                              //      icon: Icon(Icons.arrow_drop_down ))
-                                            ],
-                                          )),
-                                          DataColumn(
-                                              label: Row(
-                                            children: [
-                                              Text('Deduction'),
-                                              //  IconButton(
-                                              //      onPressed: () {},
-                                              //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                            ],
-                                          )),
-                                          DataColumn(
-                                              label: Row(
-                                            children: [
-                                              Text('Status'),
-                                              //  IconButton(
-                                              //      onPressed: () {},
-                                              //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                            ],
-                                          )),
-                                          DataColumn(
-                                              label: Row(
-                                            children: [
-                                              Text(''),
-                                              //  IconButton(
-                                              //      onPressed: () {},
-                                              //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                            ],
-                                          )),
-                                        ],
-                                        rows: List.generate(
-                                            screenController.deduction.length,
-                                            (index) {
-                                          var deduction =
-                                              screenController.deduction[index];
-                                          return DataRow.byIndex(
-                                            index: index,
-                                            cells: [
-                                              DataCell(Text('${index + 1}')),
-                                              DataCell(Text(
-                                                  deduction.deductionName)),
-                                              DataCell(Text(deduction.status)),
-                                              DataCell(TextButton(
-                                                  onPressed: () {
-                                                    showEditDialog(
-                                                        context,
-                                                        DialogType.info,
-                                                        index,
-                                                        deduction);
-                                                  },
-                                                  child: const Text(
-                                                    'Edit',
-                                                    style: TextStyle(
-                                                        color: AppColors
-                                                            .blackColor,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )))
-                                              // DataCell(Text(
-                                              //     '${Random().nextInt(50)}')),
-                                              // DataCell(Text(
-                                              //     '${Random().nextInt(100)}')),
-                                              // DataCell(Text(
-                                              //     '${Random().nextInt(10000)}')),
-                                            ],
-                                          );
-                                        }),
-                                      );
-                                    }
-                                  }),
-                                ),
+                                            //  IconButton(
+                                            //      onPressed: () {},
+                                            //      icon: Icon(Icons.arrow_drop_down ))
+                                          ],
+                                        )),
+                                        DataColumn(
+                                            onSort: (columnIndex, _) {
+                                              if (screenController
+                                                  .isSortasc.value) {
+                                                screenController.deduction.sort(
+                                                    (a, b) => a.deductionName
+                                                        .compareTo(
+                                                            b.deductionName));
+                                              } else {
+                                                screenController.deduction.sort(
+                                                    (a, b) => b.deductionName
+                                                        .compareTo(
+                                                            a.deductionName));
+                                              }
+                                              screenController.isSortasc.value =
+                                                  !screenController
+                                                      .isSortasc.value;
+                                            },
+                                            label: Row(
+                                              children: [
+                                                Text('Deduction'),
+                                                //  IconButton(
+                                                //      onPressed: () {},
+                                                //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                              ],
+                                            )),
+                                        DataColumn(
+                                            label: Row(
+                                          children: [
+                                            Text('Status'),
+                                            //  IconButton(
+                                            //      onPressed: () {},
+                                            //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                          ],
+                                        )),
+                                        DataColumn(
+                                            label: Row(
+                                          children: [
+                                            Text(''),
+                                            //  IconButton(
+                                            //      onPressed: () {},
+                                            //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                          ],
+                                        )),
+                                      ],
+                                      rows: List.generate(
+                                          screenController.deduction.length,
+                                          (index) {
+                                        var deduction =
+                                            screenController.deduction[index];
+                                        return DataRow.byIndex(
+                                          index: index,
+                                          cells: [
+                                            DataCell(Text('${index + 1}')),
+                                            DataCell(
+                                                Text(deduction.deductionName)),
+                                            DataCell(Text(
+                                                deduction.isActive.toString())),
+                                            DataCell(TextButton(
+                                                onPressed: () {
+                                                  showEditDialog(
+                                                      context,
+                                                      DialogType.info,
+                                                      index,
+                                                      deduction);
+                                                },
+                                                child: const Text(
+                                                  'Edit',
+                                                  style: TextStyle(
+                                                      color:
+                                                          AppColors.blackColor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )))
+                                            // DataCell(Text(
+                                            //     '${Random().nextInt(50)}')),
+                                            // DataCell(Text(
+                                            //     '${Random().nextInt(100)}')),
+                                            // DataCell(Text(
+                                            //     '${Random().nextInt(10000)}')),
+                                          ],
+                                        );
+                                      }),
+                                    );
+                                  }
+                                }),
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             )),

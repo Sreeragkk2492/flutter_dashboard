@@ -16,7 +16,7 @@ class CompanyHolidayListController extends GetxController {
   var isLoading = false.obs;
   var isCompanySelected = false.obs;
   var holiday = <CompanyHolidayModel>[].obs;
-
+RxBool isSortasc=true.obs;
   final RxList<HolidayTypeEntry> leaveTypeEntries = <HolidayTypeEntry>[].obs;
 
   @override

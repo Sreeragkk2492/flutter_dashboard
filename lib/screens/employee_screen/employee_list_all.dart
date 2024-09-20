@@ -42,7 +42,7 @@ class EmployeeListAll extends StatelessWidget {
             ),
           ),
         ),
-        buildSizedBoxH(kDefaultPadding),
+        buildSizedBoxH(kDefaultPadding/2),
         Padding(
             padding: EdgeInsets.only(
                 bottom: kDefaultPadding / 2,
@@ -185,6 +185,7 @@ class EmployeeListAll extends StatelessWidget {
                                      // source: EmployeeDataSource(screenController.users, context),
                                     
                                   ),
+                                  
                                 ),
                               ),
                             ),

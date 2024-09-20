@@ -16,6 +16,7 @@ class CompanyProccesingDateController extends GetxController {
   final remarksController = TextEditingController();
   String? selectedStatus;
   String? selectedCompany;
+  RxBool isSortasc=true.obs;
   @override
   void onInit() {
     fetchCompanyPayrollProcessingDate();

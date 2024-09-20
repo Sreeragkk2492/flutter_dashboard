@@ -13,7 +13,7 @@ class IndustryController extends GetxController {
 
   final remarksController = TextEditingController();
   String? selectedStatus;
-
+RxBool isSortasc=true.obs;
   var industries = <Industry>[].obs;
 
   @override
