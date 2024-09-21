@@ -168,8 +168,8 @@ class PayrollDeductionList extends StatelessWidget {
                                           index: index,
                                           cells: [
                                             DataCell(Text('${index + 1}')),
-                                            DataCell(
-                                                Text(deduction.deductionName)),
+                                            DataCell(_buildDeductionCell(
+                                                deduction.deductionName)),
                                             DataCell(Text(
                                                 deduction.isActive.toString())),
                                             DataCell(TextButton(
@@ -212,6 +212,18 @@ class PayrollDeductionList extends StatelessWidget {
             )),
       ],
     )));
+  }
+
+  Widget _buildDeductionCell(String name) {
+    String truncatedname =
+        name.length > 15 ? '${name.substring(0, 15)}...' : name;
+    return Tooltip(
+      message: name,
+      child: Text(
+        truncatedname,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
   }
 
   showEditDialog(BuildContext context, DialogType dialogType, int index,

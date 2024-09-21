@@ -256,7 +256,7 @@ class CompanyAllowanceDetails extends StatelessWidget {
                                                 //     .value.companyId
                                                 //     )),
                                                 DataCell(
-                                                    Text(allowance.allowance)),
+                                                    _buildAllowanceCell(allowance.allowance)),
                                                 DataCell(Text(screenController
                                                     .companypayrollallowance
                                                     .value
@@ -292,5 +292,17 @@ class CompanyAllowanceDetails extends StatelessWidget {
         })
       ],
     )));
+  }
+
+   Widget _buildAllowanceCell(String name) {
+    String truncatedname =
+        name.length > 15 ? '${name.substring(0, 15)}...' : name;
+    return Tooltip(
+      message: name,
+      child: Text(
+        truncatedname,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
   }
 }

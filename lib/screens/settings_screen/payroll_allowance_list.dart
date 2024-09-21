@@ -170,7 +170,7 @@ class PayrollAllowanceList extends StatelessWidget {
                                           cells: [
                                             DataCell(Text('${index + 1}')),
                                             DataCell(
-                                                Text(allowances.allowanceName)),
+                                                _buildAllowanceCell(allowances.allowanceName)),
                                             DataCell(Text(allowances.isActive
                                                 .toString())),
                                             DataCell(TextButton(
@@ -213,6 +213,18 @@ class PayrollAllowanceList extends StatelessWidget {
             )),
       ],
     )));
+  }
+
+   Widget _buildAllowanceCell(String name) {
+    String truncatedname =
+        name.length > 15 ? '${name.substring(0, 15)}...' : name;
+    return Tooltip(
+      message: name,
+      child: Text(
+        truncatedname,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
   }
 
   showEditDialog(BuildContext context, DialogType dialogType, int index,

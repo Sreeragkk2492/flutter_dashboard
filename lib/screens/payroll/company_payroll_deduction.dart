@@ -251,7 +251,7 @@ class CompanyDeductionDetails extends StatelessWidget {
                                               //     .companypayrolldeduction
                                               //     .value
                                               //     .companyId)),
-                                              DataCell(Text(
+                                              DataCell(_buildDeductionCell(
                                                   companypayrolldeduction
                                                       .deduction)),
                                               DataCell(Text(screenController
@@ -298,5 +298,17 @@ class CompanyDeductionDetails extends StatelessWidget {
         }),
       ],
     )));
+  }
+
+  Widget _buildDeductionCell(String name) {
+    String truncatedname =
+        name.length > 15 ? '${name.substring(0, 15)}...' : name;
+    return Tooltip(
+      message: name,
+      child: Text(
+        truncatedname,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
   }
 }

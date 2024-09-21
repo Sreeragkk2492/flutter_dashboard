@@ -90,13 +90,12 @@ class _ListAllState extends State<ListAll> {
                         child: LayoutBuilder(
                           builder: (context, constraints) {
                             final double dataTableWidth =
-                                max(kScreenWidthXxl, constraints.maxWidth);
+                                max(kScreenWidthMd, constraints.maxWidth);
                             return Scrollbar(
                               thumbVisibility: true,
                               trackVisibility: true,
                               // interactive: true,
-                              controller:
-                                  _dataTableHorizontalScrollController,
+                              controller: _dataTableHorizontalScrollController,
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 controller:
@@ -109,9 +108,8 @@ class _ListAllState extends State<ListAll> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600),
                                       headingRowHeight: 50,
-                                      headingRowColor:
-                                          WidgetStateProperty.all(
-                                              AppColors.bgGreyColor),
+                                      headingRowColor: WidgetStateProperty.all(
+                                          AppColors.bgGreyColor),
                                       // border: const TableBorder(
                                       //     verticalInside:
                                       //         BorderSide(width: 0.2),
@@ -129,29 +127,24 @@ class _ListAllState extends State<ListAll> {
                                             onSort: (columnIndex, _) {
                                               if (screenController
                                                   .isSortasc.value) {
-                                                screenController
-                                                    .companydetails
-                                                    .sort((a, b) => a
-                                                        .companyName
-                                                        .compareTo(
+                                                screenController.companydetails
+                                                    .sort((a, b) =>
+                                                        a.companyName.compareTo(
                                                             b.companyName));
                                               } else {
-                                                screenController
-                                                    .companydetails
-                                                    .sort((a, b) => b
-                                                        .companyName
-                                                        .compareTo(
+                                                screenController.companydetails
+                                                    .sort((a, b) =>
+                                                        b.companyName.compareTo(
                                                             a.companyName));
                                               }
-                                              screenController
-                                                      .isSortasc.value =
+                                              screenController.isSortasc.value =
                                                   !screenController
                                                       .isSortasc.value;
                                             },
                                             // numeric: true,
                                             label: Row(
                                               children: [
-                                                const Text('Company Name'),
+                                                const Text('Cmp Name'),
                                                 // IconButton(
                                                 //     onPressed: () {},
                                                 //     icon: const Icon(Icons
@@ -171,7 +164,7 @@ class _ListAllState extends State<ListAll> {
                                         DataColumn(
                                             label: Row(
                                           children: [
-                                            const Text('Company Code'),
+                                            const Text('Cmp Code'),
                                             // IconButton(
                                             //     onPressed: () {},
                                             //     icon: const Icon(Icons
@@ -181,7 +174,7 @@ class _ListAllState extends State<ListAll> {
                                         DataColumn(
                                           label: Row(
                                             children: [
-                                              const Text('Database Name'),
+                                              const Text('Db Name'),
                                               // IconButton(
                                               //     onPressed: () {},
                                               //     icon: const Icon(Icons
@@ -216,14 +209,14 @@ class _ListAllState extends State<ListAll> {
                                         ),
                                       ],
                                       rows: List<DataRow>.generate(
-                                          screenController.companydetails
-                                              .length, (index) {
+                                          screenController
+                                              .companydetails.length, (index) {
                                         return DataRow(
                                           cells: [
                                             DataCell(
-                
+
                                                 // showEditIcon: true,
-                                                Text(screenController
+                                                _buildNameCell(screenController
                                                     .companydetails[index]
                                                     .companyName)),
                                             // DataCell(GestureDetector(
@@ -242,13 +235,11 @@ class _ListAllState extends State<ListAll> {
                                                 .companyCode)),
                                             DataCell(Text(screenController
                                                 .companydetails[index]
-                                                .databaseName
-                                                )),
+                                                .databaseName)),
                                             DataCell(Text(screenController
-                                                .companydetails[index]
-                                                .isActive
+                                                .companydetails[index].isActive
                                                 .toString())),
-                
+
                                             // DataCell(Text('')),
                                             DataCell(TextButton(
                                                 onPressed: () {
@@ -262,8 +253,8 @@ class _ListAllState extends State<ListAll> {
                                                 child: const Text(
                                                   'Edit',
                                                   style: TextStyle(
-                                                      color: AppColors
-                                                          .blackColor,
+                                                      color:
+                                                          AppColors.blackColor,
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 )))
@@ -283,5 +274,17 @@ class _ListAllState extends State<ListAll> {
                 ),
               )),
         ])));
+  }
+
+  Widget _buildNameCell(String name) {
+    String truncatedname =
+        name.length > 20 ? '${name.substring(0, 20)}...' : name;
+    return Tooltip(
+      message: name,
+      child: Text(
+        truncatedname,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
   }
 }

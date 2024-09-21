@@ -125,7 +125,7 @@ class CompanyWorkingShift extends StatelessWidget {
                             child: LayoutBuilder(
                               builder: (context, constraints) {
                                 final double dataTableWidth = max(
-                                    kScreenWidthXxl, constraints.maxWidth);
+                                    kScreenWidthMd, constraints.maxWidth);
                                 return Scrollbar(
                                   thumbVisibility: true,
                                   trackVisibility: true,

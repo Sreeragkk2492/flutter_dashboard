@@ -133,7 +133,7 @@ class CompanyHolidayList extends StatelessWidget {
                           child: LayoutBuilder(
                             builder: (context, constraints) {
                               final double dataTableWidth =
-                                  max(kScreenWidthXxl, constraints.maxWidth);
+                                  max(kScreenWidthMd, constraints.maxWidth);
                               return Scrollbar(
                                 thumbVisibility: true,
                                 trackVisibility: true,
