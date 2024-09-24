@@ -5,6 +5,7 @@ import 'package:flutter_dashboard/core/api/networkManager.dart';
 import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
+import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
 import 'package:flutter_dashboard/models/payroll/add_payroll_model.dart';
 import 'package:flutter_dashboard/models/payroll/show_allowance_deduction_usermodel.dart';
 import 'package:flutter_dashboard/models/user_model.dart';
@@ -53,10 +54,13 @@ class EmployeePayrollSettingsController extends GetxController {
 
 
    @override
-  void onInit() {
+  void onInit() async{
     resetSelectionState();
     super.onInit();
-    fetchUsersForCompany(companyId);
+      // For qts_admin, this will be null or empty
+  // For cmp_admin, this should contain the company ID
+  String? companyIds = await StorageServices().read('company_id');
+    fetchUsersForCompany(companyIds);
     ever(getaddallowances, (_) => _updateAllowanceControllers());
      ever(getadddeduction, (_) => _updateDeductionControllers());
   }
@@ -130,9 +134,19 @@ class EmployeePayrollSettingsController extends GetxController {
   Future<void> fetchUsersForCompany(String companyId) async {
     isLoading.value = true;
     try {
+        String? effectiveCompanyId = companyId;
+    // If no companyId is provided, try to fetch the cmp_admin_company_id
+    if (effectiveCompanyId == null || effectiveCompanyId.isEmpty) {
+      effectiveCompanyId = await StorageServices().read('company_id');
+    }
+    
+    // If we still don't have a company ID, throw an error
+    if (effectiveCompanyId == null || effectiveCompanyId.isEmpty) {
+      throw Exception('No company ID available');
+    }
       final response = await http.get(
         Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USER_BY_COMPANY_ID)
-            .replace(queryParameters: {"company_id": companyId}),
+            .replace(queryParameters: {"company_id": effectiveCompanyId}),
         headers: {
           "Accept": "application/json",
         },

@@ -8,6 +8,7 @@ import 'package:flutter_dashboard/core/widgets/side_bar.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/getx/drawer_getx.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
+import 'package:flutter_dashboard/screens/login_screen/controllers/auth_controller.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -34,6 +35,8 @@ class PortalMasterLayout extends StatelessWidget {
   final Widget? bottomNavigationBar;
   String? usertype;
   final List<Widget>? persistentFooterButtons;
+
+  final screenController=Get.put(AuthController());
 
   PortalMasterLayout({
     Key? key,
@@ -108,7 +111,7 @@ class PortalMasterLayout extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(top: kTextPadding * 2),
                       child: TextButton(onPressed: (){
-                      Get.offAllNamed(Routes.LOGIN);
+                     screenController.logout();
                       }, child: Text('Sign Out',style: TextStyle(color: AppColors.blackColor),)),
                     ),
                     buildSizedboxW(kDefaultPadding),

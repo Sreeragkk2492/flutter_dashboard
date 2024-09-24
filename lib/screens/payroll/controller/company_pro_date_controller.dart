@@ -6,6 +6,7 @@ import 'package:flutter_dashboard/core/api/networkManager.dart';
 import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
+import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
 import 'package:flutter_dashboard/models/payroll/company_process_date_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -53,15 +54,15 @@ class CompanyProccesingDateController extends GetxController {
 
   fetchCompanyPayrollProcessingDate() async {
     try {
-      // final token = await StorageServices().read('token');
+      final tokens = await StorageServices().read('token');
       final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_PROCESSING_DATE);
 
       print("Fetching users from URL: $url");
 
       final response = await http.get(url, headers: {
         "Accept": "application/json",
-        "token": "$token",
-        "Authorization": "Bearer $token",
+        "token": "$tokens",
+        "Authorization": "Bearer $tokens",
       });
 
       print("Response status code: ${response.statusCode}");

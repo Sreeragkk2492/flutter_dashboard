@@ -154,17 +154,13 @@ class CompanyMenuController extends GetxController {
   }
 
   void toggleSubMenu(String mainMenuId, String subMenuId, {bool? forceValue}) {
-    final mainMenuIndex =
-        menus.indexWhere((menu) => menu.mainMenuId == mainMenuId);
+    final mainMenuIndex = menus.indexWhere((menu) => menu.mainMenuId == mainMenuId);
     if (mainMenuIndex != -1) {
-      final subMenuIndex = menus[mainMenuIndex]
-          .subMenus
-          .indexWhere((subMenu) => subMenu.subMenuId == subMenuId);
+      final subMenuIndex = menus[mainMenuIndex].subMenus.indexWhere((subMenu) => subMenu.subMenuId == subMenuId);
       if (subMenuIndex != -1) {
-        final newIsSelected = forceValue ??
-            !menus[mainMenuIndex].subMenus[subMenuIndex].isSelected;
+        final newIsSelected = forceValue ?? !menus[mainMenuIndex].subMenus[subMenuIndex].isSelected;
         menus[mainMenuIndex].subMenus[subMenuIndex].isSelected = newIsSelected;
-
+        
         // Update the main menu selection based on submenu selections
         updateMainMenuSelection(mainMenuId);
       }
@@ -175,11 +171,11 @@ class CompanyMenuController extends GetxController {
   void updateMainMenuSelection(String mainMenuId) {
     final index = menus.indexWhere((menu) => menu.mainMenuId == mainMenuId);
     if (index != -1) {
-      final anySubMenuSelected =
-          menus[index].subMenus.any((subMenu) => subMenu.isSelected);
+      final anySubMenuSelected = menus[index].subMenus.any((subMenu) => subMenu.isSelected);
       menus[index].isSelected = anySubMenuSelected;
     }
   }
+
 
   Future<void> addMenu() async {
     isLoading.value = true;

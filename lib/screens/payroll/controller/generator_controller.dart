@@ -152,7 +152,7 @@ class GeneratorController extends GetxController {
       }
     } catch (e) {
       print("Error fetching users: $e");
-      awesomeOkDialog(message: e.toString());
+     // awesomeOkDialog(message: e.toString());
     } finally {
       isLoading.value = false;
     }

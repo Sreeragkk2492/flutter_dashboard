@@ -4,6 +4,7 @@ import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
+import 'package:flutter_dashboard/models/company_models/company_menu_model.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
 import 'package:flutter_dashboard/models/usertype_model.dart';
 import 'package:flutter_dashboard/screens/company_screen/controller/company_menu_controller.dart';
@@ -104,7 +105,7 @@ class AddCompanyMenu extends StatelessWidget {
       ],
     )));
   }
-  Widget addCompanyMenuForm() {
+   Widget addCompanyMenuForm() {
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -136,7 +137,7 @@ class AddCompanyMenu extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-  Row(
+                    Row(
                       children: [
                         Expanded(
                           child: Padding(
@@ -164,41 +165,35 @@ class AddCompanyMenu extends StatelessWidget {
                             ),
                           ),
                         ),
-                          Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.all(kDefaultPadding),
-                        child: Obx(
-                          () => FormBuilderDropdown(
-                            // controller: widget.companyNameController,
-                            name: 'User Type',
-                            decoration: const InputDecoration(
-                              labelText: 'User Type',
-                              hintText: 'User Type',
-                              border: OutlineInputBorder(),
-                              floatingLabelBehavior: FloatingLabelBehavior.always,
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.all(kDefaultPadding),
+                            child: Obx(
+                              () => FormBuilderDropdown(
+                                name: 'User Type',
+                                decoration: const InputDecoration(
+                                  labelText: 'User Type',
+                                  hintText: 'User Type',
+                                  border: OutlineInputBorder(),
+                                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                                ),
+                                validator: FormBuilderValidators.required(),
+                                items: screenController.userTypes
+                                    .map((user) => DropdownMenuItem(
+                                          value: user,
+                                          child: Text(user.name),
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {
+                                  screenController.onUserTypeSelected(value!.id);
+                                },
+                              ),
                             ),
-                            // enableSuggestions: false,
-                            // keyboardType: TextInputType.name,
-                            validator: FormBuilderValidators.required(),
-                            items: screenController.userTypes
-                                .map((user) => DropdownMenuItem(
-                                      value: user ,
-                                      child: Text(user.name),
-                                    ))
-                                .toList(),
-                            onChanged: (value) {
-                              screenController.onUserTypeSelected(
-                                  value!.id,);
-                            },
-                            // onSaved: (value) => (_formData.firstname = value ?? ''),
                           ),
                         ),
-                      ),
-                    ),
                       ],
                     ),
                     buildSizedBoxH(kDefaultPadding * 3),
-                  
                     Obx(() {
                       if (screenController.isLoading.value) {
                         return Center(child: CircularProgressIndicator());
@@ -210,52 +205,24 @@ class AddCompanyMenu extends StatelessWidget {
                       } else if (screenController.menus.isEmpty) {
                         return Center(
                             child: Text(
-                                "No menus available for the selected user ."));
+                                "No menus available for the selected user."));
                       } else {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: screenController.menus.length,
-                          itemBuilder: (context, index) {
-                            final mainMenu = screenController.menus[index];
-                            return Column(
+                        return LayoutBuilder(
+                          builder: (context, constraints) {
+                            return Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CheckboxListTile(
-                                  title: Text(
-                                    mainMenu.mainMenuName,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  value: mainMenu.isSelected,
-                                  onChanged: (bool? value) {
-                                    screenController
-                                        .toggleMainMenu(mainMenu.mainMenuId);
-                                  },
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
+                                Expanded(
+                                  child: _buildMenuColumn(screenController.menus.sublist(0, screenController.menus.length ~/ 3)),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: kDefaultPadding * 2),
-                                  child: Column(
-                                    children: mainMenu.subMenus.map((subMenu) {
-                                      return CheckboxListTile(
-                                        title: Text(subMenu.subMenuName),
-                                        value: subMenu.isSelected,
-                                        onChanged: (bool? value) {
-                                          // screenController.toggleSubMenu(
-                                          //   mainMenu.mainMenuId,
-                                          //   subMenu.subMenuId,
-                                          // );
-                                        },
-                                        controlAffinity:
-                                            ListTileControlAffinity.leading,
-                                      );
-                                    }).toList(),
-                                  ),
+                                SizedBox(width: kDefaultPadding),
+                                Expanded(
+                                  child: _buildMenuColumn(screenController.menus.sublist(screenController.menus.length ~/ 3, 2 * (screenController.menus.length ~/ 3))),
                                 ),
-                                Divider(),
+                                SizedBox(width: kDefaultPadding),
+                                Expanded(
+                                  child: _buildMenuColumn(screenController.menus.sublist(2 * (screenController.menus.length ~/ 3))),
+                                ),
                               ],
                             );
                           },
@@ -283,6 +250,45 @@ class AddCompanyMenu extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+   Widget _buildMenuColumn(List<Menu> menus) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: menus.map((mainMenu) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CheckboxListTile(
+              title: Text(
+                mainMenu.mainMenuName,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              value: mainMenu.isSelected,
+              onChanged: (bool? value) {
+                screenController.toggleMainMenu(mainMenu.mainMenuId);
+              },
+              controlAffinity: ListTileControlAffinity.leading,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: kDefaultPadding * 2),
+              child: Column(
+                children: mainMenu.subMenus.map((subMenu) {
+                  return CheckboxListTile(
+                    title: Text(subMenu.subMenuName),
+                    value: subMenu.isSelected,
+                    onChanged: (bool? value) {
+                      screenController.toggleSubMenu(mainMenu.mainMenuId, subMenu.subMenuId);
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  );
+                }).toList(),
+              ),
+            ),
+            Divider(),
+          ],
+        );
+      }).toList(),
     );
   }
 }

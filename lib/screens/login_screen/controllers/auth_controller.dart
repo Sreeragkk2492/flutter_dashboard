@@ -83,4 +83,27 @@ class AuthController extends GetxController {
       awesomeOkDialog(message: "Unexpected error: $e");
     }
   }
+
+   Future<void> logout() async {
+    try {
+      // Clear stored data
+      await StorageServices().delete("token");
+      await StorageServices().delete("company_id");
+      await StorageServices().delete('user_type');
+
+      // Reset controllers
+      usernameController.clear();
+      passwordController.clear();
+
+      // Reset any other relevant state
+      // token = null;
+      // companyId = null;
+      // userType = null;
+
+      // Navigate to login screen
+      Get.offAllNamed(Routes.LOGIN);
+    } catch (e) {
+      awesomeOkDialog(message: "Error during logout: $e");
+    }
+  }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
+import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/masterlayout.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -64,13 +65,22 @@ class Sidebar extends StatefulWidget {
 class _SidebarState extends State<Sidebar> {
   final _scrollController = ScrollController();
 late String currentLocation; 
+String? userType;
  void initState() {
     super.initState();
     currentLocation = widget.selectedMenuUri ?? '';
     if (currentLocation.isEmpty && widget.autoSelectMenu) {
       currentLocation = Get.currentRoute;
     }
+    _loadUserType();
     debugPrint('Initial currentLocation: $currentLocation');
+  }
+
+   void _loadUserType() async {
+    userType = await StorageServices().read('user_type');
+    if (mounted) {
+      setState(() {});
+    }
   }
   @override
   void dispose() {
@@ -138,7 +148,8 @@ late String currentLocation;
                   horizontal: kDefaultPadding / 2,
                 ), 
                 children: [
-                  _sidebarMenuList(context, currentLocation),
+                  if (userType != null) _sidebarMenuList(context, currentLocation),
+                  if (userType == null) CircularProgressIndicator(),
                 ],
               ),
             ),
@@ -187,7 +198,7 @@ late String currentLocation;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: widget.sidebarConfigs
-          .where((menu) => menu.visibleFor.contains(widget.userType))
+          .where((menu) => menu.visibleFor.contains(userType))
           .expand((menu) {
         List<Widget> widgets = [];
         if (menu.parentTitle != null) {
@@ -206,7 +217,7 @@ late String currentLocation;
           );
         }
         widgets.addAll(menu.children
-            .where((childMenu) => childMenu.visibleFor.contains(widget.userType))
+            .where((childMenu) => childMenu.visibleFor.contains(userType))
             .map((childMenu) {
           return _sidebarMenu(
             context,

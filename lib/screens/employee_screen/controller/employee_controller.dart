@@ -42,14 +42,12 @@ class EmployeeController extends GetxController {
   var filteredUsers = <UserModel>[].obs;
   final RxBool isSuperAdmin = false.obs;
   final RxBool isLoading = true.obs;
-   RxBool isSortasc=true.obs;
+  RxBool isSortasc = true.obs;
 
-
-   // Add these new properties for pagination
+  // Add these new properties for pagination
   final currentPage = 0.obs;
   final itemsPerPage = 10.obs;
   final totalPages = 0.obs;
- 
 
   // //test
   //  final _currentPage = 0.obs;
@@ -67,17 +65,15 @@ class EmployeeController extends GetxController {
   //   _rowsPerPage.value = rows;
   // }
 
-  
-
   @override
   void onInit() {
     initializeController();
     fetchUsers();
+    fetchUsertype();
     super.onInit();
   }
 
-
-   // Add this computed property to get paginated users
+  // Add this computed property to get paginated users
   List<UserModel> get paginatedUsers {
     int start = currentPage.value * itemsPerPage.value;
     int end = start + itemsPerPage.value;
@@ -97,7 +93,7 @@ class EmployeeController extends GetxController {
     totalPages.value = (filteredUsers.length / itemsPerPage.value).ceil();
   }
 
-void setSelectedCompany(String companyId, String companyCode) {
+  void setSelectedCompany(String companyId, String companyCode) {
     selectedCompanyId.value = companyId;
     selectedCompanycode.value = companyCode;
     print("Selected company set - ID: $companyId, Code: $companyCode");
@@ -115,7 +111,7 @@ void setSelectedCompany(String companyId, String companyCode) {
     selectedEmployeeCategoryId.value = empCategoryId;
   }
 
-    Future<void> initializeController() async {
+  Future<void> initializeController() async {
     try {
       await fetchLoggedInCompanyId();
       await fetchLoggedInUserType();
@@ -138,23 +134,23 @@ void setSelectedCompany(String companyId, String companyCode) {
   }
 
   Future<void> fetchLoggedInUserType() async {
-  try {
-    // Fetch the user type from storage and store it in `loggedInUserType`
-    final userType = await StorageServices().read('user_type');
-    print("Fetched logged in user type: $userType");
+    try {
+      // Fetch the user type from storage and store it in `loggedInUserType`
+      final userType = await StorageServices().read('user_type');
+      print("Fetched logged in user type: $userType");
 
-    // Update the Rx variable
-    loggedInUserType.value = userType;
+      // Update the Rx variable
+      loggedInUserType.value = userType;
 
-    // Set isSuperAdmin based on the fetched user type
-    isSuperAdmin.value = loggedInUserType.value == 'QTS_ADMIN';
-    print("Is super admin: ${isSuperAdmin.value}");
-  } catch (e) {
-    print("Error fetching logged in user type: $e");
-    loggedInUserType.value = null;
-    isSuperAdmin.value = false;
+      // Set isSuperAdmin based on the fetched user type
+      isSuperAdmin.value = loggedInUserType.value == 'QTS_ADMIN';
+      print("Is super admin: ${isSuperAdmin.value}");
+    } catch (e) {
+      print("Error fetching logged in user type: $e");
+      loggedInUserType.value = null;
+      isSuperAdmin.value = false;
+    }
   }
-}
 
   addUser(Map<String, dynamic> employeeData) async {
     var result = await NetWorkManager.shared().request(
@@ -194,15 +190,15 @@ void setSelectedCompany(String companyId, String companyCode) {
 
   fetchUsers() async {
     try {
-      // final token = await StorageServices().read('token');
+      final tokens = await StorageServices().read('token');
       final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USER)
-          .replace(queryParameters: {'token': token});
+          .replace(queryParameters: {'token': tokens});
 
       print("Fetching users from URL: $url");
 
       final response = await http.get(url, headers: {
         "Accept": "application/json",
-        "token": "$token",
+        "token": "$tokens",
       });
 
       print("Response status code: ${response.statusCode}");
@@ -221,7 +217,7 @@ void setSelectedCompany(String companyId, String companyCode) {
         users.sort((a, b) => a.name.compareTo(b.name));
 
         filteredUsers.value = users;
-          // Update pagination info
+        // Update pagination info
         updateTotalPages();
         currentPage.value = 0; // Reset to first page when fetching new data
         print("Fetched ${users.value.length} users successfully");
@@ -233,8 +229,32 @@ void setSelectedCompany(String companyId, String companyCode) {
       print("Error fetching users: $e");
       print("Stack trace: $stackTrace");
 
-      // Show error dialog
-      awesomeOkDialog(message: e.toString());
+      if (users.isEmpty) {
+        awesomeOkDialog(
+            message: "Failed to load users. Please try again later.");
+      }
+    }
+  }
+
+  fetchUsertype() async {
+    try {
+      // Making the GET request to the API
+      var response = await http
+          .get(Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USERTYPE));
+      if (response.statusCode == 200) {
+        // Decoding the JSON response body into a List
+        var jsonData = json.decode(response.body) as List;
+        // Mapping the List to a List of Department objects
+        usertype.value = jsonData.map((jsonItem) {
+          if (jsonItem is Map<String, dynamic>) {
+            return UserType.fromJson(jsonItem);
+          } else {
+            throw Exception("Unexpected data format");
+          }
+        }).toList();
+      }
+    } catch (e) {
+      print("Error$e");
     }
   }
 
@@ -244,17 +264,18 @@ void setSelectedCompany(String companyId, String companyCode) {
       print("Fetching company details...");
       final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_COMPANY);
       print("API URL: $url");
-      
-     // final token = await StorageServices().read('token');
-      
+
+      // final token = await StorageServices().read('token');
+
       var response = await http.get(
         url,
         headers: {
           "accept": "application/json",
-         /// "Authorization": "Bearer $token",
+
+          /// "Authorization": "Bearer $token",
         },
       );
-      
+
       print("Response status code: ${response.statusCode}");
       print("Response body: ${response.body}");
 
@@ -263,7 +284,8 @@ void setSelectedCompany(String companyId, String companyCode) {
         print("Parsed JSON data: $jsonData");
 
         if (isSuperAdmin.value) {
-          companydetails.value = jsonData.map((jsonItem) => Company.fromJson(jsonItem)).toList();
+          companydetails.value =
+              jsonData.map((jsonItem) => Company.fromJson(jsonItem)).toList();
         } else {
           companydetails.value = jsonData
               .map((jsonItem) => Company.fromJson(jsonItem))
@@ -274,23 +296,26 @@ void setSelectedCompany(String companyId, String companyCode) {
         print("Fetched ${companydetails.length} companies");
         print("Is super admin: ${isSuperAdmin.value}");
         print("Logged in company ID: ${loggedInCompanyId.value}");
-        
+
         if (companydetails.isEmpty) {
-          print("Warning: No companies fetched. This might be due to filtering or empty response.");
+          print(
+              "Warning: No companies fetched. This might be due to filtering or empty response.");
         }
       } else {
-        throw Exception("Failed to load companies. Status code: ${response.statusCode}");
+        throw Exception(
+            "Failed to load companies. Status code: ${response.statusCode}");
       }
     } catch (e) {
       print("Error fetching company details: $e");
       companydetails.value = []; // Clear the list on error
-      awesomeOkDialog(message: "Failed to fetch company details. Please try again later.");
+      awesomeOkDialog(
+          message: "Failed to fetch company details. Please try again later.");
     } finally {
       isLoading.value = false;
     }
   }
 
-   // Modify the existing sorting logic
+  // Modify the existing sorting logic
   void sortUsers() {
     if (isSortasc.value) {
       filteredUsers.sort((a, b) => a.name.compareTo(b.name));
@@ -298,7 +323,7 @@ void setSelectedCompany(String companyId, String companyCode) {
       filteredUsers.sort((a, b) => b.name.compareTo(a.name));
     }
     isSortasc.value = !isSortasc.value;
-    
+
     // Reset to first page and update pagination info after sorting
     currentPage.value = 0;
     updateTotalPages();
@@ -309,10 +334,12 @@ void setSelectedCompany(String companyId, String companyCode) {
     if (query.isEmpty) {
       filteredUsers.value = users;
     } else {
-      filteredUsers.value = users.where((user) =>
-          user.name.toLowerCase().contains(query.toLowerCase())).toList();
+      filteredUsers.value = users
+          .where(
+              (user) => user.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
     }
-    
+
     // Reset to first page and update pagination info after filtering
     currentPage.value = 0;
     updateTotalPages();

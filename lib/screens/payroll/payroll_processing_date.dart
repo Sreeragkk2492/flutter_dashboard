@@ -10,13 +10,15 @@ import 'package:flutter_dashboard/core/widgets/ui_component_appbar.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/payroll/controller/company_pro_date_controller.dart';
 import 'package:get/get.dart';
-
+import 'package:intl/intl.dart';
 import '../../core/constants/dimens.dart';
 
 class CompanyPayrollDate extends StatelessWidget {
   CompanyPayrollDate({super.key});
   final _dataTableHorizontalScrollController = ScrollController();
   final screenController = Get.put(CompanyProccesingDateController());
+  final DateFormat dateFormat =
+      DateFormat('yyyy-MM-dd'); // Updated to show only date
   @override
   Widget build(BuildContext context) {
     return PortalMasterLayout(
@@ -184,9 +186,8 @@ class CompanyPayrollDate extends StatelessWidget {
                                             DataCell(Text('${index + 1}')),
                                             DataCell(Text(
                                                 processingdate.companyName)),
-                                            DataCell(Text(processingdate
-                                                .processingDay
-                                                .toString())),
+                                            DataCell(Text(dateFormat.format(
+                                                processingdate.processingDay))),
                                             DataCell(Text(processingdate
                                                 .isActive
                                                 .toString())),

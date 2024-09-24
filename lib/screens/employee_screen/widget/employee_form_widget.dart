@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
@@ -68,50 +69,54 @@ class EmployeeFormWidget extends StatelessWidget {
               children: [
                 Flexible(
                   child: Obx(() {
-                    
-                      if (screenController.companydetails.isEmpty) {
-                    // Show loading indicator while fetching company details
-                    return Center(child: CircularProgressIndicator());
-                  }
+                    if (screenController.companydetails.isEmpty) {
+                      // Show loading indicator while fetching company details
+                      return Center(child: CircularProgressIndicator());
+                    }
 
-                  if (screenController.isSuperAdmin.value) {
-                    // Dropdown for superadmin
-                    return FormBuilderDropdown<Company>(
-                      name: 'Company Name',
-                      decoration: InputDecoration(
-                        labelText: 'Company Name',
-                        hintText: 'Select Company',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      validator: FormBuilderValidators.required(),
-                      items: screenController.companydetails
-                          .map((company) => DropdownMenuItem(
-                                value: company,
-                                child: Text(company.companyName),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        screenController.setSelectedCompany(value!.id, value.companyCode);
-                      },
-                    );
-                  } else {
-                    // Single company display for company admin
-                    final company = screenController.companydetails[0];
-                    // screenController.setSelectedCompany(
-                    //     company.id, company.companyCode);
-                    return FormBuilderTextField(
-                      name: 'Company Name',
-                      initialValue: company.companyName,
-                      decoration: InputDecoration(
-                        labelText: 'Company Name',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      readOnly: true,
-                    );
-                  }
-                    
+                    if (screenController.isSuperAdmin.value) {
+                      // Dropdown for superadmin
+                      return FormBuilderDropdown<Company>(
+                        name: 'Company Name',
+                        decoration: InputDecoration(
+                          labelText: 'Company Name',
+                          hintText: 'Select Company',
+                          border: OutlineInputBorder(),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                        ),
+                        validator: FormBuilderValidators.required(),
+                        items: screenController.companydetails
+                            .map((company) => DropdownMenuItem(
+                                  value: company,
+                                  child: Text(company.companyName),
+                                ))
+                            .toList(),
+                        onChanged: (value) {
+                          screenController.setSelectedCompany(
+                              value!.id, value.companyCode);
+                        },
+                      );
+                    } else {
+                      // Single company display for company admin
+                      final company = screenController.companydetails[0];
+                      screenController.setSelectedCompany(
+                          company.id, company.companyCode);
+                      return FormBuilderTextField(
+                        name: 'Company Name',
+                        initialValue: company.companyName,
+                        decoration: InputDecoration(
+                          labelText: 'Company Name',
+                          border: OutlineInputBorder(),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                        ),
+                        readOnly: true,
+                        onSaved: (newValue) {
+                          // This ensures the company ID and code are saved even for pre-filled company
+                          screenController.setSelectedCompany(
+                              company.id, company.companyCode);
+                        },
+                      );
+                    }
                   }),
                 ),
                 buildSizedboxW(kDefaultPadding),
@@ -387,7 +392,17 @@ class EmployeeFormWidget extends StatelessWidget {
                     ),
                     // enableSuggestions: false,
                     keyboardType: TextInputType.name,
-                    validator: FormBuilderValidators.required(),
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                      (value) {
+                        if (value != null && value.isAfter(DateTime.now())) {
+                          return 'Date of birth cannot be in the future';
+                        }
+                        return null;
+                      },
+                    ]),
+                    lastDate: DateTime.now(),
+
                     // onSaved: (value) => (_formData.firstname = value ?? ''),
                   ),
                 ),
@@ -402,8 +417,23 @@ class EmployeeFormWidget extends StatelessWidget {
                       border: OutlineInputBorder(),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
-                    keyboardType: TextInputType.name,
-                    validator: FormBuilderValidators.required(),
+                    keyboardType: TextInputType.phone,
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(),
+            FormBuilderValidators.numeric(),
+            FormBuilderValidators.maxLength(10),
+            FormBuilderValidators.minLength(10),
+            (value) {
+              if (value != null && value.length != 10) {
+                return 'Phone number must be exactly 10 digits';
+              }
+              return null;
+            },
+          ]),
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(10),
+          ], 
                     //  onSaved: (value) => (_formData.lastname = value ?? ''),
                   ),
                 ),
