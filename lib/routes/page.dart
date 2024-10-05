@@ -28,8 +28,9 @@ import 'package:flutter_dashboard/screens/employee_screen/employee_menu.dart';
 import 'package:flutter_dashboard/screens/login_screen/login_screen.dart';
 import 'package:flutter_dashboard/screens/payroll/add_employee_payroll_settings.dart';
 import 'package:flutter_dashboard/screens/payroll/add_employee_payslip.dart';
+import 'package:flutter_dashboard/screens/payroll/add_employee_payslip_generation.dart';
 import 'package:flutter_dashboard/screens/payroll/employee_payroll_settings.dart';
-import 'package:flutter_dashboard/screens/payroll/payroll_settings.dart';
+import 'package:flutter_dashboard/screens/payroll/emp_payslip_details.dart';
 import 'package:flutter_dashboard/screens/payroll/payslip_generator.dart';
 import 'package:flutter_dashboard/screens/payroll/payslip_invoice.dart';
 import 'package:flutter_dashboard/screens/settings_screen/add_allowance.dart';
@@ -289,9 +290,16 @@ class GetPages {
        middlewares: [ResetAllowanceMiddleware(), ResetDeductionMiddleware(),ResetEmployeePayroll()],
       transition: Transition.noTransition,
     ),
+    
      GetPage(
       name: Routes.AddEmployeePayslipDetails,
       page: () =>AddEmployeePayslip(),
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+      GetPage(
+      name: Routes.AddEmployeePayslipGeneration,
+      page: () =>AddEmployeePayslipGeneration(),
       //  binding: HomeBinding(),
       transition: Transition.noTransition,
     ),

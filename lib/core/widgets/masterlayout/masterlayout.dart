@@ -114,7 +114,7 @@ final sidebarMenuConfigs = [
         title: (context) => 'Employee Payroll Settings', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
-        uri:Routes.EmployeePayslippDetails,
+        uri:Routes.AddEmployeePayslipGeneration,
         icon: Icons.settings,
         title: (context) => 'Employee Payslip Details', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
       ),

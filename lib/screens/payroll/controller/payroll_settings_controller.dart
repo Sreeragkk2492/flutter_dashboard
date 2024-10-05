@@ -25,35 +25,40 @@ class PayrollSettingsController extends GetxController {
   var isMonthSelected = false.obs;
   var selectedYear = ''.obs;
   var selectedMonth = ''.obs;
-  var payslipDetails = PayslipDetails(
-     
-      employeeId: '',
-      year: 0,
-      month: 0,
-      payperiodStartDate: DateTime.now(),
-      payperiodEndDate: DateTime.now(),
-      paydate: DateTime.now(),
-      paymentMethod: '',
-      totalAmount: 0,
-      overtimeHours: 0,
-      regularHours: 0,
-      leavedays: 0,
-      holidays: 0,
-      workfromhomeDays: 0,
-      projectCode: '',
-      location: '',
-      department: null,
-      remarks: '',
-      approved: false,
-      approvedBy: '',
-      payslipFileName: '',
-      status: '',
-      allowances: [],
-      deductions: [], companyId: '', userId: '', isActive: false).obs;
+  var payslipDetails = PayslipDetail(
+          employeeId: '',
+          year: 0,
+          month: 0,
+          payperiodStartDate: DateTime.now(),
+          payperiodEndDate: DateTime.now(),
+          paydate: DateTime.now(),
+          paymentMethod: '',
+          totalAmount: 0,
+          overtimeHours: 0,
+          regularHours: 0,
+          leavedays: 0,
+          holidays: 0,
+          workfromhomeDays: 0,
+          projectCode: '',
+          location: '',
+          department: '',
+          remarks: '',
+          approved: false,
+          approvedBy: '',
+          payslipFileName: '',
+          status: '',
+          allowances: [],
+          deductions: [],
+          companyId: '',
+          userId: '',
+          isActive: false)
+      .obs;
   var showTabBar = false.obs;
-  var payslip = <PayslipDetails>[].obs;
-  var allowances = <Allowance>[].obs;
+  var payslip = <PayslipDetail>[].obs;
+  var allowances = <AllowanceElement>[].obs;
   var deductions = <Deduction>[].obs;
+  var companyPayroll=<CompanyPayroll>[].obs;
+ // var companySelectedDeduction=<CompanySelectedDeduction>[].obs;
   final payslipController = <String, TextEditingController>{}.obs;
   final allowanceControllers = <String, TextEditingController>{}.obs;
   final deductionControllers = <String, TextEditingController>{}.obs;
@@ -78,20 +83,30 @@ class PayrollSettingsController extends GetxController {
   final payslipFileNameController = TextEditingController();
   final statusController = TextEditingController();
   var noDataFound = false.obs;
-  var isGenerated=false.obs;
+  var isGenerated = false.obs;
+   var showDataTable = false.obs;
 
   @override
-  void onInit() async{
+  void onInit() async {
     // resetSelectionState();
-     // For qts_admin, this will be null or empty
-  // For cmp_admin, this should contain the company ID
-  String? companyIds = await StorageServices().read('company_id');
+    // For qts_admin, this will be null or empty
+    // For cmp_admin, this should contain the company ID
+    String? companyIds = await StorageServices().read('company_id');
     fetchUsersForCompany(companyIds);
     super.onInit();
     ever(payslip, (_) => _updatePayslipControllers());
     ever(allowances, (_) => _updateAllowanceControllers());
     ever(deductions, (_) => _updateDeductionControllers());
+    String? userType = await StorageServices().read('user_type');
+    String? companyId = await StorageServices().read('company_id');
+    
+    if (userType == 'CMP_ADMIN' && companyId != null) {
+      selectedCompanyId.value = companyId;
+      isCompanySelected.value = true;
+    }
   }
+
+  // Methods to update controllers based on data changes
 
   void _updatePayslipControllers() {
     for (var payslip in payslip) {
@@ -101,6 +116,7 @@ class PayrollSettingsController extends GetxController {
     }
   }
 
+  // Methods to update controllers based on data changes
   void _updateAllowanceControllers() {
     for (var allowance in allowances) {
       if (!allowanceControllers.containsKey(allowance.id)) {
@@ -110,6 +126,7 @@ class PayrollSettingsController extends GetxController {
     }
   }
 
+  // Methods to update controllers based on data changes
   void _updateDeductionControllers() {
     for (var deduction in deductions) {
       if (!deductionControllers.containsKey(deduction.id)) {
@@ -119,24 +136,27 @@ class PayrollSettingsController extends GetxController {
     }
   }
 
+  // Check if all necessary selections are made to fetch payslip details
+
   void checkAllSelections() {
     print("Checking selections:");
     print("Company selected: ${isCompanySelected.value}");
-    print("User selected: ${isUserSelected.value}");
+    print("Company ID: ${selectedCompanyId.value}");
     print("Year selected: ${isYearSelected.value}");
+    print("Year: ${selectedYear.value}");
     print("Month selected: ${isMonthSelected.value}");
+    print("Month: ${selectedMonth.value}");
 
-    if (
-        isUserSelected.value &&
-        isYearSelected.value &&
-        isMonthSelected.value) {
+    if (isCompanySelected.value && isYearSelected.value && isMonthSelected.value) {
       print("All selections made, fetching payslip details");
       fetchPayslipDetails();
     } else {
-      print("Not all selections made, hiding tab bar");
-      showTabBar.value = false;
+      print("Not all selections made, hiding data table");
+      showDataTable.value = false;
     }
   }
+
+  // Methods to handle year selections
 
   void onYearSelected(String year) {
     selectedYear.value = year;
@@ -144,13 +164,17 @@ class PayrollSettingsController extends GetxController {
     checkAllSelections();
   }
 
+  // Methods to handle month selections
+
   void onMonthSelected(String month) {
     selectedMonth.value = month;
     isMonthSelected.value = true;
     checkAllSelections();
   }
 
-  void onCompanySelected(String companyId) {
+  // Methods to handle company selections
+
+  void onCompanySelected(String companyId) { 
     selectedCompanyId.value = companyId;
     isCompanySelected.value = true;
     isUserSelected.value = false;
@@ -160,8 +184,16 @@ class PayrollSettingsController extends GetxController {
     selectedYear.value = '';
     selectedMonth.value = '';
     fetchUsersForCompany(companyId);
-    checkAllSelections();
+   // checkAllSelections();
   }
+
+  //  void onCompanySelectedForVerify(String companyId) async {
+  //   selectedCompanyId.value = companyId;
+  //   isCompanySelected.value = true;
+  //  checkAllSelections(); 
+  // }
+
+  // Methods to handle user selections
 
   void onUserSelected(String userTypeId, String companyId, String userId) {
     selectedCompanyId.value = companyId;
@@ -174,19 +206,21 @@ class PayrollSettingsController extends GetxController {
     checkAllSelections();
   }
 
+  // Fetch users for a specific company
+
   Future<void> fetchUsersForCompany(String companyId) async {
     isLoading.value = true;
     try {
-        String? effectiveCompanyId = companyId;
-    // If no companyId is provided, try to fetch the cmp_admin_company_id
-    if (effectiveCompanyId == null || effectiveCompanyId.isEmpty) {
-      effectiveCompanyId = await StorageServices().read('company_id');
-    }
-    
-    // If we still don't have a company ID, throw an error
-    if (effectiveCompanyId == null || effectiveCompanyId.isEmpty) {
-      throw Exception('No company ID available');
-    }
+      String? effectiveCompanyId = companyId;
+      // If no companyId is provided, try to fetch the cmp_admin_company_id
+      if (effectiveCompanyId == null || effectiveCompanyId.isEmpty) {
+        effectiveCompanyId = await StorageServices().read('company_id');
+      }
+
+      // If we still don't have a company ID, throw an error
+      if (effectiveCompanyId == null || effectiveCompanyId.isEmpty) {
+        throw Exception('No company ID available');
+      }
       final response = await http.get(
         Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USER_BY_COMPANY_ID)
             .replace(queryParameters: {"company_id": effectiveCompanyId}),
@@ -208,21 +242,35 @@ class PayrollSettingsController extends GetxController {
       }
     } catch (e) {
       print("Error fetching users: $e");
-     // awesomeOkDialog(message: e.toString());
+      // awesomeOkDialog(message: e.toString());
     } finally {
       isLoading.value = false;
     }
   }
 
+  // Fetch payslip details based on selected criteria
+
   Future<void> fetchPayslipDetails() async {
     isLoading.value = true;
+    showDataTable.value = false;
     noDataFound.value = false;
     try {
+      final tokens = await StorageServices().read('token');
+       String? effectiveCompanyId = companyId;
+      // If no companyId is provided, try to fetch the cmp_admin_company_id
+      if (effectiveCompanyId == null || effectiveCompanyId.isEmpty) {
+        effectiveCompanyId = await StorageServices().read('company_id');
+      }
+
+      // If we still don't have a company ID, throw an error
+      if (effectiveCompanyId == null || effectiveCompanyId.isEmpty) {
+        throw Exception('No company ID available');
+      }
       final url =
           Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_EMPLOYEE_PAYSLIP_DETAILS)
               .replace(queryParameters: {
-        "company_id": "75c88902-eeb1-4775-8ce2-42401c44090e",
-        "user_id": "62b8f5d3-ae95-4d63-b2ba-113c4060e4dd",
+        "company_id": effectiveCompanyId,
+      //  "user_id": selectedUserId.value, 
         "year": selectedYear.value,
         "month": selectedMonth.value
       });
@@ -231,7 +279,7 @@ class PayrollSettingsController extends GetxController {
 
       final response = await http.get(url, headers: {
         "Accept": "application/json",
-        "Authorization": "Bearer $token",
+        "Authorization": "Bearer $tokens", 
       });
 
       print("Response status code: ${response.statusCode}");
@@ -239,9 +287,15 @@ class PayrollSettingsController extends GetxController {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
-        final payslipData =
-            PayslipDetails.fromJson(jsonData['payslip_details']);
+         final employeePayroll = EmployeePayroll.fromJson(jsonData);
 
+      // Update observable variables
+      companyPayroll.value = employeePayroll.companyPayrolls;
+    //  companySelectedDeduction.value = employeePayroll.companySelectedDeduction;
+      payslip.value = employeePayroll.payslipDetails;
+
+      if (employeePayroll.payslipDetails.isNotEmpty) {
+        final payslipData = employeePayroll.payslipDetails.first;
         payslipDetails.value = payslipData;
         allowances.value = payslipData.allowances;
         deductions.value = payslipData.deductions;
@@ -256,7 +310,7 @@ class PayrollSettingsController extends GetxController {
             DateFormat('yyyy-MM-dd').format(payslipData.payperiodEndDate);
         payDateController.text =
             DateFormat('yyyy-MM-dd').format(payslipData.paydate);
-        paymentMethodController.text = payslipData.paymentMethod;
+        paymentMethodController.text = payslipData.paymentMethod.toString();
         totalAmountController.text = payslipData.totalAmount.toString();
         overtimeHoursController.text = payslipData.overtimeHours.toString();
         regularHoursController.text = payslipData.regularHours.toString();
@@ -264,34 +318,43 @@ class PayrollSettingsController extends GetxController {
         holidaysController.text = payslipData.holidays.toString();
         workFromHomeDaysController.text =
             payslipData.workfromhomeDays.toString();
-        projectCodeController.text = payslipData.projectCode;
-        locationController.text = payslipData.location;
+        projectCodeController.text = payslipData.projectCode.toString();
+        locationController.text = payslipData.location.toString();
         departmentController.text = 'null';
-        remarksController.text = payslipData.remarks;
+        remarksController.text = payslipData.remarks.toString();
         approvedController.text = payslipData.approved.toString();
         approvedByController.text = payslipData.approvedBy;
-        payslipFileNameController.text = payslipData.payslipFileName;
-        statusController.text = payslipData.status;
+        payslipFileNameController.text = payslipData.payslipFileName.toString();
+        statusController.text = payslipData.status.toString();
         print("Fetched payslip details successfully");
         print("Allowances: ${allowances.length}");
         print("Deductions: ${deductions.length}");
         showTabBar.value = true;
-      } else if (response.statusCode == 404) {
+         showDataTable.value = true;
+      } else {
         noDataFound.value = true;
         showTabBar.value = false;
-      } else {
-        throw Exception(
-            "Failed to fetch payslip details. Status code: ${response.statusCode}");
+          showDataTable.value = false;
       }
+    } else if (response.statusCode == 404) {
+      noDataFound.value = true;
+      showTabBar.value = false;
+      showDataTable.value = false;
+    } else {
+      throw Exception("Failed to fetch payslip details. Status code: ${response.statusCode}");
+    }
     } catch (e, stackTrace) {
       print("Error fetching payslip details: $e");
       print("Stack trace: $stackTrace");
       awesomeOkDialog(message: e.toString());
+       showDataTable.value = false;
       showTabBar.value = false;
     } finally {
       isLoading.value = false;
     }
   }
+
+  // Add or update payslip details
 
   addPayslipDetails() async {
     final requestBody = {
@@ -320,8 +383,6 @@ class PayrollSettingsController extends GetxController {
         "payslip_file_name": payslipFileNameController.text,
         "status": statusController.text,
         "is_active": true,
-      
-      
         "allowances": allowances.map((allowances) {
           return {
             "id": allowances.id,
@@ -329,9 +390,6 @@ class PayrollSettingsController extends GetxController {
             "amount": allowanceControllers[allowances.id]?.text ?? '0'
           };
         }).toList(),
-       
-      
-      
         "deductions": deductions.map((deductions) {
           return {
             "id": deductions.id,
@@ -339,11 +397,9 @@ class PayrollSettingsController extends GetxController {
             "amount": deductionControllers[deductions.id]?.text ?? '0'
           };
         }).toList(),
-       
       }
-      
     };
-    isGenerated.value=false;
+    isGenerated.value = false;
     final result = await NetWorkManager.shared().request(
         url: ApiUrls.BASE_URL + ApiUrls.ADD_PAYSLIP_DETAILS,
         method: 'post',
@@ -351,14 +407,13 @@ class PayrollSettingsController extends GetxController {
         data: requestBody);
 
     if (result.isLeft) {
-      isGenerated.value=true;
+      isGenerated.value = true;
       awesomeOkDialog(message: "Payslip already generated for this month");
     } else {
       // Show success message
-      final message=result.right['message'];
+      final message = result.right['message'];
       print(message);
       awesomeOkDialog(message: "Updated successfully");
-      
 
       // Navigate back
       Get.back();

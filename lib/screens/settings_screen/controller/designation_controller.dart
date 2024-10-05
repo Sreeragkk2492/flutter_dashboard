@@ -27,6 +27,8 @@ class DesignationController extends GetxController {
     super.onInit();
   }
 
+  // to add designation
+
   addDesignation() async {
     final result = await NetWorkManager.shared().request(
         url: ApiUrls.BASE_URL + ApiUrls.ADD_DESIGNATION,
@@ -49,6 +51,8 @@ class DesignationController extends GetxController {
     }
   }
 
+  // to fetch department by company
+
   fetchDepartmentByCompanyId() async {
   try {
     var response = await http.get(
@@ -68,6 +72,8 @@ class DesignationController extends GetxController {
   }
 }
 
+// to fetch all designation
+
   fetchDesignaation() async {
     try {
       // Making the GET request to the API
@@ -85,6 +91,8 @@ class DesignationController extends GetxController {
     }
   }
    
+// update designation
+
 
   updateDesignation(Designation designation) async {
     final result = await NetWorkManager.shared().request(

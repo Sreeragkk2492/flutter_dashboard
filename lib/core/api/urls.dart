@@ -130,7 +130,7 @@ class ApiUrls {
       //payslip
       
        static const GET_ALL_EMPLOYEE_PAYSLIP_DETAILS =
-      "/employee_payslip_details/get_employee_payslip_for_generation";
+      "/employee_payslip_details/get_all_employees_payslip_for_generation";
       static const GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION =
       "/employee_payroll_allowance/show_allowances_and_deductions_of_user";
        static const GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION_IN_ADD =

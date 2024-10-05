@@ -38,6 +38,7 @@ class Routes {
   static const String AddEmployeePayslipDetails = "/addemployeepayslipdetails";
   static const String EmployeePayrollSettings = "/employeepayrollsettings";
    static const String AddEmployeePayrollSettings = "/addemployeepayrollsettings";
+    static const String AddEmployeePayslipGeneration = "/addemployeepayslipgeneration";
 
   static const String AddCompanyAllowanceDetails =
       "/addcompanyallowancedetails";

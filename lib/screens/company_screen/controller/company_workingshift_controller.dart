@@ -9,6 +9,9 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class CompanyWorkingshiftController extends GetxController {
+
+   // Observable variables for managing state
+
   var workingShifts = <WorkingShiftModel>[].obs;
 
   var selectedCompanyId = ''.obs;
@@ -54,6 +57,7 @@ class CompanyWorkingshiftController extends GetxController {
     }
   }
 
+//to add working shifts
   addWorkingShifts() async {
     final result = await NetWorkManager.shared().request(
         url: ApiUrls.BASE_URL + ApiUrls.ADD_COMPANY_WORKING_SHIFTS,
@@ -79,6 +83,8 @@ class CompanyWorkingshiftController extends GetxController {
       await fetchCompanyWorkingShifts();
     }
   }
+
+//to fetch working shifts
 
   fetchCompanyWorkingShifts() async {
     try {

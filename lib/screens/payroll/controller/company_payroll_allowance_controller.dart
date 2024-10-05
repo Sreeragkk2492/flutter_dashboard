@@ -42,6 +42,8 @@ class CompanyPayrollAllowanceController extends GetxController {
    
   }
 
+ // Method to reset selection state
+
   void resetSelection() {
     isCompanySelected.value = false;
     hasExplicitlySelectedCompany.value = false;
@@ -50,6 +52,8 @@ class CompanyPayrollAllowanceController extends GetxController {
     selectedCompanyId.value = '';
     selectedCompanycode.value = '';
   }
+
+   // Method to handle company selection
 
   void onCompanySelected(String? companyId, String? companyCode) {
     if (companyId != null && companyId.isNotEmpty && companyCode != null && companyCode.isNotEmpty) {
@@ -67,6 +71,8 @@ class CompanyPayrollAllowanceController extends GetxController {
   //   selectedCompanyId.value = companyId;
   //   selectedCompanycode.value=companycode;
   // }
+
+ // Method to fetch company payroll allowances from the API
 
   Future<void> fetchCompanyPayrollAllowance() async {
     isLoading.value = true;
@@ -114,6 +120,8 @@ class CompanyPayrollAllowanceController extends GetxController {
     }
   }
 
+   // Method to toggle selection of an allowance
+
   void toggleAllowance(String allowanceId) {
     var index =
         companyAllowances.indexWhere((a) => a.allowanceId == allowanceId);
@@ -134,6 +142,8 @@ class CompanyPayrollAllowanceController extends GetxController {
       selectedAllowances.refresh();
     }
   }
+
+   // Method to add company payroll allowance to the API
 
   addCompanyPayrollAllowance() async {
     final requestBody = {

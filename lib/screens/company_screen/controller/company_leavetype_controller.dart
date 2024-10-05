@@ -11,6 +11,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class CompanyLeavetypeController extends GetxController {
+  // Observable variables for managing state
+
   var companydetails = <Company>[].obs;
   var selectedCompanyId = ''.obs;
   String? selectedStatus;
@@ -20,7 +22,7 @@ class CompanyLeavetypeController extends GetxController {
   final leavenameController = TextEditingController();
   final RxList<TextEditingController> leaveTypeControllers =
       <TextEditingController>[TextEditingController()].obs;
- RxBool isSortasc=true.obs;
+  RxBool isSortasc = true.obs;
 
   @override
   void onInit() {
@@ -28,6 +30,8 @@ class CompanyLeavetypeController extends GetxController {
     // resetMenuSelectionState();
     resetSelectionState();
   }
+
+  // Reset the selection state and clear all entries
 
   void resetSelectionState() {
     isCompanySelected.value = false;
@@ -37,9 +41,13 @@ class CompanyLeavetypeController extends GetxController {
     leaveTypeControllers.add(TextEditingController());
   }
 
+  // Add a new leave type controller
+
   void addLeaveType() {
     leaveTypeControllers.add(TextEditingController());
   }
+
+  // Handle company selection and fetch leave types for the selected company
 
   void onCompanySelected(String companyId) {
     if (selectedCompanyId.value != companyId) {
@@ -50,17 +58,18 @@ class CompanyLeavetypeController extends GetxController {
     }
   }
 
-//to fetch all the leave type for the specific company
+  // Fetch leave types for the selected company
   fetchLeavesForCompany() async {
     isLoading.value = true;
     try {
       // Making the GET request to the API
       var response = await http.get(
-          Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_COMPANY_LEAVE_TYPE).replace(queryParameters: {
-            "company_id":selectedCompanyId.value
-          }),headers: {
-             "Accept": "application/json",
-          "Authorization": "Bearer $token",
+          Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_COMPANY_LEAVE_TYPE)
+              .replace(
+                  queryParameters: {"company_id": selectedCompanyId.value}),
+          headers: {
+            "Accept": "application/json",
+            "Authorization": "Bearer $token",
           });
       if (response.statusCode == 200) {
         // Decoding the JSON response body into a List
@@ -81,7 +90,7 @@ class CompanyLeavetypeController extends GetxController {
     }
   }
 
-//to add leave type for the specific company
+  // Add leave types for the selected company
   Future<void> addCompanyLeaveTypes() async {
     if (selectedCompanyId.value.isEmpty) {
       return;
@@ -123,5 +132,4 @@ class CompanyLeavetypeController extends GetxController {
       isLoading.value = false;
     }
   }
-
 }

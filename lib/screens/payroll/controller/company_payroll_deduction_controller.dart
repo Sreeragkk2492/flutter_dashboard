@@ -44,6 +44,7 @@ class CompanyPayrollDeductionController extends GetxController {
    // resetSelection();
   }
 
+ // Method to reset selection state
 
   void resetSelection() {
     isCompanySelected.value = false;
@@ -53,6 +54,8 @@ class CompanyPayrollDeductionController extends GetxController {
     selectedCompanyId.value = '';
     selectedCompanycode.value = '';
   }
+
+ // Method to handle company selection
 
  void onCompanySelected(String? companyId, String? companyCode) {
     if (companyId != null && companyId.isNotEmpty && companyCode != null && companyCode.isNotEmpty) {
@@ -70,6 +73,8 @@ class CompanyPayrollDeductionController extends GetxController {
   //   selectedCompanyId.value = companyId;
   //   selectedCompanycode.value=companycode;
   // }
+
+ // Method to fetch company payroll deductions from the API
 
   Future<void> fetchCompanyPayrollDeduction() async {
     isLoading.value = true;
@@ -117,6 +122,8 @@ class CompanyPayrollDeductionController extends GetxController {
     }
   }
 
+  // Method to toggle selection of a deduction
+
   void toggleDeduction(String deductionId) {
     var index =
         companyDeduction.indexWhere((a) => a.deductionId == deductionId);
@@ -137,6 +144,8 @@ class CompanyPayrollDeductionController extends GetxController {
       selectedDeduction.refresh();
     }
   }
+
+   // Method to add company payroll deduction to the API
 
   addCompanyPayrollDeduction() async {
     final requestBody = {

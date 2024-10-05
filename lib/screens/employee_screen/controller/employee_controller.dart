@@ -22,6 +22,8 @@ class EmployeeController extends GetxController {
   var selectedUserTypeId = ''.obs;
   var selectedDesignationId = ''.obs;
   var selectedEmployeeCategoryId = ''.obs;
+
+   // Controllers for handling text input
   final usernameController = TextEditingController();
   final nameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -36,7 +38,7 @@ class EmployeeController extends GetxController {
   final employeeIdController = TextEditingController();
   final biometricIdController = TextEditingController();
   final reportingIdController = TextEditingController();
-  // Add this line to store the logged-in user's company ID
+  // Variables to store logged-in user details
   final Rx<String?> loggedInCompanyId = Rx<String?>(null);
   final Rx<String?> loggedInUserType = Rx<String?>(null);
   var filteredUsers = <UserModel>[].obs;
@@ -93,23 +95,33 @@ class EmployeeController extends GetxController {
     totalPages.value = (filteredUsers.length / itemsPerPage.value).ceil();
   }
 
+  // Sets the selected company by its ID and code
+
   void setSelectedCompany(String companyId, String companyCode) {
     selectedCompanyId.value = companyId;
     selectedCompanycode.value = companyCode;
     print("Selected company set - ID: $companyId, Code: $companyCode");
   }
 
+ // Sets the selected user type ID
+
   setSelectedUserTypeId(String userTypeId) {
     selectedUserTypeId.value = userTypeId;
   }
+
+   // Sets the selected designation ID
 
   setSelectedDesignation(String designationId) {
     selectedDesignationId.value = designationId;
   }
 
+   // Sets the selected employee category ID
+
   setSelectedEmployeeCategory(String empCategoryId) {
     selectedEmployeeCategoryId.value = empCategoryId;
   }
+
+   // Initializes the controller by fetching logged-in company details, user type, and company details
 
   Future<void> initializeController() async {
     try {
@@ -122,6 +134,8 @@ class EmployeeController extends GetxController {
     }
   }
 
+ // Fetches the logged-in company's ID from storage
+
   Future<void> fetchLoggedInCompanyId() async {
     try {
       final companyId = await StorageServices().read('company_id');
@@ -132,6 +146,8 @@ class EmployeeController extends GetxController {
       loggedInCompanyId.value = null;
     }
   }
+
+ // Fetches the logged-in user's type from storage and sets the super admin status
 
   Future<void> fetchLoggedInUserType() async {
     try {
@@ -151,6 +167,8 @@ class EmployeeController extends GetxController {
       isSuperAdmin.value = false;
     }
   }
+
+ // Adds a new user with the provided employee data
 
   addUser(Map<String, dynamic> employeeData) async {
     var result = await NetWorkManager.shared().request(
@@ -187,6 +205,8 @@ class EmployeeController extends GetxController {
       await fetchUsers();
     }
   }
+
+ // Fetches all users from the server
 
   fetchUsers() async {
     try {
@@ -236,6 +256,8 @@ class EmployeeController extends GetxController {
     }
   }
 
+ // Fetches all user types from the server
+
   fetchUsertype() async {
     try {
       // Making the GET request to the API
@@ -258,6 +280,8 @@ class EmployeeController extends GetxController {
     }
   }
 
+ // Fetches all company details from the server
+ 
   Future<void> fetchCompanyDetails() async {
     isLoading.value = true;
     try {

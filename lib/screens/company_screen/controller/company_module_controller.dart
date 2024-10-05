@@ -10,6 +10,9 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class CompanyModuleController extends GetxController {
+
+  // Observable variables for managing state
+
   var companyModuleList = CompanyModuleList(
           companyId: '',
           companyModules: [],
@@ -34,6 +37,8 @@ class CompanyModuleController extends GetxController {
     resetSelection();
   }
 
+  // Reset the selection state and clear all entries
+  
   void resetSelection() {
     isCompanySelected.value = false;
     hasExplicitlySelectedCompany.value = false;

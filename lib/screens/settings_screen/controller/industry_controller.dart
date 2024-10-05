@@ -22,6 +22,8 @@ RxBool isSortasc=true.obs;
     super.onInit();
   }
 
+  // to add industry
+
   addIndustry() async {
     final result = await NetWorkManager.shared().request(
         url: ApiUrls.BASE_URL + ApiUrls.ADD_INDUSTRY,
@@ -42,6 +44,9 @@ RxBool isSortasc=true.obs;
       await fetchIndustry();
     }
   }
+
+// to fetch all industries
+
 
   fetchIndustry() async {
     try {
@@ -91,6 +96,9 @@ RxBool isSortasc=true.obs;
     //   print("Stack trace: $stackTrace");
     // }
   }
+
+
+  // update industry
 
   updateIndustry(Industry industry) async {
     final result = await NetWorkManager.shared().request(

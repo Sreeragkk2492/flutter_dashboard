@@ -24,6 +24,8 @@ class CompanyProccesingDateController extends GetxController {
     super.onInit();
   }
 
+  // Method to add a new processing date
+
   addProcessingDate() async {
     var response = await NetWorkManager.shared().request(
         url: ApiUrls.BASE_URL + ApiUrls.ADD_PROCESSING_DATE,
@@ -51,6 +53,8 @@ class CompanyProccesingDateController extends GetxController {
     //   await fetchAllowance();
     // });
   }
+
+    // Method to fetch company payroll processing dates
 
   fetchCompanyPayrollProcessingDate() async {
     try {

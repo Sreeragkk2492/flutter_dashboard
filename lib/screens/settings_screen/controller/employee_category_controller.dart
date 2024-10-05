@@ -23,6 +23,11 @@ class EmployeeCategoryController extends GetxController {
   }
 
   var empcategories = <EmployeeCategory>[].obs;
+
+  // to add employee category
+
+
+
   addEmpCategory() async {
     final result = await NetWorkManager.shared().request(
         url: ApiUrls.BASE_URL + ApiUrls.ADD_EMPLOYEE_CATEGORY,
@@ -43,6 +48,8 @@ class EmployeeCategoryController extends GetxController {
     }
   }
 
+  // to fetch all employee category
+
   fetchEmpCategory() async {
     try {
       // Making the GET request to the API
@@ -59,6 +66,8 @@ class EmployeeCategoryController extends GetxController {
       print("Error");
     }
   }
+
+  // update employee category
 
   updateEmpCategory(EmployeeCategory empcategory) async {
     final result = await NetWorkManager.shared().request(

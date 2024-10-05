@@ -16,14 +16,14 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddCompanyMenu extends StatelessWidget {
-   AddCompanyMenu({super.key});
+  AddCompanyMenu({super.key});
 
-   final employeeController = Get.put(EmployeeController());
-   final screenController=Get.put(CompanyMenuController());
+  final employeeController = Get.put(EmployeeController());
+  final screenController = Get.put(CompanyMenuController());
 
   @override
   Widget build(BuildContext context) {
-      Size screenSize = MediaQuery.of(context).size;
+    Size screenSize = MediaQuery.of(context).size;
     return PortalMasterLayout(
         body: EntranceFader(
             child: ListView(
@@ -84,7 +84,7 @@ class AddCompanyMenu extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Flexible(flex: 4, child: addCompanyMenuForm()),
+                        Flexible(flex: 4, child: addCompanyMenuForm(context)),
                         buildSizedboxW(kDefaultPadding),
                       ],
                     ),
@@ -95,7 +95,7 @@ class AddCompanyMenu extends StatelessWidget {
                         vertical: kDefaultPadding + kTextPadding),
                     child: Column(
                       children: [
-                        addCompanyMenuForm(),
+                        addCompanyMenuForm(context),
                         buildSizedBoxH(kDefaultPadding),
                       ],
                     ),
@@ -105,7 +105,9 @@ class AddCompanyMenu extends StatelessWidget {
       ],
     )));
   }
-   Widget addCompanyMenuForm() {
+
+  Widget addCompanyMenuForm(BuildContext context) {
+     Size screenSize = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -149,7 +151,8 @@ class AddCompanyMenu extends StatelessWidget {
                                   labelText: 'Company',
                                   hintText: 'Select Company',
                                   border: OutlineInputBorder(),
-                                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
                                 ),
                                 validator: FormBuilderValidators.required(),
                                 items: employeeController.companydetails
@@ -175,7 +178,8 @@ class AddCompanyMenu extends StatelessWidget {
                                   labelText: 'User Type',
                                   hintText: 'User Type',
                                   border: OutlineInputBorder(),
-                                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
                                 ),
                                 validator: FormBuilderValidators.required(),
                                 items: screenController.userTypes
@@ -185,7 +189,8 @@ class AddCompanyMenu extends StatelessWidget {
                                         ))
                                     .toList(),
                                 onChanged: (value) {
-                                  screenController.onUserTypeSelected(value!.id);
+                                  screenController
+                                      .onUserTypeSelected(value!.id);
                                 },
                               ),
                             ),
@@ -207,29 +212,10 @@ class AddCompanyMenu extends StatelessWidget {
                             child: Text(
                                 "No menus available for the selected user."));
                       } else {
-                        return LayoutBuilder(
-                          builder: (context, constraints) {
-                            return Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: _buildMenuColumn(screenController.menus.sublist(0, screenController.menus.length ~/ 3)),
-                                ),
-                                SizedBox(width: kDefaultPadding),
-                                Expanded(
-                                  child: _buildMenuColumn(screenController.menus.sublist(screenController.menus.length ~/ 3, 2 * (screenController.menus.length ~/ 3))),
-                                ),
-                                SizedBox(width: kDefaultPadding),
-                                Expanded(
-                                  child: _buildMenuColumn(screenController.menus.sublist(2 * (screenController.menus.length ~/ 3))),
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                        return screenSize.width >= kScreenWidthXxl?_buildMenuColumnsDesktop():_buildMenuColumnMobile(screenController.menus);
                       }
                     }),
-                    buildSizedBoxH(kDefaultPadding * 3),
+                   buildSizedBoxH(kDefaultPadding * 3), 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -252,10 +238,85 @@ class AddCompanyMenu extends StatelessWidget {
       ),
     );
   }
-   Widget _buildMenuColumn(List<Menu> menus) {
+
+   Widget _buildMenuColumnsDesktop() {
+     final mainCategories = [
+    screenController.menus.where((menu) => 
+      menu.mainMenuName.contains('LEAVE') || 
+      menu.mainMenuName.contains('ATTENDANCE')).toList(),
+    screenController.menus.where((menu) => 
+      menu.mainMenuName.contains('HOLIDAY') || 
+      menu.mainMenuName.contains('MASTERS')).toList(),
+    screenController.menus.where((menu) => 
+      menu.mainMenuName.contains('REPORTS') || 
+      menu.mainMenuName.contains('ACCOUNT')).toList(),
+  ];
+  return GridView.builder(
+    shrinkWrap: true,
+    physics: NeverScrollableScrollPhysics(),
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 3,
+       mainAxisSpacing: kDefaultPadding,
+      crossAxisSpacing: kDefaultPadding,
+      childAspectRatio: 0.7 , // Adjust this value based on your content
+    ),
+     itemCount: mainCategories.length,
+    itemBuilder: (context, columnIndex) {
+      return _buildMenuColumn(mainCategories[columnIndex]);
+    } ,
+  );
+}
+
+  Widget _buildMenuColumn(List<Menu> menus) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: menus.map((mainMenu) {
+        return Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CheckboxListTile(
+                title: Text(
+                  mainMenu.mainMenuName,
+                  style: TextStyle(fontWeight: FontWeight.bold,color: AppColors.defaultColor ),
+                ),
+                value: mainMenu.isSelected,
+                onChanged: (bool? value) {
+                  screenController.toggleMainMenu(mainMenu.mainMenuId);
+                },
+                controlAffinity: ListTileControlAffinity.leading,
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: kDefaultPadding * 2),
+                child: Column(
+                  children: mainMenu.subMenus.map((subMenu) {
+                    return CheckboxListTile(
+                      title: Text(subMenu.subMenuName),
+                      value: subMenu.isSelected,
+                      onChanged: (bool? value) {
+                        screenController.toggleSubMenu(
+                            mainMenu.mainMenuId, subMenu.subMenuId);
+                      },
+                      controlAffinity: ListTileControlAffinity.leading,
+                    );
+                  }).toList(),
+                ),
+              ),
+            //   Divider(),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildMenuColumnMobile(List <Menu>menu) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: screenController.menus.length,
+      itemBuilder: (context, index) {
+        final mainMenu = screenController.menus[index];
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -278,7 +339,10 @@ class AddCompanyMenu extends StatelessWidget {
                     title: Text(subMenu.subMenuName),
                     value: subMenu.isSelected,
                     onChanged: (bool? value) {
-                      screenController.toggleSubMenu(mainMenu.mainMenuId, subMenu.subMenuId);
+                      // screenController.toggleSubMenu(
+                      //   mainMenu.mainMenuId,
+                      //   subMenu.subMenuId,
+                      // );
                     },
                     controlAffinity: ListTileControlAffinity.leading,
                   );
@@ -288,7 +352,7 @@ class AddCompanyMenu extends StatelessWidget {
             Divider(),
           ],
         );
-      }).toList(),
+      },
     );
   }
 }

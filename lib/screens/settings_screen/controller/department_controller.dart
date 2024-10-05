@@ -28,6 +28,8 @@ class SettingsController extends GetxController {
     super.onInit();
   }
 
+  //to add department
+
   addDepartment() async {
     final result = await NetWorkManager.shared().request(
         url: ApiUrls.BASE_URL + ApiUrls.ADD_DEPARTMENT,
@@ -49,6 +51,9 @@ class SettingsController extends GetxController {
       await fetchDepartments();
     }
   }
+
+
+  //fetch all departments
 
   fetchDepartments() async {
     try {
@@ -73,6 +78,8 @@ class SettingsController extends GetxController {
    
   }
 
+  //to fetch department by company
+
   fetchDepartmentByCompanyId() async {
     try {
       // Making the GET request to the API
@@ -91,6 +98,8 @@ class SettingsController extends GetxController {
       print("Error");
     }
   }
+
+  // update department
 
   updateDepartment(DepartmentModel department) async {
     final result = await NetWorkManager.shared().request(

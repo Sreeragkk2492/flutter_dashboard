@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/animations/entrance_fader.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
@@ -18,14 +20,17 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddEmployeePayslip extends StatelessWidget {
-  AddEmployeePayslip({super.key});
-
+  final int selectedIndex;
+  AddEmployeePayslip({Key? key})
+      : selectedIndex = Get.arguments['index'],
+        super(key: key);
   final employeeController = Get.put(EmployeeController());
   final screenController = Get.put(PayrollSettingsController());
   final invoiceController = Get.put(InvoiceController());
 
   @override
   Widget build(BuildContext context) {
+    
     Size screenSize = MediaQuery.of(context).size;
     return PortalMasterLayout(
         body: EntranceFader(
@@ -110,6 +115,8 @@ class AddEmployeePayslip extends StatelessWidget {
   }
 
   Widget addPayrollForm() {
+    // Use the selected payslip data
+    final payslip = screenController.payslip[selectedIndex];
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -141,165 +148,155 @@ class AddEmployeePayslip extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(kDefaultPadding),
-                            child: Obx((){
-                               // Check if there's only one company (the logged-in user's company)
-                  if (employeeController.companydetails.isEmpty) {
-                    // Show loading indicator while fetching company details
-                    return Center(child: CircularProgressIndicator());
-                  }
+                    // Row(
+                    //   children: [ 
+                    //     Expanded(
+                    //       child: Padding(
+                    //         padding: EdgeInsets.all(kDefaultPadding),
+                    //         child: Obx(() {
+                    //           // Check if there's only one company (the logged-in user's company)
+                    //           if (employeeController.companydetails.isEmpty) {
+                    //             // Show loading indicator while fetching company details
+                    //             return Center(
+                    //                 child: CircularProgressIndicator());
+                    //           }
 
-                  if (employeeController.isSuperAdmin.value) {
-                    // Dropdown for superadmin
-                    return FormBuilderDropdown<Company>(
-                      name: 'Company Name',
-                      decoration: InputDecoration(
-                        labelText: 'Company Name',
-                        hintText: 'Select Company',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      validator: FormBuilderValidators.required(),
-                      items: employeeController.companydetails
-                          .map((company) => DropdownMenuItem(
-                                value: company,
-                                child: Text(company.companyName),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        screenController.onCompanySelected(value!.id);
-                      },
-                    );
-                  } else {
-                    // Single company display for company admin
-                    final company = employeeController.companydetails[0];
-                    // employeeController.setSelectedCompany(
-                    //     company.id, company.companyCode);
-                    return FormBuilderTextField(
-                      name: 'Company Name',
-                      initialValue: company.companyName,
-                      decoration: InputDecoration(
-                        labelText: 'Company Name',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      readOnly: true,
-                    );
-                  }
-                            }),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(kDefaultPadding),
-                            child: Obx(() => FormBuilderDropdown<UserModel>(
-                                  name: 'Employee',
-                                  decoration: const InputDecoration(
-                                    labelText: 'Employee',
-                                    hintText: 'Employee',
-                                    border: OutlineInputBorder(),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                  ),
-                                  validator: FormBuilderValidators.required(),
-                                  items: screenController.filteredUsers
-                                      .map((user) => DropdownMenuItem(
-                                            value: user,
-                                            child: Text(user.name),
-                                          ))
-                                      .toList(),
-                                  onChanged: (value) {
-                                    screenController.onUserSelected(
-                                        value!.userTypeId,
-                                        value.companyId,
-                                        value.id);
-                                  },
-                                )),
-                          ),
-                        ),
-                      ],
-                    ),
-                    // buildSizedBoxH(kDefaultPadding * 3),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(kDefaultPadding),
-                            child: FormBuilderDropdown<String>(
-                              name: 'Select Year',
-                              decoration: const InputDecoration(
-                                labelText: 'Select Year',
-                                hintText: 'Select Year',
-                                border: OutlineInputBorder(),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                              ),
-                              validator: FormBuilderValidators.required(),
-                              items: List.generate(10,
-                                      (index) => DateTime.now().year - index)
-                                  .map((year) => DropdownMenuItem(
-                                      value: year.toString(),
-                                      child: Text(year.toString())))
-                                  .toList(),
-                              onChanged: (value) {
-                                screenController.onYearSelected(value!);
-                                invoiceController.selectedYear.value = value;
-                              },
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(kDefaultPadding),
-                            child: FormBuilderDropdown<String>(
-                              name: 'Select Month',
-                              decoration: const InputDecoration(
-                                labelText: 'Select Month',
-                                hintText: 'Select Month',
-                                border: OutlineInputBorder(),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                              ),
-                              validator: FormBuilderValidators.required(),
-                              items: List.generate(12, (index) => index + 1)
-                                  .map((month) => DropdownMenuItem(
-                                        value: month.toString(),
-                                        child: Text(DateTime(2022, month)
-                                            .toString()
-                                            .split(' ')[0]
-                                            .split('-')[1]),
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                screenController.onMonthSelected(value!);
-                                invoiceController.selectedMonth.value = value;
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    //           if (employeeController.isSuperAdmin.value) {
+                    //             // Dropdown for superadmin
+                    //             return FormBuilderDropdown<Company>(
+                    //               name: 'Company Name',
+                    //               decoration: InputDecoration(
+                    //                 labelText: 'Company Name',
+                    //                 hintText: 'Select Company',
+                    //                 border: OutlineInputBorder(),
+                    //                 floatingLabelBehavior:
+                    //                     FloatingLabelBehavior.always,
+                    //               ),
+                    //               validator: FormBuilderValidators.required(),
+                    //               items: employeeController.companydetails
+                    //                   .map((company) => DropdownMenuItem(
+                    //                         value: company,
+                    //                         child: Text(company.companyName),
+                    //                       ))
+                    //                   .toList(),
+                    //               onChanged: (value) {
+                    //                 screenController
+                    //                     .onCompanySelected(value!.id);
+                    //               },
+                    //             );
+                    //           } else {
+                    //             // Single company display for company admin
+                    //             final company =
+                    //                 employeeController.companydetails[0];
+                    //             // employeeController.setSelectedCompany(
+                    //             //     company.id, company.companyCode);
+                    //             return FormBuilderTextField(
+                    //               name: 'Company Name',
+                    //               initialValue: company.companyName,
+                    //               decoration: InputDecoration(
+                    //                 labelText: 'Company Name',
+                    //                 border: OutlineInputBorder(),
+                    //                 floatingLabelBehavior:
+                    //                     FloatingLabelBehavior.always,
+                    //               ),
+                    //               readOnly: true,
+                    //             );
+                    //           }
+                    //         }),
+                    //       ),
+                    //     ),
+                    //     Expanded(
+                    //       child: Padding(
+                    //         padding: EdgeInsets.all(kDefaultPadding),
+                    //         child: Obx(() => FormBuilderDropdown<UserModel>(
+                    //               name: 'Employee',
+                    //               decoration: const InputDecoration(
+                    //                 labelText: 'Employee',
+                    //                 hintText: 'Employee',
+                    //                 border: OutlineInputBorder(),
+                    //                 floatingLabelBehavior:
+                    //                     FloatingLabelBehavior.always,
+                    //               ),
+                    //               validator: FormBuilderValidators.required(),
+                    //               items: screenController.filteredUsers
+                    //                   .map((user) => DropdownMenuItem(
+                    //                         value: user,
+                    //                         child: Text(user.name),
+                    //                       ))
+                    //                   .toList(),
+                    //               onChanged: (value) {
+                    //                 screenController.onUserSelected(
+                    //                     value!.userTypeId,
+                    //                     value.companyId,
+                    //                     value.id);
+                    //               },
+                    //             )),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // // buildSizedBoxH(kDefaultPadding * 3),
+                    // Row(
+                    //   children: [
+                    //     Expanded(
+                    //       child: Padding(
+                    //         padding: EdgeInsets.all(kDefaultPadding),
+                    //         child: FormBuilderDropdown<String>(
+                    //           name: 'Select Year',
+                    //           decoration: const InputDecoration(
+                    //             labelText: 'Select Year',
+                    //             hintText: 'Select Year',
+                    //             border: OutlineInputBorder(),
+                    //             floatingLabelBehavior:
+                    //                 FloatingLabelBehavior.always,
+                    //           ),
+                    //           validator: FormBuilderValidators.required(),
+                    //           items: List.generate(10,
+                    //                   (index) => DateTime.now().year - index)
+                    //               .map((year) => DropdownMenuItem(
+                    //                   value: year.toString(),
+                    //                   child: Text(year.toString())))
+                    //               .toList(),
+                    //           onChanged: (value) {
+                    //             screenController.onYearSelected(value!);
+                    //             invoiceController.selectedYear.value = value;
+                    //           },
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Expanded(
+                    //       child: Padding(
+                    //         padding: EdgeInsets.all(kDefaultPadding),
+                    //         child: FormBuilderDropdown<String>(
+                    //           name: 'Select Month',
+                    //           decoration: const InputDecoration(
+                    //             labelText: 'Select Month',
+                    //             hintText: 'Select Month',
+                    //             border: OutlineInputBorder(),
+                    //             floatingLabelBehavior:
+                    //                 FloatingLabelBehavior.always,
+                    //           ),
+                    //           validator: FormBuilderValidators.required(),
+                    //           items: List.generate(12, (index) => index + 1)
+                    //               .map((month) => DropdownMenuItem(
+                    //                     value: month.toString(),
+                    //                     child: Text(DateTime(2022, month)
+                    //                         .toString()
+                    //                         .split(' ')[0]
+                    //                         .split('-')[1]),
+                    //                   ))
+                    //               .toList(),
+                    //           onChanged: (value) {
+                    //             screenController.onMonthSelected(value!);
+                    //             invoiceController.selectedMonth.value = value;
+                    //           },
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     buildSizedBoxH(kDefaultPadding * 2),
-                    Obx(() {
-                      if (
-                          !screenController.isUserSelected.value ||
-                          !screenController.isYearSelected.value ||
-                          !screenController.isMonthSelected.value) {
-                        return Center(
-                            child: Text(
-                                "Please select all the dropdowns to view."));
-                      } else if (screenController.isLoading.value) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (screenController.noDataFound.value) {
-                        return Center(child: Text("No Data Found!"));
-                      } else {
-                        return Column(
+                     Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -320,35 +317,33 @@ class AddEmployeePayslip extends StatelessWidget {
                                           editable: false,
                                           'Year',
                                           TextInputType.number,
-                                          screenController.yearController),
+                                          payslip.year.toString()
+                                          ),
                                       buildPayslipField(
                                           editable: false,
                                           'Month',
                                           TextInputType.number,
-                                          screenController.monthController),
+                                          payslip.month.toString()),
                                       buildPayslipField(
                                           'Pay Period Start',
                                           TextInputType.datetime,
-                                          screenController
-                                              .payPeriodStartController),
+                                          payslip.payperiodStartDate.toString()),
                                       buildPayslipField(
                                           'Pay Period End',
                                           TextInputType.datetime,
-                                          screenController
-                                              .payPeriodEndController),
+                                          payslip.payperiodEndDate.toString()),
                                       buildPayslipField(
                                           'Pay Date',
                                           TextInputType.datetime,
-                                          screenController.payDateController),
+                                          payslip.paydate.toString()),
                                       buildPayslipField(
                                           'Payment Method',
                                           TextInputType.text,
-                                          screenController
-                                              .paymentMethodController),
+                                          payslip.paymentMethod),
                                       buildPayslipField(
                                           'Status',
                                           TextInputType.text,
-                                          screenController.statusController),
+                                          payslip.status),
                                     ],
                                   ),
                                 ),
@@ -360,37 +355,32 @@ class AddEmployeePayslip extends StatelessWidget {
                                           editable: false,
                                           'Total Amount',
                                           TextInputType.number,
-                                          screenController
-                                              .totalAmountController),
+                                         payslip.totalAmount.toString()),
                                       buildPayslipField(
                                           'Overtime Hours',
                                           TextInputType.number,
-                                          screenController
-                                              .overtimeHoursController),
+                                          payslip.overtimeHours.toString()),
                                       buildPayslipField(
                                           editable: false,
                                           'Regular Hours',
                                           TextInputType.number,
-                                          screenController
-                                              .regularHoursController),
+                                          payslip.regularHours.toString()),
                                       buildPayslipField(
                                           'Leave Days',
                                           TextInputType.number,
-                                          screenController.leaveDaysController),
+                                          payslip.leavedays.toString()),
                                       buildPayslipField(
                                           'Holidays',
                                           TextInputType.number,
-                                          screenController.holidaysController),
+                                          payslip.holidays.toString()),
                                       buildPayslipField(
                                           'Work From Home Days',
                                           TextInputType.number,
-                                          screenController
-                                              .workFromHomeDaysController),
+                                          payslip.workfromhomeDays.toString()),
                                       buildPayslipField(
                                           'Payslip File Name',
                                           TextInputType.text,
-                                          screenController
-                                              .payslipFileNameController),
+                                          payslip.payslipFileName),
                                     ],
                                   ),
                                 ),
@@ -401,30 +391,27 @@ class AddEmployeePayslip extends StatelessWidget {
                                       buildPayslipField(
                                           'Project Code',
                                           TextInputType.text,
-                                          screenController
-                                              .projectCodeController),
+                                         payslip.projectCode),
                                       buildPayslipField(
                                           'Location',
                                           TextInputType.text,
-                                          screenController.locationController),
+                                          payslip.location),
                                       buildPayslipField(
                                           'Department',
                                           TextInputType.text,
-                                          screenController
-                                              .departmentController),
+                                          payslip.department),
                                       buildPayslipField(
                                           'Remarks',
                                           TextInputType.text,
-                                          screenController.remarksController),
+                                         payslip.remarks),
                                       buildPayslipField(
                                           'Approved',
                                           TextInputType.text,
-                                          screenController.approvedController),
+                                          payslip.approved.toString()),
                                       buildPayslipField(
                                           'Approved By',
                                           TextInputType.text,
-                                          screenController
-                                              .approvedByController),
+                                          payslip.approvedBy),
                                     ],
                                   ),
                                 ),
@@ -446,38 +433,34 @@ class AddEmployeePayslip extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: Column(
-                                    children: screenController.allowances
+                                    children: payslip.allowances
                                         .getRange(
                                             0,
-                                            (screenController
+                                            (payslip
                                                         .allowances.length /
                                                     2)
                                                 .ceil())
                                         .map((allowance) =>
                                             buildAllowanceDeductionField(
                                                 allowance.allowanceName,
-                                                screenController
-                                                        .allowanceControllers[
-                                                    allowance.id]!))
+                                                allowance.amount.toString()))
                                         .toList(),
                                   ),
                                 ),
                                 SizedBox(width: kDefaultPadding),
                                 Expanded(
                                   child: Column(
-                                    children: screenController.allowances
+                                    children: payslip .allowances
                                         .getRange(
-                                            (screenController
+                                            (payslip
                                                         .allowances.length /
                                                     2)
                                                 .ceil(),
-                                            screenController.allowances.length)
+                                            payslip.allowances.length)
                                         .map((allowance) =>
                                             buildAllowanceDeductionField(
                                                 allowance.allowanceName,
-                                                screenController
-                                                        .allowanceControllers[
-                                                    allowance.id]!))
+                                               allowance.amount.toString()))
                                         .toList(),
                                   ),
                                 ),
@@ -499,47 +482,43 @@ class AddEmployeePayslip extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: Column(
-                                    children: screenController.deductions
+                                    children: payslip.deductions
                                         .getRange(
                                             0,
-                                            (screenController
+                                            (payslip
                                                         .deductions.length /
                                                     2)
                                                 .ceil())
                                         .map((deduction) =>
                                             buildAllowanceDeductionField(
                                                 deduction.deductionName,
-                                                screenController
-                                                        .deductionControllers[
-                                                    deduction.id]!))
+                                                deduction.amount.toString()))
                                         .toList(),
                                   ),
                                 ),
                                 SizedBox(width: kDefaultPadding),
                                 Expanded(
                                   child: Column(
-                                    children: screenController.deductions
+                                    children: payslip.deductions
                                         .getRange(
-                                            (screenController
+                                            (payslip
                                                         .deductions.length /
                                                     2)
                                                 .ceil(),
-                                            screenController.deductions.length)
+                                            payslip.deductions.length)
                                         .map((deduction) =>
                                             buildAllowanceDeductionField(
                                                 deduction.deductionName,
-                                                screenController
-                                                        .deductionControllers[
-                                                    deduction.id]!))
+                                                deduction.amount.toString()))
                                         .toList(),
                                   ),
                                 ),
                               ],
                             ),
                           ],
-                        );
-                      }
-                    }),
+                        ),
+                      
+                   
                     buildSizedBoxH(kDefaultPadding * 3),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -547,14 +526,15 @@ class AddEmployeePayslip extends StatelessWidget {
                         DefaultAddButton(
                           buttonname: 'Generate',
                           onClick: () async {
-                             await screenController.addPayslipDetails();
+                            await screenController.addPayslipDetails();
                             invoiceController.setSelectedValues(
                                 invoiceController.selectedCompanyId.value,
                                 invoiceController.selectedUserId.value,
                                 invoiceController.selectedYear.value,
                                 invoiceController.selectedMonth.value);
                             await invoiceController.fetchPayslipDetails();
-                            if (!invoiceController.noDataFound.value && !screenController.isGenerated.value) {
+                            if (!invoiceController.noDataFound.value &&
+                                !screenController.isGenerated.value) {
                               Get.toNamed(Routes.InvoicePage);
                             }
                           },
@@ -572,57 +552,57 @@ class AddEmployeePayslip extends StatelessWidget {
     );
   }
 
-  Widget buildPayslipField(String label, TextInputType keyboardType,
-      TextEditingController controller,
-      {bool editable = true}) {
+ Widget buildPayslipField(String label, TextInputType keyboardType,
+    String initialValue,
+    {bool editable = true}) {
+  return Padding(
+    padding: EdgeInsets.only(bottom: kDefaultPadding),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+        SizedBox(height: 4),
+        if (editable)
+          FormBuilderTextField(
+            name: label.toLowerCase().replaceAll(' ', '_'),
+            initialValue: initialValue,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            ),
+            keyboardType: keyboardType,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(),
+            ]),
+          )
+        else
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              initialValue,
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+      ],
+    ),
+  );
+}
+
+  Widget buildAllowanceDeductionField(
+      String label, String amount) {
     return Padding(
       padding: EdgeInsets.only(bottom: kDefaultPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            // style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 4),
-          if (editable)
-            FormBuilderTextField(
-              name: label.toLowerCase().replaceAll(' ', '_'),
-              controller: controller,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              ),
-              keyboardType: keyboardType,
-              validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(),
-              ]),
-            )
-          else
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Text(
-                controller.text,
-                style: TextStyle(fontSize: 14),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildAllowanceDeductionField(
-      String label, TextEditingController controller) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: kDefaultPadding),
-      child: Column(
-       crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
@@ -636,7 +616,7 @@ class AddEmployeePayslip extends StatelessWidget {
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
-              controller.text,
+              amount,
               style: TextStyle(fontSize: 14),
             ),
           ),

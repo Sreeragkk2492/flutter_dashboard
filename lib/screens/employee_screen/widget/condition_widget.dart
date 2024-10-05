@@ -42,10 +42,10 @@ class ConditionalCompanyWidget extends StatelessWidget {
           },
         );
       } else {
-        final company = employeeController.companydetails[0];
+        final company = employeeController.companydetails.firstOrNull;  ///if doesnt work use companydetails[0];
         return FormBuilderTextField(
           name: 'Company Name',
-          initialValue: company.companyName,
+          initialValue: company!.companyName,///remove the null check
           decoration: InputDecoration(
             labelText: 'Company Name',
             border: OutlineInputBorder(),

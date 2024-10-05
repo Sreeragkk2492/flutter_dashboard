@@ -51,16 +51,17 @@ class GeneratorController extends GetxController {
   final deductionControllers = <String, TextEditingController>{}.obs;
   var noDataFound = false.obs;
 
-
-   @override
+  @override
   void onInit() {
     resetSelectionState();
     fetchUsersForCompany(companyId);
     super.onInit();
     fetchAllowanceAndDeductionDetails();
     ever(getaddallowances, (_) => _updateAllowanceControllers());
-     ever(getadddeduction, (_) => _updateDeductionControllers());
+    ever(getadddeduction, (_) => _updateDeductionControllers());
   }
+
+// Update allowance controllers when allowances change
 
   void _updateAllowanceControllers() {
     for (var allowance in getaddallowances) {
@@ -69,7 +70,10 @@ class GeneratorController extends GetxController {
       }
     }
   }
-   void _updateDeductionControllers() {
+
+  // Update deduction controllers when deductions change
+
+  void _updateDeductionControllers() {
     for (var deduction in getadddeduction) {
       if (!deductionControllers.containsKey(deduction.deductionId)) {
         deductionControllers[deduction.deductionId] = TextEditingController();
@@ -77,23 +81,27 @@ class GeneratorController extends GetxController {
     }
   }
 
+// Dispose of controllers when the widget is disposed
   @override
   void onClose() {
     for (var controller in allowanceControllers.values) {
       controller.dispose();
     }
-     for (var controller in deductionControllers.values) {
+    for (var controller in deductionControllers.values) {
       controller.dispose();
     }
     super.onClose();
   }
 
-   void resetSelectionState() {
+  // Reset selection state
+
+  void resetSelectionState() {
     isCompanySelected.value = false;
-    showTabBar.value=false; 
+    showTabBar.value = false;
     selectedCompanyId.value = '';
-    
   }
+
+  // Check if all necessary selections have been made
 
   void checkAllSelections() {
     print("Checking selections:");
@@ -110,6 +118,8 @@ class GeneratorController extends GetxController {
     }
   }
 
+  // Handle company selection
+
   void onCompanySelected(String companyId) {
     selectedCompanyId.value = companyId;
     isCompanySelected.value = true;
@@ -120,6 +130,8 @@ class GeneratorController extends GetxController {
     checkAllSelections();
   }
 
+  // Handle user selection
+
   void onUserSelected(String userTypeId, String companyId, String userId) {
     selectedCompanyId.value = companyId;
     selectedUserId.value = userId;
@@ -127,6 +139,8 @@ class GeneratorController extends GetxController {
 
     checkAllSelections();
   }
+
+  // Fetch users for a given company
 
   Future<void> fetchUsersForCompany(String companyId) async {
     isLoading.value = true;
@@ -152,15 +166,17 @@ class GeneratorController extends GetxController {
       }
     } catch (e) {
       print("Error fetching users: $e");
-     // awesomeOkDialog(message: e.toString());
+      // awesomeOkDialog(message: e.toString());
     } finally {
       isLoading.value = false;
     }
   }
 
+  // Fetch allowance and deduction details for a selected user
+
   Future<void> fetchAllowanceAndDeductionDetails() async {
     isLoading.value = true;
-     noDataFound.value = false;
+    noDataFound.value = false;
     try {
       final url = Uri.parse(ApiUrls.BASE_URL +
               ApiUrls.GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION)
@@ -173,8 +189,7 @@ class GeneratorController extends GetxController {
 
       final response = await http.get(url, headers: {
         "Accept": "application/json",
-        "Authorization":
-            "Bearer $token",
+        "Authorization": "Bearer $token",
       });
 
       print("Response status code: ${response.statusCode}");
@@ -192,13 +207,12 @@ class GeneratorController extends GetxController {
         print("Fetched payslip details successfully");
         print("Allowances: ${allowances.length}");
         print("Deductions: ${deductions.length}");
-         
+
         showTabBar.value = true;
-      }else if (response.statusCode == 404) {
+      } else if (response.statusCode == 404) {
         noDataFound.value = true;
         showTabBar.value = false;
-      } 
-       else {
+      } else {
         throw Exception(
             "Failed to fetch payroll details. Status code: ${response.statusCode}");
       }
@@ -211,6 +225,8 @@ class GeneratorController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  // Fetch allowance and deduction details for adding new entries
 
   Future<void> fetchAllowanceAndDeductionDetailsForAdding() async {
     isLoading.value = true;
@@ -257,6 +273,8 @@ class GeneratorController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  // Add new payroll entry
 
   addPayroll() async {
     final requestBody = {

@@ -22,6 +22,7 @@ class DeductionController extends GetxController {
     fetchDeduction();
     super.onInit();
   }
+//add deduction
 
   addDeduction() async {
     var response = await NetWorkManager.shared().request(
@@ -50,6 +51,8 @@ class DeductionController extends GetxController {
     //   await fetchAllowance();
     // });
   }
+
+  // to fetch all deductions
 
   fetchDeduction() async {
     try {
@@ -109,6 +112,9 @@ class DeductionController extends GetxController {
       // awesomeOkDialog(message: e.toString());
     }
   }
+
+
+  //update deduction
 
   updateDeduction(Deduction deduction) async {
     final result = await NetWorkManager.shared().request(

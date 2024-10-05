@@ -62,7 +62,7 @@ class AddEmployeePayrollSettings extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Add Company Deduction',
+                            Text('Add Employee Payroll',
                                 style: TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.bold)),
@@ -251,6 +251,7 @@ class AddEmployeePayrollSettings extends StatelessWidget {
                                     // Create a controller for each allowance
 
                                     //  screenController.allowanceControllers[allowance.id] = controller;
+                                      screenController.allowanceControllers[allowance.allowanceId]?.text ??= '0'; 
 
                                     return Padding(
                                       padding: EdgeInsets.only(
@@ -265,6 +266,7 @@ class AddEmployeePayrollSettings extends StatelessWidget {
                                           Expanded(
                                             flex: 1,
                                             child: FormBuilderTextField(
+                                            //  initialValue: '0',
                                               name: 'amount',
                                               controller: screenController
                                                       .allowanceControllers[
@@ -310,7 +312,9 @@ class AddEmployeePayrollSettings extends StatelessWidget {
                                   ),
                                   buildSizedBoxH(kDefaultPadding),
                                   ...screenController.getadddeduction
-                                      .map((deduction) => Padding(
+                                      .map((deduction) { 
+                                          screenController.deductionControllers[deduction.deductionId]?.text ??= '0';
+                                        return Padding(
                                             padding: EdgeInsets.only(
                                                 bottom: kDefaultPadding),
                                             child: Row(
@@ -323,6 +327,7 @@ class AddEmployeePayrollSettings extends StatelessWidget {
                                                 Expanded(
                                                   flex: 1,
                                                   child: FormBuilderTextField(
+                                                   // initialValue: '0',
                                                     name: 'amount',
                                                     controller: screenController
                                                             .deductionControllers[
@@ -345,8 +350,8 @@ class AddEmployeePayrollSettings extends StatelessWidget {
                                                   ),
                                                 ),
                                               ],
-                                            ),
-                                          ))
+                                            ),);
+                                      })
                                       .toList(),
                                 ],
                               ),
@@ -363,7 +368,7 @@ class AddEmployeePayrollSettings extends StatelessWidget {
                           buttonname: 'Add Payroll',
                           onClick: () async {
                             await screenController.addPayroll();
-                            Get.back();
+                           // Get.back();
                           },
                         ),
                       ],

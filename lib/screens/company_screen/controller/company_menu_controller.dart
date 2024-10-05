@@ -10,6 +10,9 @@ import 'package:get/get.dart';
 import 'package:http/http.dart'as http;
 
 class CompanyMenuController extends GetxController {
+
+   // Observable variables for managing state
+
   var employeemenus = CompanyMenuModel(
           userTypeId: '',
           companyId: '',
@@ -42,12 +45,16 @@ class CompanyMenuController extends GetxController {
     resetSelectionState();
   }
 
+ // Reset menu selection state
+
    void resetMenuSelectionState() {
     menus.clear();
     filteredMenus.clear();
     isUserTypeSelected.value = false;
     selectedUserTypeId.value = '';
   }
+
+  // Reset selection state
 
   void resetSelectionState() {
     isCompanySelected.value = false;
@@ -56,6 +63,8 @@ class CompanyMenuController extends GetxController {
     selectedUserTypeId.value = '';
     filteredMenus.clear();
   }
+
+ // Handle company selection
 
    void onCompanySelected(String companyId) {
     selectedCompanyId.value = companyId;
@@ -66,6 +75,8 @@ class CompanyMenuController extends GetxController {
     fetchUserType();
   }
 
+// Handle user type selection
+
   void onUserTypeSelected(String userTypeId,) {
     selectedUserTypeId.value = userTypeId;
     isUserTypeSelected.value = true;
@@ -75,6 +86,8 @@ class CompanyMenuController extends GetxController {
     }
   
   }
+
+ // Fetch user types
 
    fetchUserType() async {
     try {
@@ -98,6 +111,7 @@ class CompanyMenuController extends GetxController {
     }
   }
 
+ // Fetch menus for selected user type and company
 
    Future<void> fetchMenusForUser() async {
     isLoading.value = true;
@@ -141,6 +155,8 @@ class CompanyMenuController extends GetxController {
     }
   }
 
+ // Toggle main menu selection
+
   void toggleMainMenu(String mainMenuId) {
     final index = menus.indexWhere((menu) => menu.mainMenuId == mainMenuId);
     if (index != -1) {
@@ -152,6 +168,8 @@ class CompanyMenuController extends GetxController {
       menus.refresh();
     }
   }
+
+   // Toggle submenu selection
 
   void toggleSubMenu(String mainMenuId, String subMenuId, {bool? forceValue}) {
     final mainMenuIndex = menus.indexWhere((menu) => menu.mainMenuId == mainMenuId);
@@ -168,6 +186,8 @@ class CompanyMenuController extends GetxController {
     menus.refresh();
   }
 
+ // Update main menu selection based on submenu selections
+
   void updateMainMenuSelection(String mainMenuId) {
     final index = menus.indexWhere((menu) => menu.mainMenuId == mainMenuId);
     if (index != -1) {
@@ -176,6 +196,7 @@ class CompanyMenuController extends GetxController {
     }
   }
 
+ // Add menu for selected company and user type
 
   Future<void> addMenu() async {
     isLoading.value = true;
@@ -216,7 +237,7 @@ class CompanyMenuController extends GetxController {
       if (result.isLeft) {
         awesomeOkDialog(message: result.left.message);
       } else {
-        awesomeOkDialog(message: "Menu added successfully");
+       await awesomeOkDialog(message: "Menu added successfully");
         Get.back();
       }
     } catch (e) {

@@ -9,6 +9,7 @@ import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
 import 'package:flutter_dashboard/models/payroll/add_payroll_model.dart';
 import 'package:flutter_dashboard/models/payroll/show_allowance_deduction_usermodel.dart';
 import 'package:flutter_dashboard/models/user_model.dart';
+import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -48,6 +49,7 @@ class EmployeePayrollSettingsController extends GetxController {
   var deductions = <Deduction>[].obs;
   var getaddallowances = <Allowances>[].obs;
   var getadddeduction = <Deductions>[].obs;
+  // Observable maps for storing text controllers
   final allowanceControllers = <String, TextEditingController>{}.obs;
   final deductionControllers = <String, TextEditingController>{}.obs;
   var noDataFound = false.obs;
@@ -65,20 +67,27 @@ class EmployeePayrollSettingsController extends GetxController {
      ever(getadddeduction, (_) => _updateDeductionControllers());
   }
 
+// Update allowance controllers when allowances change
+
   void _updateAllowanceControllers() {
     for (var allowance in getaddallowances) {
       if (!allowanceControllers.containsKey(allowance.allowanceId)) {
-        allowanceControllers[allowance.allowanceId] = TextEditingController();
+        allowanceControllers[allowance.allowanceId] = TextEditingController(text: '0');
       }
     }
   }
+
+   // Update deduction controllers when deductions change
+
    void _updateDeductionControllers() {
     for (var deduction in getadddeduction) {
       if (!deductionControllers.containsKey(deduction.deductionId)) {
-        deductionControllers[deduction.deductionId] = TextEditingController();
+        deductionControllers[deduction.deductionId] = TextEditingController(text: '0');
       }
     }
   }
+
+ // Dispose of controllers when the widget is disposed
 
   @override
   void onClose() {
@@ -91,12 +100,16 @@ class EmployeePayrollSettingsController extends GetxController {
     super.onClose();
   }
 
+  // Reset selection state
+
    void resetSelectionState() {
     isCompanySelected.value = false;
     showTabBar.value=false; 
     selectedCompanyId.value = '';
     
   }
+
+// Check if all necessary selections have been made
 
   void checkAllSelections() {
     print("Checking selections:");
@@ -113,6 +126,8 @@ class EmployeePayrollSettingsController extends GetxController {
     }
   }
 
+ // Handle company selection
+
   void onCompanySelected(String companyId) {
     selectedCompanyId.value = companyId;
     isCompanySelected.value = true;
@@ -123,6 +138,8 @@ class EmployeePayrollSettingsController extends GetxController {
     checkAllSelections();
   }
 
+ // Handle user selection
+
   void onUserSelected(String userTypeId, String companyId, String userId) {
     selectedCompanyId.value = companyId;
     selectedUserId.value = userId;
@@ -130,6 +147,8 @@ class EmployeePayrollSettingsController extends GetxController {
 
     checkAllSelections();
   }
+
+ // Fetch users for a given company
 
   Future<void> fetchUsersForCompany(String companyId) async {
     isLoading.value = true;
@@ -170,6 +189,8 @@ class EmployeePayrollSettingsController extends GetxController {
       isLoading.value = false;
     }
   }
+
+ // Fetch allowance and deduction details for a selected user
 
   Future<void> fetchAllowanceAndDeductionDetails() async {
     isLoading.value = true;
@@ -225,6 +246,8 @@ class EmployeePayrollSettingsController extends GetxController {
     }
   }
 
+ // Fetch allowance and deduction details for adding new entries
+
   Future<void> fetchAllowanceAndDeductionDetailsForAdding() async {
     isLoading.value = true;
     try {
@@ -271,23 +294,27 @@ class EmployeePayrollSettingsController extends GetxController {
     }
   }
 
+   // Add new payroll entry
+
   addPayroll() async {
     final requestBody = {
       "company_id": selectedCompanyId.value,
       "user_id": selectedUserId.value,
       "employee_id": "string",
       "allowance": getaddallowances.map((allowances) {
+         final amount = double.tryParse(allowanceControllers[allowances.allowanceId]?.text ?? "") ?? 0.0;
         return {
           "allowance_id": allowances.allowanceId,
           "allowance": allowances.allowance,
-          "amount": allowanceControllers[allowances.allowanceId]?.text ?? "0"
+          "amount": amount.toString()
         };
       }).toList(),
       "deduction": getadddeduction.map((deductions) {
+         final amount = double.tryParse(deductionControllers[deductions.deductionId]?.text ?? "") ?? 0.0;
         return {
           "deduction_id": deductions.deductionId,
           "deduction": deductions.deduction,
-          "amount": deductionControllers[deductions.deductionId]?.text ?? "0"
+          "amount": amount.toString()
         };
       }).toList(),
       "remarks": "string",
@@ -304,9 +331,11 @@ class EmployeePayrollSettingsController extends GetxController {
     if (result.isLeft) {
       awesomeOkDialog(message: result.left.message);
     } else {
+      allowanceControllers.clear();
+      deductionControllers.clear();
       // Show success message
-      awesomeOkDialog(message: "Modules added successfully");
-      fetchAllowanceAndDeductionDetails();
+     await awesomeSuccessDialog(message: "Amounts added successfully");
+     //  fetchAllowanceAndDeductionDetails();
 
       // Navigate back
       Get.back();

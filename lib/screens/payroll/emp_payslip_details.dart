@@ -45,7 +45,7 @@ class PayslipDetails extends StatelessWidget {
                 icon: Icon(Icons.rocket),
                 buttonTitle: 'Verify Employee Payslip',
                 onClick: () {
-                  Get.toNamed(Routes.AddEmployeePayslipDetails);
+                  Get.toNamed(Routes.AddEmployeePayslipGeneration);
                 },
               ),
             ),

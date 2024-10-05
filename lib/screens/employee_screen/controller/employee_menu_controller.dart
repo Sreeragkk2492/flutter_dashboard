@@ -48,11 +48,13 @@ class EmployeeMenuController extends GetxController {
     fetchCompanies();
     resetMenuSelectionState();
      // For qts_admin, this will be null or empty
-  // For cmp_admin, this should contain the company ID
+  // Fetch company ID and user details for cmp_admin
   String? companyIds = await StorageServices().read('company_id');
    await fetchUsersForCompany(companyIds);
     resetSelectionState();
   }
+
+ // Resets the menu selection state when no user is selected
 
   void resetMenuSelectionState() {
     menus.clear();
@@ -62,6 +64,7 @@ class EmployeeMenuController extends GetxController {
     selectedUserTypeId.value = '';
   }
 
+ // Resets all selection states (company and user)
   void resetSelectionState() {
     isCompanySelected.value = false;
     isUserSelected.value = false;
@@ -69,6 +72,8 @@ class EmployeeMenuController extends GetxController {
     selectedUserId.value = '';
     filteredMenus.clear();
   }
+
+ // Handles company selection, fetches users based on company selection
 
   void onCompanySelected(String companyId) {
     selectedCompanyId.value = companyId;
@@ -78,6 +83,8 @@ class EmployeeMenuController extends GetxController {
     filteredMenus.clear();
     fetchUsersForCompany(companyId);
   }
+
+  // Fetches the list of companies from the server
 
   Future<void> fetchCompanies() async {
     isLoading.value = true;
@@ -105,6 +112,8 @@ class EmployeeMenuController extends GetxController {
       isLoading.value = false;
     }
   }
+
+ // Fetches the users for the selected company from the server
 
   Future<void> fetchUsersForCompany(String companyId) async {
     isLoading.value = true;
@@ -150,6 +159,8 @@ class EmployeeMenuController extends GetxController {
     }
   }
 
+ // Handles the selection of a user, fetches menus for that user
+
   void onUserSelected(String userTypeId, String companyId, String userId) {
     selectedUserTypeId.value = userTypeId;
     selectedCompanyId.value = companyId;
@@ -159,6 +170,8 @@ class EmployeeMenuController extends GetxController {
       fetchMenusForUser();
     
   }
+
+   // Fetches the menus available for the selected user from the server
 
   Future<void> fetchMenusForUser() async {
     isLoading.value = true;
@@ -203,6 +216,8 @@ class EmployeeMenuController extends GetxController {
     }
   }
 
+ // Toggles the selection of a main menu and its associated submenus
+
   void toggleMainMenu(String mainMenuId) {
     final index = menus.indexWhere((menu) => menu.mainMenuId == mainMenuId);
     if (index != -1) {
@@ -214,6 +229,8 @@ class EmployeeMenuController extends GetxController {
       menus.refresh();
     }
   }
+
+ // Toggles the selection of a submenu, optionally forcing a value
 
   void toggleSubMenu(String mainMenuId, String subMenuId, {bool? forceValue}) {
     final mainMenuIndex =
@@ -234,6 +251,8 @@ class EmployeeMenuController extends GetxController {
     menus.refresh();
   }
 
+ // Updates the main menu selection based on submenu selections
+
   void updateMainMenuSelection(String mainMenuId) {
     final index = menus.indexWhere((menu) => menu.mainMenuId == mainMenuId);
     if (index != -1) {
@@ -242,6 +261,8 @@ class EmployeeMenuController extends GetxController {
       menus[index].isSelected = anySubMenuSelected;
     }
   }
+
+ // to add menu
 
   Future<void> addMenu() async {
     isLoading.value = true;
@@ -283,7 +304,8 @@ class EmployeeMenuController extends GetxController {
       if (result.isLeft) {
         awesomeOkDialog(message: result.left.message);
       } else {
-        awesomeOkDialog(message: "Menu added successfully");
+       await awesomeOkDialog(message: "Menu added successfully");
+         
         Get.back();
       }
     } catch (e) {

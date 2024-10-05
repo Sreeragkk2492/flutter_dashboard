@@ -63,6 +63,8 @@ class InvoiceController extends GetxController {
     ever(payslipDetails, (_) => update());
   }
 
+ // Set selected values for company, user, year, and month
+
   void setSelectedValues(
       String companyId, String userId, String year, String month) {
     selectedCompanyId.value = companyId;
@@ -70,6 +72,8 @@ class InvoiceController extends GetxController {
     selectedYear.value = year;
     selectedMonth.value = month;
   }
+
+  // Check if all necessary selections have been made
 
    void checkAllSelections() {
     print("Checking selections:");
@@ -90,17 +94,23 @@ class InvoiceController extends GetxController {
     }
   }
 
+    // Handle year selection
+
   void onYearSelected(String year) {
     selectedYear.value = year;
     isYearSelected.value = true;
     checkAllSelections();
   }
 
+    // Handle month selection
+
   void onMonthSelected(String month) {
     selectedMonth.value = month;
     isMonthSelected.value = true;
     checkAllSelections();
   }
+
+  // Handle company selection
 
   void onCompanySelected(String companyId) {
     selectedCompanyId.value = companyId;
@@ -115,6 +125,8 @@ class InvoiceController extends GetxController {
     checkAllSelections();
   }
 
+ // Handle user selection
+
   void onUserSelected(String userTypeId, String companyId, String userId) {
     selectedCompanyId.value = companyId;
     selectedUserId.value = userId;
@@ -125,6 +137,8 @@ class InvoiceController extends GetxController {
     selectedMonth.value = '';
     checkAllSelections();
   }
+
+ // Fetch users for a given company
 
    Future<void> fetchUsersForCompany(String companyId) async {
     isLoading.value = true;
@@ -156,7 +170,7 @@ class InvoiceController extends GetxController {
     }
   }
 
-
+ // Fetch payslip details based on selected company, user, year, and month
   Future<void> fetchPayslipDetails() async {
     isLoading.value = true;
     noDataFound.value = false;

@@ -10,6 +10,9 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class CompanyHolidayListController extends GetxController {
+
+    // Observable variables for managing state
+
   //var companydetails = <Company>[].obs;
   var selectedCompanyId = ''.obs;
   String? selectedStatus;
@@ -25,7 +28,7 @@ RxBool isSortasc=true.obs;
     resetSelectionState();
   }
 
-//to reset the selection state
+ // Reset the selection state and clear all entries
  
   void resetSelectionState() {
     isCompanySelected.value = false;
@@ -38,12 +41,16 @@ RxBool isSortasc=true.obs;
     ));
   }
 
+   // Add a new leave type entry
+
   void addLeaveType() {
     leaveTypeEntries.add(HolidayTypeEntry(
       typeController: TextEditingController(),
       dateController: TextEditingController(),
     ));
   }
+
+   // Handle company selection and fetch holidays for the selected company
 
   void onCompanySelected(String companyId) {
     if (selectedCompanyId.value != companyId) {
@@ -55,7 +62,7 @@ RxBool isSortasc=true.obs;
   }
 
 
-//to fetch all the holiday for the specific company
+  // Fetch holidays for the selected company
   fetchHolidayForCompany() async {
     isLoading.value = true;
     try {
@@ -84,7 +91,7 @@ RxBool isSortasc=true.obs;
     }
   }
 
-//to add company holiday for specific company
+ // Add company holidays for the selected company
  Future<void> addCompanyHoliday() async {
     if (selectedCompanyId.value.isEmpty) {
       print("No company selected");

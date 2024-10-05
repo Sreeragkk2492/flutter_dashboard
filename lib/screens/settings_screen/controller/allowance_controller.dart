@@ -25,6 +25,7 @@ class AllowanceController extends GetxController {
     fetchAllowance();
     super.onInit();
   }
+//add allowance
 
   addAllowance() async {
     var response = await NetWorkManager.shared().request(
@@ -53,6 +54,8 @@ class AllowanceController extends GetxController {
     //   await fetchAllowance();
     // });
   }
+
+// to fetch all allowance
 
   fetchAllowance() async {
     try {
@@ -113,6 +116,8 @@ class AllowanceController extends GetxController {
       //  awesomeOkDialog(message: e.toString());
     }
   }
+
+// update allowance
 
   updateAllowance(Allowance allowance) async {
     final result = await NetWorkManager.shared().request(

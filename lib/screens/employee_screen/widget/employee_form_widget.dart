@@ -457,7 +457,16 @@ class EmployeeFormWidget extends StatelessWidget {
                     ),
                     // enableSuggestions: false,
                     keyboardType: TextInputType.text,
-                    validator: FormBuilderValidators.required(),
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                      (value) {
+                        if (value != null && value.isAfter(DateTime.now())) {
+                          return 'Date of birth cannot be in the future';
+                        }
+                        return null;
+                      },
+                    ]),
+                    lastDate: DateTime.now(), 
                     // onSaved: (value) => (_formData.city = value ?? '')
                   ),
                 ),

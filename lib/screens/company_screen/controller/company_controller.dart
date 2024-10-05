@@ -9,11 +9,20 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class CompanyController extends GetxController {
+  // Observable boolean values for VAT and GST selection
   RxBool isVATSelected = false.obs;
   RxBool isGSTSelected = false.obs;
+
+  // Observable list to store company details
+
   var companydetails = <Company>[].obs;
-  RxBool isSortasc=true.obs;
-  
+
+  // Observable boolean for sorting order
+
+  RxBool isSortasc = true.obs;
+
+  // TextEditingControllers for various input fields
+
   final companyNameController = TextEditingController();
   final companyCodeController = TextEditingController();
   final remarksController = TextEditingController();
@@ -30,17 +39,29 @@ class CompanyController extends GetxController {
   final vatrateController = TextEditingController();
   final gstnumberController = TextEditingController();
   final gstcompoundingController = TextEditingController();
+
+  // Observable string for selected company type code
+
   var selectedCompanyTypecode = ''.obs;
+
+  // Nullable strings for selected status and company
+
   String? selectedStatus;
-  String?selectedCompany;
+  String? selectedCompany;
+
+  // Function to toggle VAT selection
 
   void toggleVAT(bool? value) {
     isVATSelected.value = value ?? false;
   }
 
+  // Function to toggle GST selection
+
   void toggleGST(bool? value) {
     isGSTSelected.value = value ?? false;
   }
+
+  // Override onInit to fetch company details when the controller is initialized
 
   @override
   void onInit() {
@@ -49,20 +70,23 @@ class CompanyController extends GetxController {
     super.onInit();
   }
 
+  // Function to set the selected company type ID
+
   setSelectedCompanyTypeID(
     String companyTypeId,
   ) {
     selectedCompanyTypecode.value = companyTypeId;
   }
 
-//to add company
+// Function to add a new company
+
   addCompany() async {
     final result = await NetWorkManager.shared().request(
         url: ApiUrls.BASE_URL + ApiUrls.ADD_COMPANY,
         method: 'post',
         isAuthRequired: false,
         data: {
-          "company_code": companyCodeController.text, 
+          "company_code": companyCodeController.text,
           "company_name": companyNameController.text,
           "company_type_id": selectedCompanyTypecode.value,
           "remarks": "",
@@ -79,7 +103,7 @@ class CompanyController extends GetxController {
     }
   }
 
-//to fetch all company
+  // Function to fetch all company details
 
   fetchCompanyDetails() async {
     try {
@@ -102,5 +126,4 @@ class CompanyController extends GetxController {
       print("Error$e");
     }
   }
- 
 }
