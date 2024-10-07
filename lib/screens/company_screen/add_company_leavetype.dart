@@ -184,7 +184,7 @@ class AddCompanyLeavetype extends StatelessWidget {
                                     flex: 2,
                                     child: 
                                      FormBuilderTextField(
-                                        name: 'Leave Type',
+                                        name: 'leaveType_$index', // Unique name for each field 
                                        controller: entry.value,
                                         decoration: InputDecoration(
                                           labelText: 'Leave Type',
@@ -201,7 +201,7 @@ class AddCompanyLeavetype extends StatelessWidget {
                                     child:index == screenController.leaveTypeControllers.length - 1?
                                     ElevatedButton(
                                       onPressed: () {
-                                         screenController.addLeaveType();
+                                         screenController.addLeaveType();  
                                       },
                                        
                                       child: Text('Add New'),

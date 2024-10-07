@@ -223,7 +223,7 @@ class AddCompanyMenu extends StatelessWidget {
                           buttonname: 'Add Company Menu',
                           onClick: () async {
                             await screenController.addMenu();
-                            Get.back();
+                           // Get.back();
                           },
                         ),
                       ],

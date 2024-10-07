@@ -22,6 +22,12 @@ class EmployeeFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      // Call fetchRepotingId here for company admin
+    if (!screenController.isSuperAdmin.value) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        screenController.fetchRepotingId(''); 
+      });
+    }
     return FormBuilder(
         key: _formKey,
         autovalidateMode: AutovalidateMode.disabled,
@@ -92,8 +98,7 @@ class EmployeeFormWidget extends StatelessWidget {
                                 ))
                             .toList(),
                         onChanged: (value) {
-                          screenController.setSelectedCompany(
-                              value!.id, value.companyCode);
+                          screenController.onCompanySelected(value!.id);
                         },
                       );
                     } else {
@@ -110,11 +115,11 @@ class EmployeeFormWidget extends StatelessWidget {
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                         ),
                         readOnly: true,
-                        onSaved: (newValue) {
-                          // This ensures the company ID and code are saved even for pre-filled company
-                          screenController.setSelectedCompany(
-                              company.id, company.companyCode);
-                        },
+                        // onSaved: (newValue) {
+                        //   // This ensures the company ID and code are saved even for pre-filled company
+                        //   screenController.setSelectedCompany(
+                        //       company.id, company.companyCode);
+                        // },
                       );
                     }
                   }),
@@ -199,20 +204,31 @@ class EmployeeFormWidget extends StatelessWidget {
             buildSizedBoxH(kDefaultPadding * 3),
             Row(
               children: [
-                Flexible(
-                  child: FormBuilderTextField(
-                    controller: screenController.reportingIdController,
-                    name: 'Reporting To',
-                    decoration: const InputDecoration(
-                      labelText: 'Reporting To',
-                      hintText: 'Reporting To',
-                      border: OutlineInputBorder(),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
+               Flexible(
+                  child: Obx(
+                    () => FormBuilderDropdown(
+                      // controller: widget.statusController,
+                      name: 'Reporting to Id',
+                      decoration: const InputDecoration(
+                        labelText: 'Reporting to Id',
+                        hintText: 'Reporting to Id',
+                        border: OutlineInputBorder(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      // enableSuggestions: false,
+                      // keyboardType: TextInputType.name,
+                      validator: FormBuilderValidators.required(),
+                      items: screenController.reportingtoid
+                          .map((reportingtoid) => DropdownMenuItem(
+                                value: reportingtoid.id,
+                                child: Text(reportingtoid.userName),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        screenController.setSelectedReportingId(value!);
+                      },
+                      // onSaved: (value) => (_formData.firstname = value ?? ''),
                     ),
-                    enableSuggestions: false,
-                    keyboardType: TextInputType.name,
-                    // validator: FormBuilderValidators.required(),
-                    // onSaved: (value) => (_formData.firstname = value ?? ''),
                   ),
                 ),
                 buildSizedboxW(kDefaultPadding),

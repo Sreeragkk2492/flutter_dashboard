@@ -26,6 +26,7 @@ class CompanyLeaveType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     return PortalMasterLayout(
         body: ListView(
       children: [
@@ -69,8 +70,10 @@ class CompanyLeaveType extends StatelessWidget {
                         child: Text(company.companyName),
                       ))
                   .toList(),
-              onChanged: (value) {
-                screenController.onCompanySelected(value!.id);
+              onChanged: (value) async {
+                if (value != null) {
+                  await screenController.onCompanySelected(value.id);
+                }
               },
             ),
           ),
@@ -85,8 +88,11 @@ class CompanyLeaveType extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          if (screenController.leaveTypes.isEmpty) {
-            return Center(child: Text("No leaves available for this company."));
+          if (screenController.hasFetchedLeaveTypes.value &&
+              screenController.leaveTypes.isEmpty) {
+            return Center(
+              child: Text("No leaves available for this company."),
+            );
           } else {
             return Padding(
                 padding: EdgeInsets.only(

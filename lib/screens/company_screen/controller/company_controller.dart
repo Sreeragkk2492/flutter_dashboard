@@ -91,14 +91,16 @@ class CompanyController extends GetxController {
           "company_type_id": selectedCompanyTypecode.value,
           "remarks": "",
           "status": selectedStatus,
-          "is_active": true
+          "is_active": true,
+          "single_shift": true
         });
 
     if (result.isLeft) {
       awesomeOkDialog(message: result.left.message);
     } else {
       final message = result.right['message'];
-      // awesomeOkDialog(message: message);
+     await  awesomeSuccessDialog(message: message);
+     Get.back();
       await fetchCompanyDetails();
     }
   }

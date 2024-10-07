@@ -35,7 +35,7 @@ class ApiUrls {
   static const GET_ALL_USER = "/user/get_users";
   static const UPDATE_USER = "/user/update_user";
   static const GET_EMPLOYEE_MENU = "/user_menu_permission/get_all_menus";
-
+  static const GET_ADMIN_FOR_REPORTING = "/user/get_admins_for_reporting";
   static const GET_ALL_USER_BY_COMPANY_ID = "/user/get_users_by_company_id";
 
   static const ADD_EMPLOYEE_MENU =
@@ -120,31 +120,25 @@ class ApiUrls {
       "/company_menu_mapping/add_company_menu_permissions";
 
   //working shifts
-  
-  static const GET_ALL_COMPANY_WORKING_SHIFTS =
-      "/shift/shifts";
-      
-   static const ADD_COMPANY_WORKING_SHIFTS =
-      "/shift/create_shift";
 
-      //payslip
-      
-       static const GET_ALL_EMPLOYEE_PAYSLIP_DETAILS =
+  static const GET_ALL_COMPANY_WORKING_SHIFTS = "/shift/shifts";
+
+  static const ADD_COMPANY_WORKING_SHIFTS = "/shift/create_shift";
+
+  //payslip
+
+  static const GET_ALL_EMPLOYEE_PAYSLIP_DETAILS =
       "/employee_payslip_details/get_all_employees_payslip_for_generation";
-      static const GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION =
+  static const GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION =
       "/employee_payroll_allowance/show_allowances_and_deductions_of_user";
-       static const GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION_IN_ADD =
+  static const GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION_IN_ADD =
       "/employee_payroll_allowance/show_allowance_and_deduction_for_user";
-      
-      static const ADD_EMPLOYEE_PAYROLL =
+
+  static const ADD_EMPLOYEE_PAYROLL =
       "/employee_payroll_allowance/add_allowances_and_deductions_of_user";
-       static const ADD_PAYSLIP_DETAILS =
+  static const ADD_PAYSLIP_DETAILS =
       "/employee_payslip_details/generate_employee_payslip";
-      
-       static const GET_ALL_EMPLOYEE_GENERATED_PAYSLIP_DETAILS =
+
+  static const GET_ALL_EMPLOYEE_GENERATED_PAYSLIP_DETAILS =
       "/employee_payslip_details/get_generated_employee_payslip";
-
-      
-
-
 }

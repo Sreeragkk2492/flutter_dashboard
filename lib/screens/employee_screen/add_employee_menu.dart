@@ -175,7 +175,7 @@ class AddEmployeeMenu extends StatelessWidget {
                               } else {
                                 // Single company display for company admin
                                 final company =
-                                    employeeController.companydetails[0];
+                                    employeeController.companydetails[0]; 
                                 employeeController.setSelectedCompany(
                                     company.id, company.companyCode);
                                 return FormBuilderTextField(

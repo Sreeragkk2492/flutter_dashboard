@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/dialog_widgets.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_dashboard/screens/settings_screen/controller/industry_co
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CompanyFormWidget extends StatelessWidget {
   CompanyFormWidget({
@@ -34,11 +36,11 @@ class CompanyFormWidget extends StatelessWidget {
               Flexible(
                 child: Obx(
                   () => FormBuilderDropdown(
-                    // controller: widget.companyNameController,
-                    name: 'Company ID',
+                    // controller: widget.statusController,
+                    name: 'Category/Industry',
                     decoration: const InputDecoration(
-                      labelText: 'Company ID',
-                      hintText: 'Company ID',
+                      labelText: 'Category/Industry',
+                     // hintText: 'Category/Industry',
                       border: OutlineInputBorder(),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
@@ -52,7 +54,7 @@ class CompanyFormWidget extends StatelessWidget {
                             ))
                         .toList(),
                     onChanged: (value) {
-                      screenController.setSelectedCompanyTypeID(value!);
+                       screenController.setSelectedCompanyTypeID(value!);
                     },
                     // onSaved: (value) => (_formData.firstname = value ?? ''),
                   ),
@@ -65,7 +67,7 @@ class CompanyFormWidget extends StatelessWidget {
                   name: 'Company Code',
                   decoration: InputDecoration(
                     labelText: 'Company Code',
-                    hintText: 'test@gmail.com',
+                   // hintText: 'test@gmail.com',
                     border: const OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -81,11 +83,11 @@ class CompanyFormWidget extends StatelessWidget {
             children: [
               Flexible(
                 child: FormBuilderTextField(
-                  controller:screenController.companyNameController,
+                  controller: screenController.companyNameController,
                   name: 'Company Name',
                   decoration: const InputDecoration(
                     labelText: 'Company Name',
-                    hintText: 'Test',
+                   // hintText: 'Test',
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -96,65 +98,63 @@ class CompanyFormWidget extends StatelessWidget {
                 ),
               ),
               buildSizedboxW(kDefaultPadding),
-              Flexible(
-                child:Obx(()=>
-                     FormBuilderDropdown(
-                      // controller: widget.statusController,
-                      name: 'Category/Industry',
-                      decoration: const InputDecoration(
-                        labelText: 'Category/Industry',
-                        hintText: 'Category/Industry',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      // enableSuggestions: false,
-                      // keyboardType: TextInputType.name,
-                      validator: FormBuilderValidators.required(),
-                      items: industryController.industries
-                          .map((industry) => DropdownMenuItem(
-                                value: industry.id,
-                                child: Text(industry.name),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                      //  screenController.setSelectedDesignation(value!);
-                      },
-                      // onSaved: (value) => (_formData.firstname = value ?? ''),
-                    ),
-                  ),
-              ),
+              // Flexible(
+              //   child:Obx(()=>
+              //        FormBuilderDropdown(
+              //         // controller: widget.statusController,
+              //         name: 'Category/Industry',
+              //         decoration: const InputDecoration(
+              //           labelText: 'Category/Industry',
+              //           hintText: 'Category/Industry',
+              //           border: OutlineInputBorder(),
+              //           floatingLabelBehavior: FloatingLabelBehavior.always,
+              //         ),
+              //         // enableSuggestions: false,
+              //         // keyboardType: TextInputType.name,
+              //         validator: FormBuilderValidators.required(),
+              //         items: industryController.industries
+              //             .map((industry) => DropdownMenuItem(
+              //                   value: industry.id,
+              //                   child: Text(industry.name),
+              //                 ))
+              //             .toList(),
+              //         onChanged: (value) {
+              //         //  screenController.setSelectedDesignation(value!);
+              //         },
+              //         // onSaved: (value) => (_formData.firstname = value ?? ''),
+              //       ),
+              //     ),
+              // ),
             ],
           ),
           buildSizedBoxH(kDefaultPadding * 3),
           Row(
             children: [
               Flexible(
-                child:  FormBuilderDropdown(
-                              name: 'Status',
-                              decoration: InputDecoration(
-                                labelText: 'Status',
-                                // hintText: 'test@gmail.com',
-                                border: const OutlineInputBorder(),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                              ),
-                              // keyboardType: TextInputType.emailAddress,
-                              validator: FormBuilderValidators.required(),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text('Active'),
-                                  value: 'Active',
-                                ),
-                                DropdownMenuItem(
-                                  child: Text('InActive'),
-                                  value: 'InActive',
-                                ),
-                              ],
-                                initialValue: screenController.selectedStatus,
-                            onChanged: (value) =>
-                                screenController.selectedStatus = value,
-                              // onSaved: (value) => (_formData.email = value ?? ''),
-                            ),
+                child: FormBuilderDropdown(
+                  name: 'Status',
+                  decoration: InputDecoration(
+                    labelText: 'Status',
+                    // hintText: 'test@gmail.com',
+                    border: const OutlineInputBorder(),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
+                  // keyboardType: TextInputType.emailAddress,
+                  validator: FormBuilderValidators.required(),
+                  items: [
+                    DropdownMenuItem(
+                      child: Text('Active'),
+                      value: 'Active',
+                    ),
+                    DropdownMenuItem(
+                      child: Text('InActive'),
+                      value: 'InActive',
+                    ),
+                  ],
+                  initialValue: screenController.selectedStatus,
+                  onChanged: (value) => screenController.selectedStatus = value,
+                  // onSaved: (value) => (_formData.email = value ?? ''),
+                ),
               ),
               buildSizedboxW(kDefaultPadding),
               Flexible(
@@ -163,7 +163,7 @@ class CompanyFormWidget extends StatelessWidget {
                   name: 'Group Name',
                   decoration: const InputDecoration(
                     labelText: 'Group Name',
-                    hintText: 'User',
+                   // hintText: 'User',
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -180,10 +180,10 @@ class CompanyFormWidget extends StatelessWidget {
             endIndent: kDefaultPadding * 2,
           ),
           buildSizedBoxH(kDefaultPadding * 3),
-          Text(
-            'Detailed Information',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+          Text('Detailed Information',
+              style: GoogleFonts.montserrat(
+                  fontSize: kDefaultPadding + kTextPadding,
+                  fontWeight: FontWeight.bold)),
           buildSizedBoxH(kDefaultPadding * 2),
           Row(
             children: [
@@ -193,7 +193,7 @@ class CompanyFormWidget extends StatelessWidget {
                   name: 'Legal Name',
                   decoration: const InputDecoration(
                     labelText: 'Legal Name',
-                    hintText: 'Legal Name',
+                   // hintText: 'Legal Name',
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -210,7 +210,7 @@ class CompanyFormWidget extends StatelessWidget {
                   name: 'Founder/Owner',
                   decoration: const InputDecoration(
                     labelText: 'Founder/Owner',
-                    hintText: 'Founder/Owner',
+                   // hintText: 'Founder/Owner',
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -230,13 +230,16 @@ class CompanyFormWidget extends StatelessWidget {
                   name: 'Email',
                   decoration: const InputDecoration(
                     labelText: 'Email',
-                    hintText: 'Email',
+                    // hintText: 'Email',
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   enableSuggestions: false,
                   keyboardType: TextInputType.name,
-                  validator: FormBuilderValidators.required(),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.email(),
+                  ]),
                   // onSaved: (value) => (_formData.firstname = value ?? ''),
                 ),
               ),
@@ -247,7 +250,7 @@ class CompanyFormWidget extends StatelessWidget {
                   name: 'Pan',
                   decoration: const InputDecoration(
                     labelText: 'Pan',
-                    hintText: 'Pan',
+                    // hintText: 'Pan',
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -267,13 +270,28 @@ class CompanyFormWidget extends StatelessWidget {
                   name: 'Whatsapp',
                   decoration: const InputDecoration(
                     labelText: 'Whatsapp',
-                    hintText: 'Whatsapp',
+                    // hintText: 'Whatsapp',
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   enableSuggestions: false,
                   keyboardType: TextInputType.name,
-                  validator: FormBuilderValidators.required(),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.numeric(),
+                    FormBuilderValidators.maxLength(10),
+                    FormBuilderValidators.minLength(10),
+                    (value) {
+                      if (value != null && value.length != 10) {
+                        return 'Phone number must be exactly 10 digits';
+                      }
+                      return null;
+                    },
+                  ]),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(10),
+                  ],
                   // onSaved: (value) => (_formData.firstname = value ?? ''),
                 ),
               ),
@@ -284,12 +302,27 @@ class CompanyFormWidget extends StatelessWidget {
                   name: 'Phone Number',
                   decoration: const InputDecoration(
                     labelText: 'Phone Number',
-                    hintText: 'Phone Number',
+                    // hintText: 'Phone Number',
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   keyboardType: TextInputType.name,
-                  validator: FormBuilderValidators.required(),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.numeric(),
+                    FormBuilderValidators.maxLength(10),
+                    FormBuilderValidators.minLength(10),
+                    (value) {
+                      if (value != null && value.length != 10) {
+                        return 'Phone number must be exactly 10 digits';
+                      }
+                      return null;
+                    },
+                  ]),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(10),
+                  ],
                   //  onSaved: (value) => (_formData.lastname = value ?? ''),
                 ),
               ),
@@ -301,7 +334,7 @@ class CompanyFormWidget extends StatelessWidget {
             name: 'Address',
             decoration: const InputDecoration(
               labelText: 'Address',
-              hintText: 'A-xyz test near test',
+              // hintText: 'A-xyz test near test',
               border: OutlineInputBorder(),
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
@@ -315,7 +348,7 @@ class CompanyFormWidget extends StatelessWidget {
             name: 'Landmark',
             decoration: const InputDecoration(
               labelText: 'Landmark',
-              hintText: 'Landmark',
+              // hintText: 'Landmark',
               border: OutlineInputBorder(),
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
@@ -342,7 +375,7 @@ class CompanyFormWidget extends StatelessWidget {
                   name: 'City',
                   decoration: const InputDecoration(
                     labelText: 'City',
-                    hintText: 'Surat',
+                    // hintText: 'Surat',
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -373,7 +406,7 @@ class CompanyFormWidget extends StatelessWidget {
                   name: 'State',
                   decoration: const InputDecoration(
                     labelText: 'State',
-                    hintText: 'State',
+                    // hintText: 'State',
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -408,7 +441,7 @@ class CompanyFormWidget extends StatelessWidget {
                   name: 'Country',
                   decoration: const InputDecoration(
                     labelText: 'Country',
-                    hintText: 'Country',
+                    // hintText: 'Country',
                     border: OutlineInputBorder(),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -458,7 +491,7 @@ class CompanyFormWidget extends StatelessWidget {
               children: [
                 Flexible(
                   child: FormBuilderTextField(
-                     controller: screenController.vatnumberController,
+                    controller: screenController.vatnumberController,
                     name: 'VAT Number',
                     decoration: const InputDecoration(
                       labelText: 'VAT Number',

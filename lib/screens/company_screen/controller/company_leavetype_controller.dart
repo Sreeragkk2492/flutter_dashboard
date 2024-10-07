@@ -5,6 +5,7 @@ import 'package:flutter_dashboard/core/api/networkManager.dart';
 import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
+import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
 import 'package:flutter_dashboard/models/company_models/company_leave_type_model.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
 import 'package:get/get.dart';
@@ -24,6 +25,9 @@ class CompanyLeavetypeController extends GetxController {
       <TextEditingController>[TextEditingController()].obs;
   RxBool isSortasc = true.obs;
 
+  // Add a new variable to track if we've attempted to fetch leave types
+  RxBool hasFetchedLeaveTypes = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -37,6 +41,7 @@ class CompanyLeavetypeController extends GetxController {
     isCompanySelected.value = false;
     selectedCompanyId.value = '';
     leaveTypes.clear(); // Clear the leave types list
+    hasFetchedLeaveTypes.value = false;
     leaveTypeControllers.clear();
     leaveTypeControllers.add(TextEditingController());
   }
@@ -49,50 +54,57 @@ class CompanyLeavetypeController extends GetxController {
 
   // Handle company selection and fetch leave types for the selected company
 
-  void onCompanySelected(String companyId) {
+  // Updated onCompanySelected method
+  Future<void> onCompanySelected(String companyId) async {
     if (selectedCompanyId.value != companyId) {
       selectedCompanyId.value = companyId;
       isCompanySelected.value = true;
-      leaveTypes.clear(); // Clear the previous company's leave type data
-      fetchLeavesForCompany();
+      leaveTypes.clear();
+      hasFetchedLeaveTypes.value = false; // Reset before new fetch
+      await fetchLeavesForCompany(); // Wait for fetch to complete
     }
   }
 
-  // Fetch leave types for the selected company
-  fetchLeavesForCompany() async {
+  // Updated fetchLeavesForCompany method
+  Future<void> fetchLeavesForCompany() async {
+    if (selectedCompanyId.value.isEmpty) return;
+
     isLoading.value = true;
     try {
-      // Making the GET request to the API
+      final tokens = await StorageServices().read('token');
       var response = await http.get(
-          Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_COMPANY_LEAVE_TYPE)
-              .replace(
-                  queryParameters: {"company_id": selectedCompanyId.value}),
-          headers: {
-            "Accept": "application/json",
-            "Authorization": "Bearer $token",
-          });
+        Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_COMPANY_LEAVE_TYPE)
+            .replace(queryParameters: {"company_id": selectedCompanyId.value}),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": "Bearer $tokens",
+        },
+      );
+
       if (response.statusCode == 200) {
-        // Decoding the JSON response body into a List
+         print("Debug: Fetching leaves for company: ${selectedCompanyId.value}");
         var jsonData = json.decode(response.body) as List;
-        // Mapping the List to a List of Department objects
-        leaveTypes.value = jsonData.map((jsonItem) {
-          if (jsonItem is Map<String, dynamic>) {
-            return CompanyLeaveTypeModel.fromJson(jsonItem);
-          } else {
-            throw Exception("Unexpected data format");
-          }
-        }).toList();
+        leaveTypes.value = jsonData
+            .whereType<Map<String, dynamic>>()
+            .map((jsonItem) => CompanyLeaveTypeModel.fromJson(jsonItem))
+            .toList();
+      } else {
+        print("Error: ${response.statusCode}");
+        // Optionally handle non-200 status codes
       }
     } catch (e) {
-      print("Error$e");
+      print("Error fetching leave types: $e");
+      // Optionally show an error message to the user
     } finally {
       isLoading.value = false;
+      hasFetchedLeaveTypes.value = true; // Mark that we've attempted to fetch
     }
   }
 
   // Add leave types for the selected company
-  Future<void> addCompanyLeaveTypes() async {
+ Future<void> addCompanyLeaveTypes() async {
     if (selectedCompanyId.value.isEmpty) {
+      print("No company selected");
       return;
     }
 
@@ -102,32 +114,38 @@ class CompanyLeavetypeController extends GetxController {
               "company_id": selectedCompanyId.value,
               "type": controller.text,
               "is_active": true,
-              "deactivated_by_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+              "deactivated_by_id":  "3fa85f64-5717-4562-b3fc-2c963f66afa6"
             })
         .toList();
 
     if (leaveTypesToAdd.isEmpty) {
+      print("No leave types to add");
       return;
     }
 
     try {
+      final tokens = await StorageServices().read('token');
       isLoading.value = true;
       var response = await http.post(
         Uri.parse(ApiUrls.BASE_URL + ApiUrls.ADD_COMPANY_LEAVETYPE),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json",
-          "Authorization": "Bearer $token",
+          "Authorization": "Bearer $tokens",
         },
         body: json.encode(leaveTypesToAdd),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
+        print("Leave types added successfully");
+        await fetchLeavesForCompany(); // Refresh the list after adding
         resetSelectionState();
-        fetchLeavesForCompany();
+      } else {
+        print("Error adding leave types: ${response.statusCode}");
+        print("Response body: ${response.body}");
       }
     } catch (e) {
-      print("Error: $e");
+      print("Error adding leave types: $e");
     } finally {
       isLoading.value = false;
     }

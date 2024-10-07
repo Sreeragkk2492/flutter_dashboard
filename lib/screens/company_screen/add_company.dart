@@ -128,7 +128,7 @@ class AddCompany extends StatelessWidget {
                       buttonname: 'Add Company',
                       onClick: () async {
                         await screenController.addCompany();
-                        Get.back();
+                      //  Get.back();
                       }),
                 ],
               ),

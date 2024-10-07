@@ -61,11 +61,9 @@ class CompanyWorkingshiftController extends GetxController {
   addWorkingShifts() async {
     final result = await NetWorkManager.shared().request(
         url: ApiUrls.BASE_URL + ApiUrls.ADD_COMPANY_WORKING_SHIFTS,
-        params: {
-          "company_code":selectedCompanyCode.value
-        },
+      
         method: 'post',
-        isAuthRequired: false,
+        isAuthRequired: true,
         data: {
           "company_id": selectedCompanyId.value,
           "shift_name": shiftNameController.text,

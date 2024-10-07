@@ -8,6 +8,7 @@ import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
 import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
+import 'package:flutter_dashboard/models/repoting_to_id_model.dart';
 import 'package:flutter_dashboard/models/user_model.dart';
 import 'package:flutter_dashboard/models/usertype_model.dart';
 import 'package:get/get.dart';
@@ -17,13 +18,15 @@ class EmployeeController extends GetxController {
   RxList<UserModel> users = <UserModel>[].obs;
   var companydetails = <Company>[].obs;
   var usertype = <UserType>[].obs;
+  var reportingtoid = <ReportingId>[].obs;
   var selectedCompanyId = ''.obs;
   var selectedCompanycode = ''.obs;
   var selectedUserTypeId = ''.obs;
+  var selectedReportingId = ''.obs;
   var selectedDesignationId = ''.obs;
   var selectedEmployeeCategoryId = ''.obs;
 
-   // Controllers for handling text input
+  // Controllers for handling text input
   final usernameController = TextEditingController();
   final nameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -103,38 +106,53 @@ class EmployeeController extends GetxController {
     print("Selected company set - ID: $companyId, Code: $companyCode");
   }
 
- // Sets the selected user type ID
+ // Handles company selection, fetches users based on company selection
+
+  void onCompanySelected(String companyId) {
+    selectedCompanyId.value = companyId;
+   
+    fetchRepotingId(companyId);
+  }
+
+  // Sets the selected user type ID
 
   setSelectedUserTypeId(String userTypeId) {
     selectedUserTypeId.value = userTypeId;
   }
 
-   // Sets the selected designation ID
+  // Sets the selected user type ID
+
+  setSelectedReportingId(String reportingid) {
+    selectedReportingId.value = reportingid;
+  }
+
+  // Sets the selected designation ID
 
   setSelectedDesignation(String designationId) {
     selectedDesignationId.value = designationId;
   }
 
-   // Sets the selected employee category ID
+  // Sets the selected employee category ID
 
   setSelectedEmployeeCategory(String empCategoryId) {
     selectedEmployeeCategoryId.value = empCategoryId;
   }
 
-   // Initializes the controller by fetching logged-in company details, user type, and company details
+  // Initializes the controller by fetching logged-in company details, user type, and company details
 
   Future<void> initializeController() async {
     try {
       await fetchLoggedInCompanyId();
       await fetchLoggedInUserType();
       await fetchCompanyDetails();
+     
     } catch (e) {
       print("Error initializing controller: $e");
       awesomeOkDialog(message: "Failed to initialize. Please try again later.");
     }
   }
 
- // Fetches the logged-in company's ID from storage
+  // Fetches the logged-in company's ID from storage
 
   Future<void> fetchLoggedInCompanyId() async {
     try {
@@ -147,7 +165,9 @@ class EmployeeController extends GetxController {
     }
   }
 
- // Fetches the logged-in user's type from storage and sets the super admin status
+ 
+
+  // Fetches the logged-in user's type from storage and sets the super admin status
 
   Future<void> fetchLoggedInUserType() async {
     try {
@@ -168,7 +188,7 @@ class EmployeeController extends GetxController {
     }
   }
 
- // Adds a new user with the provided employee data
+  // Adds a new user with the provided employee data
 
   addUser(Map<String, dynamic> employeeData) async {
     var result = await NetWorkManager.shared().request(
@@ -195,7 +215,7 @@ class EmployeeController extends GetxController {
           "designation_id": selectedDesignationId.value,
           "emp_category_id": selectedEmployeeCategoryId.value,
           "biometric_id": biometricIdController.text,
-          "reporting_to_id": reportingIdController.text
+          "reporting_to_id": selectedReportingId.value
         });
 
     if (result.isLeft) {
@@ -206,7 +226,7 @@ class EmployeeController extends GetxController {
     }
   }
 
- // Fetches all users from the server
+  // Fetches all users from the server
 
   fetchUsers() async {
     try {
@@ -256,7 +276,7 @@ class EmployeeController extends GetxController {
     }
   }
 
- // Fetches all user types from the server
+  // Fetches all user types from the server
 
   fetchUsertype() async {
     try {
@@ -280,8 +300,47 @@ class EmployeeController extends GetxController {
     }
   }
 
- // Fetches all company details from the server
- 
+  // Fetches all repoting id from the server
+
+  fetchRepotingId(String compID) async {
+    try {
+     String? effectiveCompanyId = compID;
+    
+      // If no companyId is provided, try to fetch the logged-in company ID
+      if (effectiveCompanyId == null || effectiveCompanyId.isEmpty) {
+        effectiveCompanyId = loggedInCompanyId.value;
+      }
+    
+      // If we still don't have a company ID, throw an error
+      if (effectiveCompanyId == null || effectiveCompanyId.isEmpty) {
+        throw Exception('No company ID available');
+      }
+      // Making the GET request to the API
+      var response = await http.get(
+          Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ADMIN_FOR_REPORTING)
+              .replace(queryParameters: {'company_id': effectiveCompanyId}),
+          headers: {
+            "Accept": "application/json",
+          });
+      if (response.statusCode == 200) {
+        // Decoding the JSON response body into a List
+        var jsonData = json.decode(response.body) as List;
+        // Mapping the List to a List of Department objects
+        reportingtoid.value = jsonData.map((jsonItem) {
+          if (jsonItem is Map<String, dynamic>) {
+            return ReportingId.fromJson(jsonItem);
+          } else {
+            throw Exception("Unexpected data format");
+          }
+        }).toList();
+      }
+    } catch (e) {
+      print("Error$e");
+    }
+  }
+
+  // Fetches all company details from the server
+
   Future<void> fetchCompanyDetails() async {
     isLoading.value = true;
     try {

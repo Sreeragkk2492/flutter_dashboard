@@ -304,7 +304,7 @@ class EmployeeMenuController extends GetxController {
       if (result.isLeft) {
         awesomeOkDialog(message: result.left.message);
       } else {
-       await awesomeOkDialog(message: "Menu added successfully");
+       await awesomeSuccessDialog(message: "Menu added successfully");
          
         Get.back();
       }
