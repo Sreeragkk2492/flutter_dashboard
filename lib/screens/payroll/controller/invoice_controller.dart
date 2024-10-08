@@ -65,12 +65,15 @@ class InvoiceController extends GetxController {
 
  // Set selected values for company, user, year, and month
 
-  void setSelectedValues(
-      String companyId, String userId, String year, String month) {
+  void setSelectedValues(String companyId, String userId, String year, String month) {
     selectedCompanyId.value = companyId;
     selectedUserId.value = userId;
     selectedYear.value = year;
     selectedMonth.value = month;
+    isCompanySelected.value = true;
+    isUserSelected.value = true;
+    isYearSelected.value = true;
+    isMonthSelected.value = true;
   }
 
   // Check if all necessary selections have been made
@@ -186,8 +189,8 @@ class InvoiceController extends GetxController {
       final url = Uri.parse(ApiUrls.BASE_URL +
               ApiUrls.GET_ALL_EMPLOYEE_GENERATED_PAYSLIP_DETAILS)
           .replace(queryParameters: {
-        "company_id": "75c88902-eeb1-4775-8ce2-42401c44090e",
-        "user_id": "62b8f5d3-ae95-4d63-b2ba-113c4060e4dd",
+        "company_id": selectedCompanyId.value,
+        "user_id": selectedUserId.value,
         "year": year.toString(),
         "month": month.toString()
       });

@@ -61,14 +61,14 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
         buildDropdowns(),
         buildSizedBoxH(kDefaultPadding),
         Obx(() {
-         if (screenController.isLoading.value) {
+          if (screenController.isLoading.value) {
             return Center(
               child: CircularProgressIndicator(),
             );
-          } else if(!screenController.showDataTable.value){ 
-             return Center(child: Text("Please select all criteria to view payslip data"));
-          } else{
-
+          } else if (!screenController.showDataTable.value) {
+            return Center(
+                child: Text("Please select all criteria to view payslip data"));
+          } else {
             return SingleChildScrollView(
               // physics: NeverScrollableScrollPhysics(),
 
@@ -115,8 +115,8 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
                                         _dataTableHorizontalScrollController,
                                     child: SizedBox(
                                       width: dataTableWidth,
-                                      child: DataTable( 
-                                        columnSpacing: 8, 
+                                      child: DataTable(
+                                        columnSpacing: 8,
                                         headingTextStyle: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600),
@@ -148,7 +148,7 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
                                           //     //      onPressed: () {},
                                           //     //      icon: Icon(Icons.arrow_drop_down ))
                                           //   ],
-                                          // )), 
+                                          // )),
                                           DataColumn(
                                               label: Row(
                                             children: [
@@ -169,9 +169,12 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
                                               //         .arrow_drop_down_sharp))
                                             ],
                                           )),
-                                           ...screenController.companyPayroll.map((payroll) => 
-                                          DataColumn(label: _buildAllowanceColumn(payroll.allowance ?? payroll.deduction ?? ""))
-                                        ),
+                                          ...screenController.companyPayroll
+                                              .map((payroll) => DataColumn(
+                                                  label: _buildAllowanceColumn(
+                                                      payroll.allowance ??
+                                                          payroll.deduction ??
+                                                          ""))),
                                           // ...screenController
                                           //     .companyPayroll
                                           //     .map((deduction) => DataColumn(
@@ -190,7 +193,7 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
                                           const DataColumn(
                                             label: Text(''),
                                           ),
-                                           const DataColumn(
+                                          const DataColumn(
                                             label: Text(''),
                                           ),
                                         ],
@@ -202,7 +205,7 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
 
                                           return DataRow(
                                             cells: [
-                                            //  DataCell(Text('${index + 1}')),
+                                              //  DataCell(Text('${index + 1}')),
                                               DataCell(GestureDetector(
                                                 onTap: () {
                                                   print('tapped');
@@ -211,29 +214,55 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
                                                           context,
                                                           DialogType.info);
                                                 },
-                                                child: Text(payslip.employeeId),
+                                                child: Text(payslip.name),
                                               )),
                                               DataCell(_buildDetailsCell(
                                                   empId: payslip.employeeId,
                                                   year: payslip.year.toString(),
-                                                  month: payslip.month
+                                                  month:
+                                                      payslip.month.toString(),
+                                                  address: payslip.address
+                                                      .toString(),
+                                                  phone: payslip.phoneNumber
                                                       .toString())),
-                                              ...screenController.companyPayroll.map((payroll) {
+                                              ...screenController.companyPayroll
+                                                  .map((payroll) {
                                                 var amount = 0.0;
                                                 if (payroll.allowance != null) {
-                                                  var matchingAllowance = payslip.allowances.firstWhere(
-                                                    (a) => a.allowanceName == payroll.allowance,
-                                                    orElse: () => AllowanceElement(id: '', allowanceName: '', amount: 0),
+                                                  var matchingAllowance =
+                                                      payslip.allowances
+                                                          .firstWhere(
+                                                    (a) =>
+                                                        a.allowanceName ==
+                                                        payroll.allowance,
+                                                    orElse: () =>
+                                                        AllowanceElement(
+                                                            id: '',
+                                                            allowanceName: '',
+                                                            amount: 0),
                                                   );
-                                                  amount = matchingAllowance.amount.toDouble();
-                                                } else if (payroll.deduction != null) {
-                                                  var matchingDeduction = payslip.deductions.firstWhere(
-                                                    (d) => d.deductionName == payroll.deduction,
-                                                    orElse: () => Deduction(id: '', deductionName: '', amount: 0),
+                                                  amount = matchingAllowance
+                                                      .amount
+                                                      .toDouble();
+                                                } else if (payroll.deduction !=
+                                                    null) {
+                                                  var matchingDeduction =
+                                                      payslip.deductions
+                                                          .firstWhere(
+                                                    (d) =>
+                                                        d.deductionName ==
+                                                        payroll.deduction,
+                                                    orElse: () => Deduction(
+                                                        id: '',
+                                                        deductionName: '',
+                                                        amount: 0),
                                                   );
-                                                  amount = matchingDeduction.amount.toDouble();
+                                                  amount = matchingDeduction
+                                                      .amount
+                                                      .toDouble();
                                                 }
-                                                return DataCell(Text(amount.toString()));
+                                                return DataCell(
+                                                    Text(amount.toString()));
                                               }),
                                               // ...screenController
                                               //     .companyPayroll
@@ -257,10 +286,13 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
                                                   payslip.isActive.toString())),
                                               DataCell(TextButton(
                                                   onPressed: () {
-                                                     Get.toNamed(
-                                          Routes.AddEmployeePayslipDetails,
-                                          arguments: {'index': index},
-                                        );
+                                                    Get.toNamed(
+                                                      Routes
+                                                          .AddEmployeePayslipDetails,
+                                                      arguments: {
+                                                        'index': index
+                                                      },
+                                                    );
                                                   },
                                                   child: const Text(
                                                     'Edit',
@@ -270,20 +302,41 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ))),
-                                                   DataCell(TextButton(
-                                                  onPressed: () {
-                                                    // DialogWidgets
-                                                    //     .showEditDialog(
-                                                    //         context,
-                                                    //         DialogType.info,
-                                                    //        screenController,
-                                                    //         index);
+                                              DataCell(TextButton(
+                                                  onPressed: () async {
+                                                    await screenController
+                                                        .addPayslipDetails(payslip.userId);
+                                                    invoiceController
+                                                        .setSelectedValues(
+                                                            screenController
+                                                                .selectedCompanyId
+                                                                .value,
+                                                            payslip.userId,
+                                                            payslip.year
+                                                                .toString(),
+                                                            payslip.month
+                                                                .toString());
+
+                                                    // Fetch payslip details
+                                                    await invoiceController
+                                                        .fetchPayslipDetails();
+
+                                                    // Check if data is available and not already generated
+                                                    if (!invoiceController
+                                                            .noDataFound
+                                                            .value &&
+                                                        invoiceController
+                                                            .showTabBar.value) {
+                                                      // Navigate to the invoice page
+                                                      Get.toNamed(
+                                                          Routes.InvoicePage);
+                                                    }
                                                   },
                                                   child: const Text(
                                                     'Generate',
                                                     style: TextStyle(
                                                         color: AppColors
-                                                            .defaultColor, 
+                                                            .defaultColor,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   )))
@@ -346,10 +399,10 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
                   } else {
                     // Single company display for company admin
                     final company = employeeController.companydetails[0];
-                     // This will be called only once when the widget is built
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    screenController.onCompanySelected(company.id);
-                  });
+                    // This will be called only once when the widget is built
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      screenController.onCompanySelected(company.id);
+                    });
                     return FormBuilderTextField(
                       name: 'Company Name',
                       initialValue: company.companyName,
@@ -450,7 +503,6 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
     );
   }
 
-
   Widget _buildSubMenuCell(String subMenus) {
     // Truncate the address to show only the first half
     String truncatedSubmenu =
@@ -464,8 +516,9 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
     );
   }
 
-   Widget _buildAllowanceColumn(String title) {
-    String truncatedTitle = title.length > 6 ? '${title.substring(0, 6)}...' : title;
+  Widget _buildAllowanceColumn(String title) {
+    String truncatedTitle =
+        title.length > 6 ? '${title.substring(0, 6)}...' : title;
     return Tooltip(
       message: title,
       child: Text(
@@ -479,15 +532,19 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
     required String empId,
     required String year,
     required String month,
+    required String address,
+    required String phone,
   }) {
     String monthName =
         DateTime(2022, int.parse(month)).toString().split(' ')[0].split('-')[1];
-    String details = 'ID: $empId\nYear: $year\nMonth: $monthName';
-  String truncatedDetails = details.length>8?'${details.substring(0,8)}...':details; 
+    String details =
+        'ID: $empId\nYear: $year\nMonth: $monthName\nAddress: $address\nPhone: $phone'; 
+    String truncatedDetails =
+        details.length > 8 ? '${details.substring(0, 8)}...' : details;
     return Tooltip(
       message: details,
       child: Text(
-        truncatedDetails, 
+        truncatedDetails,
         overflow: TextOverflow.ellipsis,
       ),
     );

@@ -261,7 +261,7 @@ class AddWorkingShifts extends StatelessWidget {
                               buttonname: 'Add Working Shift',
                               onClick: () async{
                                 await screenController.addWorkingShifts();
-                                Get.back();
+                               // Get.back();
                               }),
                         ],
                       ),

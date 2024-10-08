@@ -51,7 +51,7 @@ class PayrollSettingsController extends GetxController {
           deductions: [],
           companyId: '',
           userId: '',
-          isActive: false)
+          isActive: false, userName: '', name: '', phoneNumber: 0, address: '')
       .obs;
   var showTabBar = false.obs;
   var payslip = <PayslipDetail>[].obs;
@@ -356,11 +356,11 @@ class PayrollSettingsController extends GetxController {
 
   // Add or update payslip details
 
-  addPayslipDetails() async {
+  addPayslipDetails(String userid) async {
     final requestBody = {
       "payslip_details": {
-        "company_id": "75c88902-eeb1-4775-8ce2-42401c44090e",
-        "user_id": "62b8f5d3-ae95-4d63-b2ba-113c4060e4dd",
+        "company_id": selectedCompanyId.value,
+        "user_id": userid, 
         "employee_id": "string",
         "year": yearController.text,
         "month": monthController.text,

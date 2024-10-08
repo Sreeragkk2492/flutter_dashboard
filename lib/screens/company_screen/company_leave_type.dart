@@ -26,7 +26,6 @@ class CompanyLeaveType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     return PortalMasterLayout(
         body: ListView(
       children: [
@@ -72,7 +71,8 @@ class CompanyLeaveType extends StatelessWidget {
                   .toList(),
               onChanged: (value) async {
                 if (value != null) {
-                  await screenController.onCompanySelected(value.id);
+                  await screenController.onCompanySelected(
+                      value.id, value.companyCode);
                 }
               },
             ),

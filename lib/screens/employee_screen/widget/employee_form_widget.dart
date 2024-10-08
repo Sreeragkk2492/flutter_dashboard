@@ -22,10 +22,10 @@ class EmployeeFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      // Call fetchRepotingId here for company admin
+    // Call fetchRepotingId here for company admin
     if (!screenController.isSuperAdmin.value) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        screenController.fetchRepotingId(''); 
+        screenController.fetchRepotingId('');
       });
     }
     return FormBuilder(
@@ -98,7 +98,9 @@ class EmployeeFormWidget extends StatelessWidget {
                                 ))
                             .toList(),
                         onChanged: (value) {
-                          screenController.onCompanySelected(value!.id);
+                          screenController.setSelectedCompany(
+                              value!.id, value.companyCode);
+                          screenController.onCompanySelected(value.id);
                         },
                       );
                     } else {
@@ -204,7 +206,7 @@ class EmployeeFormWidget extends StatelessWidget {
             buildSizedBoxH(kDefaultPadding * 3),
             Row(
               children: [
-               Flexible(
+                Flexible(
                   child: Obx(
                     () => FormBuilderDropdown(
                       // controller: widget.statusController,
@@ -434,22 +436,22 @@ class EmployeeFormWidget extends StatelessWidget {
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     keyboardType: TextInputType.phone,
-          validator: FormBuilderValidators.compose([
-            FormBuilderValidators.required(),
-            FormBuilderValidators.numeric(),
-            FormBuilderValidators.maxLength(10),
-            FormBuilderValidators.minLength(10),
-            (value) {
-              if (value != null && value.length != 10) {
-                return 'Phone number must be exactly 10 digits';
-              }
-              return null;
-            },
-          ]),
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(10),
-          ], 
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                      FormBuilderValidators.numeric(),
+                      FormBuilderValidators.maxLength(10),
+                      FormBuilderValidators.minLength(10),
+                      (value) {
+                        if (value != null && value.length != 10) {
+                          return 'Phone number must be exactly 10 digits';
+                        }
+                        return null;
+                      },
+                    ]),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(10),
+                    ],
                     //  onSaved: (value) => (_formData.lastname = value ?? ''),
                   ),
                 ),
@@ -482,7 +484,7 @@ class EmployeeFormWidget extends StatelessWidget {
                         return null;
                       },
                     ]),
-                    lastDate: DateTime.now(), 
+                    lastDate: DateTime.now(),
                     // onSaved: (value) => (_formData.city = value ?? '')
                   ),
                 ),
@@ -515,7 +517,7 @@ class EmployeeFormWidget extends StatelessWidget {
                       if (_formKey.currentState!.saveAndValidate()) {
                         final formData = _formKey.currentState!.value;
                         screenController.addUser(formData);
-                        Get.back();
+                        // Get.back();
                       }
                     }),
               ],

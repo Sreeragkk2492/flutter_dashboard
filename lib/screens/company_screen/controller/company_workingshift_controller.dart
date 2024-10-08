@@ -9,8 +9,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class CompanyWorkingshiftController extends GetxController {
-
-   // Observable variables for managing state
+  // Observable variables for managing state
 
   var workingShifts = <WorkingShiftModel>[].obs;
 
@@ -24,9 +23,9 @@ class CompanyWorkingshiftController extends GetxController {
   var isCompanySelected = false.obs;
   var isLoading = false.obs;
   var hasExplicitlySelectedCompany = false.obs;
-  final shiftNameController=TextEditingController();
-  final startTimeController=TextEditingController();
-  final endTimeController=TextEditingController();
+  final shiftNameController = TextEditingController();
+  final startTimeController = TextEditingController();
+  final endTimeController = TextEditingController();
 
   @override
   void onInit() {
@@ -61,7 +60,7 @@ class CompanyWorkingshiftController extends GetxController {
   addWorkingShifts() async {
     final result = await NetWorkManager.shared().request(
         url: ApiUrls.BASE_URL + ApiUrls.ADD_COMPANY_WORKING_SHIFTS,
-      
+        params: {'company_code': selectedCompanyCode.value},
         method: 'post',
         isAuthRequired: true,
         data: {
@@ -77,7 +76,8 @@ class CompanyWorkingshiftController extends GetxController {
       awesomeOkDialog(message: result.left.message);
     } else {
       final message = result.right['message'];
-      // awesomeOkDialog(message: message);
+      await awesomeSuccessDialog(message: message);
+      Get.back();
       await fetchCompanyWorkingShifts();
     }
   }
@@ -88,7 +88,11 @@ class CompanyWorkingshiftController extends GetxController {
     try {
       // Making the GET request to the API
       var response = await http.get(
-          Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_COMPANY_WORKING_SHIFTS));
+          Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_COMPANY_WORKING_SHIFTS)
+              .replace(queryParameters: {
+        'company_id': selectedCompanyId.value,
+        'company_code': selectedCompanyCode.value
+      }));
       if (response.statusCode == 200) {
         // Decoding the JSON response body into a List
         var jsonData = json.decode(response.body) as List;

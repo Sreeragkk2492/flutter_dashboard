@@ -526,7 +526,7 @@ class AddEmployeePayslip extends StatelessWidget {
                         DefaultAddButton(
                           buttonname: 'Generate',
                           onClick: () async {
-                            await screenController.addPayslipDetails();
+                            await screenController.addPayslipDetails(payslip.userId);
                             invoiceController.setSelectedValues(
                                 invoiceController.selectedCompanyId.value,
                                 invoiceController.selectedUserId.value,

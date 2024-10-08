@@ -161,7 +161,7 @@ class AddCompanyLeavetype extends StatelessWidget {
                       ))
                   .toList(),
               onChanged: (value) {
-                screenController.onCompanySelected(value!.id);
+                screenController.onCompanySelected(value!.id,value.companyCode);
               },
             ),
                           ),
@@ -239,7 +239,7 @@ class AddCompanyLeavetype extends StatelessWidget {
                             buttonname: 'Add Company Leave Type',
                             onClick: () async {
                               await screenController.addCompanyLeaveTypes();
-                              Get.back();
+                            //  Get.back();
                             }),
                       ],
                     ),

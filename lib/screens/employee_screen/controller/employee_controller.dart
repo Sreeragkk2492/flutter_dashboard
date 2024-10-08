@@ -215,13 +215,15 @@ class EmployeeController extends GetxController {
           "designation_id": selectedDesignationId.value,
           "emp_category_id": selectedEmployeeCategoryId.value,
           "biometric_id": biometricIdController.text,
-          "reporting_to_id": selectedReportingId.value
+          "reporting_to_id": selectedReportingId.value  
         });
 
     if (result.isLeft) {
       awesomeOkDialog(message: result.left.message);
     } else {
       final message = result.right['message'];
+       await  awesomeSuccessDialog(message: message);
+     Get.back();
       await fetchUsers();
     }
   }
