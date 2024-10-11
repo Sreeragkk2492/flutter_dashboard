@@ -217,14 +217,14 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
                                                 child: Text(payslip.name),
                                               )),
                                               DataCell(_buildDetailsCell(
-                                                  empId: payslip.employeeId,
-                                                  year: payslip.year.toString(),
+                                                  empId: payslip.employeeId??'null',
+                                                  year: payslip.year.toString()??'null',
                                                   month:
-                                                      payslip.month.toString(),
+                                                      payslip.month.toString()??'null',
                                                   address: payslip.address
-                                                      .toString(),
+                                                      .toString()??'null',
                                                   phone: payslip.phoneNumber
-                                                      .toString())),
+                                                      .toString()??'null ')),
                                               ...screenController.companyPayroll
                                                   .map((payroll) {
                                                 var amount = 0.0;
@@ -305,31 +305,21 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
                                               DataCell(TextButton(
                                                   onPressed: () async {
                                                     await screenController
-                                                        .addPayslipDetails(payslip.userId);
-                                                    invoiceController
-                                                        .setSelectedValues(
-                                                            screenController
-                                                                .selectedCompanyId
-                                                                .value,
-                                                            payslip.userId,
-                                                            payslip.year
-                                                                .toString(),
-                                                            payslip.month
-                                                                .toString());
+                                                        .addPayslipDetails(
+                                                            payslip.userId);
 
-                                                    // Fetch payslip details
-                                                    await invoiceController
-                                                        .fetchPayslipDetails();
-
-                                                    // Check if data is available and not already generated
-                                                    if (!invoiceController
-                                                            .noDataFound
-                                                            .value &&
-                                                        invoiceController
-                                                            .showTabBar.value) {
-                                                      // Navigate to the invoice page
-                                                      Get.toNamed(
-                                                          Routes.InvoicePage);
+                                                    if (screenController
+                                                        .isPayslipGenerated
+                                                        .value) {
+                                                      invoiceController.setSelectedValues(
+                                                          payslip.companyId,
+                                                          payslip.userId,
+                                                          payslip.year
+                                                              .toString(),
+                                                          payslip.month
+                                                              .toString());
+                                                      // Get.toNamed(
+                                                      //     Routes.InvoicePage);
                                                     }
                                                   },
                                                   child: const Text(
@@ -538,7 +528,7 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
     String monthName =
         DateTime(2022, int.parse(month)).toString().split(' ')[0].split('-')[1];
     String details =
-        'ID: $empId\nYear: $year\nMonth: $monthName\nAddress: $address\nPhone: $phone'; 
+        'ID: $empId\nYear: $year\nMonth: $monthName\nAddress: $address\nPhone: $phone';
     String truncatedDetails =
         details.length > 8 ? '${details.substring(0, 8)}...' : details;
     return Tooltip(

@@ -27,7 +27,7 @@ final sidebarMenuConfigs = [
     icon: Icons.interests_rounded,
     title: (context) => 'COMPANY',
     parentTitle: 'COMPANY',
-    visibleFor: ['QTS_ADMIN'],
+    visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
     children: [
       SidebarChildMenuConfig(
         uri: Routes.CLISTALL,
@@ -42,12 +42,12 @@ final sidebarMenuConfigs = [
       SidebarChildMenuConfig(
         uri: Routes.COMPANYLEAVETYPE,
          icon: Icons.line_weight_outlined,
-        title: (context) => ' Company Leave Types', visibleFor: ['QTS_ADMIN'],
+        title: (context) => ' Company Leave Types', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.COMPANYHOLIDAY,
         icon: Icons.holiday_village,
-        title: (context) => ' Company Holiday List', visibleFor: ['QTS_ADMIN'],
+        title: (context) => ' Company Holiday List', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.CompanyMenuList,
@@ -95,7 +95,7 @@ final sidebarMenuConfigs = [
       SidebarChildMenuConfig(
         uri: Routes.CompanyPayrollDate,
         icon: Icons.date_range,
-        title: (context) => 'Companies Payroll Date', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
+        title: (context) => 'Companies Payroll Day', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.CompanyAllowanceDetails,

@@ -7,7 +7,7 @@ import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
 import 'package:flutter_dashboard/models/payroll/add_payroll_model.dart';
 import 'package:flutter_dashboard/models/payroll/show_allowance_deduction_usermodel.dart';
-import 'package:flutter_dashboard/models/user_model.dart';
+import 'package:flutter_dashboard/models/employee_models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -314,7 +314,7 @@ class GeneratorController extends GetxController {
       fetchAllowanceAndDeductionDetails();
 
       // Navigate back
-      Get.back();
+     // Get.back();
     }
   }
 }

@@ -7,7 +7,7 @@ import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
-import 'package:flutter_dashboard/models/user_model.dart';
+import 'package:flutter_dashboard/models/employee_models/user_model.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/payroll/controller/employee_payroll_settings_controller.dart';
@@ -30,7 +30,6 @@ class AddEmployeePayslip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     Size screenSize = MediaQuery.of(context).size;
     return PortalMasterLayout(
         body: EntranceFader(
@@ -149,7 +148,7 @@ class AddEmployeePayslip extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Row(
-                    //   children: [ 
+                    //   children: [
                     //     Expanded(
                     //       child: Padding(
                     //         padding: EdgeInsets.all(kDefaultPadding),
@@ -296,229 +295,201 @@ class AddEmployeePayslip extends StatelessWidget {
                     //   ],
                     // ),
                     buildSizedBoxH(kDefaultPadding * 2),
-                     Column(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Payslip',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        buildSizedBoxH(kDefaultPadding),
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Payslip',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  buildPayslipField(
+                                      editable: false,
+                                      'Year',
+                                      TextInputType.number,
+                                      payslip.year.toString()),
+                                  buildPayslipField(
+                                      editable: false,
+                                      'Month',
+                                      TextInputType.number,
+                                      payslip.month.toString()),
+                                  buildPayslipField(
+                                      'Pay Period Start',
+                                      TextInputType.datetime,
+                                      payslip.payperiodStartDate.toString()),
+                                  buildPayslipField(
+                                      'Pay Period End',
+                                      TextInputType.datetime,
+                                      payslip.payperiodEndDate.toString()),
+                                  buildPayslipField(
+                                      'Pay Date',
+                                      TextInputType.datetime,
+                                      payslip.paydate.toString()),
+                                  buildPayslipField(
+                                      'Payment Method',
+                                      TextInputType.text,
+                                      payslip.paymentMethod),
+                                  buildPayslipField('Status',
+                                      TextInputType.text, payslip.status),
+                                ],
                               ),
                             ),
-                            buildSizedBoxH(kDefaultPadding),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      buildPayslipField(
-                                          editable: false,
-                                          'Year',
-                                          TextInputType.number,
-                                          payslip.year.toString()
-                                          ),
-                                      buildPayslipField(
-                                          editable: false,
-                                          'Month',
-                                          TextInputType.number,
-                                          payslip.month.toString()),
-                                      buildPayslipField(
-                                          'Pay Period Start',
-                                          TextInputType.datetime,
-                                          payslip.payperiodStartDate.toString()),
-                                      buildPayslipField(
-                                          'Pay Period End',
-                                          TextInputType.datetime,
-                                          payslip.payperiodEndDate.toString()),
-                                      buildPayslipField(
-                                          'Pay Date',
-                                          TextInputType.datetime,
-                                          payslip.paydate.toString()),
-                                      buildPayslipField(
-                                          'Payment Method',
-                                          TextInputType.text,
-                                          payslip.paymentMethod),
-                                      buildPayslipField(
-                                          'Status',
-                                          TextInputType.text,
-                                          payslip.status),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(width: kDefaultPadding),
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      buildPayslipField(
-                                          editable: false,
-                                          'Total Amount',
-                                          TextInputType.number,
-                                         payslip.totalAmount.toString()),
-                                      buildPayslipField(
-                                          'Overtime Hours',
-                                          TextInputType.number,
-                                          payslip.overtimeHours.toString()),
-                                      buildPayslipField(
-                                          editable: false,
-                                          'Regular Hours',
-                                          TextInputType.number,
-                                          payslip.regularHours.toString()),
-                                      buildPayslipField(
-                                          'Leave Days',
-                                          TextInputType.number,
-                                          payslip.leavedays.toString()),
-                                      buildPayslipField(
-                                          'Holidays',
-                                          TextInputType.number,
-                                          payslip.holidays.toString()),
-                                      buildPayslipField(
-                                          'Work From Home Days',
-                                          TextInputType.number,
-                                          payslip.workfromhomeDays.toString()),
-                                      buildPayslipField(
-                                          'Payslip File Name',
-                                          TextInputType.text,
-                                          payslip.payslipFileName),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(width: kDefaultPadding),
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      buildPayslipField(
-                                          'Project Code',
-                                          TextInputType.text,
-                                         payslip.projectCode),
-                                      buildPayslipField(
-                                          'Location',
-                                          TextInputType.text,
-                                          payslip.location),
-                                      buildPayslipField(
-                                          'Department',
-                                          TextInputType.text,
-                                          payslip.department),
-                                      buildPayslipField(
-                                          'Remarks',
-                                          TextInputType.text,
-                                         payslip.remarks),
-                                      buildPayslipField(
-                                          'Approved',
-                                          TextInputType.text,
-                                          payslip.approved.toString()),
-                                      buildPayslipField(
-                                          'Approved By',
-                                          TextInputType.text,
-                                          payslip.approvedBy),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            buildSizedboxW(kDefaultPadding * 2),
-                            Divider(),
-                            buildSizedboxW(kDefaultPadding * 2),
-                            Text(
-                              'Allowances',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                            SizedBox(width: kDefaultPadding),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  buildPayslipField(
+                                      editable: false,
+                                      'Total Amount',
+                                      TextInputType.number,
+                                      payslip.totalAmount.toString()),
+                                  buildPayslipField(
+                                      'Overtime Hours',
+                                      TextInputType.number,
+                                      payslip.overtimeHours.toString()),
+                                  buildPayslipField(
+                                      editable: false,
+                                      'Regular Hours',
+                                      TextInputType.number,
+                                      payslip.regularHours.toString()),
+                                  buildPayslipField(
+                                      'Leave Days',
+                                      TextInputType.number,
+                                      payslip.leavedays.toString()),
+                                  buildPayslipField(
+                                      'Holidays',
+                                      TextInputType.number,
+                                      payslip.holidays.toString()),
+                                  buildPayslipField(
+                                      'Work From Home Days',
+                                      TextInputType.number,
+                                      payslip.workfromhomeDays.toString()),
+                                  buildPayslipField(
+                                      'Payslip File Name',
+                                      TextInputType.text,
+                                      payslip.payslipFileName),
+                                ],
                               ),
                             ),
-                            buildSizedBoxH(kDefaultPadding),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    children: payslip.allowances
-                                        .getRange(
-                                            0,
-                                            (payslip
-                                                        .allowances.length /
-                                                    2)
-                                                .ceil())
-                                        .map((allowance) =>
-                                            buildAllowanceDeductionField(
-                                                allowance.allowanceName,
-                                                allowance.amount.toString()))
-                                        .toList(),
-                                  ),
-                                ),
-                                SizedBox(width: kDefaultPadding),
-                                Expanded(
-                                  child: Column(
-                                    children: payslip .allowances
-                                        .getRange(
-                                            (payslip
-                                                        .allowances.length /
-                                                    2)
-                                                .ceil(),
-                                            payslip.allowances.length)
-                                        .map((allowance) =>
-                                            buildAllowanceDeductionField(
-                                                allowance.allowanceName,
-                                               allowance.amount.toString()))
-                                        .toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            buildSizedboxW(kDefaultPadding * 2),
-                            Divider(),
-                            buildSizedboxW(kDefaultPadding * 2),
-                            Text(
-                              'Deductions',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                            SizedBox(width: kDefaultPadding),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  buildPayslipField('Project Code',
+                                      TextInputType.text, payslip.projectCode),
+                                  buildPayslipField('Location',
+                                      TextInputType.text, payslip.location),
+                                  buildPayslipField('Department',
+                                      TextInputType.text, payslip.department),
+                                  buildPayslipField('Remarks',
+                                      TextInputType.text, payslip.remarks),
+                                  buildPayslipField(
+                                      'Approved',
+                                      TextInputType.text,
+                                      payslip.approved.toString()),
+                                  buildPayslipField('Approved By',
+                                      TextInputType.text, payslip.approvedBy),
+                                ],
                               ),
-                            ),
-                            buildSizedBoxH(kDefaultPadding),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    children: payslip.deductions
-                                        .getRange(
-                                            0,
-                                            (payslip
-                                                        .deductions.length /
-                                                    2)
-                                                .ceil())
-                                        .map((deduction) =>
-                                            buildAllowanceDeductionField(
-                                                deduction.deductionName,
-                                                deduction.amount.toString()))
-                                        .toList(),
-                                  ),
-                                ),
-                                SizedBox(width: kDefaultPadding),
-                                Expanded(
-                                  child: Column(
-                                    children: payslip.deductions
-                                        .getRange(
-                                            (payslip
-                                                        .deductions.length /
-                                                    2)
-                                                .ceil(),
-                                            payslip.deductions.length)
-                                        .map((deduction) =>
-                                            buildAllowanceDeductionField(
-                                                deduction.deductionName,
-                                                deduction.amount.toString()))
-                                        .toList(),
-                                  ),
-                                ),
-                              ],
                             ),
                           ],
                         ),
-                      
-                   
+                        buildSizedboxW(kDefaultPadding * 2),
+                        Divider(),
+                        buildSizedboxW(kDefaultPadding * 2),
+                        Text(
+                          'Allowances',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        buildSizedBoxH(kDefaultPadding),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                children: payslip.allowances
+                                    .getRange(0,
+                                        (payslip.allowances.length / 2).ceil())
+                                    .map((allowance) =>
+                                        buildAllowanceDeductionField(
+                                            allowance.allowanceName,
+                                            allowance.amount.toString()))
+                                    .toList(),
+                              ),
+                            ),
+                            SizedBox(width: kDefaultPadding),
+                            Expanded(
+                              child: Column(
+                                children: payslip.allowances
+                                    .getRange(
+                                        (payslip.allowances.length / 2).ceil(),
+                                        payslip.allowances.length)
+                                    .map((allowance) =>
+                                        buildAllowanceDeductionField(
+                                            allowance.allowanceName,
+                                            allowance.amount.toString()))
+                                    .toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                        buildSizedboxW(kDefaultPadding * 2),
+                        Divider(),
+                        buildSizedboxW(kDefaultPadding * 2),
+                        Text(
+                          'Deductions',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        buildSizedBoxH(kDefaultPadding),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                children: payslip.deductions
+                                    .getRange(0,
+                                        (payslip.deductions.length / 2).ceil())
+                                    .map((deduction) =>
+                                        buildAllowanceDeductionField(
+                                            deduction.deductionName,
+                                            deduction.amount.toString()))
+                                    .toList(),
+                              ),
+                            ),
+                            SizedBox(width: kDefaultPadding),
+                            Expanded(
+                              child: Column(
+                                children: payslip.deductions
+                                    .getRange(
+                                        (payslip.deductions.length / 2).ceil(),
+                                        payslip.deductions.length)
+                                    .map((deduction) =>
+                                        buildAllowanceDeductionField(
+                                            deduction.deductionName,
+                                            deduction.amount.toString()))
+                                    .toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+
                     buildSizedBoxH(kDefaultPadding * 3),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -526,16 +497,17 @@ class AddEmployeePayslip extends StatelessWidget {
                         DefaultAddButton(
                           buttonname: 'Generate',
                           onClick: () async {
-                            await screenController.addPayslipDetails(payslip.userId);
-                            invoiceController.setSelectedValues(
-                                invoiceController.selectedCompanyId.value,
-                                invoiceController.selectedUserId.value,
-                                invoiceController.selectedYear.value,
-                                invoiceController.selectedMonth.value);
-                            await invoiceController.fetchPayslipDetails();
-                            if (!invoiceController.noDataFound.value &&
-                                !screenController.isGenerated.value) {
-                              Get.toNamed(Routes.InvoicePage);
+                            await screenController
+                                .addPayslipDetails(payslip.userId);
+
+                            if (screenController.isPayslipGenerated.value) {
+                              invoiceController.setSelectedValues(
+                                  payslip.companyId,
+                                  payslip.userId,
+                                  payslip.year.toString(),
+                                  payslip.month.toString());
+                              // Get.toNamed(
+                              //     Routes.InvoicePage);
                             }
                           },
                         ),
@@ -552,53 +524,52 @@ class AddEmployeePayslip extends StatelessWidget {
     );
   }
 
- Widget buildPayslipField(String label, TextInputType keyboardType,
-    String initialValue,
-    {bool editable = true}) {
-  return Padding(
-    padding: EdgeInsets.only(bottom: kDefaultPadding),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(fontWeight: FontWeight.w500),
-        ),
-        SizedBox(height: 4),
-        if (editable)
-          FormBuilderTextField(
-            name: label.toLowerCase().replaceAll(' ', '_'),
-            initialValue: initialValue,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            ),
-            keyboardType: keyboardType,
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(),
-            ]),
-          )
-        else
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Text(
-              initialValue,
-              style: TextStyle(fontSize: 14),
-            ),
+  Widget buildPayslipField(
+      String label, TextInputType keyboardType, String initialValue,
+      {bool editable = true}) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: kDefaultPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(fontWeight: FontWeight.w500),
           ),
-      ],
-    ),
-  );
-}
+          SizedBox(height: 4),
+          if (editable)
+            FormBuilderTextField(
+              name: label.toLowerCase().replaceAll(' ', '_'),
+              initialValue: initialValue,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              ),
+              keyboardType: keyboardType,
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(),
+              ]),
+            )
+          else
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(
+                initialValue,
+                style: TextStyle(fontSize: 14),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 
-  Widget buildAllowanceDeductionField(
-      String label, String amount) {
+  Widget buildAllowanceDeductionField(String label, String amount) {
     return Padding(
       padding: EdgeInsets.only(bottom: kDefaultPadding),
       child: Column(

@@ -38,6 +38,7 @@ class EmployeeListAll extends StatelessWidget {
               icon: const Icon(Icons.rocket),
               buttonTitle: 'Add Employee',
               onClick: () {
+                screenController.clearFormFields(); 
                 Get.toNamed(Routes.AddEmployee);
               },
             ),
@@ -268,8 +269,10 @@ class EmployeeListAll extends StatelessWidget {
                       DataCell(_buildAddressCell(user.address.toString())),
                       DataCell(Text(user.phoneNumber.toString())),
                       DataCell(TextButton(
-                        onPressed: () => DialogWidgets.showEmpEditDialog(
-                            context, DialogType.info, user),
+                        onPressed: () {
+ DialogWidgets.showEmpEditDialog(
+                            context, DialogType.info, user);
+                        },
                         child: const Text('Edit',
                             style: TextStyle(
                                 color: AppColors.blackColor,

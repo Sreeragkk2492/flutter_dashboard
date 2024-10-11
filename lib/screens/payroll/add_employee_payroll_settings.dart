@@ -5,7 +5,7 @@ import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
-import 'package:flutter_dashboard/models/user_model.dart';
+import 'package:flutter_dashboard/models/employee_models/user_model.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/payroll/controller/employee_payroll_settings_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
@@ -142,50 +142,55 @@ class AddEmployeePayrollSettings extends StatelessWidget {
                         Expanded(
                           child: Padding(
                             padding: EdgeInsets.all(kDefaultPadding),
-                            child: Obx((){
-                               // Check if there's only one company (the logged-in user's company)
-                  if (employeeController.companydetails.isEmpty) {
-                    // Show loading indicator while fetching company details
-                    return Center(child: CircularProgressIndicator());
-                  }
+                            child: Obx(() {
+                              // Check if there's only one company (the logged-in user's company)
+                              if (employeeController.companydetails.isEmpty) {
+                                // Show loading indicator while fetching company details
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
 
-                  if (employeeController.isSuperAdmin.value) {
-                    // Dropdown for superadmin
-                    return FormBuilderDropdown<Company>(
-                      name: 'Company Name',
-                      decoration: InputDecoration(
-                        labelText: 'Company Name',
-                        hintText: 'Select Company',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      validator: FormBuilderValidators.required(),
-                      items: employeeController.companydetails
-                          .map((company) => DropdownMenuItem(
-                                value: company,
-                                child: Text(company.companyName),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        screenController.onCompanySelected(value!.id);
-                      },
-                    );
-                  } else {
-                    // Single company display for company admin
-                    final company = employeeController.companydetails[0];
-                    // employeeController.setSelectedCompany(
-                    //     company.id, company.companyCode);
-                    return FormBuilderTextField(
-                      name: 'Company Name',
-                      initialValue: company.companyName,
-                      decoration: InputDecoration(
-                        labelText: 'Company Name',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      readOnly: true,
-                    );
-                  }
+                              if (employeeController.isSuperAdmin.value) {
+                                // Dropdown for superadmin
+                                return FormBuilderDropdown<Company>(
+                                  name: 'Company Name',
+                                  decoration: InputDecoration(
+                                    labelText: 'Company Name',
+                                    hintText: 'Select Company',
+                                    border: OutlineInputBorder(),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                  ),
+                                  validator: FormBuilderValidators.required(),
+                                  items: employeeController.companydetails
+                                      .map((company) => DropdownMenuItem(
+                                            value: company,
+                                            child: Text(company.companyName),
+                                          ))
+                                      .toList(),
+                                  onChanged: (value) {
+                                    screenController
+                                        .onCompanySelected(value!.id);
+                                  },
+                                );
+                              } else {
+                                // Single company display for company admin
+                                final company =
+                                    employeeController.companydetails[0];
+                                // employeeController.setSelectedCompany(
+                                //     company.id, company.companyCode);
+                                return FormBuilderTextField(
+                                  name: 'Company Name',
+                                  initialValue: company.companyName,
+                                  decoration: InputDecoration(
+                                    labelText: 'Company Name',
+                                    border: OutlineInputBorder(),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                  ),
+                                  readOnly: true,
+                                );
+                              }
                             }),
                           ),
                         ),
@@ -209,11 +214,14 @@ class AddEmployeePayrollSettings extends StatelessWidget {
                                           ))
                                       .toList(),
                                   onChanged: (value) {
-                                    screenController.onUserSelected(
-                                        value!.userTypeId,
-                                        value.companyId,
-                                        value.id);
+                                    if (value != null) {
+                                      screenController.onUserSelected(
+                                          value.userTypeId,
+                                          value.companyId,
+                                          value.id);
+                                    }
                                   },
+                                  valueTransformer: (UserModel? val) => val?.id,
                                 )),
                           ),
                         ),
@@ -221,8 +229,7 @@ class AddEmployeePayrollSettings extends StatelessWidget {
                     ),
                     buildSizedBoxH(kDefaultPadding * 3),
                     Obx(() {
-                      if (
-                          !screenController.isUserSelected.value) {
+                      if (!screenController.isUserSelected.value) {
                         return Center(
                             child: Text(
                                 "Please select all the dropdowns to view."));
@@ -251,7 +258,10 @@ class AddEmployeePayrollSettings extends StatelessWidget {
                                     // Create a controller for each allowance
 
                                     //  screenController.allowanceControllers[allowance.id] = controller;
-                                      screenController.allowanceControllers[allowance.allowanceId]?.text ??= '0'; 
+                                    screenController
+                                        .allowanceControllers[
+                                            allowance.allowanceId]
+                                        ?.text ??= '0';
 
                                     return Padding(
                                       padding: EdgeInsets.only(
@@ -266,7 +276,7 @@ class AddEmployeePayrollSettings extends StatelessWidget {
                                           Expanded(
                                             flex: 1,
                                             child: FormBuilderTextField(
-                                            //  initialValue: '0',
+                                              //  initialValue: '0',
                                               name: 'amount',
                                               controller: screenController
                                                       .allowanceControllers[
@@ -312,47 +322,46 @@ class AddEmployeePayrollSettings extends StatelessWidget {
                                   ),
                                   buildSizedBoxH(kDefaultPadding),
                                   ...screenController.getadddeduction
-                                      .map((deduction) { 
-                                          screenController.deductionControllers[deduction.deductionId]?.text ??= '0';
-                                        return Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: kDefaultPadding),
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  flex: 1,
-                                                  child:
-                                                      Text(deduction.deduction),
-                                                ),
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: FormBuilderTextField(
-                                                   // initialValue: '0',
-                                                    name: 'amount',
-                                                    controller: screenController
-                                                            .deductionControllers[
-                                                        deduction.deductionId],
-                                                    decoration: InputDecoration(
-                                                      labelText: 'Amount',
-                                                      border:
-                                                          OutlineInputBorder(),
-                                                    ),
-                                                    keyboardType:
-                                                        TextInputType.number,
-                                                    validator:
-                                                        FormBuilderValidators
-                                                            .compose([
-                                                      FormBuilderValidators
-                                                          .required(),
-                                                      FormBuilderValidators
-                                                          .numeric(),
-                                                    ]),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),);
-                                      })
-                                      .toList(),
+                                      .map((deduction) {
+                                    screenController
+                                        .deductionControllers[
+                                            deduction.deductionId]
+                                        ?.text ??= '0';
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom: kDefaultPadding),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Text(deduction.deduction),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: FormBuilderTextField(
+                                              // initialValue: '0',
+                                              name: 'amount',
+                                              controller: screenController
+                                                      .deductionControllers[
+                                                  deduction.deductionId],
+                                              decoration: InputDecoration(
+                                                labelText: 'Amount',
+                                                border: OutlineInputBorder(),
+                                              ),
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              validator: FormBuilderValidators
+                                                  .compose([
+                                                FormBuilderValidators
+                                                    .required(),
+                                                FormBuilderValidators.numeric(),
+                                              ]),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
                                 ],
                               ),
                             ),
@@ -368,7 +377,7 @@ class AddEmployeePayrollSettings extends StatelessWidget {
                           buttonname: 'Add Payroll',
                           onClick: () async {
                             await screenController.addPayroll();
-                           // Get.back();
+                            // Get.back();
                           },
                         ),
                       ],

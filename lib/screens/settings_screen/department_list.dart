@@ -393,7 +393,20 @@ class DepartmentList extends StatelessWidget {
                               ],
                             ),
                             buildSizedBoxH(kDefaultPadding * 3),
-
+                             Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DefaultAddButton(
+                            buttonname: 'Update Department',
+                            onClick: () async{
+                               department.departmentName = nameController.text;
+                                  department.remarks = remarksController.text; 
+                                await screenController.updateDepartment(department);
+                             // Get.back();
+                            }
+                            ),
+                      ],
+                    ),
                             // buildSizedBoxH(kDefaultPadding * 3),
                             // Divider(
                             //   indent: kDefaultPadding * 2,
@@ -413,39 +426,40 @@ class DepartmentList extends StatelessWidget {
           ),
         ),
         //  width: dialogWidth,
-        btnOkOnPress: () {},
-        btnOk: Container(
-          alignment: Alignment.bottomRight,
-          width: 150,
-          //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-                // fixedSize: const Size.fromHeight(3),
-                padding: EdgeInsets.zero,
-                backgroundColor: AppColors
-                    .defaultColor // Change this color to your desired color
-                ),
+        // btnOkOnPress: () {},
+        // btnOk: Container(
+        //   alignment: Alignment.bottomRight,
+        //   width: 150,
+        //   //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+        //   child: ElevatedButton(
+        //     style: ElevatedButton.styleFrom(
+        //         shape: RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(5)),
+        //         // fixedSize: const Size.fromHeight(3),
+        //         padding: EdgeInsets.zero,
+        //         backgroundColor: AppColors
+        //             .defaultColor // Change this color to your desired color
+        //         ),
 
-            onPressed: () {
-              department.departmentName = nameController.text;
-              department.remarks = remarksController.text;
-              department.status = screenController.selectedStatus.toString();
-              // industry.status=screenController.selectedStatus.toString();
-              screenController.updateDepartment(department);
-              Get.off(() => DepartmentList());
-            },
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Update',
-                style: TextStyle(color: AppColors.whiteColor),
-              ),
-            ),
-            // onPressed: widget.onClick
-          ),
-        ));
+        //     onPressed: () {
+        //       department.departmentName = nameController.text;
+        //       department.remarks = remarksController.text;
+        //       department.status = screenController.selectedStatus.toString();
+        //       // industry.status=screenController.selectedStatus.toString();
+        //       screenController.updateDepartment(department);
+        //       Get.off(() => DepartmentList());
+        //     },
+        //     child: const Padding(
+        //       padding: EdgeInsets.all(8.0),
+        //       child: Text(
+        //         'Update',
+        //         style: TextStyle(color: AppColors.whiteColor),
+        //       ),
+        //     ),
+        //     // onPressed: widget.onClick
+        //   ),
+        // )
+        );
 
     dialog.show();
   }

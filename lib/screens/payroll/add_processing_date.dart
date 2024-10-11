@@ -63,7 +63,7 @@ class AddProcessingDate extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Add Processing Date',
+                            Text('Add Processing Day',
                                 style: TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.bold)),
@@ -120,7 +120,7 @@ class AddProcessingDate extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Add Processing Date',
+              Text('Add Processing Day',
                   style: GoogleFonts.montserrat(
                       fontSize: kDefaultPadding + kTextPadding,
                       fontWeight: FontWeight.bold)),
@@ -134,53 +134,54 @@ class AddProcessingDate extends StatelessWidget {
                     Row(
                       children: [
                         Flexible(
-                          child: Obx(
-                            () {
-                               // Check if there's only one company (the logged-in user's company)
-                  if (employeeController.companydetails.isEmpty) {
-                    // Show loading indicator while fetching company details
-                    return Center(child: CircularProgressIndicator());
-                  }
-
-                  if (employeeController.isSuperAdmin.value) {
-                    // Dropdown for superadmin
-                    return FormBuilderDropdown<Company>(
-                      name: 'Company Name',
-                      decoration: InputDecoration(
-                        labelText: 'Company Name',
-                        hintText: 'Select Company',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      validator: FormBuilderValidators.required(),
-                      items: employeeController.companydetails
-                          .map((company) => DropdownMenuItem(
-                                value: company,
-                                child: Text(company.companyName),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        employeeController.setSelectedCompany(value!.id, value.companyCode);
-                      },
-                    );
-                  } else {
-                    // Single company display for company admin
-                    final company = employeeController.companydetails[0];
-                    // employeeController.setSelectedCompany(
-                    //     company.id, company.companyCode);
-                    return FormBuilderTextField(
-                      name: 'Company Name',
-                      initialValue: company.companyName,
-                      decoration: InputDecoration(
-                        labelText: 'Company Name',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      readOnly: true,
-                    );
-                  }
+                          child: Obx(() {
+                            // Check if there's only one company (the logged-in user's company)
+                            if (employeeController.companydetails.isEmpty) {
+                              // Show loading indicator while fetching company details
+                              return Center(child: CircularProgressIndicator());
                             }
-                          ),
+
+                            if (employeeController.isSuperAdmin.value) {
+                              // Dropdown for superadmin
+                              return FormBuilderDropdown<Company>(
+                                name: 'Company Name',
+                                decoration: InputDecoration(
+                                  labelText: 'Company Name',
+                                  hintText: 'Select Company',
+                                  border: OutlineInputBorder(),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                validator: FormBuilderValidators.required(),
+                                items: employeeController.companydetails
+                                    .map((company) => DropdownMenuItem(
+                                          value: company,
+                                          child: Text(company.companyName),
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {
+                                  screenController.onCompanySelected(
+                                      value!.id, value.companyCode);
+                                },
+                              );
+                            } else {
+                              // Single company display for company admin
+                              final company =
+                                  employeeController.companydetails[0];
+                             screenController.onCompanySelected(company.id,company.companyCode); 
+                              return FormBuilderTextField(
+                                name: 'Company Name',
+                                initialValue: company.companyName,
+                                decoration: InputDecoration(
+                                  labelText: 'Company Name',
+                                  border: OutlineInputBorder(),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                readOnly: true,
+                              );
+                            }
+                          }),
                         ),
                         buildSizedboxW(kDefaultPadding),
                         Flexible(
@@ -260,10 +261,10 @@ class AddProcessingDate extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         DefaultAddButton(
-                            buttonname: 'Add Processing Date',
+                            buttonname: 'Add Processing Day',
                             onClick: () async {
                               await screenController.addProcessingDate();
-                              Get.back();
+                             // Get.back();
                             }),
                       ],
                     ),

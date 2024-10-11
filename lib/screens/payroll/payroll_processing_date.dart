@@ -28,10 +28,10 @@ class CompanyPayrollDate extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
           child: UIComponenetsAppBar(
-            title: 'Payroll Processing Date ',
+            title: 'Payroll Processing Day ',
             subtitle: '',
             icon: Icon(Icons.rocket),
-            buttonTitle: 'Add Processing Date',
+            buttonTitle: 'Add Processing Day',
             onClick: () {
               Get.toNamed(Routes.AddProcessingDate);
             },
@@ -81,7 +81,7 @@ class CompanyPayrollDate extends StatelessWidget {
                                       .companypayrollprocessingdate.isEmpty) {
                                     return Center(
                                       child: Text(
-                                          "No payroll_processing_dates found"),
+                                          "No payroll_processing_day found"),
                                     );
                                   } else {
                                     return DataTable(
@@ -148,7 +148,7 @@ class CompanyPayrollDate extends StatelessWidget {
                                         DataColumn(
                                             label: Row(
                                           children: [
-                                            Text('Processing Date'),
+                                            Text('Processing Day'),
                                             //  IconButton(
                                             //      onPressed: () {},
                                             //      icon: Icon(Icons.arrow_drop_down_sharp))
@@ -163,15 +163,15 @@ class CompanyPayrollDate extends StatelessWidget {
                                             //      icon: Icon(Icons.arrow_drop_down_sharp))
                                           ],
                                         )),
-                                        DataColumn(
-                                            label: Row(
-                                          children: [
-                                            Text(''),
-                                            //  IconButton(
-                                            //      onPressed: () {},
-                                            //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                          ],
-                                        )),
+                                        // DataColumn(
+                                        //     label: Row(
+                                        //   children: [
+                                        //     Text(''),
+                                        //     //  IconButton(
+                                        //     //      onPressed: () {},
+                                        //     //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                        //   ],
+                                        // )),
                                       ],
                                       rows: List.generate(
                                           screenController
@@ -191,22 +191,22 @@ class CompanyPayrollDate extends StatelessWidget {
                                             DataCell(Text(processingdate
                                                 .isActive
                                                 .toString())),
-                                            DataCell(TextButton(
-                                                onPressed: () {
-                                                  // showEditDialog(
-                                                  //     context,
-                                                  //     DialogType.info,
-                                                  //     index,
-                                                  //     department);
-                                                },
-                                                child: const Text(
-                                                  'Edit',
-                                                  style: TextStyle(
-                                                      color:
-                                                          AppColors.blackColor,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )))
+                                            // DataCell(TextButton(
+                                            //     onPressed: () {
+                                            //       // showEditDialog(
+                                            //       //     context,
+                                            //       //     DialogType.info,
+                                            //       //     index,
+                                            //       //     department);
+                                            //     },
+                                            //     child: const Text(
+                                            //       'Edit',
+                                            //       style: TextStyle(
+                                            //           color:
+                                            //               AppColors.blackColor,
+                                            //           fontWeight:
+                                            //               FontWeight.bold),
+                                            //     )))
                                             // DataCell(Text(
                                             //     '${Random().nextInt(100)}')),
                                             // DataCell(Text(

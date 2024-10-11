@@ -213,7 +213,7 @@ class AddIndustry extends StatelessWidget {
                             buttonname: 'Add Industry',
                             onClick: () async{
                                 await screenController.addIndustry();
-                              Get.back();
+                             // Get.back();
                             }),
                       ],
                     ),

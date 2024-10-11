@@ -5,9 +5,9 @@ import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
 import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
-import 'package:flutter_dashboard/models/employee_menu_model.dart';
-import 'package:flutter_dashboard/models/user_model.dart';
-import 'package:flutter_dashboard/models/usertype_model.dart';
+import 'package:flutter_dashboard/models/employee_models/employee_menu_model.dart';
+import 'package:flutter_dashboard/models/employee_models/user_model.dart';
+import 'package:flutter_dashboard/models/employee_models/usertype_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -304,9 +304,11 @@ class EmployeeMenuController extends GetxController {
       if (result.isLeft) {
         awesomeOkDialog(message: result.left.message);
       } else {
-       await awesomeSuccessDialog(message: "Menu added successfully");
+       await awesomeSuccessDialog(message: "Menu added successfully",onOk: () {
+          Get.back();
+       },);
          
-        Get.back();
+       // Get.back();
       }
     } catch (e) {
       print("Error adding menu: $e");

@@ -39,7 +39,10 @@ class DeductionController extends GetxController {
       awesomeOkDialog(message: response.left.message);
     } else {
       final message = response.right['message'];
-      // awesomeOkDialog(message: message);
+      await awesomeSuccessDialog(message: message,onOk: (){
+        Get.back();
+      });
+   //  Get.back();
       await fetchDeduction();
       deductionNameController.clear();
       remarksController.clear();
@@ -133,7 +136,12 @@ class DeductionController extends GetxController {
     if (result.isLeft) {
       awesomeOkDialog(message: result.left.message);
     } else {
-      awesomeOkDialog(message: result.right['message']);
+       final message = result.right['message']; 
+     await awesomeSuccessDialog(message: message,onOk: (){
+        Get.back();
+      });
+    //  Get.back();
+      await fetchDeduction();
     }
   }
 }

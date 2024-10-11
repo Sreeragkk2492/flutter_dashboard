@@ -10,7 +10,7 @@ import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/core/widgets/ui_component_appbar.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
-import 'package:flutter_dashboard/models/user_model.dart';
+import 'package:flutter_dashboard/models/employee_models/user_model.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/payroll/controller/employee_payroll_settings_controller.dart';
@@ -165,9 +165,12 @@ class EmployeePayrollSettings extends StatelessWidget {
                               ))
                           .toList(),
                       onChanged: (value) {
-                        screenController.onUserSelected(
-                            value!.userTypeId, value.companyId, value.id);
+                          if (value != null) {
+              screenController.onUserSelected(
+                  value.userTypeId, value.companyId, value.id);
+            }
                       },
+                       valueTransformer: (UserModel? val) => val?.id, 
                     )),
               ),
             ),
@@ -289,9 +292,9 @@ class EmployeePayrollSettings extends StatelessWidget {
                                                   .arrow_drop_down_sharp))
                                         ],
                                       )),
-                                      const DataColumn(
-                                        label: Text(''),
-                                      ),
+                                      // const DataColumn(
+                                      //   label: Text(''),
+                                      // ),
                                     ],
                                     rows: List<DataRow>.generate(
                                         screenController.allowances.length,
@@ -311,23 +314,23 @@ class EmployeePayrollSettings extends StatelessWidget {
                                           )),
                                           DataCell(Text(
                                               allowances.amount.toString())),
-                                          DataCell(TextButton(
-                                              onPressed: () {
-                                                // DialogWidgets
-                                                //     .showEditDialog(
-                                                //         context,
-                                                //         DialogType.info,
-                                                //        screenController,
-                                                //         index);
-                                              },
-                                              child: const Text(
-                                                'Edit',
-                                                style: TextStyle(
-                                                    color:
-                                                        AppColors.blackColor,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )))
+                                          // DataCell(TextButton(
+                                          //     onPressed: () {
+                                          //       // DialogWidgets
+                                          //       //     .showEditDialog(
+                                          //       //         context,
+                                          //       //         DialogType.info,
+                                          //       //        screenController,
+                                          //       //         index);
+                                          //     },
+                                          //     child: const Text(
+                                          //       'Edit',
+                                          //       style: TextStyle(
+                                          //           color:
+                                          //               AppColors.blackColor,
+                                          //           fontWeight:
+                                          //               FontWeight.bold),
+                                          //     )))
                                         ],
                                       );
                                     }),
@@ -459,9 +462,9 @@ class EmployeePayrollSettings extends StatelessWidget {
                                                   .arrow_drop_down_sharp))
                                         ],
                                       )),
-                                      const DataColumn(
-                                        label: Text(''),
-                                      ),
+                                      // const DataColumn(
+                                      //   label: Text(''),
+                                      // ),
                                     ],
                                     rows: List<DataRow>.generate(
                                         screenController.deductions.length,
@@ -481,23 +484,23 @@ class EmployeePayrollSettings extends StatelessWidget {
                                           )),
                                           DataCell(Text(
                                               deductions.amount.toString())),
-                                          DataCell(TextButton(
-                                              onPressed: () {
-                                                // DialogWidgets
-                                                //     .showEditDialog(
-                                                //         context,
-                                                //         DialogType.info,
-                                                //        screenController,
-                                                //         index);
-                                              },
-                                              child: const Text(
-                                                'Edit',
-                                                style: TextStyle(
-                                                    color:
-                                                        AppColors.blackColor,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )))
+                                          // DataCell(TextButton(
+                                          //     onPressed: () {
+                                          //       // DialogWidgets
+                                          //       //     .showEditDialog(
+                                          //       //         context,
+                                          //       //         DialogType.info,
+                                          //       //        screenController,
+                                          //       //         index);
+                                          //     },
+                                          //     child: const Text(
+                                          //       'Edit',
+                                          //       style: TextStyle(
+                                          //           color:
+                                          //               AppColors.blackColor,
+                                          //           fontWeight:
+                                          //               FontWeight.bold),
+                                          //     )))
                                         ],
                                       );
                                     }),

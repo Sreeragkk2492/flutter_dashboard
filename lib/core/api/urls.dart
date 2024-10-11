@@ -45,6 +45,8 @@ class ApiUrls {
 
   static const ADD_COMPANY = "/company/add_company";
   static const GET_ALL_COMPANY = "/company/get_company";
+   static const UPDATE_COMPANY = "/company/update_company";
+  
 
   ///prpayrollallowance
   static const ADD_ALLOWANCE = "/meta_payroll_allowance/create_allowance";

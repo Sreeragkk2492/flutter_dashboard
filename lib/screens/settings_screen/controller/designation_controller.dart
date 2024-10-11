@@ -47,6 +47,10 @@ class DesignationController extends GetxController {
       awesomeOkDialog(message: result.left.message);
     } else {
       final message = result.right['message'];
+      await awesomeSuccessDialog(message: message,onOk: (){
+        Get.back();
+      });
+    // Get.back();
       await fetchDesignaation();
     }
   }
@@ -105,7 +109,12 @@ class DesignationController extends GetxController {
     if (result.isLeft) {
       awesomeOkDialog(message: result.left.message);
     } else {
-      awesomeOkDialog(message: result.right['message']);
+       final message = result.right['message']; 
+     await awesomeSuccessDialog(message: message,onOk: (){
+        Get.back();
+      });
+    //  Get.back();
+      await fetchDesignaation();
     }
   }
 }

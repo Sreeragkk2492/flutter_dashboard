@@ -280,7 +280,7 @@ class AddDesignation extends StatelessWidget {
                               buttonname: 'Add Designation',
                               onClick: () async {
                                 await screenController.addDesignation();
-                                Get.back();
+                                //Get.back();
                               }),
                         ],
                       ),

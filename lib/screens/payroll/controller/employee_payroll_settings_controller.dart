@@ -8,7 +8,7 @@ import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart'
 import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
 import 'package:flutter_dashboard/models/payroll/add_payroll_model.dart';
 import 'package:flutter_dashboard/models/payroll/show_allowance_deduction_usermodel.dart';
-import 'package:flutter_dashboard/models/user_model.dart';
+import 'package:flutter_dashboard/models/employee_models/user_model.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -196,6 +196,7 @@ class EmployeePayrollSettingsController extends GetxController {
     isLoading.value = true;
      noDataFound.value = false;
     try {
+       final tokens = await StorageServices().read('token');
       final url = Uri.parse(ApiUrls.BASE_URL +
               ApiUrls.GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION)
           .replace(queryParameters: {
@@ -208,7 +209,7 @@ class EmployeePayrollSettingsController extends GetxController {
       final response = await http.get(url, headers: {
         "Accept": "application/json",
         "Authorization":
-            "Bearer $token",
+            "Bearer $tokens", 
       });
 
       print("Response status code: ${response.statusCode}");
@@ -251,6 +252,7 @@ class EmployeePayrollSettingsController extends GetxController {
   Future<void> fetchAllowanceAndDeductionDetailsForAdding() async {
     isLoading.value = true;
     try {
+        final tokens = await StorageServices().read('token');
       final url = Uri.parse(ApiUrls.BASE_URL +
               ApiUrls.GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION_IN_ADD)
           .replace(queryParameters: {
@@ -261,7 +263,7 @@ class EmployeePayrollSettingsController extends GetxController {
 
       final response = await http.get(url, headers: {
         "Accept": "application/json",
-        "Authorization": "Bearer $token",
+        "Authorization": "Bearer $tokens",
       });
 
       print("Response status code: ${response.statusCode}");
@@ -280,9 +282,8 @@ class EmployeePayrollSettingsController extends GetxController {
         print("Allowances: ${getaddallowances.length}");
         print("Deductions: ${getadddeduction.length}");
         showTabBar.value = true;
-      } else {
-        throw Exception(
-            "Failed to fetch payroll details. Status code: ${response.statusCode}");
+      } else if(response.statusCode == 404){
+        awesomeOkDialog(message: 'No payroll allowances and deductions found');
       }
     } catch (e, stackTrace) {
       print("Error fetching payroll details: $e");
@@ -334,11 +335,13 @@ class EmployeePayrollSettingsController extends GetxController {
       allowanceControllers.clear();
       deductionControllers.clear();
       // Show success message
-     await awesomeSuccessDialog(message: "Amounts added successfully");
+     await awesomeSuccessDialog(message: "Amounts added successfully",onOk: () {
+       Get.back();
+     },);
      //  fetchAllowanceAndDeductionDetails();
 
       // Navigate back
-      Get.back();
+     // Get.back();
     }
   }
 }

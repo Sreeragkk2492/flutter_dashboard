@@ -16,12 +16,25 @@ class CompanyProccesingDateController extends GetxController {
   final processingdayController = TextEditingController();
   final remarksController = TextEditingController();
   String? selectedStatus;
-  String? selectedCompany;
+  var selectedCompanyId = ''.obs;
+    var isCompanySelected = false.obs;
   RxBool isSortasc=true.obs;
   @override
   void onInit() {
     fetchCompanyPayrollProcessingDate();
     super.onInit();
+  }
+
+   void onCompanySelected(String? companyId, String? companyCode) {
+    if (companyId != null && companyId.isNotEmpty && companyCode != null && companyCode.isNotEmpty) {
+      selectedCompanyId.value = companyId;
+     // selectedCompanycode.value = companyCode;
+      isCompanySelected.value = true;
+      // hasExplicitlySelectedCompany.value = true;
+      // fetchCompanyPayrollAllowance();
+    } else {
+     // resetSelection();
+    }
   }
 
   // Method to add a new processing date
@@ -32,7 +45,7 @@ class CompanyProccesingDateController extends GetxController {
         method: 'post',
         isAuthRequired: true,
         data: {
-          "company_id": selectedCompany,
+          "company_id": selectedCompanyId.value,
           "processing_day": processingdayController.text,
           "status": selectedStatus,
           "is_active": true
@@ -41,7 +54,9 @@ class CompanyProccesingDateController extends GetxController {
       awesomeOkDialog(message: response.left.message);
     } else {
       final message = response.right['message'];
-      // awesomeOkDialog(message: message);
+       awesomeOkDialog(message: message,onOk: () {
+         Get.back();
+       },);
       await fetchCompanyPayrollProcessingDate();
       processingdayController.clear();
       remarksController.clear();

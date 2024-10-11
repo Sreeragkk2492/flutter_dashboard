@@ -257,7 +257,7 @@ class AddDepartment extends StatelessWidget {
                             buttonname: 'Add Department',
                             onClick: () async {
                               await screenController.addDepartment();
-                              Get.back();
+                             // Get.back();
                             }),
                       ],
                     ),

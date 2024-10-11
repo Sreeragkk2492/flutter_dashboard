@@ -81,20 +81,20 @@ class CompanyWorkingShift extends StatelessWidget {
         ),
         buildSizedBoxH(kDefaultPadding),
         Obx(() {
-          if (!screenController.hasExplicitlySelectedCompany.value) {
+          if (!screenController.isCompanySelected.value) {
             return Center(
-                child: Text("Please select a company to view working shifts."));
-          } else if (!screenController.isCompanySelected.value) {
-            return Center(
-                child: Text("Please select a company to view working shifts."));
+                child: Text("Please select a company to view leaves."));
           } else if (screenController.isLoading.value) {
             return Center(
               child: CircularProgressIndicator(),
             );
           } else {
-            if (screenController.workingShifts.isEmpty) {
-              return Center(child: Text("No working shifts for this company."));
-            } else {
+            if (screenController.hasFetchedWorkingshift.value &&
+              screenController.workingShifts.isEmpty) {
+            return Center(
+              child: Text("No working shift available for this company."),
+            );
+          }else {
               return Padding(
                   padding: EdgeInsets.only(
                       bottom: kDefaultPadding / 2,
@@ -190,9 +190,9 @@ class CompanyWorkingShift extends StatelessWidget {
                                                       .arrow_drop_down_sharp))
                                             ],
                                           )),
-                                          const DataColumn(
-                                            label: Text(''),
-                                          ),
+                                          // const DataColumn(
+                                          //   label: Text(''),
+                                          // ),
                                         ],
                                         rows: List<DataRow>.generate(
                                             screenController.workingShifts
@@ -216,23 +216,23 @@ class CompanyWorkingShift extends StatelessWidget {
                                                   workingShifts.startTime)),
                                               DataCell(Text(
                                                   workingShifts.endTime)),
-                                              DataCell(TextButton(
-                                                  onPressed: () {
-                                                    // DialogWidgets
-                                                    //     .showEditDialog(
-                                                    //         context,
-                                                    //         DialogType.info,
-                                                    //        screenController,
-                                                    //         index);
-                                                  },
-                                                  child: const Text(
-                                                    'Edit',
-                                                    style: TextStyle(
-                                                        color: AppColors
-                                                            .blackColor,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )))
+                                              // DataCell(TextButton(
+                                              //     onPressed: () {
+                                              //       // DialogWidgets
+                                              //       //     .showEditDialog(
+                                              //       //         context,
+                                              //       //         DialogType.info,
+                                              //       //        screenController,
+                                              //       //         index);
+                                              //     },
+                                              //     child: const Text(
+                                              //       'Edit',
+                                              //       style: TextStyle(
+                                              //           color: AppColors
+                                              //               .blackColor,
+                                              //           fontWeight:
+                                              //               FontWeight.bold),
+                                              //     )))
                                             ],
                                           );
                                         }),

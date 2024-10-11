@@ -22,7 +22,7 @@ class CompanyHolidayList extends StatelessWidget {
    CompanyHolidayList({super.key});
 
     final screenController = Get.put(CompanyHolidayListController());
-  final employeeController = Get.put(EmployeeController());
+  final employeecontroller = Get.put(EmployeeController());
   final ScrollController _dataTableHorizontalScrollController =
       ScrollController();
     final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
@@ -44,51 +44,55 @@ class CompanyHolidayList extends StatelessWidget {
         ),
          Padding(
           padding: EdgeInsets.all(kDefaultPadding),
-          child: Obx(
-            () {
-               if (employeeController.companydetails.isEmpty) {
-                      // Show loading indicator while fetching company details
-                      return Center(child: CircularProgressIndicator());
-                    }
-
-                    if (employeeController.isSuperAdmin.value) {
-                      // Dropdown for superadmin
-                      return FormBuilderDropdown<Company>(
-                        name: 'Company Name',
-                        decoration: InputDecoration(
-                          labelText: 'Company Name',
-                          hintText: 'Select Company',
-                          border: OutlineInputBorder(),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                        ),
-                        validator: FormBuilderValidators.required(),
-                        items: employeeController.companydetails
-                            .map((company) => DropdownMenuItem(
-                                  value: company,
-                                  child: Text(company.companyName),
-                                ))
-                            .toList(),
-                        onChanged: (value) {
-                          screenController.onCompanySelected(value!.id);
-                        },
-                      );
-                    } else {
-                      // Single company display for company admin
-                      final company = employeeController.companydetails[0];
-                    // screenController.onCompanySelected(company.id);
-                      return FormBuilderTextField(
-                        name: 'Company Name',
-                        initialValue: company.companyName,
-                        decoration: InputDecoration(
-                          labelText: 'Company Name',
-                          border: OutlineInputBorder(),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                        ),
-                        readOnly: true,
-                      );
-                    }
+          child:Obx(() {
+            // Check if there's only one company (the logged-in user's company)
+            if (employeecontroller.companydetails.isEmpty) {
+              // Show loading indicator while fetching company details
+              return Center(child: CircularProgressIndicator());
             }
-          ),
+
+            if (employeecontroller.isSuperAdmin.value) {
+              // Dropdown for superadmin
+              return FormBuilderDropdown<Company>(
+                name: 'Company Name',
+                decoration: InputDecoration(
+                  labelText: 'Company Name',
+                  hintText: 'Select Company',
+                  border: OutlineInputBorder(),
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                ),
+                validator: FormBuilderValidators.required(),
+                items: employeecontroller.companydetails
+                    .map((company) => DropdownMenuItem(
+                          value: company,
+                          child: Text(company.companyName),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  screenController.onCompanySelected(
+                      value!.id, value.companyCode);
+                },
+              );
+            } else {
+              // Single company display for company admin
+              final company = employeecontroller.companydetails[0];
+              // Automatically select the company for the admin
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                screenController.onCompanySelected(
+                    company.id, company.companyCode);
+              });
+              return FormBuilderTextField(
+                name: 'Company Name',
+                initialValue: company.companyName,
+                decoration: InputDecoration(
+                  labelText: 'Company Name',
+                  border: OutlineInputBorder(),
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                ),
+                readOnly: true,
+              );
+            }
+          }),
         ),
         buildSizedBoxH(kDefaultPadding),
         Obx(() {
@@ -211,9 +215,9 @@ class CompanyHolidayList extends StatelessWidget {
                                             //         .arrow_drop_down_sharp))
                                           ],
                                         )),
-                                        const DataColumn(
-                                          label: Text(''),
-                                        ),
+                                        // const DataColumn(
+                                        //   label: Text(''),
+                                        // ),
                                       ],
                                       rows: List<DataRow>.generate(
                                           screenController.holiday.length,
@@ -236,23 +240,23 @@ class CompanyHolidayList extends StatelessWidget {
                                                 dateFormat.format(leave.date))),
                                                  DataCell(Text(
                                                 leave.isActive.toString())),
-                                            DataCell(TextButton(
-                                                onPressed: () {
-                                                  // DialogWidgets
-                                                  //     .showEditDialog(
-                                                  //         context,
-                                                  //         DialogType.info,
-                                                  //        screenController,
-                                                  //         index);
-                                                },
-                                                child: const Text(
-                                                  'Edit',
-                                                  style: TextStyle(
-                                                      color: AppColors
-                                                          .blackColor,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )))
+                                            // DataCell(TextButton(
+                                            //     onPressed: () {
+                                            //       // DialogWidgets
+                                            //       //     .showEditDialog(
+                                            //       //         context,
+                                            //       //         DialogType.info,
+                                            //       //        screenController,
+                                            //       //         index);
+                                            //     },
+                                            //     child: const Text(
+                                            //       'Edit',
+                                            //       style: TextStyle(
+                                            //           color: AppColors
+                                            //               .blackColor,
+                                            //           fontWeight:
+                                            //               FontWeight.bold),
+                                            //     )))
                                           ],
                                         );
                                       }),

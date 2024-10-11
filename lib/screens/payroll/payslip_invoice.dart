@@ -506,7 +506,7 @@ class PayslipInvoice extends StatelessWidget {
           ],
         ),
         buildSizedBoxH(kDefaultPadding / 2),
-        ...screenController.allowances.map((item) => Padding(
+        ...screenController.payslipDetails.value.allowances.map((item) => Padding(
               padding: EdgeInsets.only(bottom: kDefaultPadding / 2),
               child: Row(
                 children: [
@@ -533,7 +533,7 @@ class PayslipInvoice extends StatelessWidget {
                   'Total Allowance',
                   style: TextStyle(fontWeight: FontWeight.w600),
                 )),
-            Expanded(flex: 1, child: Text('500')),
+            Expanded(flex: 1, child: Text(screenController.totalAllowances.toString())),
           ],
         )
       ],
@@ -572,7 +572,7 @@ class PayslipInvoice extends StatelessWidget {
           ],
         ),
         buildSizedBoxH(kDefaultPadding / 2),
-        ...screenController.allowances.map((item) => Padding(
+        ...screenController.payslipDetails.value.allowances.map((item) => Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
               child: Row(
                 children: [
@@ -604,7 +604,7 @@ class PayslipInvoice extends StatelessWidget {
             Expanded(
               flex: 5,
               child: Text(
-                '500', // Replace with actual total
+                screenController.totalAllowances.toString(), // Replace with actual total
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
@@ -646,7 +646,7 @@ class PayslipInvoice extends StatelessWidget {
           ],
         ),
         buildSizedBoxH(kDefaultPadding / 2),
-        ...screenController.deductions.map((item) => Padding(
+        ...screenController.payslipDetails.value.deductions .map((item) => Padding(
               padding: EdgeInsets.only(bottom: kDefaultPadding / 2),
               child: Row(
                 children: [
@@ -673,7 +673,7 @@ class PayslipInvoice extends StatelessWidget {
                   'Total Deduction',
                   style: TextStyle(fontWeight: FontWeight.w600),
                 )),
-            Expanded(flex: 1, child: Text('500')),
+            Expanded(flex: 1, child: Text(screenController.totalDeductions.toString())),
           ],
         )
       ],
@@ -712,7 +712,7 @@ class PayslipInvoice extends StatelessWidget {
           ],
         ),
         buildSizedBoxH(kDefaultPadding / 2),
-        ...screenController.deductions.map((item) => Padding(
+        ...screenController.payslipDetails.value.deductions .map((item) => Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
               child: Row(
                 children: [
@@ -744,7 +744,7 @@ class PayslipInvoice extends StatelessWidget {
             Expanded(
               flex: 5,
               child: Text(
-                '500', // Replace with actual total
+                screenController.totalDeductions.toString(), // Replace with actual total
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
             ),

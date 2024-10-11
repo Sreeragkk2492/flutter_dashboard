@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/constants/credentials.dart';
+import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
+import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
 import 'package:flutter_dashboard/models/company_models/company_holiday_model.dart';
 import 'package:flutter_dashboard/models/company_models/holiday_textcontrollerModel.dart';
 import 'package:get/get.dart';
@@ -15,6 +17,7 @@ class CompanyHolidayListController extends GetxController {
 
   //var companydetails = <Company>[].obs;
   var selectedCompanyId = ''.obs;
+   var selectedCompanyCode = ''.obs;
   String? selectedStatus;
   var isLoading = false.obs;
   var isCompanySelected = false.obs;
@@ -50,16 +53,14 @@ RxBool isSortasc=true.obs;
     ));
   }
 
-   // Handle company selection and fetch holidays for the selected company
-
-  void onCompanySelected(String companyId) {
-    if (selectedCompanyId.value != companyId) {
-      selectedCompanyId.value = companyId;
-      isCompanySelected.value = true;
-      holiday.clear(); // Clear the previous company's holiday data
-      fetchHolidayForCompany();
-    }
-  }
+  Future<void> onCompanySelected(String companyId, String companycode) async {
+  print("Selecting company: ID=$companyId, Code=$companycode"); // Add logging
+  selectedCompanyId.value = companyId;
+  selectedCompanyCode.value = companycode;
+  isCompanySelected.value = true;
+  holiday.clear();
+  await fetchHolidayForCompany();
+}
 
 
   // Fetch holidays for the selected company
@@ -68,10 +69,10 @@ RxBool isSortasc=true.obs;
     try {
       var response = await http.get(
         Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_COMPANY_HOLIDAY)
-            .replace(queryParameters: {"company_id": selectedCompanyId.value}),
+            .replace(queryParameters: {"company_id": selectedCompanyId.value,"company_code":selectedCompanyCode.value}),
         headers: {
           "Accept": "application/json",
-          "Authorization": "Bearer $token",
+         // "Authorization": "Bearer $token",
         },
       );
       if (response.statusCode == 200) {
@@ -93,6 +94,7 @@ RxBool isSortasc=true.obs;
 
  // Add company holidays for the selected company
  Future<void> addCompanyHoliday() async {
+   print("Adding holiday for company ID: ${selectedCompanyId.value}");
     if (selectedCompanyId.value.isEmpty) {
       print("No company selected");
       return;
@@ -115,19 +117,20 @@ RxBool isSortasc=true.obs;
     }
 
     try {
+      final tokens = await StorageServices().read('token');
       isLoading.value = true;
       var response = await http.post(
         Uri.parse(ApiUrls.BASE_URL + ApiUrls.ADD_COMPANY_HOLIDAY).replace(
           queryParameters: {
             "company_id": selectedCompanyId.value,
-            "token": token
+            "token": tokens
           },
         ),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json",
-          "token":token,
-          "Authorization": "Bearer $token",
+          "token":tokens,
+          "Authorization": "Bearer $tokens",
         },
         body: json.encode(holidaysToAdd),
       );
@@ -135,10 +138,14 @@ RxBool isSortasc=true.obs;
       print("Response status: ${response.statusCode}");
       print("Response body: ${response.body}");
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         print("Holidays added successfully");
-        resetSelectionState();
-        fetchHolidayForCompany();
+        await awesomeSuccessDialog(message: 'Holiday created successfully',onOk: () {
+          Get.back();
+        },);
+       // Get.back();
+       await fetchHolidayForCompany();
+         resetSelectionState();
       } else {
         print("Failed to add holidays: ${response.reasonPhrase}");
       }

@@ -229,15 +229,15 @@ class CompanyDeductionDetails extends StatelessWidget {
                                               //      icon: Icon(Icons.arrow_drop_down_sharp))
                                             ],
                                           )),
-                                          DataColumn(
-                                              label: Row(
-                                            children: [
-                                              Text(''),
-                                              //  IconButton(
-                                              //      onPressed: () {},
-                                              //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                            ],
-                                          )),
+                                          // DataColumn(
+                                          //     label: Row(
+                                          //   children: [
+                                          //     Text(''),
+                                          //     //  IconButton(
+                                          //     //      onPressed: () {},
+                                          //     //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                          //   ],
+                                          // )),
                                         ],
                                         rows: List.generate(
                                             selectedDeduction.length, (index) {
@@ -259,22 +259,22 @@ class CompanyDeductionDetails extends StatelessWidget {
                                                   .value
                                                   .isActive
                                                   .toString())),
-                                              DataCell(TextButton(
-                                                  onPressed: () {
-                                                    // showEditDialog(
-                                                    //     context,
-                                                    //     DialogType.info,
-                                                    //     index,
-                                                    //     department);
-                                                  },
-                                                  child: const Text(
-                                                    'Edit',
-                                                    style: TextStyle(
-                                                        color: AppColors
-                                                            .blackColor,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )))
+                                              // DataCell(TextButton(
+                                              //     onPressed: () {
+                                              //       // showEditDialog(
+                                              //       //     context,
+                                              //       //     DialogType.info,
+                                              //       //     index,
+                                              //       //     department);
+                                              //     },
+                                              //     child: const Text(
+                                              //       'Edit',
+                                              //       style: TextStyle(
+                                              //           color: AppColors
+                                              //               .blackColor,
+                                              //           fontWeight:
+                                              //               FontWeight.bold),
+                                              //     )))
                                               // DataCell(Text(
                                               //     '${Random().nextInt(100)}')),
                                               // DataCell(Text(

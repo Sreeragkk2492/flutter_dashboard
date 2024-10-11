@@ -7,7 +7,7 @@ import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
 import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
 import 'package:flutter_dashboard/models/payroll/employee_payroll_model.dart';
-import 'package:flutter_dashboard/models/user_model.dart';
+import 'package:flutter_dashboard/models/employee_models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -85,6 +85,7 @@ class PayrollSettingsController extends GetxController {
   var noDataFound = false.obs;
   var isGenerated = false.obs;
    var showDataTable = false.obs;
+     var isPayslipGenerated = false.obs;
 
   @override
   void onInit() async {
@@ -269,7 +270,7 @@ class PayrollSettingsController extends GetxController {
       final url =
           Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_EMPLOYEE_PAYSLIP_DETAILS)
               .replace(queryParameters: {
-        "company_id": effectiveCompanyId,
+        "company_id": selectedCompanyId.value,
       //  "user_id": selectedUserId.value, 
         "year": selectedYear.value,
         "month": selectedMonth.value
@@ -356,67 +357,78 @@ class PayrollSettingsController extends GetxController {
 
   // Add or update payslip details
 
-  addPayslipDetails(String userid) async {
-    final requestBody = {
-      "payslip_details": {
-        "company_id": selectedCompanyId.value,
-        "user_id": userid, 
-        "employee_id": "string",
-        "year": yearController.text,
-        "month": monthController.text,
-        "payperiod_start_date": payPeriodStartController.text,
-        "payperiod_end_date": payPeriodEndController.text,
-        "paydate": payDateController.text,
-        "payment_method": paymentMethodController.text,
-        "total_amount": totalAmountController.text,
-        "overtime_hours": double.tryParse(overtimeHoursController.text),
-        "regular_hours": regularHoursController.text,
-        "leavedays": leaveDaysController.text,
-        "holidays": holidaysController.text,
-        "workfromhome_days": workFromHomeDaysController.text,
-        "project_code": projectCodeController.text,
-        "location": locationController.text,
-        "department": departmentController.text,
-        "remarks": remarksController.text,
-        "approved": true,
-        "approved_by": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        "payslip_file_name": payslipFileNameController.text,
-        "status": statusController.text,
-        "is_active": true,
-        "allowances": allowances.map((allowances) {
-          return {
-            "id": allowances.id,
-            "allowance_name": allowances.allowanceName,
-            "amount": allowanceControllers[allowances.id]?.text ?? '0'
-          };
-        }).toList(),
-        "deductions": deductions.map((deductions) {
-          return {
-            "id": deductions.id,
-            "deduction_name": deductions.deductionName,
-            "amount": deductionControllers[deductions.id]?.text ?? '0'
-          };
-        }).toList(),
-      }
-    };
-    isGenerated.value = false;
-    final result = await NetWorkManager.shared().request(
-        url: ApiUrls.BASE_URL + ApiUrls.ADD_PAYSLIP_DETAILS,
-        method: 'post',
-        isAuthRequired: true,
-        data: requestBody);
+ Future<void> addPayslipDetails(String userid) async {
+  isLoading.value = true;
+  isGenerated.value = false;
+  isPayslipGenerated.value = false;
 
-    if (result.isLeft) {
-      isGenerated.value = true;
-      awesomeOkDialog(message: "Payslip already generated for this month");
-    } else {
-      // Show success message
-      final message = result.right['message'];
-      print(message);
-      awesomeOkDialog(message: "Updated successfully");
+  // Find the specific employee's payslip details
+  final employeePayslip = payslip.firstWhere((p) => p.userId == userid);
 
-      // Navigate back
-      Get.back();
+  final requestBody = {
+    "payslip_details": {
+      "company_id": selectedCompanyId.value,
+      "user_id": userid,
+      "employee_id": employeePayslip.employeeId,
+      "year": yearController.text,
+      "month": monthController.text,
+      "payperiod_start_date": payPeriodStartController.text,
+      "payperiod_end_date": payPeriodEndController.text,
+      "paydate": payDateController.text,
+      "payment_method": paymentMethodController.text,
+      "total_amount": totalAmountController.text,
+      "overtime_hours": double.tryParse(overtimeHoursController.text),
+      "regular_hours": regularHoursController.text,
+      "leavedays": leaveDaysController.text,
+      "holidays": holidaysController.text,
+      "workfromhome_days": workFromHomeDaysController.text,
+      "project_code": projectCodeController.text,
+      "location": locationController.text,
+      "department": departmentController.text,
+      "remarks": remarksController.text,
+      "approved": true,
+      "approved_by": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "payslip_file_name": payslipFileNameController.text,
+      "status": statusController.text,
+      "is_active": true,
+      "allowances": employeePayslip.allowances.map((allowance) {
+        return {
+          "id": allowance.id,
+          "allowance_name": allowance.allowanceName,
+          "amount": allowance.amount
+        };
+      }).toList(),
+      "deductions": employeePayslip.deductions.map((deduction) {
+        return {
+          "id": deduction.id,
+          "deduction_name": deduction.deductionName,
+          "amount": deduction.amount
+        };
+      }).toList(),
     }
+  };
+
+  final result = await NetWorkManager.shared().request(
+    url: ApiUrls.BASE_URL + ApiUrls.ADD_PAYSLIP_DETAILS,
+    method: 'post',
+    isAuthRequired: true,
+    data: requestBody
+  );
+
+  if (result.isLeft) {
+    isGenerated.value = true;
+    isPayslipGenerated.value = true;
+    awesomeOkDialog(message: "Payslip already generated for this month");
+  } else {
+    final message = result.right['message'];
+    print(message);
+    isGenerated.value = true;
+    isPayslipGenerated.value = true;
+   await awesomeSuccessDialog(message: "Payslip generated successfully",onOk: () {
+     Get.back();
+   },);
   }
+
+  isLoading.value = false;
+}
 }

@@ -16,7 +16,7 @@ class AllowanceController extends GetxController {
   final allowanceNameController = TextEditingController();
   final remarksController = TextEditingController();
   String? selectedStatus;
-  RxBool isSortasc=true.obs;
+  RxBool isSortasc = true.obs;
 
   // var attendence = <Attendence>[].obs;
 
@@ -42,7 +42,10 @@ class AllowanceController extends GetxController {
       awesomeOkDialog(message: response.left.message);
     } else {
       final message = response.right['message'];
-      // awesomeOkDialog(message: message);
+      await awesomeSuccessDialog(message: message,onOk: (){
+        Get.back();
+      });
+      //Get.back();
       await fetchAllowance();
       allowanceNameController.clear();
       remarksController.clear();
@@ -136,7 +139,12 @@ class AllowanceController extends GetxController {
     if (result.isLeft) {
       awesomeOkDialog(message: result.left.message);
     } else {
-      awesomeOkDialog(message: result.right['message']);
+       final message = result.right['message']; 
+     await awesomeSuccessDialog(message: message,onOk: (){
+        Get.back();
+      });
+    //  Get.back();
+      await fetchAllowance();
     }
   }
 }

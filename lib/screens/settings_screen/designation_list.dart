@@ -13,6 +13,7 @@ import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/settings_screen/controller/department_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/controller/designation_controller.dart';
 import 'package:flutter_dashboard/screens/settings_screen/controller/industry_controller.dart';
+import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
@@ -442,6 +443,20 @@ class DesignationList extends StatelessWidget {
                             ],
                           ),
                           buildSizedBoxH(kDefaultPadding * 3),
+                           Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DefaultAddButton(
+                            buttonname: 'Update Designation',
+                            onClick: () async{
+                               designation.designation = nameController.text;
+                                  designation.remarks = remarksController.text;  
+                                await screenController.updateDesignation(designation);
+                             // Get.back();
+                            }
+                            ),
+                      ],
+                    ),
                           buildSizedBoxH(kDefaultPadding * 3),
                         ],
                       ),
@@ -454,38 +469,39 @@ class DesignationList extends StatelessWidget {
           ),
         ),
         //  width: dialogWidth,
-        btnOkOnPress: () {},
-        btnOk: Container(
-          alignment: Alignment.bottomRight,
-          width: 150,
-          //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-                // fixedSize: const Size.fromHeight(3),
-                padding: EdgeInsets.zero,
-                backgroundColor: AppColors
-                    .defaultColor // Change this color to your desired color
-                ),
+        // btnOkOnPress: () {},
+        // btnOk: Container(
+        //   alignment: Alignment.bottomRight,
+        //   width: 150,
+        //   //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+        //   child: ElevatedButton(
+        //     style: ElevatedButton.styleFrom(
+        //         shape: RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(5)),
+        //         // fixedSize: const Size.fromHeight(3),
+        //         padding: EdgeInsets.zero,
+        //         backgroundColor: AppColors
+        //             .defaultColor // Change this color to your desired color
+        //         ),
 
-            onPressed: () {
-              designation.designation = nameController.text;
-              designation.remarks = remarksController.text;
-              designation.status = screenController.selectedStatus.toString();
-              screenController.updateDesignation(designation);
-              Get.off(() => DesignationList());
-            },
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Update',
-                style: TextStyle(color: AppColors.whiteColor),
-              ),
-            ),
-            // onPressed: widget.onClick
-          ),
-        ));
+        //     onPressed: () {
+        //       designation.designation = nameController.text;
+        //       designation.remarks = remarksController.text;
+        //       designation.status = screenController.selectedStatus.toString();
+        //       screenController.updateDesignation(designation);
+        //       Get.off(() => DesignationList());
+        //     },
+        //     child: const Padding(
+        //       padding: EdgeInsets.all(8.0),
+        //       child: Text(
+        //         'Update',
+        //         style: TextStyle(color: AppColors.whiteColor),
+        //       ),
+        //     ),
+        //     // onPressed: widget.onClick
+        //   ),
+        // )
+        );
 
     dialog.show();
   }

@@ -11,6 +11,7 @@ import 'package:flutter_dashboard/core/widgets/ui_component_appbar.dart';
 import 'package:flutter_dashboard/models/settings/employee_category_model.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/settings_screen/controller/employee_category_controller.dart';
+import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
@@ -325,6 +326,20 @@ class EmployementCategoryList extends StatelessWidget {
                             ],
                           ),
                           buildSizedBoxH(kDefaultPadding * 3),
+                           Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DefaultAddButton(
+                            buttonname: 'Update Emp Category',
+                            onClick: () async{
+                               empcategories.name = nameController.text;
+                                  empcategories.remarks = remarksController.text;  
+                                await screenController.updateEmpCategory(empcategories);
+                             // Get.back();
+                            }
+                            ),
+                      ],
+                    ),
                         ],
                       ),
                     ),
@@ -336,39 +351,40 @@ class EmployementCategoryList extends StatelessWidget {
           ),
         ),
         //  width: dialogWidth,
-        btnOkOnPress: () {},
-        btnOk: Container(
-          alignment: Alignment.bottomRight,
-          width: 150,
-          //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-                // fixedSize: const Size.fromHeight(3),
-                padding: EdgeInsets.zero,
-                backgroundColor: AppColors
-                    .defaultColor // Change this color to your desired color
-                ),
+        // btnOkOnPress: () {},
+        // btnOk: Container(
+        //   alignment: Alignment.bottomRight,
+        //   width: 150,
+        //   //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+        //   child: ElevatedButton(
+        //     style: ElevatedButton.styleFrom(
+        //         shape: RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(5)),
+        //         // fixedSize: const Size.fromHeight(3),
+        //         padding: EdgeInsets.zero,
+        //         backgroundColor: AppColors
+        //             .defaultColor // Change this color to your desired color
+        //         ),
 
-            onPressed: () {
-              empcategories.name = nameController.text;
+        //     onPressed: () {
+        //       empcategories.name = nameController.text;
 
-              empcategories.remarks = remarksController.text;
-              empcategories.status = screenController.selectedStatus.toString();
-              screenController.updateEmpCategory(empcategories);
-              Get.off(() => EmployementCategoryList());
-            },
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Update',
-                style: TextStyle(color: AppColors.whiteColor),
-              ),
-            ),
-            // onPressed: widget.onClick
-          ),
-        ));
+        //       empcategories.remarks = remarksController.text;
+        //       empcategories.status = screenController.selectedStatus.toString();
+        //       screenController.updateEmpCategory(empcategories);
+        //       Get.off(() => EmployementCategoryList());
+        //     },
+        //     child: const Padding(
+        //       padding: EdgeInsets.all(8.0),
+        //       child: Text(
+        //         'Update',
+        //         style: TextStyle(color: AppColors.whiteColor),
+        //       ),
+        //     ),
+        //     // onPressed: widget.onClick
+        //   ),
+        // )
+        );
 
     dialog.show();
   }

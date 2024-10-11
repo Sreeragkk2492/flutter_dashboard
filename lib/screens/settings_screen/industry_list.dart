@@ -11,6 +11,7 @@ import 'package:flutter_dashboard/core/widgets/ui_component_appbar.dart';
 import 'package:flutter_dashboard/models/settings/industry_model.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/settings_screen/controller/industry_controller.dart';
+import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_button.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
@@ -207,6 +208,8 @@ class IndustryList extends StatelessWidget {
   showEditDialog(BuildContext context, DialogType dialogType, int index,
       Industry industry) {
     final screenWidth = MediaQuery.of(context).size.width;
+    // Set initial status in controller
+  screenController.selectedStatus = industry.status;
     TextEditingController nameController =
         TextEditingController(text: industry.name);
     //  TextEditingController statusController =
@@ -325,7 +328,22 @@ class IndustryList extends StatelessWidget {
                             ],
                           ),
                           buildSizedBoxH(kDefaultPadding * 3),
-
+                           Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DefaultAddButton(
+                            buttonname: 'Update Industry',
+                            onClick: () async{
+                               // Update the industry object with new values
+                                  industry.name = nameController.text;
+                                  industry.remarks = remarksController.text;
+                                  industry.status = screenController.selectedStatus ?? industry.status; 
+                                await screenController.updateIndustry(industry);
+                             // Get.back();
+                            }
+                            ),
+                      ],
+                    ),
                           // Divider(
                           //   indent: kDefaultPadding * 2,
                           //   endIndent: kDefaultPadding * 2,
@@ -343,38 +361,39 @@ class IndustryList extends StatelessWidget {
           ),
         ),
         //  width: dialogWidth,
-        btnOkOnPress: () {},
-        btnOk: Container(
-          alignment: Alignment.bottomRight,
-          width: 150,
-          //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-                // fixedSize: const Size.fromHeight(3),
-                padding: EdgeInsets.zero,
-                backgroundColor: AppColors
-                    .defaultColor // Change this color to your desired color
-                ),
+        // btnOkOnPress: () {},
+        // btnOk: Container(
+        //   alignment: Alignment.bottomRight,
+        //   width: 150,
+        //   //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+        //   child: ElevatedButton(
+        //     style: ElevatedButton.styleFrom(
+        //         shape: RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.circular(5)),
+        //         // fixedSize: const Size.fromHeight(3),
+        //         padding: EdgeInsets.zero,
+        //         backgroundColor: AppColors
+        //             .defaultColor // Change this color to your desired color
+        //         ),
 
-            onPressed: () {
-              industry.name = nameController.text;
-              industry.remarks = remarksController.text;
-              industry.status = screenController.selectedStatus.toString();
-              screenController.updateIndustry(industry);
-              Get.off(() => IndustryList());
-            },
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Update',
-                style: TextStyle(color: AppColors.whiteColor),
-              ),
-            ),
-            // onPressed: widget.onClick
-          ),
-        ));
+        //     onPressed: () {
+        //       industry.name = nameController.text;
+        //       industry.remarks = remarksController.text;
+        //       industry.status = screenController.selectedStatus.toString();
+        //       screenController.updateIndustry(industry);
+        //       Get.off(() => IndustryList());
+        //     },
+        //     child: const Padding(
+        //       padding: EdgeInsets.all(8.0),
+        //       child: Text(
+        //         'Update',
+        //         style: TextStyle(color: AppColors.whiteColor),
+        //       ),
+        //     ),
+        //     // onPressed: widget.onClick
+        //   ),
+        // )
+        );
 
     dialog.show();
   }

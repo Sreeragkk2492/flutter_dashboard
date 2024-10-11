@@ -231,15 +231,15 @@ class CompanyAllowanceDetails extends StatelessWidget {
                                                 //      icon: Icon(Icons.arrow_drop_down_sharp))
                                               ],
                                             )),
-                                            DataColumn(
-                                                label: Row(
-                                              children: [
-                                                Text(''),
-                                                //  IconButton(
-                                                //      onPressed: () {},
-                                                //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                              ],
-                                            )),
+                                            // DataColumn(
+                                            //     label: Row(
+                                            //   children: [
+                                            //     Text(''),
+                                            //     //  IconButton(
+                                            //     //      onPressed: () {},
+                                            //     //      icon: Icon(Icons.arrow_drop_down_sharp))
+                                            //   ],
+                                            // )),
                                           ],
                                           // ... (keep the existing DataTable properties)
                                           rows: List.generate(
@@ -262,18 +262,18 @@ class CompanyAllowanceDetails extends StatelessWidget {
                                                     .value
                                                     .isActive
                                                     .toString())),
-                                                DataCell(TextButton(
-                                                    onPressed: () {
-                                                      // Edit functionality
-                                                    },
-                                                    child: const Text(
-                                                      'Edit',
-                                                      style: TextStyle(
-                                                          color: AppColors
-                                                              .blackColor,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )))
+                                                // DataCell(TextButton(
+                                                //     onPressed: () {
+                                                //       // Edit functionality
+                                                //     },
+                                                //     child: const Text(
+                                                //       'Edit',
+                                                //       style: TextStyle(
+                                                //           color: AppColors
+                                                //               .blackColor,
+                                                //           fontWeight:
+                                                //               FontWeight.bold),
+                                                //     )))
                                               ],
                                             );
                                           }),

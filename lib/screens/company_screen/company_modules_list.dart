@@ -182,9 +182,9 @@ class ComapnyModules extends StatelessWidget {
                                               //         .arrow_drop_down_sharp))
                                             ],
                                           )),
-                                          const DataColumn(
-                                            label: Text(''),
-                                          ),
+                                          // const DataColumn(
+                                          //   label: Text(''),
+                                          // ),
                                         ],
                                         rows: List<DataRow>.generate(
                                             selectedModules.length, (index) {
@@ -206,23 +206,23 @@ class ComapnyModules extends StatelessWidget {
                                                   .value
                                                   .isActive
                                                   .toString())),
-                                              DataCell(TextButton(
-                                                  onPressed: () {
-                                                    // DialogWidgets
-                                                    //     .showEditDialog(
-                                                    //         context,
-                                                    //         DialogType.info,
-                                                    //        screenController,
-                                                    //         index);
-                                                  },
-                                                  child: const Text(
-                                                    'Edit',
-                                                    style: TextStyle(
-                                                        color: AppColors
-                                                            .blackColor,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )))
+                                              // DataCell(TextButton(
+                                              //     onPressed: () {
+                                              //       // DialogWidgets
+                                              //       //     .showEditDialog(
+                                              //       //         context,
+                                              //       //         DialogType.info,
+                                              //       //        screenController,
+                                              //       //         index);
+                                              //     },
+                                              //     child: const Text(
+                                              //       'Edit',
+                                              //       style: TextStyle(
+                                              //           color: AppColors
+                                              //               .blackColor,
+                                              //           fontWeight:
+                                              //               FontWeight.bold),
+                                              //     )))
                                             ],
                                           );
                                         }),

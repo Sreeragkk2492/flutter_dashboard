@@ -20,7 +20,7 @@ class AddCompanyHoliday extends StatelessWidget {
   AddCompanyHoliday({super.key});
 
   final screenController = Get.put(CompanyHolidayListController());
-  final employeeController = Get.put(EmployeeController());
+  final employeecontroller = Get.put(EmployeeController());
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -136,51 +136,58 @@ class AddCompanyHoliday extends StatelessWidget {
                     Row(
                       children: [
                         Flexible(
-                          child: Obx(
-                            (){
-                               if (employeeController.companydetails.isEmpty) {
-                      // Show loading indicator while fetching company details
-                      return Center(child: CircularProgressIndicator());
-                    }
-
-                    if (employeeController.isSuperAdmin.value) {
-                      // Dropdown for superadmin
-                      return FormBuilderDropdown<Company>(
-                        name: 'Company Name',
-                        decoration: InputDecoration(
-                          labelText: 'Company Name',
-                          hintText: 'Select Company',
-                          border: OutlineInputBorder(),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                        ),
-                        validator: FormBuilderValidators.required(),
-                        items: employeeController.companydetails
-                            .map((company) => DropdownMenuItem(
-                                  value: company,
-                                  child: Text(company.companyName),
-                                ))
-                            .toList(),
-                        onChanged: (value) {
-                          screenController.onCompanySelected(value!.id);
-                        },
-                      );
-                    } else {
-                      // Single company display for company admin
-                      final company = employeeController.companydetails[0];
-                    // screenController.onCompanySelected(company.id);
-                      return FormBuilderTextField(
-                        name: 'Company Name',
-                        initialValue: company.companyName,
-                        decoration: InputDecoration(
-                          labelText: 'Company Name',
-                          border: OutlineInputBorder(),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                        ),
-                        readOnly: true,
-                      );
-                    }
+                          child: Obx(() {
+                            // Check if there's only one company (the logged-in user's company)
+                            if (employeecontroller.companydetails.isEmpty) {
+                              // Show loading indicator while fetching company details
+                              return Center(child: CircularProgressIndicator());
                             }
-                          ),
+
+                            if (employeecontroller.isSuperAdmin.value) {
+                              // Dropdown for superadmin
+                              return FormBuilderDropdown<Company>(
+                                name: 'Company Name',
+                                decoration: InputDecoration(
+                                  labelText: 'Company Name',
+                                  hintText: 'Select Company',
+                                  border: OutlineInputBorder(),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                validator: FormBuilderValidators.required(),
+                                items: employeecontroller.companydetails
+                                    .map((company) => DropdownMenuItem(
+                                          value: company,
+                                          child: Text(company.companyName),
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {
+                                  screenController.onCompanySelected(
+                                      value!.id, value.companyCode);
+                                },
+                              );
+                            } else {
+                              // Single company display for company admin
+                              final company =
+                                  employeecontroller.companydetails[0];
+                              // Automatically select the company for the admin
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                screenController.onCompanySelected(
+                                    company.id, company.companyCode);
+                              });
+                              return FormBuilderTextField(
+                                name: 'Company Name',
+                                initialValue: company.companyName,
+                                decoration: InputDecoration(
+                                  labelText: 'Company Name',
+                                  border: OutlineInputBorder(),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                readOnly: true,
+                              );
+                            }
+                          }),
                         ),
                       ],
                     ),
@@ -219,7 +226,7 @@ class AddCompanyHoliday extends StatelessWidget {
                                         name: 'Leave Date $index',
                                         controller: leaveEntry.dateController,
                                         inputType: InputType.date,
-                                        format:  DateFormat('yyyy-MM-dd'),
+                                        format: DateFormat('yyyy-MM-dd'),
                                         decoration: InputDecoration(
                                           labelText: 'Date',
                                           border: OutlineInputBorder(),
@@ -269,8 +276,8 @@ class AddCompanyHoliday extends StatelessWidget {
                         DefaultAddButton(
                             buttonname: 'Add Company Holiday',
                             onClick: () async {
-                                await screenController.addCompanyHoliday();
-                              Get.back();
+                              await screenController.addCompanyHoliday();
+                              //Get.back();
                             }),
                       ],
                     ),

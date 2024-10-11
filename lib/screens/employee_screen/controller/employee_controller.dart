@@ -8,10 +8,11 @@ import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
 import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
-import 'package:flutter_dashboard/models/repoting_to_id_model.dart';
-import 'package:flutter_dashboard/models/user_model.dart';
-import 'package:flutter_dashboard/models/usertype_model.dart';
+import 'package:flutter_dashboard/models/employee_models/repoting_to_id_model.dart';
+import 'package:flutter_dashboard/models/employee_models/user_model.dart';
+import 'package:flutter_dashboard/models/employee_models/usertype_model.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
 class EmployeeController extends GetxController {
@@ -25,7 +26,7 @@ class EmployeeController extends GetxController {
   var selectedReportingId = ''.obs;
   var selectedDesignationId = ''.obs;
   var selectedEmployeeCategoryId = ''.obs;
-
+  String? selectedStatus;
   // Controllers for handling text input
   final usernameController = TextEditingController();
   final nameController = TextEditingController();
@@ -78,6 +79,28 @@ class EmployeeController extends GetxController {
     super.onInit();
   }
 
+   // Add this new method
+  void clearFormFields() {
+    firstNameController.clear();
+    lastNameController.clear();
+    usernameController.clear();
+    passwordController.clear();
+    employeeIdController.clear();
+    biometricIdController.clear();
+    fatherNameController.clear();
+    motherNameController.clear();
+    addressController.clear();
+    dobController.clear();
+    phoneNumberController.clear();
+    joiningDateController.clear();
+    selectedStatus = null;
+    setSelectedCompany('', '');
+    setSelectedReportingId('');
+    setSelectedEmployeeCategory('');
+    setSelectedDesignation('');
+    setSelectedUserTypeId(''); 
+  }
+
   // Add this computed property to get paginated users
   List<UserModel> get paginatedUsers {
     int start = currentPage.value * itemsPerPage.value;
@@ -106,11 +129,11 @@ class EmployeeController extends GetxController {
     print("Selected company set - ID: $companyId, Code: $companyCode");
   }
 
- // Handles company selection, fetches users based on company selection
+  // Handles company selection, fetches users based on company selection
 
   void onCompanySelected(String companyId) {
     selectedCompanyId.value = companyId;
-   
+
     fetchRepotingId(companyId);
   }
 
@@ -145,7 +168,6 @@ class EmployeeController extends GetxController {
       await fetchLoggedInCompanyId();
       await fetchLoggedInUserType();
       await fetchCompanyDetails();
-     
     } catch (e) {
       print("Error initializing controller: $e");
       awesomeOkDialog(message: "Failed to initialize. Please try again later.");
@@ -164,8 +186,6 @@ class EmployeeController extends GetxController {
       loggedInCompanyId.value = null;
     }
   }
-
- 
 
   // Fetches the logged-in user's type from storage and sets the super admin status
 
@@ -199,7 +219,7 @@ class EmployeeController extends GetxController {
         method: 'post',
         data: {
           "user_name": usernameController.text,
-          "name": nameController.text,
+          "name": "${firstNameController.text} ${lastNameController.text}".trim(),
           "password": passwordController.text,
           "employee_first_name": firstNameController.text,
           "employee_last_name": lastNameController.text,
@@ -215,15 +235,17 @@ class EmployeeController extends GetxController {
           "designation_id": selectedDesignationId.value,
           "emp_category_id": selectedEmployeeCategoryId.value,
           "biometric_id": biometricIdController.text,
-          "reporting_to_id": selectedReportingId.value  
+          "reporting_to_id": selectedReportingId.value
         });
 
     if (result.isLeft) {
       awesomeOkDialog(message: result.left.message);
     } else {
       final message = result.right['message'];
-       await  awesomeSuccessDialog(message: message);
-     Get.back();
+      await awesomeSuccessDialog(message: message,onOk: () {
+        Get.back();
+      },);
+     // Get.back();
       await fetchUsers();
     }
   }
@@ -306,13 +328,13 @@ class EmployeeController extends GetxController {
 
   fetchRepotingId(String compID) async {
     try {
-     String? effectiveCompanyId = compID;
-    
+      String? effectiveCompanyId = compID;
+
       // If no companyId is provided, try to fetch the logged-in company ID
       if (effectiveCompanyId == null || effectiveCompanyId.isEmpty) {
         effectiveCompanyId = loggedInCompanyId.value;
       }
-    
+
       // If we still don't have a company ID, throw an error
       if (effectiveCompanyId == null || effectiveCompanyId.isEmpty) {
         throw Exception('No company ID available');
@@ -430,29 +452,59 @@ class EmployeeController extends GetxController {
     updateTotalPages();
   }
 
-  // updateEmployee(User user) async {
-  //   final result = await NetWorkManager.shared().request(
-  //       isAuthRequired: false,
-  //       method: 'put',
-  //       url: ApiUrls.BASE_URL + ApiUrls.UPDATE_USER,
-  //       params: {
-  //         "user_id": user.id
-  //       },
-  //       data: {
-  //         "father_name": fatherNameController.text,
-  //         "mother_name": motherNameController.text,
-  //         "address": addressController.text,
-  //         "phone_number": int.tryParse(phoneNumberController.text),
-  //         "dob": dobController.text,
-  //         "email": 'string',
-  //         "employee_first_name": firstNameController.text,
-  //         "employee_last_name": lastNameController.text
-  //       });
+  // Method to populate form with employee data (updated to match API structure)
+  void setEmployeeDataForEdit(UserModel user) {
+    firstNameController.text = user.employeeFirstName;
+    lastNameController.text = user.employeeLastName;
+    fatherNameController.text = user.fatherName.toString();
+    motherNameController.text = user.motherName.toString();
+    addressController.text = user.address.toString();
+    phoneNumberController.text = user.phoneNumber.toString();
+    dobController.text =
+        user.dob != null ? DateFormat('yyyy-MM-dd').format(user.dob!) : '';
 
-  //   if (result.isLeft) {
-  //     awesomeOkDialog(message: result.left.message);
-  //   } else {
-  //     awesomeOkDialog(message: result.right['message']);
-  //   }
-  // }
+    // No need to set these as they're not part of the update API
+    // usernameController.text = user.userName;
+    // passwordController.text = '';
+    // joiningDateController.text = user.joiningDate != null ? DateFormat('yyyy-MM-dd').format(user.joiningDate!) : '';
+    // employeeIdController.text = user.employeeId;
+    // biometricIdController.text = user.biometricId ?? '';
+    // setSelectedCompany(user.companyId, user.companyCode ?? '');
+    // setSelectedUserTypeId(user.userTypeId);
+    // setSelectedReportingId(user.reportingToId ?? '');
+    // setSelectedDesignation(user.designationId ?? '');
+    // setSelectedEmployeeCategory(user.empCategoryId ?? '');
+  }
+
+  updateEmployee(String userid) async {
+    final result = await NetWorkManager.shared().request(
+        isAuthRequired: false,
+        method: 'put',
+        url: ApiUrls.BASE_URL + ApiUrls.UPDATE_USER,
+        params: {
+          "user_id": userid
+        },
+        data: {
+          "name": "${firstNameController.text} ${lastNameController.text}".trim(),
+          "father_name": fatherNameController.text,
+          "mother_name": motherNameController.text,
+          "address": addressController.text,
+          "phone_number": int.tryParse(phoneNumberController.text),
+          "dob": dobController.text,
+          "email": 'string',
+          "employee_first_name": firstNameController.text,
+          "employee_last_name": lastNameController.text
+        });
+
+    if (result.isLeft) {
+      awesomeOkDialog(message: result.left.message);
+    } else {
+      await awesomeSuccessDialog(message: result.right['message'],onOk: () {
+          Get.back();
+      },
+      );
+     // Get.back();
+      await fetchUsers();
+    }
+  }
 }

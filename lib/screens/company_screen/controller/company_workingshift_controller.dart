@@ -26,6 +26,8 @@ class CompanyWorkingshiftController extends GetxController {
   final shiftNameController = TextEditingController();
   final startTimeController = TextEditingController();
   final endTimeController = TextEditingController();
+   RxBool hasFetchedWorkingshift = false.obs;
+
 
   @override
   void onInit() {
@@ -37,6 +39,7 @@ class CompanyWorkingshiftController extends GetxController {
     isCompanySelected.value = false;
     hasExplicitlySelectedCompany.value = false;
     workingShifts.clear();
+     hasFetchedWorkingshift.value = false;
     selectedCompanyId.value = '';
     selectedCompanyCode.value = '';
   }
@@ -50,6 +53,7 @@ class CompanyWorkingshiftController extends GetxController {
       selectedCompanyCode.value = companyCode;
       isCompanySelected.value = true;
       hasExplicitlySelectedCompany.value = true;
+       hasFetchedWorkingshift.value = false; // Reset before new fetch
       fetchCompanyWorkingShifts();
     } else {
       resetSelection();
@@ -76,8 +80,10 @@ class CompanyWorkingshiftController extends GetxController {
       awesomeOkDialog(message: result.left.message);
     } else {
       final message = result.right['message'];
-      await awesomeSuccessDialog(message: message);
-      Get.back();
+      await awesomeSuccessDialog(message:"shift created successfully ",onOk: () {
+         Get.back();
+      },);
+     // Get.back();
       await fetchCompanyWorkingShifts();
     }
   }
@@ -85,6 +91,7 @@ class CompanyWorkingshiftController extends GetxController {
 //to fetch working shifts
 
   fetchCompanyWorkingShifts() async {
+      isLoading.value = true;
     try {
       // Making the GET request to the API
       var response = await http.get(
@@ -107,6 +114,9 @@ class CompanyWorkingshiftController extends GetxController {
       }
     } catch (e) {
       print("Error$e");
+    } finally {
+      isLoading.value = false;
+      hasFetchedWorkingshift.value = true; // Mark that we've attempted to fetch
     }
   }
 }

@@ -13,7 +13,7 @@ class IndustryController extends GetxController {
 
   final remarksController = TextEditingController();
   String? selectedStatus;
-RxBool isSortasc=true.obs;
+  RxBool isSortasc = true.obs;
   var industries = <Industry>[].obs;
 
   @override
@@ -40,13 +40,15 @@ RxBool isSortasc=true.obs;
       awesomeOkDialog(message: result.left.message);
     } else {
       final message = result.right['message'];
-      // awesomeOkDialog(message: message);
+     await awesomeSuccessDialog(message: message,onOk: (){
+        Get.back();
+      });
+    //  Get.back();
       await fetchIndustry();
     }
   }
 
 // to fetch all industries
-
 
   fetchIndustry() async {
     try {
@@ -97,7 +99,6 @@ RxBool isSortasc=true.obs;
     // }
   }
 
-
   // update industry
 
   updateIndustry(Industry industry) async {
@@ -111,14 +112,19 @@ RxBool isSortasc=true.obs;
         data: {
           "name": industry.name,
           "remarks": industry.remarks,
-          "status": selectedStatus,
+          "status": industry.status,
           "is_active": true
         });
 
     if (result.isLeft) {
       awesomeOkDialog(message: result.left.message);
     } else {
-      awesomeOkDialog(message: result.right['message']);
+       final message = result.right['message']; 
+     await awesomeSuccessDialog(message: message,onOk: (){
+        Get.back();
+      });
+    //  Get.back();
+      await fetchIndustry();
     }
   }
 }

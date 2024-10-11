@@ -214,7 +214,7 @@ class AddDeduction extends StatelessWidget {
                             buttonname: 'Add Deduction',
                             onClick: () async {
                               await screenController.addDeduction();
-                              Get.back();
+                             // Get.back();
                             }),
                       ],
                     ),

@@ -171,11 +171,13 @@ class CompanyPayrollAllowanceController extends GetxController {
       awesomeOkDialog(message: result.left.message);
     } else {
       // Show success message
-      awesomeOkDialog(message: "Allowances added successfully");
+      awesomeOkDialog(message: "Allowances added successfully",onOk: () {
+         Get.back();
+      },);
       fetchCompanyPayrollAllowance();
 
       // Navigate back
-      Get.back();
+     // Get.back();
     }
   }
 }

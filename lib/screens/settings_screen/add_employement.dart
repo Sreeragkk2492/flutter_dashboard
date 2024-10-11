@@ -210,7 +210,7 @@ class AddEmployementCategory extends StatelessWidget {
                             buttonname: 'Add Employee Category',
                             onClick: () async {
                               await screenController.addEmpCategory();
-                              Get.back();
+                            //  Get.back();
                             }),
                       ],
                     ),

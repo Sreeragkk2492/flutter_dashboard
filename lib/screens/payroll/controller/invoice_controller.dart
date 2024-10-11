@@ -5,7 +5,7 @@ import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
 import 'package:flutter_dashboard/models/payroll/generated_payslip_details_model.dart';
 
-import 'package:flutter_dashboard/models/user_model.dart';
+import 'package:flutter_dashboard/models/employee_models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -55,6 +55,8 @@ class InvoiceController extends GetxController {
   var payslip = <PayslipDetails>[].obs;
   var allowances = <Allowance>[].obs;
   var deductions = <Deduction>[].obs;
+    var totalAllowances = 0.obs;
+  var totalDeductions = 0.obs;
 
   @override
   void onInit() {
@@ -76,6 +78,12 @@ class InvoiceController extends GetxController {
     isMonthSelected.value = true;
   }
 
+  //Add a method to set the selected employee's data
+  void setSelectedEmployeeData(String userId) {
+    selectedUserId.value = userId;
+    fetchPayslipDetails(userId);
+  }
+
   // Check if all necessary selections have been made
 
    void checkAllSelections() {
@@ -90,7 +98,7 @@ class InvoiceController extends GetxController {
         isYearSelected.value &&
         isMonthSelected.value) {
       print("All selections made, fetching payslip details");
-      fetchPayslipDetails();
+      fetchPayslipDetails(selectedUserId.value);
     } else {
       print("Not all selections made, hiding tab bar");
       showTabBar.value = false;
@@ -174,61 +182,45 @@ class InvoiceController extends GetxController {
   }
 
  // Fetch payslip details based on selected company, user, year, and month
-  Future<void> fetchPayslipDetails() async {
+  Future<void> fetchPayslipDetails(String userid) async {
     isLoading.value = true;
     noDataFound.value = false;
     try {
-      // Validate year and month
-      if (selectedYear.value.isEmpty || selectedMonth.value.isEmpty) {
-        throw Exception("Year and month must be selected");
-      }
-
-      int year = int.parse(selectedYear.value);
-      int month = int.parse(selectedMonth.value);
-
-      final url = Uri.parse(ApiUrls.BASE_URL +
-              ApiUrls.GET_ALL_EMPLOYEE_GENERATED_PAYSLIP_DETAILS)
+      final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_EMPLOYEE_GENERATED_PAYSLIP_DETAILS)
           .replace(queryParameters: {
         "company_id": selectedCompanyId.value,
-        "user_id": selectedUserId.value,
-        "year": year.toString(),
-        "month": month.toString()
+        "user_id": userid,
+        "year": selectedYear.value,
+        "month": selectedMonth.value
       });
-
-      print("Fetching payslip details from URL: $url");
 
       final response = await http.get(url, headers: {
         "Accept": "application/json",
         "Authorization": "Bearer $token",
       });
 
-      print("Response status code: ${response.statusCode}");
-      print("Response body: ${response.body}");
-
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
-        final payslipData =
-            PayslipDetails.fromJson(jsonData['payslip_details']);
-
-        payslipDetails.value = payslipData;
-        allowances.value = payslipData.allowances;
-        deductions.value = payslipData.deductions;
-
-        print("Fetched payslip invoice details successfully");
-        print("Allowances: ${allowances.length}");
-        print("Deductions: ${deductions.length}");
+          // Parse the entire response as GeneratedPayslipDetails
+        final generatedPayslipDetails = GeneratedPayslipDetails.fromJson(jsonData);
+        
+        // Update controller variables
+        payslipDetails.value = generatedPayslipDetails.payslipDetails;
+        allowances.value = generatedPayslipDetails.payslipDetails.allowances;
+        deductions.value = generatedPayslipDetails.payslipDetails.deductions;
+        
+        // Update totals
+        totalAllowances.value = generatedPayslipDetails.totalAllowances;
+        totalDeductions.value = generatedPayslipDetails.totalDeductions;
         showTabBar.value = true;
       } else if (response.statusCode == 404) {
         noDataFound.value = true;
         showTabBar.value = false;
       } else {
-        throw Exception(
-            "Failed to fetch payslip details. Status code: ${response.statusCode}");
+        throw Exception("Failed to fetch payslip details. Status code: ${response.statusCode}");
       }
-    } catch (e, stackTrace) {
-      print("Error fetching payslip details for invoice: $e");
-      print("Stack trace: $stackTrace");
-      awesomeOkDialog(message: e.toString());
+    } catch (e) {
+      print("Error fetching payslip details: $e");
       showTabBar.value = false;
     } finally {
       isLoading.value = false;

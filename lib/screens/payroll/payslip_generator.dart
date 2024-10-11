@@ -8,7 +8,7 @@ import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/core/widgets/ui_component_appbar.dart';
 import 'package:flutter_dashboard/core/widgets/ui_component_appbar_without_button.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
-import 'package:flutter_dashboard/models/user_model.dart';
+import 'package:flutter_dashboard/models/employee_models/user_model.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/payroll/controller/generator_controller.dart';
@@ -638,7 +638,7 @@ class PayslipGenerator extends StatelessWidget {
                   'Total Allowance',
                   style: TextStyle(fontWeight: FontWeight.w600),
                 )),
-            Expanded(flex: 1, child: Text('500')),
+            Expanded(flex: 1, child: Text(screenController.totalAllowances.toString())),
           ],
         )
       ],
@@ -676,7 +676,7 @@ class PayslipGenerator extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Text(
-              '500', // Replace with actual total
+              screenController.totalAllowances.toString(), // Replace with actual total
               style: TextStyle(fontWeight: FontWeight.w600),
               textAlign: TextAlign.right,
             ),
@@ -746,7 +746,7 @@ class PayslipGenerator extends StatelessWidget {
                   'Total Deduction',
                   style: TextStyle(fontWeight: FontWeight.w600),
                 )),
-            Expanded(flex: 1, child: Text('500')),
+            Expanded(flex: 1, child: Text(screenController.totalDeductions.toString())),
           ],
         )
       ],
@@ -784,7 +784,7 @@ class PayslipGenerator extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Text(
-              '500', // Replace with actual total
+              screenController.totalDeductions.toString(), // Replace with actual total
               style: TextStyle(fontWeight: FontWeight.w600),
               textAlign: TextAlign.right,
             ),

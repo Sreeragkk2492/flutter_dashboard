@@ -10,17 +10,25 @@ String generatedPayslipDetailsToJson(GeneratedPayslipDetails data) => json.encod
 
 class GeneratedPayslipDetails {
     PayslipDetails payslipDetails;
+     int totalAllowances;
+    int totalDeductions;
 
     GeneratedPayslipDetails({
         required this.payslipDetails,
+         required this.totalAllowances,
+        required this.totalDeductions,
     });
 
     factory GeneratedPayslipDetails.fromJson(Map<String, dynamic> json) => GeneratedPayslipDetails(
         payslipDetails: PayslipDetails.fromJson(json["payslip_details"]),
+         totalAllowances: json["total_allowances"],
+        totalDeductions: json["total_deductions"],
     );
 
     Map<String, dynamic> toJson() => {
         "payslip_details": payslipDetails.toJson(),
+         "total_allowances": totalAllowances,
+        "total_deductions": totalDeductions,
     };
 }
 

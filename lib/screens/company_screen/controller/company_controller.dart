@@ -96,11 +96,20 @@ class CompanyController extends GetxController {
         });
 
     if (result.isLeft) {
-      awesomeOkDialog(message: result.left.message);
+      awesomeOkDialog(
+        message: result.left.message,
+        onOk: () {
+          Get.back();
+        },
+      );
     } else {
       final message = result.right['message'];
-     await  awesomeSuccessDialog(message: message);
-     Get.back();
+      await awesomeSuccessDialog(
+          message: message,
+          onOk: () {
+            Get.back();
+          });
+      // Get.back();
       await fetchCompanyDetails();
     }
   }
@@ -126,6 +135,38 @@ class CompanyController extends GetxController {
       }
     } catch (e) {
       print("Error$e");
+    }
+  }
+
+  // update industry
+
+  updateIndustry(Company company) async {
+    final result = await NetWorkManager.shared().request(
+        isAuthRequired: true,
+        method: 'put',
+        url: ApiUrls.BASE_URL + ApiUrls.UPDATE_COMPANY,
+        params: {
+          "company_type_id": company.id
+        },
+        data: {
+          "company_code": company.companyCode,
+          "company_name": company.companyName,
+          "company_type_id": selectedCompanyTypecode.value,
+          "single_shift": true,
+          "is_active": true
+        });
+
+    if (result.isLeft) {
+      awesomeOkDialog(message: result.left.message);
+    } else {
+      final message = result.right['message'];
+      await awesomeSuccessDialog(
+          message: message,
+          onOk: () {
+            Get.back();
+          });
+      //  Get.back();
+      await fetchCompanyDetails();
     }
   }
 }

@@ -214,7 +214,7 @@ class AddAllowance extends StatelessWidget {
                             buttonname: 'Add Allowance',
                             onClick: ()async {
                                 await screenController.addAllowance();
-                                 Get.back();
+                                // Get.back();
                             }),
                       ],
                     ),

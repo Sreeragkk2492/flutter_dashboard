@@ -44,39 +44,55 @@ class CompanyLeaveType extends StatelessWidget {
         buildSizedBoxH(kDefaultPadding),
         Padding(
           padding: EdgeInsets.all(kDefaultPadding),
-          child: Obx(
-            () => FormBuilderDropdown<Company>(
-              name: 'Company',
-              decoration: const InputDecoration(
-                labelText: 'Company',
-                hintText: 'Select Company',
-                border: OutlineInputBorder(),
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-              ),
-              validator: FormBuilderValidators.required(),
-              items: employeecontroller.companydetails
-                  .map((company) => DropdownMenuItem(
-                        value: Company(
-                            id: company.id,
-                            companyName: company.companyName,
-                            companyCode: company.companyCode,
-                            databaseName: company.databaseName,
-                            companyTypeId: company.companyTypeId,
-                            remarks: company.remarks,
-                            status: company.status,
-                            isActive: company.isActive,
-                            companytype: company.companytype),
-                        child: Text(company.companyName),
-                      ))
-                  .toList(),
-              onChanged: (value) async {
-                if (value != null) {
-                  await screenController.onCompanySelected(
-                      value.id, value.companyCode);
-                }
-              },
-            ),
-          ),
+          child:Obx(() {
+            // Check if there's only one company (the logged-in user's company)
+            if (employeecontroller.companydetails.isEmpty) {
+              // Show loading indicator while fetching company details
+              return Center(child: CircularProgressIndicator());
+            }
+
+            if (employeecontroller.isSuperAdmin.value) {
+              // Dropdown for superadmin
+              return FormBuilderDropdown<Company>(
+                name: 'Company Name',
+                decoration: InputDecoration(
+                  labelText: 'Company Name',
+                  hintText: 'Select Company',
+                  border: OutlineInputBorder(),
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                ),
+                validator: FormBuilderValidators.required(),
+                items: employeecontroller.companydetails
+                    .map((company) => DropdownMenuItem(
+                          value: company,
+                          child: Text(company.companyName),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  screenController.onCompanySelected(
+                      value!.id, value.companyCode);
+                },
+              );
+            } else {
+              // Single company display for company admin
+              final company = employeecontroller.companydetails[0];
+              // Automatically select the company for the admin
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                screenController.onCompanySelected(
+                    company.id, company.companyCode);
+              });
+              return FormBuilderTextField(
+                name: 'Company Name',
+                initialValue: company.companyName,
+                decoration: InputDecoration(
+                  labelText: 'Company Name',
+                  border: OutlineInputBorder(),
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                ),
+                readOnly: true,
+              );
+            }
+          }),
         ),
         buildSizedBoxH(kDefaultPadding),
         Obx(() {
@@ -193,9 +209,9 @@ class CompanyLeaveType extends StatelessWidget {
                                             //         .arrow_drop_down_sharp))
                                           ],
                                         )),
-                                        const DataColumn(
-                                          label: Text(''),
-                                        ),
+                                        // const DataColumn(
+                                        //   label: Text(''),
+                                        // ),
                                       ],
                                       rows: List<DataRow>.generate(
                                           screenController.leaveTypes.length,
@@ -214,23 +230,23 @@ class CompanyLeaveType extends StatelessWidget {
                                             )),
                                             DataCell(Text(
                                                 leave.isActive.toString())),
-                                            DataCell(TextButton(
-                                                onPressed: () {
-                                                  // DialogWidgets
-                                                  //     .showEditDialog(
-                                                  //         context,
-                                                  //         DialogType.info,
-                                                  //        screenController,
-                                                  //         index);
-                                                },
-                                                child: const Text(
-                                                  'Edit',
-                                                  style: TextStyle(
-                                                      color:
-                                                          AppColors.blackColor,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )))
+                                            // DataCell(TextButton(
+                                            //     onPressed: () {
+                                            //       // DialogWidgets
+                                            //       //     .showEditDialog(
+                                            //       //         context,
+                                            //       //         DialogType.info,
+                                            //       //        screenController,
+                                            //       //         index);
+                                            //     },
+                                            //     child: const Text(
+                                            //       'Edit',
+                                            //       style: TextStyle(
+                                            //           color:
+                                            //               AppColors.blackColor,
+                                            //           fontWeight:
+                                            //               FontWeight.bold),
+                                            //     )))
                                           ],
                                         );
                                       }),

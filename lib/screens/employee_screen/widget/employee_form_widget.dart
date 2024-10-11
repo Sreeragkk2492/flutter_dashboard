@@ -10,6 +10,7 @@ import 'package:flutter_dashboard/screens/settings_screen/widget/default_add_but
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../controller/employee_controller.dart';
 
@@ -210,10 +211,10 @@ class EmployeeFormWidget extends StatelessWidget {
                   child: Obx(
                     () => FormBuilderDropdown(
                       // controller: widget.statusController,
-                      name: 'Reporting to Id',
+                      name: 'Reporting to ',
                       decoration: const InputDecoration(
-                        labelText: 'Reporting to Id',
-                        hintText: 'Reporting to Id',
+                        labelText: 'Reporting to ',
+                        hintText: 'Reporting to ',
                         border: OutlineInputBorder(),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
@@ -223,7 +224,7 @@ class EmployeeFormWidget extends StatelessWidget {
                       items: screenController.reportingtoid
                           .map((reportingtoid) => DropdownMenuItem(
                                 value: reportingtoid.id,
-                                child: Text(reportingtoid.userName),
+                                child: Text(reportingtoid.name),
                               ))
                           .toList(),
                       onChanged: (value) {
@@ -329,10 +330,10 @@ class EmployeeFormWidget extends StatelessWidget {
               endIndent: kDefaultPadding * 2,
             ),
             buildSizedBoxH(kDefaultPadding * 3),
-            Text(
-              'Detailed Information',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+            Text('Detail Information', 
+                  style: GoogleFonts.montserrat( 
+                      fontSize: kDefaultPadding + kTextPadding,
+                      fontWeight: FontWeight.bold)),
             buildSizedBoxH(kDefaultPadding * 2),
             Row(
               children: [
@@ -489,21 +490,32 @@ class EmployeeFormWidget extends StatelessWidget {
                   ),
                 ),
                 buildSizedboxW(kDefaultPadding),
-                Flexible(
-                  child: FormBuilderTextField(
-                    // controller: widget.stateController,
-                    name: 'Is Active',
-                    decoration: const InputDecoration(
-                      labelText: 'Is Active',
-                      hintText: 'Is Active',
-                      border: OutlineInputBorder(),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                    keyboardType: TextInputType.text,
-                    validator: FormBuilderValidators.required(),
-                    // onSaved: (value) => (_formData.country = value ?? ''),
+                 Flexible(
+                child: FormBuilderDropdown(
+                  name: 'Status',
+                  decoration: InputDecoration(
+                    labelText: 'Status',
+                    // hintText: 'test@gmail.com',
+                    border: const OutlineInputBorder(),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
+                  // keyboardType: TextInputType.emailAddress,
+                  validator: FormBuilderValidators.required(),
+                  items: [
+                    DropdownMenuItem(
+                      child: Text('Active'),
+                      value: 'Active',
+                    ),
+                    DropdownMenuItem(
+                      child: Text('InActive'),
+                      value: 'InActive',
+                    ),
+                  ],
+                  initialValue: screenController.selectedStatus,
+                  onChanged: (value) => screenController.selectedStatus = value,
+                  // onSaved: (value) => (_formData.email = value ?? ''),
                 ),
+              ),
                 buildSizedboxW(kDefaultPadding),
               ],
             ),

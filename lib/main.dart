@@ -6,7 +6,7 @@ import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
-void main() async{
+void main() async{  
    WidgetsFlutterBinding.ensureInitialized();
   await StorageServices.init();
    
