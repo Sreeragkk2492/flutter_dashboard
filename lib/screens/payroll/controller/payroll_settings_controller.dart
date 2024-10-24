@@ -89,7 +89,7 @@ class PayrollSettingsController extends GetxController {
 
   @override
   void onInit() async {
-    // resetSelectionState();
+      resetSelection();
     // For qts_admin, this will be null or empty
     // For cmp_admin, this should contain the company ID
     String? companyIds = await StorageServices().read('company_id');
@@ -105,6 +105,54 @@ class PayrollSettingsController extends GetxController {
       selectedCompanyId.value = companyId;
       isCompanySelected.value = true;
     }
+  }
+
+   // Method to reset selection state
+  void resetSelection() {
+    isCompanySelected.value = false;
+    isUserSelected.value = false;
+    isYearSelected.value = false;
+    isMonthSelected.value = false;
+    selectedCompanyId.value = '';
+    selectedUserId.value = '';
+    selectedYear.value = '';
+    selectedMonth.value = '';
+    showTabBar.value = false;
+    showDataTable.value = false;
+    noDataFound.value = false;
+    isPayslipGenerated.value = false;
+    isGenerated.value = false;
+    payslip.clear();
+    allowances.clear();
+    deductions.clear();
+    companyPayroll.clear();
+    
+    // Reset all text controllers
+    yearController.clear();
+    monthController.clear();
+    payPeriodStartController.clear();
+    payPeriodEndController.clear();
+    payDateController.clear();
+    paymentMethodController.clear();
+    totalAmountController.clear();
+    overtimeHoursController.clear();
+    regularHoursController.clear();
+    leaveDaysController.clear();
+    holidaysController.clear();
+    workFromHomeDaysController.clear();
+    projectCodeController.clear();
+    locationController.clear();
+    departmentController.clear();
+    remarksController.clear();
+    approvedController.clear();
+    approvedByController.clear();
+    payslipFileNameController.clear();
+    statusController.clear();
+
+    // Clear all dynamic controllers
+    payslipController.clear();
+    allowanceControllers.clear();
+    deductionControllers.clear();
   }
 
   // Methods to update controllers based on data changes
@@ -425,7 +473,7 @@ class PayrollSettingsController extends GetxController {
     isGenerated.value = true;
     isPayslipGenerated.value = true;
    await awesomeSuccessDialog(message: "Payslip generated successfully",onOk: () {
-     Get.back();
+    // Get.back();
    },);
   }
 

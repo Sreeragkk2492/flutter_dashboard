@@ -254,7 +254,7 @@ class EmployeeListAll extends StatelessWidget {
             DataColumn(label: const Text('Mobile')),
             const DataColumn(label: Text('')),
           ],
-          rows: screenController.users
+          rows: screenController.filteredUsers
               .map((user) => DataRow(
                     cells: [
                       DataCell(GestureDetector(

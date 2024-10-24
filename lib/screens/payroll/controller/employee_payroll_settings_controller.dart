@@ -336,7 +336,7 @@ class EmployeePayrollSettingsController extends GetxController {
       deductionControllers.clear();
       // Show success message
      await awesomeSuccessDialog(message: "Amounts added successfully",onOk: () {
-       Get.back();
+      // Get.back();
      },);
      //  fetchAllowanceAndDeductionDetails();
 

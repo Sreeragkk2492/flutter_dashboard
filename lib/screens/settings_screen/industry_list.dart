@@ -209,7 +209,7 @@ class IndustryList extends StatelessWidget {
       Industry industry) {
     final screenWidth = MediaQuery.of(context).size.width;
     // Set initial status in controller
-  screenController.selectedStatus = industry.status;
+    screenController.selectedStatus = industry.status;
     TextEditingController nameController =
         TextEditingController(text: industry.name);
     //  TextEditingController statusController =
@@ -218,182 +218,213 @@ class IndustryList extends StatelessWidget {
         TextEditingController(text: industry.remarks);
     final dialogWidth = screenWidth * 0.8;
     final dialog = AwesomeDialog(
-        alignment: Alignment.center,
-        context: context,
-        transitionAnimationDuration: const Duration(microseconds: 300),
-        dialogType: dialogType,
-        title: 'Update Industry',
-        desc: '',
-        body: Padding(
-          padding: EdgeInsets.all(kDefaultPadding),
-          child: SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Container(
-                padding: EdgeInsets.all(kDefaultPadding),
-                // decoration: BoxDecoration(boxShadow: [
-                //   BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
-                // ]),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  // mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('Update Industry',
-                        style: GoogleFonts.montserrat(
-                            fontSize: kDefaultPadding + kTextPadding,
-                            fontWeight: FontWeight.bold)),
-                    // buildSizedBoxH(kDefaultPadding),
-                    // Text(
-                    //   'USER INFORMATION',
-                    //   style: themeData.textTheme.labelLarge,
-                    // ),
-                    buildSizedBoxH(kDefaultPadding * 2),
-                    FormBuilder(
-                      key: _formKey,
-                      autovalidateMode: AutovalidateMode.disabled,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Flexible(
-                                child: FormBuilderTextField(
-                                  name: 'Industry Name',
-                                  controller: nameController,
-                                  decoration: InputDecoration(
-                                    labelText: 'Industry Name',
-                                    // hintText: 'test.user',
-                                    // helperText: '* To test registration fail: admin',
-                                    border: const OutlineInputBorder(),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                  ),
-                                  enableSuggestions: false,
-                                  validator: FormBuilderValidators.required(),
-                                  // onSaved: (value) => (_formData.username = value ?? ''),
-                                ),
-                              ),
-                              buildSizedboxW(kDefaultPadding),
-                              Flexible(
-                                child: FormBuilderDropdown(
-                                  name: 'Status',
-                                  decoration: InputDecoration(
-                                    labelText: 'Status',
-                                    // hintText: 'test@gmail.com',
-                                    border: const OutlineInputBorder(),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                  ),
-                                  // keyboardType: TextInputType.emailAddress,
-                                  validator: FormBuilderValidators.required(),
-                                  items: [
-                                    DropdownMenuItem(
-                                      child: Text('Active'),
-                                      value: 'Active',
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text('InActive'),
-                                      value: 'InActive',
-                                    ),
-                                  ],
-                                  initialValue: industry.status,
-                                  onChanged: (value) =>
-                                      screenController.selectedStatus = value,
-                                  // onSaved: (value) => (_formData.email = value ?? ''),
-                                ),
-                              ),
-                            ],
-                          ),
-                          buildSizedBoxH(kDefaultPadding * 3),
-                          Row(
-                            children: [
-                              Flexible(
-                                child: FormBuilderTextField(
-                                  controller: remarksController,
-                                  name: 'Remarks',
-                                  decoration: const InputDecoration(
-                                    labelText: 'Remarks',
-                                    hintText: 'please add your remarks',
-                                    border: OutlineInputBorder(),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                  ),
-                                  enableSuggestions: false,
-                                  keyboardType: TextInputType.name,
-                                  validator: FormBuilderValidators.required(),
-                                  // onSaved: (value) => (_formData.firstname = value ?? ''),
-                                ),
-                              ),
-                              buildSizedboxW(kDefaultPadding),
-                            ],
-                          ),
-                          buildSizedBoxH(kDefaultPadding * 3),
-                           Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+      alignment: Alignment.center,
+      context: context,
+      transitionAnimationDuration: const Duration(microseconds: 300),
+      dialogType: dialogType,
+      title: 'Update Industry',
+      desc: '',
+      body: Padding(
+        padding: EdgeInsets.all(kDefaultPadding),
+        child: SingleChildScrollView(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Container(
+              padding: EdgeInsets.all(kDefaultPadding),
+              // decoration: BoxDecoration(boxShadow: [
+              //   BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
+              // ]),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Update Industry',
+                      style: GoogleFonts.montserrat(
+                          fontSize: kDefaultPadding + kTextPadding,
+                          fontWeight: FontWeight.bold)),
+                  // buildSizedBoxH(kDefaultPadding),
+                  // Text(
+                  //   'USER INFORMATION',
+                  //   style: themeData.textTheme.labelLarge,
+                  // ),
+                  buildSizedBoxH(kDefaultPadding * 2),
+                  FormBuilder(
+                    key: _formKey,
+                    autovalidateMode: AutovalidateMode.disabled,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        DefaultAddButton(
-                            buttonname: 'Update Industry',
-                            onClick: () async{
-                               // Update the industry object with new values
+                        Row(
+                          children: [
+                            Flexible(
+                              child: FormBuilderTextField(
+                                cursorColor: AppColors.defaultColor,
+                                name: 'Industry Name',
+                                controller: nameController,
+                                decoration: InputDecoration(
+                                  labelText: 'Industry Name',
+                                  // hintText: 'test.user',
+                                  // helperText: '* To test registration fail: admin',
+                                  labelStyle:
+                                      TextStyle(color: AppColors.blackColor),
+                                  border: OutlineInputBorder(),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.greycolor)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.defaultColor,
+                                          width: 1.5)),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                enableSuggestions: false,
+                                validator: FormBuilderValidators.required(),
+                                // onSaved: (value) => (_formData.username = value ?? ''),
+                              ),
+                            ),
+                            buildSizedboxW(kDefaultPadding),
+                            Flexible(
+                              child: FormBuilderDropdown(
+                                name: 'Status',
+                                decoration: InputDecoration(
+                                  labelText: 'Status',
+                                  // hintText: 'test@gmail.com',
+                                  labelStyle:
+                                      TextStyle(color: AppColors.blackColor),
+                                  border: OutlineInputBorder(),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.greycolor)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.defaultColor,
+                                          width: 1.5)),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                // keyboardType: TextInputType.emailAddress,
+                                validator: FormBuilderValidators.required(),
+                                items: [
+                                  DropdownMenuItem(
+                                    child: Text('Active'),
+                                    value: 'Active',
+                                  ),
+                                  DropdownMenuItem(
+                                    child: Text('InActive'),
+                                    value: 'InActive',
+                                  ),
+                                ],
+                                initialValue: industry.status,
+                                onChanged: (value) =>
+                                    screenController.selectedStatus = value,
+                                // onSaved: (value) => (_formData.email = value ?? ''),
+                              ),
+                            ),
+                          ],
+                        ),
+                        buildSizedBoxH(kDefaultPadding * 3),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: FormBuilderTextField(
+                                cursorColor: AppColors.defaultColor,
+                                controller: remarksController,
+                                name: 'Remarks',
+                                decoration: const InputDecoration(
+                                  labelText: 'Remarks',
+                                  hintText: 'please add your remarks',
+                                  labelStyle:
+                                      TextStyle(color: AppColors.blackColor),
+                                  border: OutlineInputBorder(),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.greycolor)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.defaultColor,
+                                          width: 1.5)),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                enableSuggestions: false,
+                                keyboardType: TextInputType.name,
+                                validator: FormBuilderValidators.required(),
+                                // onSaved: (value) => (_formData.firstname = value ?? ''),
+                              ),
+                            ),
+                            buildSizedboxW(kDefaultPadding),
+                          ],
+                        ),
+                        buildSizedBoxH(kDefaultPadding * 3),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            DefaultAddButton(
+                                buttonname: 'Update Industry',
+                                onClick: () async {
+                                  // Update the industry object with new values
                                   industry.name = nameController.text;
                                   industry.remarks = remarksController.text;
-                                  industry.status = screenController.selectedStatus ?? industry.status; 
-                                await screenController.updateIndustry(industry);
-                             // Get.back();
-                            }
-                            ),
+                                  industry.status =
+                                      screenController.selectedStatus ??
+                                          industry.status;
+                                  await screenController
+                                      .updateIndustry(industry);
+                                  // Get.back();
+                                }),
+                          ],
+                        ),
+                        // Divider(
+                        //   indent: kDefaultPadding * 2,
+                        //   endIndent: kDefaultPadding * 2,
+                        // ),
+                        // buildSizedBoxH(kDefaultPadding * 3),
+                        buildSizedBoxH(kDefaultPadding * 3),
                       ],
                     ),
-                          // Divider(
-                          //   indent: kDefaultPadding * 2,
-                          //   endIndent: kDefaultPadding * 2,
-                          // ),
-                          // buildSizedBoxH(kDefaultPadding * 3),
-                          buildSizedBoxH(kDefaultPadding * 3),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              buildSizedBoxH(kDefaultPadding),
-            ]),
-          ),
+            ),
+            buildSizedBoxH(kDefaultPadding),
+          ]),
         ),
-        //  width: dialogWidth,
-        // btnOkOnPress: () {},
-        // btnOk: Container(
-        //   alignment: Alignment.bottomRight,
-        //   width: 150,
-        //   //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-        //   child: ElevatedButton(
-        //     style: ElevatedButton.styleFrom(
-        //         shape: RoundedRectangleBorder(
-        //             borderRadius: BorderRadius.circular(5)),
-        //         // fixedSize: const Size.fromHeight(3),
-        //         padding: EdgeInsets.zero,
-        //         backgroundColor: AppColors
-        //             .defaultColor // Change this color to your desired color
-        //         ),
+      ),
+      //  width: dialogWidth,
+      // btnOkOnPress: () {},
+      // btnOk: Container(
+      //   alignment: Alignment.bottomRight,
+      //   width: 150,
+      //   //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+      //   child: ElevatedButton(
+      //     style: ElevatedButton.styleFrom(
+      //         shape: RoundedRectangleBorder(
+      //             borderRadius: BorderRadius.circular(5)),
+      //         // fixedSize: const Size.fromHeight(3),
+      //         padding: EdgeInsets.zero,
+      //         backgroundColor: AppColors
+      //             .defaultColor // Change this color to your desired color
+      //         ),
 
-        //     onPressed: () {
-        //       industry.name = nameController.text;
-        //       industry.remarks = remarksController.text;
-        //       industry.status = screenController.selectedStatus.toString();
-        //       screenController.updateIndustry(industry);
-        //       Get.off(() => IndustryList());
-        //     },
-        //     child: const Padding(
-        //       padding: EdgeInsets.all(8.0),
-        //       child: Text(
-        //         'Update',
-        //         style: TextStyle(color: AppColors.whiteColor),
-        //       ),
-        //     ),
-        //     // onPressed: widget.onClick
-        //   ),
-        // )
-        );
+      //     onPressed: () {
+      //       industry.name = nameController.text;
+      //       industry.remarks = remarksController.text;
+      //       industry.status = screenController.selectedStatus.toString();
+      //       screenController.updateIndustry(industry);
+      //       Get.off(() => IndustryList());
+      //     },
+      //     child: const Padding(
+      //       padding: EdgeInsets.all(8.0),
+      //       child: Text(
+      //         'Update',
+      //         style: TextStyle(color: AppColors.whiteColor),
+      //       ),
+      //     ),
+      //     // onPressed: widget.onClick
+      //   ),
+      // )
+    );
 
     dialog.show();
   }

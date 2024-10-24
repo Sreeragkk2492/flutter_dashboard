@@ -202,7 +202,8 @@ class DepartmentList extends StatelessWidget {
                                               department.categoryIndustry)),
                                           DataCell(
                                               Text(department.departmentName)),
-                                          DataCell(Text(department.isActive.toString())),
+                                          DataCell(Text(
+                                              department.isActive.toString())),
                                           DataCell(TextButton(
                                               onPressed: () {
                                                 showEditDialog(
@@ -250,216 +251,253 @@ class DepartmentList extends StatelessWidget {
         TextEditingController(text: department.remarks);
     final dialogWidth = screenWidth * 0.8;
     final dialog = AwesomeDialog(
-        alignment: Alignment.center,
-        context: context,
-        transitionAnimationDuration: const Duration(microseconds: 300),
-        dialogType: dialogType,
-        title: 'Update Department',
-        desc: '',
-        body: Padding(
-          padding: EdgeInsets.all(kDefaultPadding),
-          child: SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Container(
+      alignment: Alignment.center,
+      context: context,
+      transitionAnimationDuration: const Duration(microseconds: 300),
+      dialogType: dialogType,
+      title: 'Update Department',
+      desc: '',
+      body: Padding(
+        padding: EdgeInsets.all(kDefaultPadding),
+        child: SingleChildScrollView(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Container(
+              padding: EdgeInsets.all(kDefaultPadding),
+              // decoration: BoxDecoration(boxShadow: [
+              //   BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
+              // ]),
+              child: Padding(
                 padding: EdgeInsets.all(kDefaultPadding),
-                // decoration: BoxDecoration(boxShadow: [
-                //   BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
-                // ]),
-                child: Padding(
-                  padding: EdgeInsets.all(kDefaultPadding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('Update Department',
-                          style: GoogleFonts.montserrat(
-                              fontSize: kDefaultPadding + kTextPadding,
-                              fontWeight: FontWeight.bold)),
-                      buildSizedBoxH(kDefaultPadding * 2),
-                      FormBuilder(
-                        key: _formKey,
-                        autovalidateMode: AutovalidateMode.disabled,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Flexible(
-                                  child: Obx(
-                                    () => FormBuilderDropdown(
-                                      // controller: widget.statusController,
-                                      name: 'Category/Industry',
-                                      decoration: const InputDecoration(
-                                        labelText: 'Category/Industry',
-                                        hintText: 'Category/Industry',
-                                        border: OutlineInputBorder(),
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.always,
-                                      ),
-                                      // enableSuggestions: false,
-                                      // keyboardType: TextInputType.name,
-                                      validator:
-                                          FormBuilderValidators.required(),
-                                      items: industryController.industries
-                                          .map((industry) => DropdownMenuItem(
-                                                value: industry.id,
-                                                child: Text(industry.name),
-                                              ))
-                                          .toList(),
-                                      initialValue:
-                                          screenController.selectedCategory,
-                                      onChanged: (value) => screenController
-                                          .selectedCategory = value,
-                                      // onSaved: (value) => (_formData.firstname = value ?? ''),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            buildSizedBoxH(kDefaultPadding * 3),
-                            Row(
-                              children: [
-                                Flexible(
-                                  child: FormBuilderTextField(
-                                    name: 'Department Name',
-                                    controller: nameController,
-                                    decoration: InputDecoration(
-                                      labelText: 'Department Name',
-                                      // hintText: 'test.user',
-                                      // helperText: '* To test registration fail: admin',
-                                      border: const OutlineInputBorder(),
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.always,
-                                    ),
-                                    enableSuggestions: false,
-                                    validator: FormBuilderValidators.required(),
-                                    // onSaved: (value) => (_formData.username = value ?? ''),
-                                  ),
-                                ),
-                                buildSizedboxW(kDefaultPadding),
-                                Flexible(
-                                  child: FormBuilderDropdown(
-                                    name: 'Status',
-                                    decoration: InputDecoration(
-                                      labelText: 'Status',
-                                      // hintText: 'test@gmail.com',
-                                      border: const OutlineInputBorder(),
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.always,
-                                    ),
-                                    // keyboardType: TextInputType.emailAddress,
-                                    validator: FormBuilderValidators.required(),
-                                    items: [
-                                      DropdownMenuItem(
-                                        child: Text('Active'),
-                                        value: 'Active',
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text('InActive'),
-                                        value: 'InActive',
-                                      ),
-                                    ],
-                                    initialValue:
-                                        screenController.selectedStatus,
-                                    onChanged: (value) =>
-                                        screenController.selectedStatus = value,
-                                    // onSaved: (value) => (_formData.email = value ?? ''),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            buildSizedBoxH(kDefaultPadding * 3),
-                            Row(
-                              children: [
-                                Flexible(
-                                  child: FormBuilderTextField(
-                                    name: 'Remarks',
-                                    controller: remarksController,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Update Department',
+                        style: GoogleFonts.montserrat(
+                            fontSize: kDefaultPadding + kTextPadding,
+                            fontWeight: FontWeight.bold)),
+                    buildSizedBoxH(kDefaultPadding * 2),
+                    FormBuilder(
+                      key: _formKey,
+                      autovalidateMode: AutovalidateMode.disabled,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Obx(
+                                  () => FormBuilderDropdown(
+                                    // controller: widget.statusController,
+                                    name: 'Category/Industry',
                                     decoration: const InputDecoration(
-                                      labelText: 'Remarks',
-                                      hintText: 'please add your remarks',
-                                      border: OutlineInputBorder(),
+                                      labelText: 'Category/Industry',
+                                      hintText: 'Category/Industry',
+                                       labelStyle:
+                    TextStyle(color: AppColors.blackColor),
+                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.greycolor)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.defaultColor,
+                        width: 1.5)),
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.always,
                                     ),
-                                    enableSuggestions: false,
-                                    keyboardType: TextInputType.name,
+                                    // enableSuggestions: false,
+                                    // keyboardType: TextInputType.name,
                                     validator: FormBuilderValidators.required(),
+                                    items: industryController.industries
+                                        .map((industry) => DropdownMenuItem(
+                                              value: industry.id,
+                                              child: Text(industry.name),
+                                            ))
+                                        .toList(),
+                                    initialValue:
+                                        screenController.selectedCategory,
+                                    onChanged: (value) => screenController
+                                        .selectedCategory = value,
                                     // onSaved: (value) => (_formData.firstname = value ?? ''),
                                   ),
                                 ),
-                                buildSizedboxW(kDefaultPadding),
-                              ],
-                            ),
-                            buildSizedBoxH(kDefaultPadding * 3),
-                             Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        DefaultAddButton(
-                            buttonname: 'Update Department',
-                            onClick: () async{
-                               department.departmentName = nameController.text;
-                                  department.remarks = remarksController.text; 
-                                await screenController.updateDepartment(department);
-                             // Get.back();
-                            }
-                            ),
-                      ],
-                    ),
-                            // buildSizedBoxH(kDefaultPadding * 3),
-                            // Divider(
-                            //   indent: kDefaultPadding * 2,
-                            //   endIndent: kDefaultPadding * 2,
-                            // ),
-                            // buildSizedBoxH(kDefaultPadding * 3),
-                            buildSizedBoxH(kDefaultPadding * 3),
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                          buildSizedBoxH(kDefaultPadding * 3),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: FormBuilderTextField(
+                                  cursorColor: AppColors.defaultColor,
+                                  name: 'Department Name',
+                                  controller: nameController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Department Name',
+                                    // hintText: 'test.user',
+                                    // helperText: '* To test registration fail: admin',
+                                    labelStyle:
+                                        TextStyle(color: AppColors.blackColor),
+                                    border: OutlineInputBorder(),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppColors.greycolor)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppColors.defaultColor,
+                                            width: 1.5)),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                  ),
+                                  enableSuggestions: false,
+                                  validator: FormBuilderValidators.required(),
+                                  // onSaved: (value) => (_formData.username = value ?? ''),
+                                ),
+                              ),
+                              buildSizedboxW(kDefaultPadding),
+                              Flexible(
+                                child: FormBuilderDropdown(
+                                  name: 'Status',
+                                  decoration: InputDecoration(
+                                    labelText: 'Status',
+                                    // hintText: 'test@gmail.com',
+                                    labelStyle:
+                                        TextStyle(color: AppColors.blackColor),
+                                    border: OutlineInputBorder(),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppColors.greycolor)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppColors.defaultColor,
+                                            width: 1.5)),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                  ),
+                                  // keyboardType: TextInputType.emailAddress,
+                                  validator: FormBuilderValidators.required(),
+                                  items: [
+                                    DropdownMenuItem(
+                                      child: Text('Active'),
+                                      value: 'Active',
+                                    ),
+                                    DropdownMenuItem(
+                                      child: Text('InActive'),
+                                      value: 'InActive',
+                                    ),
+                                  ],
+                                  initialValue: screenController.selectedStatus,
+                                  onChanged: (value) =>
+                                      screenController.selectedStatus = value,
+                                  // onSaved: (value) => (_formData.email = value ?? ''),
+                                ),
+                              ),
+                            ],
+                          ),
+                          buildSizedBoxH(kDefaultPadding * 3),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: FormBuilderTextField(
+                                  cursorColor: AppColors.defaultColor,
+                                  name: 'Remarks',
+                                  controller: remarksController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Remarks',
+                                    hintText: 'please add your remarks',
+                                    labelStyle:
+                                        TextStyle(color: AppColors.blackColor),
+                                    border: OutlineInputBorder(),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppColors.greycolor)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppColors.defaultColor,
+                                            width: 1.5)),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                  ),
+                                  enableSuggestions: false,
+                                  keyboardType: TextInputType.name,
+                                  validator: FormBuilderValidators.required(),
+                                  // onSaved: (value) => (_formData.firstname = value ?? ''),
+                                ),
+                              ),
+                              buildSizedboxW(kDefaultPadding),
+                            ],
+                          ),
+                          buildSizedBoxH(kDefaultPadding * 3),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              DefaultAddButton(
+                                  buttonname: 'Update Department',
+                                  onClick: () async {
+                                    department.departmentName =
+                                        nameController.text;
+                                    department.remarks = remarksController.text;
+                                    await screenController
+                                        .updateDepartment(department);
+                                    // Get.back();
+                                  }),
+                            ],
+                          ),
+                          // buildSizedBoxH(kDefaultPadding * 3),
+                          // Divider(
+                          //   indent: kDefaultPadding * 2,
+                          //   endIndent: kDefaultPadding * 2,
+                          // ),
+                          // buildSizedBoxH(kDefaultPadding * 3),
+                          buildSizedBoxH(kDefaultPadding * 3),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-              buildSizedBoxH(kDefaultPadding),
-            ]),
-          ),
+            ),
+            buildSizedBoxH(kDefaultPadding),
+          ]),
         ),
-        //  width: dialogWidth,
-        // btnOkOnPress: () {},
-        // btnOk: Container(
-        //   alignment: Alignment.bottomRight,
-        //   width: 150,
-        //   //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-        //   child: ElevatedButton(
-        //     style: ElevatedButton.styleFrom(
-        //         shape: RoundedRectangleBorder(
-        //             borderRadius: BorderRadius.circular(5)),
-        //         // fixedSize: const Size.fromHeight(3),
-        //         padding: EdgeInsets.zero,
-        //         backgroundColor: AppColors
-        //             .defaultColor // Change this color to your desired color
-        //         ),
+      ),
+      //  width: dialogWidth,
+      // btnOkOnPress: () {},
+      // btnOk: Container(
+      //   alignment: Alignment.bottomRight,
+      //   width: 150,
+      //   //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+      //   child: ElevatedButton(
+      //     style: ElevatedButton.styleFrom(
+      //         shape: RoundedRectangleBorder(
+      //             borderRadius: BorderRadius.circular(5)),
+      //         // fixedSize: const Size.fromHeight(3),
+      //         padding: EdgeInsets.zero,
+      //         backgroundColor: AppColors
+      //             .defaultColor // Change this color to your desired color
+      //         ),
 
-        //     onPressed: () {
-        //       department.departmentName = nameController.text;
-        //       department.remarks = remarksController.text;
-        //       department.status = screenController.selectedStatus.toString();
-        //       // industry.status=screenController.selectedStatus.toString();
-        //       screenController.updateDepartment(department);
-        //       Get.off(() => DepartmentList());
-        //     },
-        //     child: const Padding(
-        //       padding: EdgeInsets.all(8.0),
-        //       child: Text(
-        //         'Update',
-        //         style: TextStyle(color: AppColors.whiteColor),
-        //       ),
-        //     ),
-        //     // onPressed: widget.onClick
-        //   ),
-        // )
-        );
+      //     onPressed: () {
+      //       department.departmentName = nameController.text;
+      //       department.remarks = remarksController.text;
+      //       department.status = screenController.selectedStatus.toString();
+      //       // industry.status=screenController.selectedStatus.toString();
+      //       screenController.updateDepartment(department);
+      //       Get.off(() => DepartmentList());
+      //     },
+      //     child: const Padding(
+      //       padding: EdgeInsets.all(8.0),
+      //       child: Text(
+      //         'Update',
+      //         style: TextStyle(color: AppColors.whiteColor),
+      //       ),
+      //     ),
+      //     // onPressed: widget.onClick
+      //   ),
+      // )
+    );
 
     dialog.show();
   }

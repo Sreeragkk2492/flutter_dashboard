@@ -60,7 +60,16 @@ class EmployeeMenu extends StatelessWidget {
                     decoration: const InputDecoration(
                       labelText: 'User Name',
                       hintText: 'User Name',
-                      border: OutlineInputBorder(),
+                       labelStyle:
+                    TextStyle(color: AppColors.blackColor),
+                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.greycolor)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.defaultColor,
+                        width: 1.5)),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     // enableSuggestions: false,

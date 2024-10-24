@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_menu_controller.dart';
@@ -27,7 +28,16 @@ class ConditionalCompanyWidget extends StatelessWidget {
           decoration: InputDecoration(
             labelText: 'Company Name',
             hintText: 'Select Company',
-            border: OutlineInputBorder(),
+            labelStyle:
+                    TextStyle(color: AppColors.blackColor),
+                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.greycolor)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.defaultColor,
+                        width: 1.5)),
             floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
           validator: FormBuilderValidators.required(),
@@ -48,7 +58,16 @@ class ConditionalCompanyWidget extends StatelessWidget {
           initialValue: company!.companyName,///remove the null check
           decoration: InputDecoration(
             labelText: 'Company Name',
-            border: OutlineInputBorder(),
+             labelStyle:
+                    TextStyle(color: AppColors.blackColor),
+                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.greycolor)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.defaultColor,
+                        width: 1.5)),
             floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
           readOnly: true,

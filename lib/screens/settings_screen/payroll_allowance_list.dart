@@ -170,8 +170,8 @@ class PayrollAllowanceList extends StatelessWidget {
                                           index: index,
                                           cells: [
                                             DataCell(Text('${index + 1}')),
-                                            DataCell(
-                                                _buildAllowanceCell(allowances.allowanceName)),
+                                            DataCell(_buildAllowanceCell(
+                                                allowances.allowanceName)),
                                             DataCell(Text(allowances.isActive
                                                 .toString())),
                                             DataCell(TextButton(
@@ -216,7 +216,7 @@ class PayrollAllowanceList extends StatelessWidget {
     )));
   }
 
-   Widget _buildAllowanceCell(String name) {
+  Widget _buildAllowanceCell(String name) {
     String truncatedname =
         name.length > 15 ? '${name.substring(0, 15)}...' : name;
     return Tooltip(
@@ -239,180 +239,209 @@ class PayrollAllowanceList extends StatelessWidget {
         TextEditingController(text: allowance.remarks);
     final dialogWidth = screenWidth * 0.8;
     final dialog = AwesomeDialog(
-        alignment: Alignment.center,
-        context: context,
-        transitionAnimationDuration: const Duration(microseconds: 300),
-        dialogType: dialogType,
-        title: 'Update Allowance',
-        desc: '',
-        body: Padding(
-          padding: EdgeInsets.all(kDefaultPadding),
-          child: SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Container(
-                padding: EdgeInsets.all(kDefaultPadding),
-                // decoration: BoxDecoration(boxShadow: [
-                //   BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
-                // ]),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  // mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('Update Allowance',
-                        style: GoogleFonts.montserrat(
-                            fontSize: kDefaultPadding + kTextPadding,
-                            fontWeight: FontWeight.bold)),
-                    // buildSizedBoxH(kDefaultPadding),
-                    // Text(
-                    //   'USER INFORMATION',
-                    //   style: themeData.textTheme.labelLarge,
-                    // ),
-                    buildSizedBoxH(kDefaultPadding * 2),
-                    FormBuilder(
-                      //  key: _formKey,
-                      autovalidateMode: AutovalidateMode.disabled,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Flexible(
-                                child: FormBuilderTextField(
-                                  name: 'Allowance Name',
-                                  controller: nameController,
-                                  decoration: InputDecoration(
-                                    labelText: 'Allowance Name',
-                                    // hintText: 'test.user',
-                                    // helperText: '* To test registration fail: admin',
-                                    border: const OutlineInputBorder(),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                  ),
-                                  enableSuggestions: false,
-                                  validator: FormBuilderValidators.required(),
-                                  // onSaved: (value) => (_formData.username = value ?? ''),
-                                ),
-                              ),
-                              buildSizedboxW(kDefaultPadding),
-                              Flexible(
-                                child: FormBuilderDropdown(
-                                  name: 'Status',
-                                  decoration: InputDecoration(
-                                    labelText: 'Status',
-                                    // hintText: 'test@gmail.com',
-                                    border: const OutlineInputBorder(),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                  ),
-                                  // keyboardType: TextInputType.emailAddress,
-                                  validator: FormBuilderValidators.required(),
-                                  items: [
-                                    DropdownMenuItem(
-                                      child: Text('Active'),
-                                      value: 'Active',
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text('InActive'),
-                                      value: 'InActive',
-                                    ),
-                                  ],
-                                  initialValue: allowance.status,
-                                  onChanged: (value) =>
-                                      screenController.selectedStatus = value,
-                                  // onSaved: (value) => (_formData.email = value ?? ''),
-                                ),
-                              ),
-                            ],
-                          ),
-                          buildSizedBoxH(kDefaultPadding * 3),
-                          Row(
-                            children: [
-                              Flexible(
-                                child: FormBuilderTextField(
-                                  controller: remarksController,
-                                  name: 'Remarks',
-                                  decoration: const InputDecoration(
-                                    labelText: 'Remarks',
-                                    hintText: 'please add your remarks',
-                                    border: OutlineInputBorder(),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                  ),
-                                  enableSuggestions: false,
-                                  keyboardType: TextInputType.name,
-                                  validator: FormBuilderValidators.required(),
-                                  // onSaved: (value) => (_formData.firstname = value ?? ''),
-                                ),
-                              ),
-                              buildSizedboxW(kDefaultPadding),
-                            ],
-                          ),
-                          buildSizedBoxH(kDefaultPadding * 3),
-                           Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+      alignment: Alignment.center,
+      context: context,
+      transitionAnimationDuration: const Duration(microseconds: 300),
+      dialogType: dialogType,
+      title: 'Update Allowance',
+      desc: '',
+      body: Padding(
+        padding: EdgeInsets.all(kDefaultPadding),
+        child: SingleChildScrollView(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Container(
+              padding: EdgeInsets.all(kDefaultPadding),
+              // decoration: BoxDecoration(boxShadow: [
+              //   BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
+              // ]),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Update Allowance',
+                      style: GoogleFonts.montserrat(
+                          fontSize: kDefaultPadding + kTextPadding,
+                          fontWeight: FontWeight.bold)),
+                  // buildSizedBoxH(kDefaultPadding),
+                  // Text(
+                  //   'USER INFORMATION',
+                  //   style: themeData.textTheme.labelLarge,
+                  // ),
+                  buildSizedBoxH(kDefaultPadding * 2),
+                  FormBuilder(
+                    //  key: _formKey,
+                    autovalidateMode: AutovalidateMode.disabled,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        DefaultAddButton(
-                            buttonname: 'Update Allowace',
-                            onClick: () async{
-                                allowance.allowanceName = nameController.text;
-                                  allowance.remarks = remarksController.text;
-                                await screenController.updateAllowance(allowance);
-                             // Get.back();
-                            }
+                        Row(
+                          children: [
+                            Flexible(
+                              child: FormBuilderTextField(
+                                cursorColor: AppColors.defaultColor,
+                                name: 'Allowance Name',
+                                controller: nameController,
+                                decoration: InputDecoration(
+                                  labelText: 'Allowance Name',
+                                  // hintText: 'test.user',
+                                  // helperText: '* To test registration fail: admin',
+                                  labelStyle:
+                                      TextStyle(color: AppColors.blackColor),
+                                  border: OutlineInputBorder(),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.greycolor)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.defaultColor,
+                                          width: 1.5)),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                enableSuggestions: false,
+                                validator: FormBuilderValidators.required(),
+                                // onSaved: (value) => (_formData.username = value ?? ''),
+                              ),
                             ),
+                            buildSizedboxW(kDefaultPadding),
+                            Flexible(
+                              child: FormBuilderDropdown(
+                                name: 'Status',
+                                decoration: InputDecoration(
+                                  labelText: 'Status',
+                                  // hintText: 'test@gmail.com',
+                                  labelStyle:
+                                      TextStyle(color: AppColors.blackColor),
+                                  border: OutlineInputBorder(),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.greycolor)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.defaultColor,
+                                          width: 1.5)),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                // keyboardType: TextInputType.emailAddress,
+                                validator: FormBuilderValidators.required(),
+                                items: [
+                                  DropdownMenuItem(
+                                    child: Text('Active'),
+                                    value: 'Active',
+                                  ),
+                                  DropdownMenuItem(
+                                    child: Text('InActive'),
+                                    value: 'InActive',
+                                  ),
+                                ],
+                                initialValue: allowance.status,
+                                onChanged: (value) =>
+                                    screenController.selectedStatus = value,
+                                // onSaved: (value) => (_formData.email = value ?? ''),
+                              ),
+                            ),
+                          ],
+                        ),
+                        buildSizedBoxH(kDefaultPadding * 3),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: FormBuilderTextField(
+                                cursorColor: AppColors.defaultColor,
+                                controller: remarksController,
+                                name: 'Remarks',
+                                decoration: const InputDecoration(
+                                  labelText: 'Remarks',
+                                  hintText: 'please add your remarks',
+                                  labelStyle:
+                                      TextStyle(color: AppColors.blackColor),
+                                  border: OutlineInputBorder(),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.greycolor)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.defaultColor,
+                                          width: 1.5)),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                enableSuggestions: false,
+                                keyboardType: TextInputType.name,
+                                validator: FormBuilderValidators.required(),
+                                // onSaved: (value) => (_formData.firstname = value ?? ''),
+                              ),
+                            ),
+                            buildSizedboxW(kDefaultPadding),
+                          ],
+                        ),
+                        buildSizedBoxH(kDefaultPadding * 3),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            DefaultAddButton(
+                                buttonname: 'Update Allowace',
+                                onClick: () async {
+                                  allowance.allowanceName = nameController.text;
+                                  allowance.remarks = remarksController.text;
+                                  await screenController
+                                      .updateAllowance(allowance);
+                                  // Get.back();
+                                }),
+                          ],
+                        ),
+                        // Divider(
+                        //   indent: kDefaultPadding * 2,
+                        //   endIndent: kDefaultPadding * 2,
+                        // ),
+                        // buildSizedBoxH(kDefaultPadding * 3),
+                        buildSizedBoxH(kDefaultPadding * 3),
                       ],
                     ),
-                          // Divider(
-                          //   indent: kDefaultPadding * 2,
-                          //   endIndent: kDefaultPadding * 2,
-                          // ),
-                          // buildSizedBoxH(kDefaultPadding * 3),
-                          buildSizedBoxH(kDefaultPadding * 3),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              buildSizedBoxH(kDefaultPadding),
-            ]),
-          ),
+            ),
+            buildSizedBoxH(kDefaultPadding),
+          ]),
         ),
-        //  width: dialogWidth,
-        // btnOkOnPress: () {},
-        // btnOk: Container(
-        //   alignment: Alignment.bottomRight,
-        //   width: 150,
-        //   //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-        //   child: ElevatedButton(
-        //     style: ElevatedButton.styleFrom(
-        //         shape: RoundedRectangleBorder(
-        //             borderRadius: BorderRadius.circular(5)),
-        //         // fixedSize: const Size.fromHeight(3),
-        //         padding: EdgeInsets.zero,
-        //         backgroundColor: AppColors
-        //             .defaultColor // Change this color to your desired color
-        //         ),
+      ),
+      //  width: dialogWidth,
+      // btnOkOnPress: () {},
+      // btnOk: Container(
+      //   alignment: Alignment.bottomRight,
+      //   width: 150,
+      //   //  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+      //   child: ElevatedButton(
+      //     style: ElevatedButton.styleFrom(
+      //         shape: RoundedRectangleBorder(
+      //             borderRadius: BorderRadius.circular(5)),
+      //         // fixedSize: const Size.fromHeight(3),
+      //         padding: EdgeInsets.zero,
+      //         backgroundColor: AppColors
+      //             .defaultColor // Change this color to your desired color
+      //         ),
 
-        //     onPressed: () {
-        //       allowance.allowanceName = nameController.text;
-        //       allowance.remarks = remarksController.text;
-        //       allowance.status = screenController.selectedStatus.toString();
-        //       screenController.updateAllowance(allowance);
-        //       Get.off(() => PayrollAllowanceList());
-        //     },
-        //     child: const Padding(
-        //       padding: EdgeInsets.all(8.0),
-        //       child: Text(
-        //         'Update',
-        //         style: TextStyle(color: AppColors.whiteColor),
-        //       ),
-        //     ),
-        //     // onPressed: widget.onClick
-        //   ),
-        // )
-        );
+      //     onPressed: () {
+      //       allowance.allowanceName = nameController.text;
+      //       allowance.remarks = remarksController.text;
+      //       allowance.status = screenController.selectedStatus.toString();
+      //       screenController.updateAllowance(allowance);
+      //       Get.off(() => PayrollAllowanceList());
+      //     },
+      //     child: const Padding(
+      //       padding: EdgeInsets.all(8.0),
+      //       child: Text(
+      //         'Update',
+      //         style: TextStyle(color: AppColors.whiteColor),
+      //       ),
+      //     ),
+      //     // onPressed: widget.onClick
+      //   ),
+      // )
+    );
 
     dialog.show();
   }

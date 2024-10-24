@@ -148,7 +148,7 @@ class CompanyLeavetypeController extends GetxController {
       if (response.statusCode == 201) {
         print("Leave types added successfully");
         await awesomeSuccessDialog(message: 'Leave type created successfully',onOk: () {
-          Get.back();
+        //  Get.back();
         },);
        // Get.back();
         await fetchLeavesForCompany(); // Refresh the list after adding

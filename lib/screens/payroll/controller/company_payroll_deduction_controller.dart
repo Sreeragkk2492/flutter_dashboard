@@ -174,7 +174,7 @@ class CompanyPayrollDeductionController extends GetxController {
     } else {
       // Show success message
       awesomeOkDialog(message: "Deduction  added successfully",onOk: () {
-          Get.back();
+        //  Get.back();
       },);
       fetchCompanyPayrollDeduction();
 

@@ -141,7 +141,7 @@ RxBool isSortasc=true.obs;
       if (response.statusCode == 201) {
         print("Holidays added successfully");
         await awesomeSuccessDialog(message: 'Holiday created successfully',onOk: () {
-          Get.back();
+         // Get.back();
         },);
        // Get.back();
        await fetchHolidayForCompany();

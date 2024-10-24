@@ -4,6 +4,7 @@ import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
+import 'package:flutter_dashboard/core/widgets/ui_component_appbar_without_button.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/payroll/controller/company_pro_date_controller.dart';
@@ -30,52 +31,60 @@ class AddProcessingDate extends StatelessWidget {
       children: [
         Column(
           children: [
-            Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Container(
-                  height: 150,
-                  color: AppColors.defaultColor.withOpacity(0.6),
-                ),
-                Align(
-                  // heightFactor: 0.01,
-                  child: Container(
-                    height: 100,
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                    margin: EdgeInsets.all(kDefaultPadding),
-                    decoration: BoxDecoration(
-                        color: AppColors.bgGreyColor,
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 70,
-                          width: 70,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              image: DecorationImage(
-                                  image: AssetImage('assets/profile3.jpg'),
-                                  fit: BoxFit.cover)),
-                        ),
-                        buildSizedboxW(kDefaultPadding),
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Add Processing Day',
-                                style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold)),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+              Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+              child: UIComponenetsAppBarNoButton(
+                title: 'Add Processing Day',     
+                subtitle: '',
+                icon: Icon(Icons.rocket),
+              ),
             ),
-            buildSizedBoxH(kDefaultPadding * 3),
+            // Stack(
+            //   alignment: Alignment.bottomCenter,
+            //   children: [
+            //     Container(
+            //       height: 150,
+            //       color: AppColors.defaultColor.withOpacity(0.6),
+            //     ),
+            //     Align(
+            //       // heightFactor: 0.01,
+            //       child: Container(
+            //         height: 100,
+            //         alignment: Alignment.centerLeft,
+            //         padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+            //         margin: EdgeInsets.all(kDefaultPadding),
+            //         decoration: BoxDecoration(
+            //             color: AppColors.bgGreyColor,
+            //             borderRadius: BorderRadius.circular(12)),
+            //         child: Row(
+            //           children: [
+            //             Container(
+            //               height: 70,
+            //               width: 70,
+            //               decoration: BoxDecoration(
+            //                   borderRadius: BorderRadius.circular(12),
+            //                   image: DecorationImage(
+            //                       image: AssetImage('assets/profile3.jpg'),
+            //                       fit: BoxFit.cover)),
+            //             ),
+            //             buildSizedboxW(kDefaultPadding),
+            //             const Column(
+            //               mainAxisAlignment: MainAxisAlignment.center,
+            //               crossAxisAlignment: CrossAxisAlignment.start,
+            //               children: [
+            //                 Text('Add Processing Day',
+            //                     style: TextStyle(
+            //                         fontSize: 16.0,
+            //                         fontWeight: FontWeight.bold)),
+            //               ],
+            //             )
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // buildSizedBoxH(kDefaultPadding * 3),
             screenSize.width >= kScreenWidthLg
                 ? Padding(
                     padding: EdgeInsets.symmetric(
@@ -84,7 +93,7 @@ class AddProcessingDate extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Flexible(flex: 4, child: addprocessingdate()),
+                        Flexible(flex: 4, child: addprocessingdate(context)),
                         buildSizedboxW(kDefaultPadding),
                       ],
                     ),
@@ -95,7 +104,7 @@ class AddProcessingDate extends StatelessWidget {
                         vertical: kDefaultPadding + kTextPadding),
                     child: Column(
                       children: [
-                        addprocessingdate(),
+                        addprocessingdate(context),
                         buildSizedBoxH(kDefaultPadding),
                       ],
                     ),
@@ -106,180 +115,222 @@ class AddProcessingDate extends StatelessWidget {
     )));
   }
 
-  Widget addprocessingdate() {
-    return Container(
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(color: AppColors.bgGreyColor, spreadRadius: 5, blurRadius: 7)
-      ]),
-      child: Card(
-        color: AppColors.whiteColor,
-        clipBehavior: Clip.antiAlias,
-        child: Padding(
-          padding: EdgeInsets.all(kDefaultPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            // mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Add Processing Day',
-                  style: GoogleFonts.montserrat(
-                      fontSize: kDefaultPadding + kTextPadding,
-                      fontWeight: FontWeight.bold)),
-              buildSizedBoxH(kDefaultPadding * 2),
-              FormBuilder(
-                //  key: _formKey,
-                autovalidateMode: AutovalidateMode.disabled,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+  Widget addprocessingdate(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(kDefaultPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        // mainAxisSize: MainAxisSize.min,
+        children: [
+          // Text('Add Processing Day',
+          //     style: GoogleFonts.montserrat(
+          //         fontSize: kDefaultPadding + kTextPadding,
+          //         fontWeight: FontWeight.bold)),
+          // buildSizedBoxH(kDefaultPadding * 2),
+          FormBuilder(
+            //  key: _formKey,
+            autovalidateMode: AutovalidateMode.disabled,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Flexible(
-                          child: Obx(() {
-                            // Check if there's only one company (the logged-in user's company)
-                            if (employeeController.companydetails.isEmpty) {
-                              // Show loading indicator while fetching company details
-                              return Center(child: CircularProgressIndicator());
-                            }
-
-                            if (employeeController.isSuperAdmin.value) {
-                              // Dropdown for superadmin
-                              return FormBuilderDropdown<Company>(
-                                name: 'Company Name',
-                                decoration: InputDecoration(
-                                  labelText: 'Company Name',
-                                  hintText: 'Select Company',
-                                  border: OutlineInputBorder(),
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                ),
-                                validator: FormBuilderValidators.required(),
-                                items: employeeController.companydetails
-                                    .map((company) => DropdownMenuItem(
-                                          value: company,
-                                          child: Text(company.companyName),
-                                        ))
-                                    .toList(),
-                                onChanged: (value) {
-                                  screenController.onCompanySelected(
-                                      value!.id, value.companyCode);
-                                },
-                              );
-                            } else {
-                              // Single company display for company admin
-                              final company =
-                                  employeeController.companydetails[0];
-                             screenController.onCompanySelected(company.id,company.companyCode); 
-                              return FormBuilderTextField(
-                                name: 'Company Name',
-                                initialValue: company.companyName,
-                                decoration: InputDecoration(
-                                  labelText: 'Company Name',
-                                  border: OutlineInputBorder(),
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                ),
-                                readOnly: true,
-                              );
-                            }
-                          }),
-                        ),
-                        buildSizedboxW(kDefaultPadding),
-                        Flexible(
-                          child: FormBuilderDateTimePicker(
-                            controller:
-                                screenController.processingdayController,
-                            inputType: InputType.date,
-                            format: DateFormat('yyyy-MM-dd'),
-                            name: 'Date',
+                    Flexible(
+                      child: Obx(() {
+                        // Check if there's only one company (the logged-in user's company)
+                        if (employeeController.companydetails.isEmpty) {
+                          // Show loading indicator while fetching company details
+                          return Center(child: CircularProgressIndicator());
+                        }
+    
+                        if (employeeController.isSuperAdmin.value) {
+                          // Dropdown for superadmin
+                          return FormBuilderDropdown<Company>(
+                            name: 'Company Name',
                             decoration: InputDecoration(
-                              suffixIcon: Icon(Icons.calendar_month),
-                              labelText: 'Date',
-                              // hintText: 'test.user',
-                              // helperText: '* To test registration fail: admin',
-                              border: const OutlineInputBorder(),
+                              labelText: 'Company Name',
+                              hintText: 'Select Company',
+                              labelStyle:
+                                    TextStyle(color: AppColors.blackColor),
+                                border: OutlineInputBorder(),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.greycolor)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.defaultColor,
+                                        width: 1.5)),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                             ),
-                            // enableSuggestions: false,
                             validator: FormBuilderValidators.required(),
-                            // onSaved: (value) => (_formData.username = value ?? ''),
-                          ),
-                        ),
-                      ],
-                    ),
-                    buildSizedBoxH(kDefaultPadding * 3),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: FormBuilderDropdown(
-                            name: 'status',
-                            decoration: InputDecoration(
-                              labelText: 'status',
-                              // hintText: 'test@gmail.com',
-                              border: const OutlineInputBorder(),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                            ),
-                            // keyboardType: TextInputType.emailAddress,
-                            validator: FormBuilderValidators.required(),
-                            items: [
-                              DropdownMenuItem(
-                                child: Text('Active'),
-                                value: 'Active',
-                              ),
-                              DropdownMenuItem(
-                                child: Text('InActive'),
-                                value: 'InActive',
-                              ),
-                            ],
-                            initialValue: screenController.selectedStatus,
+                            items: employeeController.companydetails
+                                .map((company) => DropdownMenuItem(
+                                      value: company,
+                                      child: Text(company.companyName),
+                                    ))
+                                .toList(),
                             onChanged: (value) {
-                              screenController.selectedStatus = value;
+                              screenController.onCompanySelected(
+                                  value!.id, value.companyCode);
                             },
-                            // onSaved: (value) => (_formData.email = value ?? ''),
-                          ),
+                          );
+                        } else {
+                          // Single company display for company admin
+                          final company =
+                              employeeController.companydetails[0];
+                         screenController.onCompanySelected(company.id,company.companyCode); 
+                          return FormBuilderTextField(
+                            name: 'Company Name',
+                            initialValue: company.companyName,
+                            decoration: InputDecoration(
+                              labelText: 'Company Name',
+                              labelStyle:
+                                    TextStyle(color: AppColors.blackColor),
+                                border: OutlineInputBorder(),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.greycolor)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.defaultColor,
+                                        width: 1.5)),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                            ),
+                            readOnly: true,
+                          );
+                        }
+                      }),
+                    ),
+                    buildSizedboxW(kDefaultPadding),
+                    Flexible(
+                       child: Theme(
+                    data: Theme.of(context).copyWith(
+                      colorScheme: ColorScheme.light(
+                        primary: AppColors.defaultColor,
+                        onPrimary: Colors.white,
+                        
+                      ),
+                        inputDecorationTheme:
+                                          InputDecorationTheme(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                                      ),
+                    ),
+                      child: FormBuilderDateTimePicker(
+                        controller:
+                            screenController.processingdayController,
+                        inputType: InputType.date,
+                        format: DateFormat('yyyy-MM-dd'),
+                        name: 'Date',
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.calendar_month),
+                          labelText: 'Date',
+                          // hintText: 'test.user',
+                          // helperText: '* To test registration fail: admin',
+                          labelStyle:
+                                    TextStyle(color: AppColors.blackColor),
+                                border: OutlineInputBorder(),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.greycolor)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.defaultColor,
+                                        width: 1.5)),
+                          floatingLabelBehavior:
+                              FloatingLabelBehavior.always,
                         ),
-                        buildSizedboxW(kDefaultPadding),
-                        // Flexible(
-                        //   child: FormBuilderTextField(
-                        //     name: fieldfour,
-                        //     decoration: InputDecoration(
-                        //       labelText: labelfour,
-                        //        hintText: 'please add any remarks',
-                        //       border: const OutlineInputBorder(),
-                        //       floatingLabelBehavior: FloatingLabelBehavior.always,
-                        //     ),
-                        //     keyboardType: TextInputType.emailAddress,
-                        //     validator: FormBuilderValidators.required(),
-                        //     // onSaved: (value) => (_formData.email = value ?? ''),
-                        //   ),
-                        // ),
-                      ],
+                        // enableSuggestions: false,
+                        validator: FormBuilderValidators.required(),
+                        // onSaved: (value) => (_formData.username = value ?? ''),
+                      ),
                     ),
-                    buildSizedBoxH(kDefaultPadding * 3),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        DefaultAddButton(
-                            buttonname: 'Add Processing Day',
-                            onClick: () async {
-                              await screenController.addProcessingDate();
-                             // Get.back();
-                            }),
-                      ],
-                    ),
-                    // Divider(
-                    //   indent: kDefaultPadding * 2,
-                    //   endIndent: kDefaultPadding * 2,
-                    // ),
-                    buildSizedBoxH(kDefaultPadding * 3),
-                    // buildSizedBoxH(kDefaultPadding * 3),
+                    )
                   ],
                 ),
-              ),
-            ],
+                buildSizedBoxH(kDefaultPadding * 3),
+                Row(
+                  children: [
+                    Flexible(
+                      child: FormBuilderDropdown(
+                        name: 'status',
+                        decoration: InputDecoration(
+                          labelText: 'status',
+                          // hintText: 'test@gmail.com',
+                        labelStyle:
+                                    TextStyle(color: AppColors.blackColor),
+                                border: OutlineInputBorder(),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.greycolor)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppColors.defaultColor,
+                                        width: 1.5)),
+                          floatingLabelBehavior:
+                              FloatingLabelBehavior.always,
+                        ),
+                        // keyboardType: TextInputType.emailAddress,
+                        validator: FormBuilderValidators.required(),
+                        items: [
+                          DropdownMenuItem(
+                            child: Text('Active'),
+                            value: 'Active',
+                          ),
+                          DropdownMenuItem(
+                            child: Text('InActive'),
+                            value: 'InActive',
+                          ),
+                        ],
+                        initialValue: screenController.selectedStatus,
+                        onChanged: (value) {
+                          screenController.selectedStatus = value;
+                        },
+                        // onSaved: (value) => (_formData.email = value ?? ''),
+                      ),
+                    ),
+                    buildSizedboxW(kDefaultPadding),
+                    // Flexible(
+                    //   child: FormBuilderTextField(
+                    //     name: fieldfour,
+                    //     decoration: InputDecoration(
+                    //       labelText: labelfour,
+                    //        hintText: 'please add any remarks',
+                    //       border: const OutlineInputBorder(),
+                    //       floatingLabelBehavior: FloatingLabelBehavior.always,
+                    //     ),
+                    //     keyboardType: TextInputType.emailAddress,
+                    //     validator: FormBuilderValidators.required(),
+                    //     // onSaved: (value) => (_formData.email = value ?? ''),
+                    //   ),
+                    // ),
+                  ],
+                ),
+                buildSizedBoxH(kDefaultPadding * 3),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    DefaultAddButton(
+                        buttonname: 'Add Processing Day',
+                        onClick: () async {
+                          await screenController.addProcessingDate();
+                         // Get.back();
+                        }),
+                  ],
+                ),
+                // Divider(
+                //   indent: kDefaultPadding * 2,
+                //   endIndent: kDefaultPadding * 2,
+                // ),
+                buildSizedBoxH(kDefaultPadding * 3),
+                // buildSizedBoxH(kDefaultPadding * 3),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

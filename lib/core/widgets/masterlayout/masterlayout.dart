@@ -7,62 +7,70 @@ import 'package:flutter_dashboard/routes/routes.dart';
 
 final sidebarMenuConfigs = [
   SidebarMenuConfig(
-    parentTitle: 'MAIN MENU',
+      parentTitle: 'MAIN MENU',
       uri: Routes.DASHBOARD,
       icon: Icons.dashboard_rounded,
       title: (context) => Lang.of(context).dashboard,
-      visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
-      
+      visibleFor: [
+        'CMP_ADMIN',
+        'QTS_ADMIN'
+      ],
       children: [
-         SidebarChildMenuConfig(
-        uri: Routes.DASHBOARD,
-        icon: Icons.dashboard_sharp,
-        title: (context) => 'Dashboard',
-        visibleFor: ['CMP_ADMIN','QTS_ADMIN']
-      ),
+        SidebarChildMenuConfig(
+            uri: Routes.DASHBOARD,
+            icon: Icons.dashboard_sharp,
+            title: (context) => 'Dashboard',
+            visibleFor: ['CMP_ADMIN', 'QTS_ADMIN']),
       ]),
-      
+
   SidebarMenuConfig(
     uri: '',
     icon: Icons.interests_rounded,
     title: (context) => 'COMPANY',
     parentTitle: 'COMPANY',
-    visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
+    visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
     children: [
       SidebarChildMenuConfig(
         uri: Routes.CLISTALL,
         icon: Icons.list_alt,
-        title: (context) => 'List Companies', visibleFor: ['QTS_ADMIN'],
+        title: (context) => 'List Companies',
+        visibleFor: ['QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.COMAPANYMODULE,
-         icon: Icons.view_module,
-        title: (context) => 'Company Modules List', visibleFor: ['QTS_ADMIN'],
+        icon: Icons.view_module,
+        title: (context) => 'Company Modules List',
+        visibleFor: ['QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.COMPANYLEAVETYPE,
-         icon: Icons.line_weight_outlined,
-        title: (context) => ' Company Leave Types', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
+        icon: Icons.line_weight_outlined,
+        title: (context) => ' Company Leave Types',
+        visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.COMPANYHOLIDAY,
         icon: Icons.holiday_village,
-        title: (context) => ' Company Holiday List', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
+        title: (context) => ' Company Holiday List',
+        visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.CompanyMenuList,
         icon: Icons.menu,
-        title: (context) => 'Company Menu List', visibleFor: ['QTS_ADMIN'],
+        title: (context) => 'Company Menu List',
+        visibleFor: ['QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.CompanyWorkingShift,
         icon: Icons.work_history,
-        title: (context) => 'Company Working Shift', visibleFor: ['QTS_ADMIN'],
+        title: (context) => 'Company Working Shift',
+        visibleFor: ['QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.CompanyGroupList,
-         icon: Icons.group,
-        title: (context) => ' Company Group List', visibleFor: ['QTS_ADMIN'],
+        icon: Icons.group,
+        title: (context) => ' Company Group List',
+        visibleFor: ['QTS_ADMIN'],
       ),
     ],
   ),
@@ -71,18 +79,34 @@ final sidebarMenuConfigs = [
       icon: Icons.charging_station,
       title: (context) => 'EMPLOYEE',
       parentTitle: 'EMPLOYEE',
-      visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
-      
+      visibleFor: [
+        'CMP_ADMIN',
+        'QTS_ADMIN'
+      ],
       children: [
         SidebarChildMenuConfig(
           uri: Routes.EmployeeListAll,
           icon: Icons.list,
-          title: (context) => 'List Employees', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
+          title: (context) => 'List Employees',
+          visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
         ),
         SidebarChildMenuConfig(
           uri: Routes.EmployeeMenu,
           icon: Icons.menu,
-          title: (context) => 'List Employee Menus', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
+          title: (context) => 'List Employee Menus',
+          visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
+        ),
+        SidebarChildMenuConfig(
+          uri: Routes.EmployeeAttendenceDetails,
+          icon: Icons.menu,
+          title: (context) => 'Employee Attendence Details',
+          visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
+        ),
+        SidebarChildMenuConfig(
+          uri: Routes.EmployeeLeaveDays,
+          icon: Icons.menu,
+          title: (context) => 'Employee Leave Days',
+          visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
         ),
       ]),
   SidebarMenuConfig(
@@ -90,38 +114,44 @@ final sidebarMenuConfigs = [
     icon: Icons.interests_rounded,
     title: (context) => 'PAYROLL',
     parentTitle: 'PAYROLL',
-    visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
+    visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
     children: [
       SidebarChildMenuConfig(
         uri: Routes.CompanyPayrollDate,
         icon: Icons.date_range,
-        title: (context) => 'Companies Payroll Day', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
+        title: (context) => 'Companies Payroll Day',
+        visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.CompanyAllowanceDetails,
         icon: Icons.details,
-        title: (context) => 'Companies Allowance Details', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
+        title: (context) => 'Companies Allowance Details',
+        visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
       ),
 
       SidebarChildMenuConfig(
         uri: Routes.CompanyDeductionDetails,
         icon: Icons.details,
-        title: (context) => 'Company Deduction Details', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
-      ),
-       SidebarChildMenuConfig(
-        uri: Routes.EmployeePayrollSettings,
-        icon: Icons.details,
-        title: (context) => 'Employee Payroll Settings', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
+        title: (context) => 'Company Deduction Details',
+        visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
-        uri:Routes.AddEmployeePayslipGeneration,
-        icon: Icons.settings,
-        title: (context) => 'Employee Payslip Details', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
+        uri: Routes.EmployeePayrollSettings,
+        icon: Icons.details,
+        title: (context) => 'Employee Payroll Settings',
+        visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
       ),
-       SidebarChildMenuConfig(
-        uri:Routes.PayslipGenerator,
+      SidebarChildMenuConfig(
+        uri: Routes.AddEmployeePayslipGeneration,
+        icon: Icons.settings,
+        title: (context) => 'Employee Payslip Details',
+        visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
+      ),
+      SidebarChildMenuConfig(
+        uri: Routes.PayslipGenerator,
         icon: Icons.payment,
-        title: (context) => 'Employee Payslip Generator', visibleFor: ['CMP_ADMIN','QTS_ADMIN'],
+        title: (context) => 'Employee Payslip Generator',
+        visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
       ),
       //   SidebarChildMenuConfig(
       //   uri:Routes.PayrollProcessingDate,
@@ -144,39 +174,47 @@ final sidebarMenuConfigs = [
       SidebarChildMenuConfig(
         uri: Routes.IndustryList,
         icon: Icons.list,
-        title: (context) => 'Industry List', visibleFor: ['QTS_ADMIN'],
+        title: (context) => 'Industry List',
+        visibleFor: ['QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.DepartmentList,
         icon: Icons.list,
-        title: (context) => 'Department List', visibleFor: ['QTS_ADMIN'],
+        title: (context) => 'Department List',
+        visibleFor: ['QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.DesignationList,
         icon: Icons.list,
-        title: (context) => 'Designation List', visibleFor: ['QTS_ADMIN'],
+        title: (context) => 'Designation List',
+        visibleFor: ['QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.EmployementCategoryList,
         icon: Icons.list,
-        title: (context) => 'Employee Category List', visibleFor: ['QTS_ADMIN'],
+        title: (context) => 'Employee Category List',
+        visibleFor: ['QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.PayrollAllowanceList,
         icon: Icons.list,
-        title: (context) => 'Payroll Allowance List', visibleFor: ['QTS_ADMIN'],
+        title: (context) => 'Payroll Allowance List',
+        visibleFor: ['QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.PayrollDeductionList,
         icon: Icons.list,
-        title: (context) => 'Payroll Deduction List', visibleFor: ['QTS_ADMIN'],
+        title: (context) => 'Payroll Deduction List',
+        visibleFor: ['QTS_ADMIN'],
       ),
       SidebarChildMenuConfig(
         uri: Routes.SystemModules,
         icon: Icons.view_module_sharp,
-        title: (context) => 'System Modules', visibleFor: ['QTS_ADMIN'],
+        title: (context) => 'System Modules',
+        visibleFor: ['QTS_ADMIN'],
       ),
-    ], visibleFor: ['QTS_ADMIN'],
+    ],
+    visibleFor: ['QTS_ADMIN'],
   ),
   // SidebarMenuConfig(
   //   uri: Routes.PROFILE,

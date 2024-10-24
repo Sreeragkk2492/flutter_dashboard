@@ -38,6 +38,8 @@ class ApiUrls {
   static const GET_ADMIN_FOR_REPORTING = "/user/get_admins_for_reporting";
   static const GET_ALL_USER_BY_COMPANY_ID = "/user/get_users_by_company_id";
 
+static const GET_EMPLOYEE_LEAVE_REPORT = "/leave/get_leave_report";
+static const GET_EMPLOYEE_ATTENDENCE_REPORT = "/attendance_entry/get_attendance_report";
   static const ADD_EMPLOYEE_MENU =
       "/user_menu_permission/add_user_menu_permissions";
 

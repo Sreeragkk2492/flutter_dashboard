@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
@@ -39,13 +40,21 @@ class EmployeeFormWidget extends StatelessWidget {
               children: [
                 Flexible(
                   child: FormBuilderTextField(
+                    cursorColor: AppColors.defaultColor,
                     controller: screenController.firstNameController,
                     name: 'First Name',
                     decoration: InputDecoration(
                       labelText: 'First Name',
+                      labelStyle: TextStyle(color: AppColors.blackColor),
                       hintText: 'First Name',
                       // helperText: '* To test registration fail: admin',
                       border: const OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     enableSuggestions: false,
@@ -56,12 +65,20 @@ class EmployeeFormWidget extends StatelessWidget {
                 buildSizedboxW(kDefaultPadding),
                 Flexible(
                   child: FormBuilderTextField(
+                    cursorColor: AppColors.defaultColor,
                     controller: screenController.lastNameController,
                     name: 'Last Name',
                     decoration: InputDecoration(
                       labelText: 'Last Name',
+                      labelStyle: TextStyle(color: AppColors.blackColor),
                       hintText: 'Last Name',
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                       border: const OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     keyboardType: TextInputType.emailAddress,
@@ -88,7 +105,16 @@ class EmployeeFormWidget extends StatelessWidget {
                         decoration: InputDecoration(
                           labelText: 'Company Name',
                           hintText: 'Select Company',
-                          border: OutlineInputBorder(),
+                           labelStyle:
+                    TextStyle(color: AppColors.blackColor),
+                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.greycolor)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.defaultColor,
+                        width: 1.5)),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                         ),
                         validator: FormBuilderValidators.required(),
@@ -114,7 +140,14 @@ class EmployeeFormWidget extends StatelessWidget {
                         initialValue: company.companyName,
                         decoration: InputDecoration(
                           labelText: 'Company Name',
+                          labelStyle: TextStyle(color: AppColors.blackColor),
                           border: OutlineInputBorder(),
+                           enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColors.defaultColor, width: 1.5)),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                         ),
                         readOnly: true,
@@ -135,12 +168,20 @@ class EmployeeFormWidget extends StatelessWidget {
               children: [
                 Flexible(
                   child: FormBuilderTextField(
+                    cursorColor: AppColors.defaultColor,
                     controller: screenController.usernameController,
                     name: 'Username',
                     decoration: const InputDecoration(
                       labelText: 'Username',
                       hintText: 'Username',
+                      labelStyle: TextStyle(color: AppColors.blackColor),
                       border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     enableSuggestions: false,
@@ -152,12 +193,20 @@ class EmployeeFormWidget extends StatelessWidget {
                 buildSizedboxW(kDefaultPadding),
                 Flexible(
                   child: FormBuilderTextField(
+                    cursorColor: AppColors.defaultColor,
                     controller: screenController.passwordController,
                     name: 'Password',
                     decoration: const InputDecoration(
                       labelText: 'Password',
                       hintText: 'Password',
+                      labelStyle: TextStyle(color: AppColors.blackColor),
                       border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     keyboardType: TextInputType.name,
@@ -172,12 +221,20 @@ class EmployeeFormWidget extends StatelessWidget {
               children: [
                 Flexible(
                   child: FormBuilderTextField(
+                    cursorColor: AppColors.defaultColor,
                     controller: screenController.employeeIdController,
                     name: 'Employee ID',
                     decoration: const InputDecoration(
                       labelText: 'Employee ID',
                       hintText: 'Employee ID',
+                      labelStyle: TextStyle(color: AppColors.blackColor),
                       border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     enableSuggestions: false,
@@ -189,12 +246,20 @@ class EmployeeFormWidget extends StatelessWidget {
                 buildSizedboxW(kDefaultPadding),
                 Flexible(
                   child: FormBuilderTextField(
+                    cursorColor: AppColors.defaultColor,
                     controller: screenController.biometricIdController,
                     name: 'Biometric ID',
                     decoration: const InputDecoration(
                       labelText: 'Biometric ID',
                       hintText: 'Biometric ID',
+                      labelStyle: TextStyle(color: AppColors.blackColor),
                       border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     keyboardType: TextInputType.name,
@@ -215,7 +280,14 @@ class EmployeeFormWidget extends StatelessWidget {
                       decoration: const InputDecoration(
                         labelText: 'Reporting to ',
                         hintText: 'Reporting to ',
+                        labelStyle: TextStyle(color: AppColors.blackColor),
                         border: OutlineInputBorder(),
+                         enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: AppColors.defaultColor, width: 1.5)),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
                       // enableSuggestions: false,
@@ -243,7 +315,14 @@ class EmployeeFormWidget extends StatelessWidget {
                       decoration: const InputDecoration(
                         labelText: 'Employee Category',
                         hintText: 'Employee Category',
+                        labelStyle: TextStyle(color: AppColors.blackColor),
                         border: OutlineInputBorder(),
+                         enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: AppColors.defaultColor, width: 1.5)),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
                       // enableSuggestions: false,
@@ -275,7 +354,14 @@ class EmployeeFormWidget extends StatelessWidget {
                       decoration: const InputDecoration(
                         labelText: 'Designation',
                         hintText: 'Designation',
+                        labelStyle: TextStyle(color: AppColors.blackColor),
                         border: OutlineInputBorder(),
+                         enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: AppColors.defaultColor, width: 1.5)),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
                       // enableSuggestions: false,
@@ -303,7 +389,14 @@ class EmployeeFormWidget extends StatelessWidget {
                       decoration: const InputDecoration(
                         labelText: 'Usertype',
                         hintText: 'Usertype',
+                        labelStyle: TextStyle(color: AppColors.blackColor),
                         border: OutlineInputBorder(),
+                         enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: AppColors.defaultColor, width: 1.5)),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
                       // enableSuggestions: false,
@@ -330,21 +423,29 @@ class EmployeeFormWidget extends StatelessWidget {
               endIndent: kDefaultPadding * 2,
             ),
             buildSizedBoxH(kDefaultPadding * 3),
-            Text('Detail Information', 
-                  style: GoogleFonts.montserrat( 
-                      fontSize: kDefaultPadding + kTextPadding,
-                      fontWeight: FontWeight.bold)),
+            Text('Detail Information',
+                style: GoogleFonts.montserrat(
+                    fontSize: kDefaultPadding + kTextPadding,
+                    fontWeight: FontWeight.bold)),
             buildSizedBoxH(kDefaultPadding * 2),
             Row(
               children: [
                 Flexible(
                   child: FormBuilderTextField(
+                    cursorColor: AppColors.defaultColor,
                     controller: screenController.fatherNameController,
                     name: 'Father Name',
                     decoration: const InputDecoration(
                       labelText: 'Father Name',
                       hintText: 'Father Name',
+                      labelStyle: TextStyle(color: AppColors.blackColor),
                       border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     enableSuggestions: false,
@@ -356,12 +457,20 @@ class EmployeeFormWidget extends StatelessWidget {
                 buildSizedboxW(kDefaultPadding),
                 Flexible(
                   child: FormBuilderTextField(
+                    cursorColor: AppColors.defaultColor,
                     controller: screenController.motherNameController,
                     name: 'Mother Name',
                     decoration: const InputDecoration(
                       labelText: 'Mother Name',
                       hintText: 'Mother Name',
+                      labelStyle: TextStyle(color: AppColors.blackColor),
                       border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     keyboardType: TextInputType.name,
@@ -376,12 +485,20 @@ class EmployeeFormWidget extends StatelessWidget {
               children: [
                 Flexible(
                   child: FormBuilderTextField(
+                    cursorColor: AppColors.defaultColor,
                     controller: screenController.addressController,
                     name: 'Address',
                     decoration: const InputDecoration(
                       labelText: 'Address',
                       hintText: 'Address',
+                      labelStyle: TextStyle(color: AppColors.blackColor),
                       border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     enableSuggestions: false,
@@ -397,43 +514,72 @@ class EmployeeFormWidget extends StatelessWidget {
             Row(
               children: [
                 Flexible(
-                  child: FormBuilderDateTimePicker(
-                    inputType: InputType.date,
-                    format: DateFormat('yyyy-MM-dd'),
-                    controller: screenController.dobController,
-                    name: 'Date Of Birth',
-                    decoration: const InputDecoration(
-                      suffixIcon: Icon(Icons.calendar_month),
-                      labelText: 'Date Of Birth',
-                      hintText: 'Date Of Birth',
-                      border: OutlineInputBorder(),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                  child: Theme(
+                    data: Theme.of(context).copyWith(
+                      colorScheme: ColorScheme.light(
+                        primary: AppColors.defaultColor,
+                        onPrimary: Colors.white,
+                        
+                      ),
+                        inputDecorationTheme:
+                                          InputDecorationTheme(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                                      ),
                     ),
-                    // enableSuggestions: false,
-                    keyboardType: TextInputType.name,
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      (value) {
-                        if (value != null && value.isAfter(DateTime.now())) {
-                          return 'Date of birth cannot be in the future';
-                        }
-                        return null;
-                      },
-                    ]),
-                    lastDate: DateTime.now(),
+                    child: FormBuilderDateTimePicker(
+                      inputType: InputType.date,
+                      format: DateFormat('yyyy-MM-dd'),
+                      controller: screenController.dobController,
+                      name: 'Date Of Birth',
+                      decoration: const InputDecoration(
+                        suffixIcon: Icon(Icons.calendar_month),
+                        labelText: 'Date Of Birth',
+                        hintText: 'Date Of Birth',
+                        labelStyle: TextStyle(color: AppColors.blackColor),
+                       border: OutlineInputBorder(
+                         
+                       ), 
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      // enableSuggestions: false,
+                      keyboardType: TextInputType.name,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        (value) {
+                          if (value != null && value.isAfter(DateTime.now())) {
+                            return 'Date of birth cannot be in the future';
+                          }
+                          return null;
+                        },
+                      ]),
+                      lastDate: DateTime.now(),
 
-                    // onSaved: (value) => (_formData.firstname = value ?? ''),
+                      // onSaved: (value) => (_formData.firstname = value ?? ''),
+                    ),
                   ),
                 ),
                 buildSizedboxW(kDefaultPadding),
                 Flexible(
                   child: FormBuilderTextField(
+                      cursorColor: AppColors.defaultColor,
                     controller: screenController.phoneNumberController,
                     name: 'Phone Number',
                     decoration: const InputDecoration(
                       labelText: 'Phone Number',
                       hintText: 'Phone number',
+                     labelStyle: TextStyle(color: AppColors.blackColor),
                       border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     keyboardType: TextInputType.phone,
@@ -462,6 +608,19 @@ class EmployeeFormWidget extends StatelessWidget {
             Row(
               children: [
                 Flexible(
+                   child: Theme(
+                    data: Theme.of(context).copyWith(
+                      colorScheme: ColorScheme.light(
+                        primary: AppColors.defaultColor,
+                        onPrimary: Colors.white,
+                      ),
+                       inputDecorationTheme:
+                                          InputDecorationTheme(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                                      ),
+                    ),
                   child: FormBuilderDateTimePicker(
                     inputType: InputType.date,
                     format: DateFormat('yyyy-MM-dd'),
@@ -471,7 +630,11 @@ class EmployeeFormWidget extends StatelessWidget {
                       suffixIcon: Icon(Icons.calendar_month),
                       labelText: 'Joining Date',
                       hintText: 'Joining Date',
+                      labelStyle: TextStyle(color: AppColors.blackColor),
                       border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     // enableSuggestions: false,
@@ -489,33 +652,42 @@ class EmployeeFormWidget extends StatelessWidget {
                     // onSaved: (value) => (_formData.city = value ?? '')
                   ),
                 ),
+                ), 
                 buildSizedboxW(kDefaultPadding),
-                 Flexible(
-                child: FormBuilderDropdown(
-                  name: 'Status',
-                  decoration: InputDecoration(
-                    labelText: 'Status',
-                    // hintText: 'test@gmail.com',
-                    border: const OutlineInputBorder(),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                Flexible(
+                  child: FormBuilderDropdown(
+                    name: 'Status',
+                    decoration: InputDecoration(
+                      labelText: 'Status',
+                      // hintText: 'test@gmail.com',
+                      labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                    // keyboardType: TextInputType.emailAddress,
+                    validator: FormBuilderValidators.required(),
+                    items: [
+                      DropdownMenuItem(
+                        child: Text('Active'),
+                        value: 'Active',
+                      ),
+                      DropdownMenuItem(
+                        child: Text('InActive'),
+                        value: 'InActive',
+                      ),
+                    ],
+                    initialValue: screenController.selectedStatus,
+                    onChanged: (value) =>
+                        screenController.selectedStatus = value,
+                    // onSaved: (value) => (_formData.email = value ?? ''),
                   ),
-                  // keyboardType: TextInputType.emailAddress,
-                  validator: FormBuilderValidators.required(),
-                  items: [
-                    DropdownMenuItem(
-                      child: Text('Active'),
-                      value: 'Active',
-                    ),
-                    DropdownMenuItem(
-                      child: Text('InActive'),
-                      value: 'InActive',
-                    ),
-                  ],
-                  initialValue: screenController.selectedStatus,
-                  onChanged: (value) => screenController.selectedStatus = value,
-                  // onSaved: (value) => (_formData.email = value ?? ''),
                 ),
-              ),
                 buildSizedboxW(kDefaultPadding),
               ],
             ),

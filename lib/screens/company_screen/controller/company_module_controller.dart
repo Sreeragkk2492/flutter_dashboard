@@ -153,7 +153,7 @@ class CompanyModuleController extends GetxController {
     } else {
       // Show success message
       awesomeSuccessDialog(message: "Modules added successfully",onOk: () {
-         Get.back();
+       //  Get.back();
       },);
       fetchCompanyModules();
 

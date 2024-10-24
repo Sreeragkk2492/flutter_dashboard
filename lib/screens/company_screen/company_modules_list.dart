@@ -52,7 +52,16 @@ class ComapnyModules extends StatelessWidget {
               decoration: const InputDecoration(
                 labelText: 'Company',
                 hintText: 'Select Company',
+                 labelStyle:
+                    TextStyle(color: AppColors.blackColor),
                 border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.greycolor)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.defaultColor,
+                        width: 1.5)),
                 floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
               validator: FormBuilderValidators.required(),

@@ -247,6 +247,7 @@ class EmployeeController extends GetxController {
       },);
      // Get.back();
       await fetchUsers();
+      sortUsersAlphabetically();
     }
   }
 
@@ -277,10 +278,11 @@ class EmployeeController extends GetxController {
             throw FormatException("Unexpected data format: $jsonItem");
           }
         }).toList();
-        //sort users in alphabetic order
-        users.sort((a, b) => a.name.compareTo(b.name));
+        sortUsersAlphabetically();
+        // //sort users in alphabetic order
+        // users.sort((a, b) => a.name.compareTo(b.name));
 
-        filteredUsers.value = users;
+          filteredUsers.value = List.from(users); 
         // Update pagination info
         updateTotalPages();
         currentPage.value = 0; // Reset to first page when fetching new data
@@ -422,14 +424,21 @@ class EmployeeController extends GetxController {
     }
   }
 
+    void sortUsersAlphabetically() {
+    users.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+     filteredUsers.value = List.from(users); 
+  }
+
   // Modify the existing sorting logic
   void sortUsers() {
     if (isSortasc.value) {
-      filteredUsers.sort((a, b) => a.name.compareTo(b.name));
+     users.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      //sortUsersAlphabetically(); 
     } else {
-      filteredUsers.sort((a, b) => b.name.compareTo(a.name));
+       users.sort((a, b) => b.name.toLowerCase().compareTo(a.name.toLowerCase()));
     }
     isSortasc.value = !isSortasc.value;
+    filteredUsers.value = List.from(users); 
 
     // Reset to first page and update pagination info after sorting
     currentPage.value = 0;

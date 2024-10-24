@@ -113,7 +113,16 @@ class EmployeePayrollSettings extends StatelessWidget {
                       decoration: InputDecoration(
                         labelText: 'Company Name',
                         hintText: 'Select Company',
-                        border: OutlineInputBorder(),
+                         labelStyle:
+                    TextStyle(color: AppColors.blackColor),
+                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.greycolor)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.defaultColor,
+                        width: 1.5)),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
                       validator: FormBuilderValidators.required(),
@@ -137,7 +146,16 @@ class EmployeePayrollSettings extends StatelessWidget {
                       initialValue: company.companyName,
                       decoration: InputDecoration(
                         labelText: 'Company Name',
-                        border: OutlineInputBorder(),
+                         labelStyle:
+                    TextStyle(color: AppColors.blackColor),
+                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.greycolor)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.defaultColor,
+                        width: 1.5)),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
                       readOnly: true,
@@ -154,7 +172,16 @@ class EmployeePayrollSettings extends StatelessWidget {
                       decoration: const InputDecoration(
                         labelText: 'Employee',
                         hintText: 'Employee',
-                        border: OutlineInputBorder(),
+                         labelStyle:
+                    TextStyle(color: AppColors.blackColor),
+                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.greycolor)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.defaultColor,
+                        width: 1.5)),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
                       validator: FormBuilderValidators.required(),

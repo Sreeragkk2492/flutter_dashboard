@@ -61,9 +61,67 @@ class InvoiceController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+   // resetSelection(); 
     fetchUsersForCompany(companyId);
     ever(payslipDetails, (_) => update());
   }
+
+
+   // Method to reset selection state
+  // void resetSelection() {
+  //   isCompanySelected.value = false;
+  //   isUserSelected.value = false;
+  //   isYearSelected.value = false;
+  //   isMonthSelected.value = false;
+  //   selectedCompanyId.value = '';
+  //   selectedUserId.value = '';
+  //   selectedYear.value = '';
+  //   selectedMonth.value = '';
+  //   showTabBar.value = false;
+  //   noDataFound.value = false;
+
+  //   // Reset data
+  //   filteredUsers.clear();
+  //   users.clear();
+  //   payslip.clear();
+  //   allowances.clear();
+  //   deductions.clear();
+
+  //   // Reset totals
+  //   totalAllowances.value = 0;
+  //   totalDeductions.value = 0;
+
+  //   // Reset payslipDetails to default values
+  //   payslipDetails.value = PayslipDetails(
+  //     employeeId: '',
+  //     year: 0,
+  //     month: 0,
+  //     payperiodStartDate: DateTime.now(),
+  //     payperiodEndDate: DateTime.now(),
+  //     paydate: DateTime.now(),
+  //     paymentMethod: '',
+  //     totalAmount: 0,
+  //     overtimeHours: 0,
+  //     regularHours: 0,
+  //     leavedays: 0,
+  //     holidays: 0,
+  //     workfromhomeDays: 0,
+  //     projectCode: '',
+  //     location: '',
+  //     department: '',
+  //     remarks: '',
+  //     approved: false,
+  //     approvedBy: '',
+  //     payslipFileName: '',
+  //     status: '',
+  //     allowances: [],
+  //     deductions: [],
+  //     companyId: '',
+  //     userId: '',
+  //     isActive: false,
+  //     id: ''
+  //   );
+  // }
 
  // Set selected values for company, user, year, and month
 

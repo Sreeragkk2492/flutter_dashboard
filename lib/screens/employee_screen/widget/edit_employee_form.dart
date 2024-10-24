@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/models/company_models/company_models.dart';
@@ -52,6 +53,9 @@ class EditEmployeeForm extends StatelessWidget {
                     labelText: 'First Name',
                     hintText: 'First Name',
                     border: const OutlineInputBorder(),
+                     enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   validator: FormBuilderValidators.required(),
@@ -66,6 +70,9 @@ class EditEmployeeForm extends StatelessWidget {
                     labelText: 'Last Name',
                     hintText: 'Last Name',
                     border: const OutlineInputBorder(),
+                     enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   validator: FormBuilderValidators.required(),
@@ -84,6 +91,9 @@ class EditEmployeeForm extends StatelessWidget {
                     labelText: 'Father Name',
                     hintText: 'Father Name',
                     border: OutlineInputBorder(),
+                     enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   validator: FormBuilderValidators.required(),
@@ -98,6 +108,9 @@ class EditEmployeeForm extends StatelessWidget {
                     labelText: 'Mother Name',
                     hintText: 'Mother Name',
                     border: OutlineInputBorder(),
+                     enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   validator: FormBuilderValidators.required(),
@@ -113,6 +126,9 @@ class EditEmployeeForm extends StatelessWidget {
               labelText: 'Address',
               hintText: 'Address',
               border: OutlineInputBorder(),
+               enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
             validator: FormBuilderValidators.required(),
@@ -121,6 +137,19 @@ class EditEmployeeForm extends StatelessWidget {
           Row(
             children: [
               Flexible(
+                 child: Theme(
+                    data: Theme.of(context).copyWith(
+                      colorScheme: ColorScheme.light(
+                        primary: AppColors.defaultColor,
+                        onPrimary: Colors.white,
+                      ),
+                       inputDecorationTheme:
+                                          InputDecorationTheme(
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
+                                      ),
+                    ),
                 child: FormBuilderDateTimePicker(
                   inputType: InputType.date,
                   format: DateFormat('yyyy-MM-dd'),
@@ -145,6 +174,7 @@ class EditEmployeeForm extends StatelessWidget {
                   lastDate: DateTime.now(),
                 ),
               ),
+              ),
               buildSizedboxW(kDefaultPadding),
               Flexible(
                 child: FormBuilderTextField(
@@ -154,6 +184,9 @@ class EditEmployeeForm extends StatelessWidget {
                     labelText: 'Phone Number',
                     hintText: 'Phone number',
                     border: OutlineInputBorder(),
+                     enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.greycolor)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   keyboardType: TextInputType.phone,

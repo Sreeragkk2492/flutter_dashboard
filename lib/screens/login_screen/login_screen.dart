@@ -39,9 +39,9 @@ class LoginScreen extends StatelessWidget {
           child: Row(
             children: [
               Column(
-                children: [
+                children: [ 
                   Image.asset(
-                    'assets/l3.jpg',
+                    'assets/l3.jpg',  
                     width: screenWidth / 2,
                     height: screenHeight / 1.2,
                   ),
@@ -64,6 +64,7 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+
 
   Widget _buildTabletLayout(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -102,45 +103,46 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
- Widget _buildMobileLayout(BuildContext context) {
-  return Scaffold(
-    backgroundColor: AppColors.whiteColor,
-    body: LayoutBuilder(
-      builder: (context, constraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: constraints.maxHeight),
-            child: IntrinsicHeight(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/l3.jpg',
-                      width: double.infinity,
-                      height: constraints.maxHeight * 0.25, // 25% of screen height
-                    ),
-                    buildSizedBoxH(20),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: _buildForm(context),
+  Widget _buildMobileLayout(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.whiteColor,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/l3.jpg',
+                        width: double.infinity,
+                        height: constraints.maxHeight *
+                            0.25, // 25% of screen height
                       ),
-                    ),
-                  ],
+                      buildSizedBoxH(20),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: _buildForm(context),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      },
-    ),
-  );
-}
+          );
+        },
+      ),
+    );
+  }
 
   Widget _buildForm(BuildContext context) {
     return FormBuilder(
@@ -168,12 +170,22 @@ class LoginScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(bottom: kDefaultPadding * 2.5),
             child: FormBuilderTextField(
+               cursorColor: AppColors.defaultColor,
               name: 'Username',
               controller: screenController.usernameController,
               decoration: const InputDecoration(
                 labelText: 'Username',
                 hintText: 'Enter your Username',
+                labelStyle:
+                    TextStyle(color: AppColors.blackColor),
                 border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.greycolor)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.defaultColor,
+                        width: 1.5)),
                 floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
               enableSuggestions: false,
@@ -183,12 +195,22 @@ class LoginScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(bottom: kDefaultPadding * 5.0),
             child: FormBuilderTextField(
+              cursorColor: AppColors.defaultColor,
               name: 'Password',
-              controller:screenController.passwordController,
+              controller: screenController.passwordController,
               decoration: const InputDecoration(
                 labelText: 'Password',
                 hintText: 'Enter your Password',
+                 labelStyle:
+                    TextStyle(color: AppColors.blackColor),
                 border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.greycolor)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.defaultColor,
+                        width: 1.5)),
                 floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
               enableSuggestions: false,
@@ -199,7 +221,7 @@ class LoginScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(vertical: kDefaultPadding),
             child: SizedBox(
-                height: 40,
+                height: 50, 
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ButtonStyle(
@@ -214,34 +236,34 @@ class LoginScreen extends StatelessWidget {
                   ),
                 )),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: kDefaultPadding),
-            child: SizedBox(
-              height: 40,
-              width: double.infinity,
-              child: OutlinedButton(
-                onPressed: () {
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(builder: (context) => RegisterScreen()),
-                  // );
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Don\'t have an Account?',
-                      style: TextStyle(color: AppColors.blackColor),
-                    ),
-                    buildSizedboxW(kTextPadding),
-                    const Text(
-                      'Register Now',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.only(top: kDefaultPadding),
+          //   child: SizedBox(
+          //     height: 40,
+          //     width: double.infinity,
+          //     child: OutlinedButton(
+          //       onPressed: () {
+          //         // Navigator.of(context).push(
+          //         //   MaterialPageRoute(builder: (context) => RegisterScreen()),
+          //         // );
+          //       },
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         children: [
+          //           const Text(
+          //             'Don\'t have an Account?',
+          //             style: TextStyle(color: AppColors.blackColor),
+          //           ),
+          //           buildSizedboxW(kTextPadding),
+          //           const Text(
+          //             'Register Now',
+          //             style: TextStyle(color: Colors.blue),
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

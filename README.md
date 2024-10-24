@@ -2,6 +2,10 @@
 
 A new Flutter project.
 
+## Flutter Version
+
+This project uses Flutter **3.24.3**. Make sure you are using the correct version before building or contributing to the project.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

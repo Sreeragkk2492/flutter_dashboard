@@ -11,6 +11,7 @@ import 'package:flutter_dashboard/models/company_models/company_models.dart';
 import 'package:flutter_dashboard/models/employee_models/user_model.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
+import 'package:flutter_dashboard/screens/employee_screen/controller/employee_leave_days_controller.dart';
 import 'package:flutter_dashboard/screens/payroll/controller/generator_controller.dart';
 import 'package:flutter_dashboard/screens/payroll/controller/invoice_controller.dart';
 import 'package:flutter_dashboard/screens/payroll/controller/payroll_settings_controller.dart';
@@ -25,6 +26,7 @@ class PayslipGenerator extends StatelessWidget {
   PayslipGenerator({super.key});
 
   final screenController = Get.put(InvoiceController());
+  final empleavecontroller=Get.put(EmployeeLeaveDaysController());
   final employeeController = Get.put(EmployeeController());
 
   @override
@@ -34,16 +36,15 @@ class PayslipGenerator extends StatelessWidget {
         body: EntranceFader(
             child: ListView(
       children: [
-       Padding(
+        Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
           child: UIComponenetsAppBarNoButton(
             title: 'Employee Generated Payslip',
             subtitle: '',
             icon: Icon(Icons.rocket),
-
           ),
         ),
-        buildSizedBoxH(kDefaultPadding  ),
+        buildSizedBoxH(kDefaultPadding),
         screenSize.width >= kScreenWidthLg
             ? Padding(
                 padding: EdgeInsets.symmetric(
@@ -111,48 +112,69 @@ class PayslipGenerator extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.all(kDefaultPadding),
                           child: Obx(() {
-                             if (employeeController.companydetails.isEmpty) {
-                    // Show loading indicator while fetching company details
-                    return Center(child: CircularProgressIndicator());
-                  }
+                            if (employeeController.companydetails.isEmpty) {
+                              // Show loading indicator while fetching company details
+                              return Center(child: CircularProgressIndicator());
+                            }
 
-                  if (employeeController.isSuperAdmin.value) {
-                    // Dropdown for superadmin
-                    return FormBuilderDropdown<Company>(
-                      name: 'Company Name',
-                      decoration: InputDecoration(
-                        labelText: 'Company Name',
-                        hintText: 'Select Company',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      validator: FormBuilderValidators.required(),
-                      items: employeeController.companydetails
-                          .map((company) => DropdownMenuItem(
-                                value: company,
-                                child: Text(company.companyName),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        screenController.onCompanySelected(value!.id);
-                      },
-                    );
-                  } else {
-                    // Single company display for company admin
-                    final company = employeeController.companydetails[0];
-                    // employeeController.setSelectedCompany(
-                    //     company.id, company.companyCode);
-                    return FormBuilderTextField(
-                      name: 'Company Name',
-                      initialValue: company.companyName,
-                      decoration: InputDecoration(
-                        labelText: 'Company Name',
-                        border: OutlineInputBorder(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      readOnly: true,
-                    );
-                  }
+                            if (employeeController.isSuperAdmin.value) {
+                              // Dropdown for superadmin
+                              return FormBuilderDropdown<Company>(
+                                name: 'Company Name',
+                                decoration: InputDecoration(
+                                  labelText: 'Company Name',
+                                  hintText: 'Select Company',
+                                  labelStyle:
+                                      TextStyle(color: AppColors.blackColor),
+                                  border: OutlineInputBorder(),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.greycolor)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.defaultColor,
+                                          width: 1.5)),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                validator: FormBuilderValidators.required(),
+                                items: employeeController.companydetails
+                                    .map((company) => DropdownMenuItem(
+                                          value: company,
+                                          child: Text(company.companyName),
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {
+                                  screenController.onCompanySelected(value!.id);
+                                },
+                              );
+                            } else {
+                              // Single company display for company admin
+                              final company =
+                                  employeeController.companydetails[0];
+                              // employeeController.setSelectedCompany(
+                              //     company.id, company.companyCode);
+                              return FormBuilderTextField(
+                                name: 'Company Name',
+                                initialValue: company.companyName,
+                                decoration: InputDecoration(
+                                  labelText: 'Company Name',
+                                  labelStyle:
+                                      TextStyle(color: AppColors.blackColor),
+                                  border: OutlineInputBorder(),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.greycolor)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.defaultColor,
+                                          width: 1.5)),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                readOnly: true,
+                              );
+                            }
                           }),
                         ),
                       ),
@@ -164,12 +186,21 @@ class PayslipGenerator extends StatelessWidget {
                                 decoration: const InputDecoration(
                                   labelText: 'Employee',
                                   hintText: 'Employee',
+                                  labelStyle:
+                                      TextStyle(color: AppColors.blackColor),
                                   border: OutlineInputBorder(),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.greycolor)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.defaultColor,
+                                          width: 1.5)),
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                 ),
                                 validator: FormBuilderValidators.required(),
-                                items: screenController.filteredUsers
+                                items: empleavecontroller.filteredUsers 
                                     .map((user) => DropdownMenuItem(
                                           value: user,
                                           child: Text(user.name),
@@ -196,13 +227,22 @@ class PayslipGenerator extends StatelessWidget {
                             decoration: const InputDecoration(
                               labelText: 'Select Year',
                               hintText: 'Select Year',
+                              labelStyle:
+                                  TextStyle(color: AppColors.blackColor),
                               border: OutlineInputBorder(),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: AppColors.greycolor)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: AppColors.defaultColor,
+                                      width: 1.5)),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                             ),
                             validator: FormBuilderValidators.required(),
-                            items: List.generate(10,
-                                    (index) => DateTime.now().year - index)
+                            items: List.generate(
+                                    10, (index) => DateTime.now().year - index)
                                 .map((year) => DropdownMenuItem(
                                     value: year.toString(),
                                     child: Text(year.toString())))
@@ -222,7 +262,16 @@ class PayslipGenerator extends StatelessWidget {
                             decoration: const InputDecoration(
                               labelText: 'Select Month',
                               hintText: 'Select Month',
+                              labelStyle:
+                                  TextStyle(color: AppColors.blackColor),
                               border: OutlineInputBorder(),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: AppColors.greycolor)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: AppColors.defaultColor,
+                                      width: 1.5)),
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                             ),
@@ -247,13 +296,12 @@ class PayslipGenerator extends StatelessWidget {
                   ),
                   buildSizedBoxH(kDefaultPadding * 3),
                   Obx(() {
-                    if (
-                        !screenController.isUserSelected.value ||
+                    if (!screenController.isUserSelected.value ||
                         !screenController.isYearSelected.value ||
                         !screenController.isMonthSelected.value) {
                       return Center(
-                          child: Text(
-                              "Please select all the dropdowns to view."));
+                          child:
+                              Text("Please select all the dropdowns to view."));
                     } else if (screenController.isLoading.value) {
                       return Center(
                         child: CircularProgressIndicator(),
@@ -285,8 +333,7 @@ class PayslipGenerator extends StatelessWidget {
                                     context),
                             Divider(),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
@@ -321,8 +368,7 @@ class PayslipGenerator extends StatelessWidget {
                               ],
                             ),
                             buildSizedBoxH(kDefaultPadding * 3),
-                            Expanded(
-                                child: buildreimbersment('Reimbursement')),
+                            Expanded(child: buildreimbersment('Reimbursement')),
                           ],
                         ),
                       ));
@@ -638,7 +684,9 @@ class PayslipGenerator extends StatelessWidget {
                   'Total Allowance',
                   style: TextStyle(fontWeight: FontWeight.w600),
                 )),
-            Expanded(flex: 1, child: Text(screenController.totalAllowances.toString())),
+            Expanded(
+                flex: 1,
+                child: Text(screenController.totalAllowances.toString())),
           ],
         )
       ],
@@ -646,46 +694,66 @@ class PayslipGenerator extends StatelessWidget {
   }
 
   Widget buildPayrollSectionMobile(String title) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-      buildSizedBoxH(kDefaultPadding / 2),
-      Row(
-        children: [
-          Expanded(flex: 3, child: Text('Item', style: TextStyle(fontWeight: FontWeight.bold))),
-          Expanded(flex: 2, child: Text('Amount', style: TextStyle(fontWeight: FontWeight.bold))),
-          Expanded(flex: 1, child: Text('YTD', style: TextStyle(fontWeight: FontWeight.bold))),
-        ],
-      ),
-      buildSizedBoxH(kDefaultPadding / 2),
-      ...screenController.allowances.map((item) => Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
-        child: Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+        buildSizedBoxH(kDefaultPadding / 2),
+        Row(
           children: [
-            Expanded(flex: 3, child: Text(item.allowanceName, overflow: TextOverflow.ellipsis)),
-            Expanded(flex: 2, child: Text(item.amount.toString(), textAlign: TextAlign.right)),
-            Expanded(flex: 1, child: Text('0.00', textAlign: TextAlign.right)),
+            Expanded(
+                flex: 3,
+                child: Text('Item',
+                    style: TextStyle(fontWeight: FontWeight.bold))),
+            Expanded(
+                flex: 2,
+                child: Text('Amount',
+                    style: TextStyle(fontWeight: FontWeight.bold))),
+            Expanded(
+                flex: 1,
+                child:
+                    Text('YTD', style: TextStyle(fontWeight: FontWeight.bold))),
           ],
         ),
-      )),
-      Divider(),
-      Row(
-        children: [
-          Expanded(flex: 3, child: Text('Total Allowance', style: TextStyle(fontWeight: FontWeight.w600))),
-          Expanded(
-            flex: 3,
-            child: Text(
-              screenController.totalAllowances.toString(), // Replace with actual total
-              style: TextStyle(fontWeight: FontWeight.w600),
-              textAlign: TextAlign.right,
+        buildSizedBoxH(kDefaultPadding / 2),
+        ...screenController.allowances.map((item) => Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                      flex: 3,
+                      child: Text(item.allowanceName,
+                          overflow: TextOverflow.ellipsis)),
+                  Expanded(
+                      flex: 2,
+                      child: Text(item.amount.toString(),
+                          textAlign: TextAlign.right)),
+                  Expanded(
+                      flex: 1, child: Text('0.00', textAlign: TextAlign.right)),
+                ],
+              ),
+            )),
+        Divider(),
+        Row(
+          children: [
+            Expanded(
+                flex: 3,
+                child: Text('Total Allowance',
+                    style: TextStyle(fontWeight: FontWeight.w600))),
+            Expanded(
+              flex: 3,
+              child: Text(
+                screenController.totalAllowances
+                    .toString(), // Replace with actual total
+                style: TextStyle(fontWeight: FontWeight.w600),
+                textAlign: TextAlign.right,
+              ),
             ),
-          ),
-        ],
-      )
-    ],
-  );
-}
+          ],
+        )
+      ],
+    );
+  }
 
   Widget buildPayrollDeductionSection(
     String title,
@@ -746,54 +814,76 @@ class PayslipGenerator extends StatelessWidget {
                   'Total Deduction',
                   style: TextStyle(fontWeight: FontWeight.w600),
                 )),
-            Expanded(flex: 1, child: Text(screenController.totalDeductions.toString())),
+            Expanded(
+                flex: 1,
+                child: Text(screenController.totalDeductions.toString())),
           ],
         )
       ],
     );
   }
 
- Widget buildPayrollDeductionSectionMobile(String title) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-      buildSizedBoxH(kDefaultPadding / 2),
-      Row(
-        children: [
-          Expanded(flex: 3, child: Text('Item', style: TextStyle(fontWeight: FontWeight.bold))),
-          Expanded(flex: 2, child: Text('Amount', style: TextStyle(fontWeight: FontWeight.bold))),
-          Expanded(flex: 1, child: Text('YTD', style: TextStyle(fontWeight: FontWeight.bold))),
-        ],
-      ),
-      buildSizedBoxH(kDefaultPadding / 2),
-      ...screenController.deductions.map((item) => Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
-        child: Row(
+  Widget buildPayrollDeductionSectionMobile(String title) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+        buildSizedBoxH(kDefaultPadding / 2),
+        Row(
           children: [
-            Expanded(flex: 3, child: Text(item.deductionName, overflow: TextOverflow.ellipsis)),
-            Expanded(flex: 2, child: Text(item.amount.toString(), textAlign: TextAlign.right)),
-            Expanded(flex: 1, child: Text('0.00', textAlign: TextAlign.right)),
+            Expanded(
+                flex: 3,
+                child: Text('Item',
+                    style: TextStyle(fontWeight: FontWeight.bold))),
+            Expanded(
+                flex: 2,
+                child: Text('Amount',
+                    style: TextStyle(fontWeight: FontWeight.bold))),
+            Expanded(
+                flex: 1,
+                child:
+                    Text('YTD', style: TextStyle(fontWeight: FontWeight.bold))),
           ],
         ),
-      )),
-      Divider(),
-      Row(
-        children: [
-          Expanded(flex: 3, child: Text('Total Deduction', style: TextStyle(fontWeight: FontWeight.w600))),
-          Expanded(
-            flex: 3,
-            child: Text(
-              screenController.totalDeductions.toString(), // Replace with actual total
-              style: TextStyle(fontWeight: FontWeight.w600),
-              textAlign: TextAlign.right,
+        buildSizedBoxH(kDefaultPadding / 2),
+        ...screenController.deductions.map((item) => Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                      flex: 3,
+                      child: Text(item.deductionName,
+                          overflow: TextOverflow.ellipsis)),
+                  Expanded(
+                      flex: 2,
+                      child: Text(item.amount.toString(),
+                          textAlign: TextAlign.right)),
+                  Expanded(
+                      flex: 1, child: Text('0.00', textAlign: TextAlign.right)),
+                ],
+              ),
+            )),
+        Divider(),
+        Row(
+          children: [
+            Expanded(
+                flex: 3,
+                child: Text('Total Deduction',
+                    style: TextStyle(fontWeight: FontWeight.w600))),
+            Expanded(
+              flex: 3,
+              child: Text(
+                screenController.totalDeductions
+                    .toString(), // Replace with actual total
+                style: TextStyle(fontWeight: FontWeight.w600),
+                textAlign: TextAlign.right,
+              ),
             ),
-          ),
-        ],
-      )
-    ],
-  );
-}
+          ],
+        )
+      ],
+    );
+  }
 
   Widget buildreimbersment(
     String title,

@@ -256,13 +256,23 @@ class EmployementCategoryList extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: FormBuilderTextField(
+                                  cursorColor: AppColors.defaultColor,
                                   name: 'Category Name',
                                   controller: nameController,
                                   decoration: InputDecoration(
                                     labelText: 'Category Name',
                                     // hintText: 'test.user',
                                     // helperText: '* To test registration fail: admin',
-                                    border: const OutlineInputBorder(),
+                                     labelStyle:
+                    TextStyle(color: AppColors.blackColor),
+                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.greycolor)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.defaultColor,
+                        width: 1.5)),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                   ),
@@ -278,7 +288,16 @@ class EmployementCategoryList extends StatelessWidget {
                                   decoration: InputDecoration(
                                     labelText: 'Status',
                                     // hintText: 'test@gmail.com',
-                                    border: const OutlineInputBorder(),
+                                     labelStyle:
+                    TextStyle(color: AppColors.blackColor),
+                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.greycolor)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.defaultColor,
+                        width: 1.5)),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                   ),
@@ -307,12 +326,22 @@ class EmployementCategoryList extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: FormBuilderTextField(
+                                  cursorColor: AppColors.defaultColor,
                                   controller: remarksController,
                                   name: 'Remarks',
                                   decoration: const InputDecoration(
                                     labelText: 'Remarks',
                                     hintText: 'Test',
-                                    border: OutlineInputBorder(),
+                                     labelStyle:
+                    TextStyle(color: AppColors.blackColor),
+                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.greycolor)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: AppColors.defaultColor,
+                        width: 1.5)),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                   ),

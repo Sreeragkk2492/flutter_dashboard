@@ -57,7 +57,13 @@ class CompanyAllowanceDetails extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: 'Company Name',
                   hintText: 'Select Company',
+                  labelStyle: TextStyle(color: AppColors.blackColor),
                   border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.greycolor)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: AppColors.defaultColor, width: 1.5)),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
                 validator: FormBuilderValidators.required(),
@@ -85,7 +91,13 @@ class CompanyAllowanceDetails extends StatelessWidget {
                 initialValue: company.companyName,
                 decoration: InputDecoration(
                   labelText: 'Company Name',
+                  labelStyle: TextStyle(color: AppColors.blackColor),
                   border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.greycolor)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: AppColors.defaultColor, width: 1.5)),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
                 readOnly: true,
@@ -255,8 +267,8 @@ class CompanyAllowanceDetails extends StatelessWidget {
                                                 //     .companypayrollallowance
                                                 //     .value.companyId
                                                 //     )),
-                                                DataCell(
-                                                    _buildAllowanceCell(allowance.allowance)),
+                                                DataCell(_buildAllowanceCell(
+                                                    allowance.allowance)),
                                                 DataCell(Text(screenController
                                                     .companypayrollallowance
                                                     .value
@@ -294,7 +306,7 @@ class CompanyAllowanceDetails extends StatelessWidget {
     )));
   }
 
-   Widget _buildAllowanceCell(String name) {
+  Widget _buildAllowanceCell(String name) {
     String truncatedname =
         name.length > 15 ? '${name.substring(0, 15)}...' : name;
     return Tooltip(

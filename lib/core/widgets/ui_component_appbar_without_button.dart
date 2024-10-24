@@ -24,16 +24,16 @@ class _UIComponenetsAppBarState extends State<UIComponenetsAppBarNoButton> {
     final themedata = Theme.of(context);
     final mediaQueryData = MediaQuery.of(context);
     return Container(
-      decoration: BoxDecoration(
-        color: AppColors.whiteColor,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.bgGreyColor,
-            spreadRadius: 5,
-            blurRadius: 7, 
-          )
-        ],
-        borderRadius: BorderRadius.circular(kDefaultPadding / 2)),
+      // decoration: BoxDecoration(
+      //   color: AppColors.whiteColor,
+      //   boxShadow: [
+      //     BoxShadow(
+      //       color: AppColors.bgGreyColor,
+      //       spreadRadius: 5,
+      //       blurRadius: 7, 
+      //     )
+      //   ],
+      //   borderRadius: BorderRadius.circular(kDefaultPadding / 2)),
       padding: EdgeInsets.symmetric(
           horizontal: mediaQueryData.size.width > kScreenWidthSm
               ? kDefaultPadding * 1.5

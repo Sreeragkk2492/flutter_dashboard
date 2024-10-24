@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/dialog_widgets.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
@@ -41,7 +42,12 @@ class CompanyFormWidget extends StatelessWidget {
                     decoration: const InputDecoration(
                       labelText: 'Category/Industry',
                      // hintText: 'Category/Industry',
+                       labelStyle: TextStyle(color: AppColors.blackColor),
                       border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     // enableSuggestions: false,
@@ -63,12 +69,18 @@ class CompanyFormWidget extends StatelessWidget {
               buildSizedboxW(kDefaultPadding),
               Flexible(
                 child: FormBuilderTextField(
+                  cursorColor: AppColors.defaultColor,
                   controller: screenController.companyCodeController,
                   name: 'Company Code',
                   decoration: InputDecoration(
                     labelText: 'Company Code',
                    // hintText: 'test@gmail.com',
-                    border: const OutlineInputBorder(),
+                     labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   keyboardType: TextInputType.emailAddress,
@@ -83,12 +95,18 @@ class CompanyFormWidget extends StatelessWidget {
             children: [
               Flexible(
                 child: FormBuilderTextField(
+                  cursorColor: AppColors.defaultColor, 
                   controller: screenController.companyNameController,
                   name: 'Company Name',
                   decoration: const InputDecoration(
                     labelText: 'Company Name',
                    // hintText: 'Test',
-                    border: OutlineInputBorder(),
+                     labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   enableSuggestions: false,
@@ -136,7 +154,12 @@ class CompanyFormWidget extends StatelessWidget {
                   decoration: InputDecoration(
                     labelText: 'Status',
                     // hintText: 'test@gmail.com',
-                    border: const OutlineInputBorder(),
+                     labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   // keyboardType: TextInputType.emailAddress,
@@ -159,12 +182,18 @@ class CompanyFormWidget extends StatelessWidget {
               buildSizedboxW(kDefaultPadding),
               Flexible(
                 child: FormBuilderTextField(
+                  cursorColor: AppColors.defaultColor, 
                   controller: screenController.groupNameController,
                   name: 'Group Name',
                   decoration: const InputDecoration(
                     labelText: 'Group Name',
                    // hintText: 'User',
-                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   keyboardType: TextInputType.name,
@@ -189,12 +218,18 @@ class CompanyFormWidget extends StatelessWidget {
             children: [
               Flexible(
                 child: FormBuilderTextField(
+                  cursorColor: AppColors.defaultColor,
                   controller: screenController.legalNameController,
                   name: 'Legal Name',
                   decoration: const InputDecoration(
                     labelText: 'Legal Name',
                    // hintText: 'Legal Name',
-                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   enableSuggestions: false,
@@ -206,12 +241,18 @@ class CompanyFormWidget extends StatelessWidget {
               buildSizedboxW(kDefaultPadding),
               Flexible(
                 child: FormBuilderTextField(
+                  cursorColor: AppColors.defaultColor,
                   controller: screenController.founderorOwnerController,
                   name: 'Founder/Owner',
                   decoration: const InputDecoration(
                     labelText: 'Founder/Owner',
                    // hintText: 'Founder/Owner',
-                    border: OutlineInputBorder(),
+                     labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   keyboardType: TextInputType.name,
@@ -226,12 +267,18 @@ class CompanyFormWidget extends StatelessWidget {
             children: [
               Flexible(
                 child: FormBuilderTextField(
+                  cursorColor: AppColors.defaultColor,
                   controller: screenController.emailController,
                   name: 'Email',
                   decoration: const InputDecoration(
                     labelText: 'Email',
                     // hintText: 'Email',
-                    border: OutlineInputBorder(),
+                     labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   enableSuggestions: false,
@@ -246,12 +293,18 @@ class CompanyFormWidget extends StatelessWidget {
               buildSizedboxW(kDefaultPadding),
               Flexible(
                 child: FormBuilderTextField(
+                  cursorColor: AppColors.defaultColor,
                   controller: screenController.panController,
                   name: 'Pan',
                   decoration: const InputDecoration(
                     labelText: 'Pan',
                     // hintText: 'Pan',
-                    border: OutlineInputBorder(),
+                      labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   keyboardType: TextInputType.name,
@@ -266,12 +319,18 @@ class CompanyFormWidget extends StatelessWidget {
             children: [
               Flexible(
                 child: FormBuilderTextField(
+                  cursorColor: AppColors.defaultColor,
                   controller: screenController.whatsappController,
                   name: 'Whatsapp',
                   decoration: const InputDecoration(
                     labelText: 'Whatsapp',
                     // hintText: 'Whatsapp',
-                    border: OutlineInputBorder(),
+                     labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   enableSuggestions: false,
@@ -298,12 +357,18 @@ class CompanyFormWidget extends StatelessWidget {
               buildSizedboxW(kDefaultPadding),
               Flexible(
                 child: FormBuilderTextField(
+                  cursorColor: AppColors.defaultColor,
                   controller: screenController.phonenumberController,
                   name: 'Phone Number',
                   decoration: const InputDecoration(
                     labelText: 'Phone Number',
                     // hintText: 'Phone Number',
-                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   keyboardType: TextInputType.name,
@@ -330,12 +395,18 @@ class CompanyFormWidget extends StatelessWidget {
           ),
           buildSizedBoxH(kDefaultPadding * 2),
           FormBuilderTextField(
+            cursorColor: AppColors.defaultColor, 
             controller: screenController.addressController,
             name: 'Address',
             decoration: const InputDecoration(
               labelText: 'Address',
               // hintText: 'A-xyz test near test',
-              border: OutlineInputBorder(),
+               labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
             enableSuggestions: false,
@@ -344,12 +415,18 @@ class CompanyFormWidget extends StatelessWidget {
           ),
           buildSizedBoxH(kDefaultPadding * 2),
           FormBuilderTextField(
+            cursorColor: AppColors.defaultColor,
             controller: screenController.landmarkController,
             name: 'Landmark',
             decoration: const InputDecoration(
               labelText: 'Landmark',
               // hintText: 'Landmark',
-              border: OutlineInputBorder(),
+               labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
             enableSuggestions: false,
@@ -376,7 +453,12 @@ class CompanyFormWidget extends StatelessWidget {
                   decoration: const InputDecoration(
                     labelText: 'City',
                     // hintText: 'Surat',
-                    border: OutlineInputBorder(),
+                     labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   // enableSuggestions: false,
@@ -407,7 +489,12 @@ class CompanyFormWidget extends StatelessWidget {
                   decoration: const InputDecoration(
                     labelText: 'State',
                     // hintText: 'State',
-                    border: OutlineInputBorder(),
+                     labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   //keyboardType: TextInputType.text,
@@ -442,7 +529,12 @@ class CompanyFormWidget extends StatelessWidget {
                   decoration: const InputDecoration(
                     labelText: 'Country',
                     // hintText: 'Country',
-                    border: OutlineInputBorder(),
+                     labelStyle: TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   // keyboardType: TextInputType.text,

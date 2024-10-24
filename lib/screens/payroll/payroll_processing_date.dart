@@ -18,7 +18,7 @@ class CompanyPayrollDate extends StatelessWidget {
   final _dataTableHorizontalScrollController = ScrollController();
   final screenController = Get.put(CompanyProccesingDateController());
   final DateFormat dateFormat =
-      DateFormat('yyyy-MM-dd'); // Updated to show only date
+      DateFormat('d'); // Updated to show only date
   @override
   Widget build(BuildContext context) {
     return PortalMasterLayout(

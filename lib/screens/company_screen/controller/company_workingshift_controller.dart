@@ -81,7 +81,7 @@ class CompanyWorkingshiftController extends GetxController {
     } else {
       final message = result.right['message'];
       await awesomeSuccessDialog(message:"shift created successfully ",onOk: () {
-         Get.back();
+       //  Get.back();
       },);
      // Get.back();
       await fetchCompanyWorkingShifts();

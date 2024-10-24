@@ -72,7 +72,7 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
             return SingleChildScrollView(
               // physics: NeverScrollableScrollPhysics(),
 
-              child: Padding(
+              child: Padding( 
                   padding: EdgeInsets.only(
                       bottom: kDefaultPadding / 2,
                       top: kDefaultPadding,
@@ -217,14 +217,20 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
                                                 child: Text(payslip.name),
                                               )),
                                               DataCell(_buildDetailsCell(
-                                                  empId: payslip.employeeId??'null',
-                                                  year: payslip.year.toString()??'null',
-                                                  month:
-                                                      payslip.month.toString()??'null',
+                                                  empId: payslip.employeeId ??
+                                                      'null',
+                                                  year:
+                                                      payslip.year.toString() ??
+                                                          'null',
+                                                  month: payslip.month
+                                                          .toString() ??
+                                                      'null',
                                                   address: payslip.address
-                                                      .toString()??'null',
+                                                          .toString() ??
+                                                      'null',
                                                   phone: payslip.phoneNumber
-                                                      .toString()??'null ')),
+                                                          .toString() ??
+                                                      'null ')),
                                               ...screenController.companyPayroll
                                                   .map((payroll) {
                                                 var amount = 0.0;
@@ -372,7 +378,13 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
                       decoration: InputDecoration(
                         labelText: 'Company Name',
                         hintText: 'Select Company',
+                        labelStyle: TextStyle(color: AppColors.blackColor),
                         border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.greycolor)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: AppColors.defaultColor, width: 1.5)),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
                       validator: FormBuilderValidators.required(),
@@ -398,7 +410,13 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
                       initialValue: company.companyName,
                       decoration: InputDecoration(
                         labelText: 'Company Name',
+                        labelStyle: TextStyle(color: AppColors.blackColor),
                         border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.greycolor)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: AppColors.defaultColor, width: 1.5)),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
                       readOnly: true,
@@ -444,7 +462,13 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
                   decoration: const InputDecoration(
                     labelText: 'Select Year',
                     hintText: 'Select Year',
+                    labelStyle: TextStyle(color: AppColors.blackColor),
                     border: OutlineInputBorder(),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.greycolor)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   validator: FormBuilderValidators.required(),
@@ -468,7 +492,13 @@ class AddEmployeePayslipGeneration extends StatelessWidget {
                   decoration: const InputDecoration(
                     labelText: 'Select Month',
                     hintText: 'Select Month',
+                    labelStyle: TextStyle(color: AppColors.blackColor),
                     border: OutlineInputBorder(),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.greycolor)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   validator: FormBuilderValidators.required(),

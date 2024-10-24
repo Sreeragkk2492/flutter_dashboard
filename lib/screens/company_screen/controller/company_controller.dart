@@ -107,7 +107,7 @@ class CompanyController extends GetxController {
       await awesomeSuccessDialog(
           message: message,
           onOk: () {
-            Get.back();
+           // Get.back();
           });
       // Get.back();
       await fetchCompanyDetails();
@@ -163,7 +163,7 @@ class CompanyController extends GetxController {
       await awesomeSuccessDialog(
           message: message,
           onOk: () {
-            Get.back();
+           // Get.back();
           });
       //  Get.back();
       await fetchCompanyDetails();

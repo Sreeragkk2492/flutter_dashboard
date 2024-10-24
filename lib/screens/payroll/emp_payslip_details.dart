@@ -116,7 +116,13 @@ class PayslipDetails extends StatelessWidget {
                       decoration: InputDecoration(
                         labelText: 'Company Name',
                         hintText: 'Select Company',
+                        labelStyle: TextStyle(color: AppColors.blackColor),
                         border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.greycolor)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: AppColors.defaultColor, width: 1.5)),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
                       validator: FormBuilderValidators.required(),
@@ -140,7 +146,13 @@ class PayslipDetails extends StatelessWidget {
                       initialValue: company.companyName,
                       decoration: InputDecoration(
                         labelText: 'Company Name',
+                        labelStyle: TextStyle(color: AppColors.blackColor),
                         border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.greycolor)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: AppColors.defaultColor, width: 1.5)),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
                       readOnly: true,
@@ -157,7 +169,13 @@ class PayslipDetails extends StatelessWidget {
                       decoration: const InputDecoration(
                         labelText: 'Employee',
                         hintText: 'Employee',
+                        labelStyle: TextStyle(color: AppColors.blackColor),
                         border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.greycolor)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: AppColors.defaultColor, width: 1.5)),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
                       validator: FormBuilderValidators.required(),
@@ -186,7 +204,13 @@ class PayslipDetails extends StatelessWidget {
                   decoration: const InputDecoration(
                     labelText: 'Select Year',
                     hintText: 'Select Year',
+                    labelStyle: TextStyle(color: AppColors.blackColor),
                     border: OutlineInputBorder(),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.greycolor)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   validator: FormBuilderValidators.required(),
@@ -210,7 +234,13 @@ class PayslipDetails extends StatelessWidget {
                   decoration: const InputDecoration(
                     labelText: 'Select Month',
                     hintText: 'Select Month',
+                    labelStyle: TextStyle(color: AppColors.blackColor),
                     border: OutlineInputBorder(),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.greycolor)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: AppColors.defaultColor, width: 1.5)),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   validator: FormBuilderValidators.required(),
