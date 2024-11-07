@@ -42,7 +42,7 @@ class AddEmployeePayslip extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               child: UIComponenetsAppBarNoButton(
                 title: 'Verify Employee Payslip',    
-                subtitle: '',
+                //subtitle: '',
                 icon: Icon(Icons.rocket),
               ),
             ),

@@ -36,7 +36,7 @@ class AddDesignation extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               child: UIComponenetsAppBarNoButton(
                 title: 'Add Designation',      
-                subtitle: '',
+               // subtitle: '',
                 icon: Icon(Icons.rocket),
               ),
             ),

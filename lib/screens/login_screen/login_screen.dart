@@ -103,46 +103,80 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
+  // Widget _buildMobileLayout(BuildContext context) {
+  //   return Scaffold(
+  //     backgroundColor: AppColors.whiteColor,
+  //     body: LayoutBuilder(
+  //       builder: (context, constraints) {
+  //         return SingleChildScrollView(
+  //           child: ConstrainedBox(
+  //             constraints: BoxConstraints(minHeight: constraints.maxHeight),
+  //             child: IntrinsicHeight(
+  //               child: Padding(
+  //                 padding: const EdgeInsets.all(16),
+  //                 child: Column(
+  //                   children: [
+  //                     Image.asset(
+  //                       'assets/l3.jpg',
+  //                       width: double.infinity,
+  //                       height: constraints.maxHeight *
+  //                           0.25, // 25% of screen height
+  //                     ),
+  //                     buildSizedBoxH(20),
+  //                     Expanded(
+  //                       child: Container(
+  //                         padding: EdgeInsets.all(10),
+  //                         decoration: BoxDecoration(
+  //                           color: Colors.white,
+  //                           borderRadius: BorderRadius.circular(20),
+  //                         ),
+  //                         child: _buildForm(context),
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
   Widget _buildMobileLayout(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.whiteColor,
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: IntrinsicHeight(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        'assets/l3.jpg',
-                        width: double.infinity,
-                        height: constraints.maxHeight *
-                            0.25, // 25% of screen height
-                      ),
-                      buildSizedBoxH(20),
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: _buildForm(context),
-                        ),
-                      ),
-                    ],
-                  ),
+  return Scaffold(
+    backgroundColor: AppColors.whiteColor,
+    body: SafeArea(  // Added SafeArea for better edge handling
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.25,
+                child: Image.asset(
+                  'assets/l3.jpg',
+                  width: double.infinity,
+                  fit: BoxFit.contain,
                 ),
               ),
-            ),
-          );
-        },
+              buildSizedBoxH(20),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: _buildForm(context),
+              ),
+            ],
+          ),
+        ),
       ),
-    );
-  }
+    ),
+  );
+} 
 
   Widget _buildForm(BuildContext context) {
     return FormBuilder(
@@ -218,24 +252,21 @@ class LoginScreen extends StatelessWidget {
               validator: FormBuilderValidators.required(),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: kDefaultPadding),
-            child: SizedBox(
-                height: 50, 
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(Colors.blue),
-                  ),
-                  onPressed: ()  {
-                   screenController.login(); 
-                  },
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(color: AppColors.whiteColor),
-                  ),
-                )),
-          ),
+          SizedBox(
+              height: 50, 
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(Colors.blue),
+                ),
+                onPressed: ()  {
+                 screenController.login(); 
+                },
+                child: const Text(
+                  'Login',
+                  style: TextStyle(color: AppColors.whiteColor),
+                ),
+              )),
           // Padding(
           //   padding: EdgeInsets.only(top: kDefaultPadding),
           //   child: SizedBox(

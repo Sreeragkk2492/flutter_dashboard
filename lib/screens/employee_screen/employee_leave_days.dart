@@ -33,6 +33,7 @@ class EmployeeLeaveDays extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final mediaQueryData = MediaQuery.of(context);
     return PortalMasterLayout(
         body: EntranceFader(
             child: ListView(
@@ -42,7 +43,10 @@ class EmployeeLeaveDays extends StatelessWidget {
           child: Obx(() {
             return UIComponenetsAppBarNoButton(
               title: 'Employee Leave Days',
-              subtitle: 'Total leaves:${screenController.totalleaves.value}',
+              subtitle: Text('Total leaves:${screenController.totalleaves.value}', textAlign: mediaQueryData.size.width >= kScreenWidthLg
+                            ? TextAlign.start
+                            : TextAlign.center,
+                        style: const TextStyle(fontSize: 11),),
               icon: Icon(Icons.rocket),
             );
           }),

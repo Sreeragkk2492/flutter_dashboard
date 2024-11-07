@@ -18,8 +18,10 @@ class EmployeeAttendenceController extends GetxController {
   var isLoading = false.obs;
   var isUserTypeSelected = false.obs;
   //var isUserTypeSelected = false.obs;
-  var attendenceDetails = <AttendanceDetails>[].obs;
+  var attendenceDetails = <AttendenceDetails>[].obs;
   var attendance = <AttendanceDatum>[].obs;
+  var totalWorkTimes=''.obs;
+  var totolOvertime=''.obs;
   var userTypes = <UserType>[].obs;
   var menus = <Menu>[].obs;
  // Add this to track the currently selected user
@@ -42,6 +44,8 @@ class EmployeeAttendenceController extends GetxController {
   var isTodateSelected = false.obs;
   final todateController = TextEditingController();
   final fromdateController = TextEditingController();
+   final searchController = TextEditingController();
+   var isUserDropdownExpanded = false.obs;
 
   @override
   void onInit() async {
@@ -55,7 +59,16 @@ class EmployeeAttendenceController extends GetxController {
    // resetSelectionState();
   }
 
- 
+ void filterUsers(String searchTerm) {
+    if (searchTerm.isEmpty) {
+      filteredUsers.value = users;
+    } else {
+      filteredUsers.value = users
+          .where((user) =>
+              user.name.toLowerCase().contains(searchTerm.toLowerCase()))
+          .toList();
+    }
+  }
 
   // Resets all selection states (company and user)
   void resetSelectionState() {
@@ -228,8 +241,10 @@ class EmployeeAttendenceController extends GetxController {
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
         // Parse the entire response as GeneratedPayslipDetails
-        final generatedPayslipDetails = AttendanceDetails.fromJson(jsonData);
-        attendance.value = generatedPayslipDetails.attendanceData;
+        final generatedPayslipDetails = AttendenceDetails.fromJson(jsonData);
+        attendance.value = generatedPayslipDetails.attendanceData!;
+        totalWorkTimes.value=generatedPayslipDetails.totalWorkedTime!;
+        totolOvertime.value=generatedPayslipDetails.totalOverShortTime!;
       } else if (response.statusCode == 404) {
       } else {
         throw Exception(

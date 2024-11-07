@@ -7,11 +7,11 @@ class UIComponenetsAppBarNoButton extends StatefulWidget {
   const UIComponenetsAppBarNoButton({
     super.key,
     required this.title,
-    required this.subtitle,
+     this.subtitle,
     required this.icon,
   });
   final String title;
-  final String subtitle;
+  final Widget? subtitle;
   final Widget icon;
 
   @override
@@ -80,13 +80,8 @@ class _UIComponenetsAppBarState extends State<UIComponenetsAppBarNoButton> {
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       buildSizedboxW(kTextPadding),
-                      Text(
-                        widget.subtitle,
-                        textAlign: mediaQueryData.size.width >= kScreenWidthLg
-                            ? TextAlign.start
-                            : TextAlign.center,
-                        style: const TextStyle(fontSize: 11),
-                      ),
+                      
+                    widget.subtitle!
                     ],
                   ),
                 ),

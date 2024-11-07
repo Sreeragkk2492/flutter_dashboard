@@ -27,22 +27,37 @@ class EmployeeAttendenceDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final mediaQueryData = MediaQuery.of(context);
     return PortalMasterLayout(
         body: EntranceFader(
             child: ListView(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-          child: UIComponenetsAppBarNoButton(
-            title: 'Employee Attendence Details',
-            subtitle: '',
-            icon: Icon(Icons.rocket),
+          child: Obx(()=>
+              UIComponenetsAppBarNoButton(
+              title: 'Employee Attendence Details',
+              subtitle: Column(
+                children: [
+                 Text('Total Work Time:${screenController.totalWorkTimes.value}', textAlign: mediaQueryData.size.width >= kScreenWidthLg
+                              ? TextAlign.start
+                              : TextAlign.center,
+                          style: const TextStyle(fontSize: 11),),
+                // VerticalDivider(width: 5,thickness: 4,),
+                  Text('Total Over Time:${screenController.totalWorkTimes.value}', textAlign: mediaQueryData.size.width >= kScreenWidthLg
+                              ? TextAlign.start
+                              : TextAlign.center,
+                          style: const TextStyle(fontSize: 11),), 
+                ],
+              ),
+              icon: Icon(Icons.rocket),
+            ),
           ),
         ),
         buildSizedBoxH(kDefaultPadding),
-         _buildDatepickers(context),
+        _buildDatepickers(context),
         _buildDropdowns(),
-       //  _buildDatepickers(context),
+        //  _buildDatepickers(context),
         buildSizedBoxH(kDefaultPadding),
         Obx(() => _buildTableContainer()),
       ],
@@ -63,7 +78,48 @@ class EmployeeAttendenceDetails extends StatelessWidget {
     return _buildTableContent();
   }
 
-  Widget _buildTableContent() {
+ Widget _buildTableContent() {
+    // Helper function to determine row color based on remarks
+    Color getRowColor(String remarks) {
+      switch (remarks.toLowerCase()) {
+        case 'weekday':
+          return Colors.green.withOpacity(0.1);
+        case 'weekend':
+          return Colors.red.withOpacity(0.1);
+        case 'holiday':
+          return Colors.brown.withOpacity(0.1);
+        case 'leave':
+          return Colors.blue.withOpacity(0.1);
+        case 'optional holiday':
+          return Colors.yellow.withOpacity(0.1);
+        default:
+          return Colors.transparent;
+      }
+    }
+
+    // Helper function to determine text color based on remarks
+    Color getTextColor(String remarks) {
+      switch (remarks.toLowerCase()) {
+        case 'weekday':
+          return Colors.green.shade900;
+        case 'weekend':
+          return Colors.red.shade900;
+        case 'holiday':
+          return Colors.brown.shade900;
+        case 'leave':
+          return Colors.blue.shade900;
+        case 'optional holiday':
+          return Colors.orange.shade900;
+        default:
+          return Colors.black;
+      }
+    }
+
+    // Helper function to handle API null values
+    String handleApiValue(dynamic value) {
+      return value == null ? '//' : value.toString();
+    }
+
     return Padding(
         padding: EdgeInsets.only(
             bottom: kDefaultPadding / 2,
@@ -71,12 +127,6 @@ class EmployeeAttendenceDetails extends StatelessWidget {
             left: kDefaultPadding / 2,
             right: kDefaultPadding / 2),
         child: Container(
-          // decoration: BoxDecoration(boxShadow: [
-          //   BoxShadow(
-          //       color: AppColors.bgGreyColor,
-          //       spreadRadius: 5,
-          //       blurRadius: 7)
-          // ]),
           child: Padding(
             padding: EdgeInsets.all(kDefaultPadding),
             child: Column(
@@ -102,85 +152,63 @@ class EmployeeAttendenceDetails extends StatelessWidget {
                                 headingTextStyle: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w600),
                                 headingRowHeight: 50,
-                                headingRowColor: WidgetStateProperty.all(
+                                headingRowColor: MaterialStateProperty.all( 
                                     AppColors.bgGreyColor),
-                                // border: const TableBorder(
-                                //     verticalInside:
-                                //         BorderSide(width: 0.5),
-                                //     top: BorderSide(width: 0.5),
-                                //     right: BorderSide(width: 0.5),
-                                //     left: BorderSide(width: 0.5),
-                                //     bottom: BorderSide(width: 0.5)),
                                 dividerThickness: 2,
                                 sortColumnIndex: 0,
                                 sortAscending: true,
                                 showCheckboxColumn: false,
                                 showBottomBorder: true,
                                 columns: [
-                                  DataColumn(
-                                      // numeric: true,
-                                      label: Row(
-                                    children: [
-                                      Text('Date'),
-
-                                      //  IconButton(
-                                      //      onPressed: () {},
-                                      //      icon: Icon(Icons.arrow_drop_down ))
-                                    ],
-                                  )),
-                                  DataColumn(
-                                      // numeric: true,
-                                      label: Row(
-                                    children: [
-                                      Text('In time'),
-
-                                      //  IconButton(
-                                      //      onPressed: () {},
-                                      //      icon: Icon(Icons.arrow_drop_down ))
-                                    ],
-                                  )),
-                                  DataColumn(
-                                      label: Row(
-                                    children: [
-                                      Text('Out time'),
-                                      //  IconButton(
-                                      //      onPressed: () {},
-                                      //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                    ],
-                                  )),
-                                  DataColumn(
-                                      label: Row(
-                                    children: [
-                                      Text('Worked time'),
-                                      //  IconButton(
-                                      //      onPressed: () {},
-                                      //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                    ],
-                                  )),
-                                  DataColumn(
-                                      label: Row(
-                                    children: [
-                                      Text('Over/Short time'),
-                                      //  IconButton(
-                                      //      onPressed: () {},
-                                      //      icon: Icon(Icons.arrow_drop_down_sharp))
-                                    ],
-                                  )),
+                                  DataColumn(label: Text('Date')),
+                                  DataColumn(label: Text('In time')),
+                                  DataColumn(label: Text('Out time')),
+                                  DataColumn(label: Text('Worked time')),
+                                  DataColumn(label: Text('Over/Short time')),
+                                  DataColumn(label: Text('Day')),
+                                  DataColumn(label: Text('Remarks')),
                                 ],
-                                // ... (keep the existing DataTable properties)
                                 rows: screenController.attendance
-                                    .map((attendece) {
-                                  return DataRow(cells: [
-                                    DataCell(Text(
-                                        dateFormat.format(attendece.date))),
-                                    DataCell(Text(attendece.inTime.toString())),
-                                    DataCell(
-                                        Text(attendece.outTime.toString())),
-                                    DataCell(
-                                        Text(attendece.workedTime.toString())),
-                                    DataCell(Text(
-                                        attendece.overShortTime.toString())),
-                                  ]);
+                                    .map((attendance) {
+                                  final remarks = attendance.remarks ?? '';
+                                  final rowColor = getRowColor(remarks);
+                                  final textColor = getTextColor(remarks);
+
+                                  return DataRow(
+                                    color: MaterialStateProperty.all(rowColor),
+                                    cells: [
+                                      DataCell(Text(
+                                        attendance.date != null 
+                                            ? dateFormat.format(attendance.date)
+                                            : "//",
+                                        style: TextStyle(color: textColor),
+                                      )),
+                                      DataCell(Text(
+                                        handleApiValue(attendance.inTime),
+                                        style: TextStyle(color: textColor),
+                                      )),
+                                      DataCell(Text(
+                                        handleApiValue(attendance.outTime),
+                                        style: TextStyle(color: textColor),
+                                      )),
+                                      DataCell(Text(
+                                        handleApiValue(attendance.workedTime),
+                                        style: TextStyle(color: textColor),
+                                      )),
+                                      DataCell(Text(
+                                        handleApiValue(attendance.overShortTime),
+                                        style: TextStyle(color: textColor),
+                                      )),
+                                      DataCell(Text(
+                                        handleApiValue(attendance.day),
+                                        style: TextStyle(color: textColor),
+                                      )),
+                                      DataCell(Text(
+                                        handleApiValue(attendance.remarks),
+                                        style: TextStyle(color: textColor),
+                                      )),
+                                    ],
+                                  );
                                 }).toList(),
                               )),
                         ),
@@ -361,17 +389,17 @@ class EmployeeAttendenceDetails extends StatelessWidget {
                 // enableSuggestions: false,
                 // keyboardType: TextInputType.name,
                 validator: FormBuilderValidators.required(),
-                
+
                 items: screenController.filteredUsers
                     .map((user) => DropdownMenuItem(
                           value: user,
                           child: Text(user.name),
                         ))
                     .toList(),
-                    
+
                 onChanged: (value) {
                   screenController.onUserSelected(
-                      value!.userTypeId, value.companyId, value.id,value);
+                      value!.userTypeId, value.companyId, value.id, value);
                 },
                 // onSaved: (value) => (_formData.firstname = value ?? ''),
               ),

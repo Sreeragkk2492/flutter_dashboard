@@ -31,7 +31,7 @@ class AddAllowance extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               child: UIComponenetsAppBarNoButton(
                 title: 'Add Allowance Type',     
-                subtitle: '',
+                //subtitle: '',
                 icon: Icon(Icons.rocket),
               ),
             ),
