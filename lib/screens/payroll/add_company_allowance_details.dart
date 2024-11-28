@@ -19,6 +19,7 @@ class AddCompanyAllowanceDetails extends StatelessWidget {
 
   final employeeController = Get.put(EmployeeController());
   final screenController = Get.put(CompanyPayrollAllowanceController());
+  final userNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class AddCompanyAllowanceDetails extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               child: UIComponenetsAppBarNoButton(
                 title: 'Add Company Allowance',  
-               // subtitle: '',
+                subtitle: Text(''),
                 icon: Icon(Icons.rocket),
               ),
             ),

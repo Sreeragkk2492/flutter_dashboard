@@ -29,6 +29,7 @@ import 'package:flutter_dashboard/screens/employee_screen/employee_attendence_de
 import 'package:flutter_dashboard/screens/employee_screen/employee_leave_days.dart';
 import 'package:flutter_dashboard/screens/employee_screen/employee_list_all.dart';
 import 'package:flutter_dashboard/screens/employee_screen/employee_menu.dart';
+import 'package:flutter_dashboard/screens/employee_screen/employee_selected_holiday.dart';
 import 'package:flutter_dashboard/screens/login_screen/login_screen.dart';
 import 'package:flutter_dashboard/screens/payroll/add_employee_payroll_settings.dart';
 import 'package:flutter_dashboard/screens/payroll/add_employee_payslip.dart';
@@ -224,6 +225,13 @@ class GetPages {
      GetPage(
       name: Routes.EmployeeLeaveDays,
       page: () => EmployeeLeaveDays(),
+      middlewares: [ResetEmployeeMenuMiddleware()],
+      //  binding: HomeBinding(),
+      transition: Transition.noTransition,
+    ),
+      GetPage(
+      name: Routes.EmployeeSelectedHolidays,
+      page: () => EmployeeSelectedHoliday(),
       middlewares: [ResetEmployeeMenuMiddleware()],
       //  binding: HomeBinding(),
       transition: Transition.noTransition,

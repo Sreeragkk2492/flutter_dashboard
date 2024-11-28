@@ -42,75 +42,85 @@ class CompanyLeaveType extends StatelessWidget {
           ),
         ),
         buildSizedBoxH(kDefaultPadding),
-        Padding(
-          padding: EdgeInsets.all(kDefaultPadding),
-          child:Obx(() {
-            // Check if there's only one company (the logged-in user's company)
-            if (employeecontroller.companydetails.isEmpty) {
-              // Show loading indicator while fetching company details
-              return Center(child: CircularProgressIndicator());
-            }
-
-            if (employeecontroller.isSuperAdmin.value) {
-              // Dropdown for superadmin
-              return FormBuilderDropdown<Company>(
-                name: 'Company Name',
-                decoration: InputDecoration(
-                  labelText: 'Company Name',
-                  hintText: 'Select Company',
-                   labelStyle:
-                    TextStyle(color: AppColors.blackColor),
-                border: OutlineInputBorder(),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: AppColors.greycolor)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: AppColors.defaultColor,
-                        width: 1.5)),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                ),
-                validator: FormBuilderValidators.required(),
-                items: employeecontroller.companydetails
-                    .map((company) => DropdownMenuItem(
-                          value: company,
-                          child: Text(company.companyName),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  screenController.onCompanySelected(
-                      value!.id, value.companyCode);
-                },
-              );
-            } else {
-              // Single company display for company admin
-              final company = employeecontroller.companydetails[0];
-              // Automatically select the company for the admin
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                screenController.onCompanySelected(
-                    company.id, company.companyCode);
-              });
-              return FormBuilderTextField(
-                name: 'Company Name',
-                initialValue: company.companyName,
-                decoration: InputDecoration(
-                  labelText: 'Company Name',
-                   labelStyle:
-                    TextStyle(color: AppColors.blackColor),
-                border: OutlineInputBorder(),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: AppColors.greycolor)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: AppColors.defaultColor,
-                        width: 1.5)),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                ),
-                readOnly: true,
-              );
-            }
-          }),
+        Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: EdgeInsets.all(kDefaultPadding),
+                child:Obx(() {
+                  // Check if there's only one company (the logged-in user's company)
+                  if (employeecontroller.companydetails.isEmpty) {
+                    // Show loading indicator while fetching company details
+                    return Center(child: CircularProgressIndicator());
+                  }
+              
+                  if (employeecontroller.isSuperAdmin.value) {
+                    // Dropdown for superadmin
+                    return FormBuilderDropdown<Company>(
+                      name: 'Company Name',
+                      decoration: InputDecoration(
+                        labelText: 'Company Name',
+                        hintText: 'Select Company',
+                         labelStyle:
+                          TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor,
+                              width: 1.5)),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      validator: FormBuilderValidators.required(),
+                      items: employeecontroller.companydetails
+                          .map((company) => DropdownMenuItem(
+                                value: company,
+                                child: Text(company.companyName),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        screenController.onCompanySelected(
+                            value!.id, value.companyCode);
+                      },
+                    );
+                  } else {
+                    // Single company display for company admin
+                    final company = employeecontroller.companydetails[0];
+                    // Automatically select the company for the admin
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      screenController.onCompanySelected(
+                          company.id, company.companyCode);
+                    });
+                    return FormBuilderTextField(
+                      name: 'Company Name',
+                      initialValue: company.companyName,
+                      decoration: InputDecoration(
+                        labelText: 'Company Name',
+                         labelStyle:
+                          TextStyle(color: AppColors.blackColor),
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.greycolor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors.defaultColor,
+                              width: 1.5)),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
+                      readOnly: true,
+                    );
+                  }
+                }),
+              ),
+            ),
+            Expanded(
+              flex: 1, 
+              child: SizedBox())
+          ],
         ),
         buildSizedBoxH(kDefaultPadding),
         Obx(() {
@@ -191,6 +201,10 @@ class CompanyLeaveType extends StatelessWidget {
                                       showCheckboxColumn: true,
                                       showBottomBorder: true,
                                       columns: [
+                                           DataColumn(
+                                                label: Text(
+                                                    'Sl No') // Added S.No column
+                                                ),
                                         DataColumn(
                                             onSort: (columnIndex, _) {
                                               if (screenController
@@ -238,6 +252,7 @@ class CompanyLeaveType extends StatelessWidget {
                                             screenController.leaveTypes[index];
                                         return DataRow(
                                           cells: [
+                                             DataCell(Text('${index + 1}')),
                                             DataCell(GestureDetector(
                                               onTap: () {
                                                 print('tapped');

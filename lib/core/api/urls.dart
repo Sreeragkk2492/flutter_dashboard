@@ -33,10 +33,13 @@ class ApiUrls {
   ///employee
   static const ADD_USER = "/user/add_user";
   static const GET_ALL_USER = "/user/get_users";
+  static const GET_ALL_USER_BY_CATEGORY = "/user/get_users_by_category";
   static const UPDATE_USER = "/user/update_user";
   static const GET_EMPLOYEE_MENU = "/user_menu_permission/get_all_menus";
   static const GET_ADMIN_FOR_REPORTING = "/user/get_admins_for_reporting";
   static const GET_ALL_USER_BY_COMPANY_ID = "/user/get_users_by_company_id";
+  
+  static const GET_EMPLOYEE_SELECTED_HOLIDAYS = "/user_holidays/get_user_selected_optional_holidays";
 
 static const GET_EMPLOYEE_LEAVE_REPORT = "/leave/get_leave_report";
 static const GET_EMPLOYEE_ATTENDENCE_REPORT = "/attendance_entry/get_attendance_report";

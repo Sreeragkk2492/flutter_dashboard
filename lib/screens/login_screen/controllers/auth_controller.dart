@@ -59,11 +59,13 @@ class AuthController extends GetxController {
         token = data['token'];
         companyId = data['company_id'];
         userType = data['user_type'];
+        name=data['name'];
 
         // Store token and company code securely
         await StorageServices().write("token", token);
         await StorageServices().write("company_id", companyId);
         await StorageServices().write('user_type', userType);
+        await StorageServices().write('name', name);
 
         // Set global variables if needed
         // this.token = token;

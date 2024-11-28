@@ -36,7 +36,7 @@ class AddCompanyLeavetype extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
           child: UIComponenetsAppBarNoButton(
             title: 'Add Company Leave Type',
-           // subtitle: '',
+            subtitle: Text(''),
             icon: Icon(Icons.rocket),
            
           ),

@@ -58,7 +58,7 @@ class AttendanceDatum {
         inTime: json["in_time"],
         outTime: json["out_time"],
         workedTime: json["worked_time"],
-        overShortTime: json["over_short_time"],
+        overShortTime: json["over/short_time"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -68,6 +68,6 @@ class AttendanceDatum {
         "in_time": inTime,
         "out_time": outTime,
         "worked_time": workedTime,
-        "over_short_time": overShortTime,
+        "over/short_time": overShortTime,
     };
 }

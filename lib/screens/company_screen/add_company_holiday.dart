@@ -37,7 +37,7 @@ class AddCompanyHoliday extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               child: UIComponenetsAppBarNoButton(
                 title: 'Add Company Holiday',
-               // subtitle: '',
+                subtitle: Text(''),
                 icon: Icon(Icons.rocket),
               ),
             ),
@@ -201,7 +201,7 @@ class AddCompanyHoliday extends StatelessWidget {
                     ),
                   ],
                 ),
-                buildSizedBoxH(kDefaultPadding * 3),
+                buildSizedBoxH(kDefaultPadding * 3), 
 
                 Obx(() => Column(
                       children: [

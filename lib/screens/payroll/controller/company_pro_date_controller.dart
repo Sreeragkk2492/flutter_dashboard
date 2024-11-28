@@ -57,7 +57,7 @@ class CompanyProccesingDateController extends GetxController {
        awesomeOkDialog(message: message,onOk: () {
        //  Get.back();
        },);
-      await fetchCompanyPayrollProcessingDate();
+    //  await fetchCompanyPayrollProcessingDate();
       processingdayController.clear();
       remarksController.clear();
     }

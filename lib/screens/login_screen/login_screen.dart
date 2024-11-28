@@ -255,7 +255,7 @@ class LoginScreen extends StatelessWidget {
           SizedBox(
               height: 50, 
               width: double.infinity,
-              child: ElevatedButton(
+              child: TextButton(
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.all(Colors.blue),
                 ),

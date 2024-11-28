@@ -17,6 +17,7 @@ import 'package:http/http.dart' as http;
 
 class EmployeeController extends GetxController {
   RxList<UserModel> users = <UserModel>[].obs;
+  RxBool isActive=true.obs; 
   var companydetails = <Company>[].obs;
   var usertype = <UserType>[].obs;
   var reportingtoid = <ReportingId>[].obs;
@@ -49,7 +50,7 @@ class EmployeeController extends GetxController {
   final RxBool isSuperAdmin = false.obs;
   final RxBool isLoading = true.obs;
   RxBool isSortasc = true.obs;
-
+var isUserTypeSelected=false.obs;
   // Add these new properties for pagination
   final currentPage = 0.obs;
   final itemsPerPage = 10.obs;
@@ -73,8 +74,16 @@ class EmployeeController extends GetxController {
 
   @override
   void onInit() {
+      // Add this listener for isActive
+ ever(isActive, (_) {
+      // Only fetch if usertype is selected
+      if (selectedUserTypeId.value.isNotEmpty) {
+        fetchUsersByCategory();
+      }
+    });  
+  
     initializeController();
-    fetchUsers();
+    fetchUsersByCategory();
     fetchUsertype();
     super.onInit();
   }
@@ -135,6 +144,20 @@ class EmployeeController extends GetxController {
     selectedCompanyId.value = companyId;
 
     fetchRepotingId(companyId);
+  }
+
+   // Modify setSelectedUserTypeId to trigger fetch
+  setSelectedUserTypeIdForData(String userTypeId) {
+    selectedUserTypeId.value = userTypeId;
+    isUserTypeSelected.value=true;
+    if (userTypeId.isNotEmpty) {
+      fetchUsersByCategory(); // Fetch users when usertype is selected
+    } else {
+      // Clear the users list if no usertype is selected
+      users.clear();
+      filteredUsers.clear();
+      updateTotalPages();
+    }
   }
 
   // Sets the selected user type ID
@@ -246,18 +269,84 @@ class EmployeeController extends GetxController {
         Get.back();
       },);
      // Get.back();
-      await fetchUsers();
+      await fetchUsersByCategory();
       sortUsersAlphabetically();
     }
   }
 
   // Fetches all users from the server
 
-  fetchUsers() async {
+  // fetchUsers() async {
+  //   try {
+  //     final tokens = await StorageServices().read('token');
+  //   Map<String, String> queryParams = {  // Changed to Map<String, String>
+  //     'token': tokens,
+  //     'limit':'100',
+  //     'is_active': isActive.value.toString()  // Convert boolean to string
+  //   };  
+    
+  //     final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USER)
+  //         .replace(queryParameters: queryParams);  
+
+  //     print("Fetching users from URL: $url");
+
+  //     final response = await http.get(url, headers: {
+  //       "Accept": "application/json",
+  //       "token": "$tokens",
+  //     });
+
+  //     print("Response status code: ${response.statusCode}");
+  //     print("Response body: ${response.body}");
+
+  //     if (response.statusCode == 200) {
+  //       final jsonData = json.decode(response.body) as List;
+  //       users.value = jsonData.map((jsonItem) {
+  //         if (jsonItem is Map<String, dynamic>) {
+  //           return UserModel.fromJson(jsonItem);
+  //         } else {
+  //           throw FormatException("Unexpected data format: $jsonItem");
+  //         }
+  //       }).toList();
+  //       sortUsersAlphabetically();
+  //       // //sort users in alphabetic order
+  //       // users.sort((a, b) => a.name.compareTo(b.name));
+
+  //         filteredUsers.value = List.from(users); 
+  //       // Update pagination info
+  //       updateTotalPages();
+  //       currentPage.value = 0; // Reset to first page when fetching new data
+  //       print("Fetched ${users.value.length} users successfully");
+  //     } else {
+  //       throw HttpException(
+  //           "Failed to fetch users. Status code: ${response.statusCode}");
+  //     }
+  //   } catch (e, stackTrace) {
+  //     print("Error fetching users: $e");
+  //     print("Stack trace: $stackTrace");
+
+  //     if (users.isEmpty) {
+  //       awesomeOkDialog(
+  //           message: "Failed to load users. Please try again later.");
+  //     }
+  //   }
+  // }
+   fetchUsersByCategory() async {
+     if (selectedUserTypeId.value.isEmpty) {
+      // Don't fetch if no usertype is selected
+      return;
+    }
+ 
     try {
       final tokens = await StorageServices().read('token');
-      final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USER)
-          .replace(queryParameters: {'token': tokens});
+    Map<String, String> queryParams = {
+      'user_type_id':selectedUserTypeId.value,  // Changed to Map<String, String>
+      'token': tokens,
+      'limit':'100',
+      'is_active': isActive.value.toString()  // Convert boolean to string
+    };  
+    
+      final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_USER_BY_CATEGORY)
+          .replace(queryParameters: queryParams);  
 
       print("Fetching users from URL: $url");
 
@@ -513,7 +602,7 @@ class EmployeeController extends GetxController {
       },
       );
      // Get.back();
-      await fetchUsers();
+      await fetchUsersByCategory();
     }
   }
 }

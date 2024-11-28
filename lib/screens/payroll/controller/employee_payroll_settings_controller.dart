@@ -197,10 +197,12 @@ class EmployeePayrollSettingsController extends GetxController {
      noDataFound.value = false;
     try {
        final tokens = await StorageServices().read('token');
+       final comId = await StorageServices().read('company_id');
+       final uType = await StorageServices().read('user_type');
       final url = Uri.parse(ApiUrls.BASE_URL +
               ApiUrls.GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION)
           .replace(queryParameters: {
-        "company_id": selectedCompanyId.value,
+        "company_id": uType=="QTS_ADMIN"?selectedCompanyId.value:comId,
         "user_id": selectedUserId.value,
       });
 
@@ -253,10 +255,12 @@ class EmployeePayrollSettingsController extends GetxController {
     isLoading.value = true;
     try {
         final tokens = await StorageServices().read('token');
+        final comId = await StorageServices().read('company_id');
+       final uType = await StorageServices().read('user_type');
       final url = Uri.parse(ApiUrls.BASE_URL +
               ApiUrls.GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION_IN_ADD)
           .replace(queryParameters: {
-        "company_id": selectedCompanyId.value,
+        "company_id": uType=="QTS_ADMIN"?selectedCompanyId.value:comId,
       });
 
       print("Fetching payslip details from URL: $url");
@@ -298,8 +302,10 @@ class EmployeePayrollSettingsController extends GetxController {
    // Add new payroll entry
 
   addPayroll() async {
+     final comId = await StorageServices().read('company_id');
+       final uType = await StorageServices().read('user_type');
     final requestBody = {
-      "company_id": selectedCompanyId.value,
+      "company_id": uType=="QTS_ADMIN"?selectedCompanyId.value:comId,
       "user_id": selectedUserId.value,
       "employee_id": "string",
       "allowance": getaddallowances.map((allowances) {

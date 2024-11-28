@@ -31,7 +31,7 @@ class AddDeduction extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               child: UIComponenetsAppBarNoButton(
                 title: 'Add Deduction Type',     
-               // subtitle: '',
+                subtitle: Text(''),
                 icon: Icon(Icons.rocket),
               ),
             ),

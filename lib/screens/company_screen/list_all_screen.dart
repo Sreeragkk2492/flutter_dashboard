@@ -130,6 +130,10 @@ class _ListAllState extends State<ListAll> {
                                       showCheckboxColumn: true,
                                       showBottomBorder: true,
                                       columns: [
+                                          DataColumn(
+                                                label: Text(
+                                                    'Sl No') // Added S.No column
+                                                ),
                                         DataColumn(
                                             onSort: (columnIndex, _) {
                                               if (screenController
@@ -220,6 +224,7 @@ class _ListAllState extends State<ListAll> {
                                               .companydetails.length, (index) {
                                         return DataRow(
                                           cells: [
+                                             DataCell(Text('${index + 1}')),
                                             DataCell(
 
                                                 // showEditIcon: true,

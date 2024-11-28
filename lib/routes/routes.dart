@@ -28,6 +28,8 @@ class Routes {
   static const String AddEmployeeMenu = "/addemployeemenu";
   static const String EmployeeAttendenceDetails = "/employeeattendencedetails";
   static const String EmployeeLeaveDays = "/employeeleavedays";
+  static const String EmployeeSelectedHolidays = "/employeeselectedholidays";
+
 
   //payroll
 

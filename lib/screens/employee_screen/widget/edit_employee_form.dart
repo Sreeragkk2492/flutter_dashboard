@@ -14,28 +14,52 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class EditEmployeeForm extends StatelessWidget {
+class EditEmployeeForm extends StatefulWidget {
   final UserModel employeeToEdit;
   EditEmployeeForm({super.key, required this.employeeToEdit});
-  
+
+  @override
+  State<EditEmployeeForm> createState() => _EditEmployeeFormState();
+}
+
+class _EditEmployeeFormState extends State<EditEmployeeForm> {
   final screenController = Get.put(EmployeeController());
+
   final employeeCategoryController = Get.put(EmployeeCategoryController());
+
   final designationController = Get.put(DesignationController());
+
   final _formKey = GlobalKey<FormBuilderState>();
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize form controllers with existing data, handling null values
+    screenController.firstNameController.text = widget.employeeToEdit.employeeFirstName ?? '';
+    screenController.lastNameController.text = widget.employeeToEdit.employeeLastName ?? '';
+    screenController.fatherNameController.text = widget.employeeToEdit.fatherName ?? '';
+    screenController.motherNameController.text = widget.employeeToEdit.motherName ?? '';
+    screenController.addressController.text = widget.employeeToEdit.address ?? '';
+    screenController.phoneNumberController.text = widget.employeeToEdit.phoneNumber?.toString() ?? '';
+    
+    if (widget.employeeToEdit.dob != null) {
+      screenController.dobController.text = DateFormat('yyyy-MM-dd').format(widget.employeeToEdit.dob!);
+    }
+  }  
 
   @override
   Widget build(BuildContext context) {
     // Pre-fill form controllers with existing data
-    screenController.firstNameController.text = employeeToEdit.employeeFirstName;
-    screenController.lastNameController.text = employeeToEdit.employeeLastName;
-    screenController.fatherNameController.text = employeeToEdit.fatherName ?? '';
-    screenController.motherNameController.text = employeeToEdit.motherName ?? '';
-    screenController.addressController.text = employeeToEdit.address ?? '';
-    screenController.phoneNumberController.text = employeeToEdit.phoneNumber?.toString() ?? '';
+    // screenController.firstNameController.text = employeeToEdit.employeeFirstName;
+    // screenController.lastNameController.text = employeeToEdit.employeeLastName;
+    // screenController.fatherNameController.text = employeeToEdit.fatherName ?? '';
+    // screenController.motherNameController.text = employeeToEdit.motherName ?? '';
+    // screenController.addressController.text = employeeToEdit.address ?? '';
+    // screenController.phoneNumberController.text = employeeToEdit.phoneNumber?.toString() ?? '';
     
-    if (employeeToEdit.dob != null) {
-      screenController.dobController.text = DateFormat('yyyy-MM-dd').format(employeeToEdit.dob!);
-    }
+    // if (employeeToEdit.dob != null) {
+    //   screenController.dobController.text = DateFormat('yyyy-MM-dd').format(employeeToEdit.dob!);
+    // }
 
     return FormBuilder(
       key: _formKey,
@@ -218,7 +242,7 @@ class EditEmployeeForm extends StatelessWidget {
                 buttonname: 'Update',
                 onClick: () {
                   if (_formKey.currentState!.saveAndValidate()) {
-                    screenController.updateEmployee(employeeToEdit.id);
+                    screenController.updateEmployee(widget.employeeToEdit.id);
                   }
                 },
               ),

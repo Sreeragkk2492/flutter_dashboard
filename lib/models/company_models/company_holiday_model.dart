@@ -27,7 +27,7 @@ class CompanyHolidayModel {
         id: json["id"],
         date: DateTime.parse(json["date"]),
         description: json["description"],
-        leaveTypeId: json["leave_type_id"],
+        leaveTypeId: json["holiday_type_id"],
         isActive: json["is_active"],
     );
 
@@ -35,7 +35,7 @@ class CompanyHolidayModel {
         "id": id,
         "date": "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
         "description": description,
-        "leave_type_id": leaveTypeId,
+        "holiday_type_id": leaveTypeId, 
         "is_active": isActive,
     };
 }

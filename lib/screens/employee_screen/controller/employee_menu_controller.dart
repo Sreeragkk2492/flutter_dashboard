@@ -176,11 +176,13 @@ class EmployeeMenuController extends GetxController {
   Future<void> fetchMenusForUser() async {
     isLoading.value = true;
     try {
+      final compid= await StorageServices().read('company_id');
+      final uType= await StorageServices().read('user_type');
       final response = await http.get(
         Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_EMPLOYEE_MENU)
             .replace(queryParameters: {
           "user_type_id": selectedUserTypeId.value,
-          "company_id": selectedCompanyId.value,
+          "company_id": uType=="QTS_ADMIN"?selectedCompanyId.value:compid,
           "user_id": selectedUserId.value
         }),
         headers: {
@@ -267,9 +269,11 @@ class EmployeeMenuController extends GetxController {
   Future<void> addMenu() async {
     isLoading.value = true;
     try {
+      final compid= await StorageServices().read('company_id');
+      final uType= await StorageServices().read('user_type');
       final requestBody = {
         "user_type_id": selectedUserTypeId.value,
-        "company_id": selectedCompanyId.value,
+        "company_id": uType=="QTS_ADMIN"?selectedCompanyId.value:compid, 
         "user_id": selectedUserId.value,
         "menus": menus
             .map((menu) => {

@@ -161,7 +161,8 @@ class EmployeeLeaveDaysController extends GetxController {
     selectedCompanyId.value = companyId;
     selectedUserId.value = userId;
     isUserSelected.value = true;
-    checkAllSelections();
+   // checkAllSelections();
+   fetchLeaveDetails();
   }
 
    void checkAllSelections() {
@@ -183,27 +184,27 @@ class EmployeeLeaveDaysController extends GetxController {
     }
   }
 
-  void onFromDateSelected(DateTime? date) {
-    selectedFromDate.value = date;
-    isFromdateSelected.value=true;
-    if (date != null) {
-      fromdateController.text = DateFormat('yyyy-MM-dd').format(date);
-    }
-    if (isUserSelected.value && selectedToDate.value != null) {
-     checkAllSelections();
-    }
-  }
+  // void onFromDateSelected(DateTime? date) {
+  //   selectedFromDate.value = date;
+  //   isFromdateSelected.value=true;
+  //   if (date != null) {
+  //     fromdateController.text = DateFormat('yyyy-MM-dd').format(date);
+  //   }
+  //   if (isUserSelected.value && selectedToDate.value != null) {
+  //    checkAllSelections();
+  //   }
+  // }
 
-  void onToDateSelected(DateTime? date) {
-    selectedToDate.value = date;
-    isTodateSelected.value=true;
-    if (date != null) {
-      todateController.text = DateFormat('yyyy-MM-dd').format(date);
-    }
-    if (isUserSelected.value && selectedFromDate.value != null) {
-      checkAllSelections();
-    }
-  }
+  // void onToDateSelected(DateTime? date) {
+  //   selectedToDate.value = date;
+  //   isTodateSelected.value=true;
+  //   if (date != null) {
+  //     todateController.text = DateFormat('yyyy-MM-dd').format(date);
+  //   }
+  //   if (isUserSelected.value && selectedFromDate.value != null) {
+  //     checkAllSelections();
+  //   }
+  // }
 
   // Fetch payslip details based on selected company, user, year, and month
   Future<void> fetchLeaveDetails() async {
@@ -222,8 +223,10 @@ class EmployeeLeaveDaysController extends GetxController {
       final url =
           Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_EMPLOYEE_LEAVE_REPORT)
               .replace(queryParameters: {
-        "from_date": DateFormat('yyyy-MM-dd').format(selectedFromDate.value!),
-        "to_date":DateFormat('yyyy-MM-dd').format(selectedToDate.value!),
+        // "from_date": DateFormat('yyyy-MM-dd').format(selectedFromDate.value!),
+        // "to_date":DateFormat('yyyy-MM-dd').format(selectedToDate.value!),
+         "from_date": fromdateController.text,
+        "to_date":todateController.text, 
         "user_id": selectedUserId.value
       });
 

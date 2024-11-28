@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_dashboard/core/api/urls.dart';
 import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/services/dialogs/adaptive_ok_dialog.dart';
+import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
 import 'package:flutter_dashboard/models/payroll/generated_payslip_details_model.dart';
 
 import 'package:flutter_dashboard/models/employee_models/user_model.dart';
@@ -152,11 +153,11 @@ class InvoiceController extends GetxController {
     print("Month selected: ${isMonthSelected.value}");
 
     if (
-        isUserSelected.value &&
+        
         isYearSelected.value &&
-        isMonthSelected.value) {
+        isMonthSelected.value && isUserSelected.value ) {
       print("All selections made, fetching payslip details");
-      fetchPayslipDetails(selectedUserId.value);
+      //fetchPayslipDetails(selectedUserId.value);
     } else {
       print("Not all selections made, hiding tab bar");
       showTabBar.value = false;
@@ -204,7 +205,8 @@ class InvoiceController extends GetxController {
     isMonthSelected.value = false;
     selectedYear.value = '';
     selectedMonth.value = '';
-    checkAllSelections();
+    //checkAllSelections();
+    fetchPayslipDetails(selectedUserId.value);
   }
 
  // Fetch users for a given company
@@ -244,9 +246,12 @@ class InvoiceController extends GetxController {
     isLoading.value = true;
     noDataFound.value = false;
     try {
+      final tokens = await StorageServices().read('token');
+      final comId = await StorageServices().read('company_id');
+       final uType = await StorageServices().read('user_type');
       final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_EMPLOYEE_GENERATED_PAYSLIP_DETAILS)
           .replace(queryParameters: {
-        "company_id": selectedCompanyId.value,
+        "company_id": uType=="QTS_ADMIN"?selectedCompanyId.value:comId,
         "user_id": userid,
         "year": selectedYear.value,
         "month": selectedMonth.value
@@ -254,7 +259,7 @@ class InvoiceController extends GetxController {
 
       final response = await http.get(url, headers: {
         "Accept": "application/json",
-        "Authorization": "Bearer $token",
+        "Authorization": "Bearer $tokens",
       });
 
       if (response.statusCode == 200) {

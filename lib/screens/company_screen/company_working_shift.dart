@@ -168,6 +168,10 @@ class CompanyWorkingShift extends StatelessWidget {
                                         showCheckboxColumn: true,
                                         showBottomBorder: true,
                                         columns: [
+                                            DataColumn(
+                                                label: Text(
+                                                    'Sl No') // Added S.No column
+                                                ),
                                           DataColumn(
                                               label: Row(
                                             children: [
@@ -210,6 +214,7 @@ class CompanyWorkingShift extends StatelessWidget {
                                               .workingShifts[index];
                                           return DataRow(
                                             cells: [
+                                                DataCell(Text('${index + 1}')),
                                               DataCell(GestureDetector(
                                                 onTap: () {
                                                   print('tapped');

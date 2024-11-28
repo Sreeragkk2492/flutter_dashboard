@@ -108,7 +108,7 @@ class PayrollDeductionList extends StatelessWidget {
                                             // numeric: true,
                                             label: Row(
                                           children: [
-                                            Text('No'),
+                                            Text('Sl No'),
 
                                             //  IconButton(
                                             //      onPressed: () {},

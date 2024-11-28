@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
+import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
+import 'package:flutter_dashboard/core/widgets/collapsible_sidebar.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/masterlayout.dart';
 import 'package:flutter_dashboard/core/widgets/side_bar.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/getx/drawer_getx.dart';
+import 'package:flutter_dashboard/getx/sidebar_controller.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
+import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/login_screen/controllers/auth_controller.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,6 +38,8 @@ class PortalMasterLayout extends StatelessWidget {
   final FloatingActionButtonAnimator? floatingActionButtonAnimator;
   final Widget? bottomNavigationBar;
   String? usertype;
+   // Make name an observable
+  final RxString name = ''.obs;
   final List<Widget>? persistentFooterButtons;
 
   final screenController=Get.put(AuthController());
@@ -50,23 +56,39 @@ class PortalMasterLayout extends StatelessWidget {
     this.persistentFooterButtons,
     this.bottomNavigationBar,
     this.usertype
-  }) : super(key: key);
+  }) : super(key: key){
+    fetchName();
+  }
 
   final ThemeController themeController = Get.put(ThemeController());
+  final  employeeController = Get.put(EmployeeController());
+   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  // Update fetchName to set the observable
+  fetchName() async {
+    String? storedName = await StorageServices().read('name');
+    if (storedName != null) {
+      name.value = storedName;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+   
     return Obx(() {
       final mediaQueryData = MediaQuery.of(context);
       final drawer = (mediaQueryData.size.width <= kScreenWidthLg
           ? _sidebar(context)
           : null);
+     // final drawer = _sidebar(context);  
       return Scaffold(
+        key: _scaffoldKey, 
         backgroundColor: AppColors.whiteColor, 
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(64),
           child: AppBar(
-           
+            
+                
             elevation: 4,
             titleSpacing: mediaQueryData.size.width >= kScreenWidthLg
                 ? kDefaultPadding * kDefaultPadding / 3
@@ -105,8 +127,8 @@ class PortalMasterLayout extends StatelessWidget {
                 visible: mediaQueryData.size.width >= kScreenWidthLg,
                 child: Row(
                   children: [
-                    buildSizedboxW(kDefaultPadding),
-                    _username('Alina Mclourd', 'VP People Manager'),
+                    buildSizedboxW(kDefaultPadding), 
+                    _username(name.value), 
                     buildSizedboxW(kDefaultPadding),
                     Padding(
                       padding: EdgeInsets.only(top: kTextPadding * 2),
@@ -191,9 +213,10 @@ class PortalMasterLayout extends StatelessWidget {
   
 
   Widget _responsiveBody(BuildContext context) {
-    if (MediaQuery.of(context).size.width <= kScreenWidthLg) {
+   if (MediaQuery.of(context).size.width <= kScreenWidthLg) {
       return body;
-    } else {
+     } 
+    else {
       return Row(
         children: [
           SizedBox(
@@ -204,6 +227,28 @@ class PortalMasterLayout extends StatelessWidget {
         ],
       );
     }
+    // final screenWidth = MediaQuery.of(context).size.width;
+    
+    // if (screenWidth <= kScreenWidthLg) {
+    //   return body;
+    // } else {
+    //   return Row(
+    //     children: [
+    //       CollapsibleSidebar(
+    //         autoSelectMenu: autoSelectMenu,
+    //         selectedMenuUri: selectedMenuUri,
+    //         sidebarConfigs: sidebarMenuConfigs,
+    //         userType: usertype,
+    //       ),
+    //       Expanded(
+    //         child: Container(
+    //           color: AppColors.whiteColor,
+    //           child: body,
+    //         ),
+    //       ),
+    //     ],
+    //   );
+    // }
   }
 
   Widget footer(BuildContext context) {
@@ -232,38 +277,54 @@ class PortalMasterLayout extends StatelessWidget {
   }
 
   Widget _sidebar(BuildContext context) {
-    return Sidebar(
+    return 
+    Sidebar(
       autoSelectMenu: autoSelectMenu,
       selectedMenuUri: selectedMenuUri, 
       sidebarConfigs: sidebarMenuConfigs, userType: userType, 
     );
+  //   CollapsibleSidebar(
+  //   autoSelectMenu: autoSelectMenu,
+  //   selectedMenuUri: selectedMenuUri,
+  //   sidebarConfigs: sidebarMenuConfigs,
+  //   userType: usertype,
+  // );
    
   }
 
-  Widget _username(String userName, String userType) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
-      child: Column(
-        children: [
-          Text(
-            userName,
-            style: GoogleFonts.inter(
-              color: AppColors.textgreyColor,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+ Widget _username(String userName) {
+    return Obx(() {
+      String companyName = '';
+      
+      if (!employeeController.isSuperAdmin.value && 
+          employeeController.companydetails.isNotEmpty) {
+        companyName = employeeController.companydetails.first.companyName;
+      }
+
+      return Padding(
+        padding: const EdgeInsets.only(top: 10.0),
+        child: Column(
+          children: [
+            Text(
+              userName,
+              style: GoogleFonts.inter(
+                color: AppColors.textgreyColor,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          buildSizedBoxH(kTextPadding / 3),
-          Text(
-            userType,
-            style: GoogleFonts.inter(
-              color: AppColors.textgreyColor,
-              fontSize: 12,
+            buildSizedBoxH(kTextPadding / 3),
+            Text(
+              companyName,
+              style: GoogleFonts.inter(
+                color: AppColors.textgreyColor,
+                fontSize: 12,
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 }
 

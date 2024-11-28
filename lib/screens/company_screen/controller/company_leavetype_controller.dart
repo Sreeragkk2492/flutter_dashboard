@@ -36,6 +36,8 @@ class CompanyLeavetypeController extends GetxController {
     resetSelectionState();
   }
 
+  
+
   // Reset the selection state and clear all entries
 
   void resetSelectionState() {

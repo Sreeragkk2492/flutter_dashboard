@@ -108,6 +108,12 @@ final sidebarMenuConfigs = [
           title: (context) => 'Employee Leave Days',
           visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
         ),
+          SidebarChildMenuConfig(
+          uri: Routes.EmployeeSelectedHolidays,
+          icon: Icons.menu,
+          title: (context) => 'Employee Selected Holidays',
+          visibleFor: ['CMP_ADMIN', 'QTS_ADMIN'],
+        ),
       ]),
   SidebarMenuConfig(
     uri: '',

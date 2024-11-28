@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/animations/entrance_fader.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
+import 'package:flutter_dashboard/core/services/pick_date.dart';
+import 'package:flutter_dashboard/core/widgets/custom_suggestion_feild.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/core/widgets/ui_component_appbar_without_button.dart';
@@ -13,7 +15,7 @@ import 'package:flutter_dashboard/screens/employee_screen/controller/employee_at
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_controller.dart';
 import 'package:flutter_dashboard/screens/employee_screen/controller/employee_leave_days_controller.dart';
 import 'package:flutter_dashboard/screens/employee_screen/widget/condition_widget.dart';
-import 'package:flutter_dashboard/screens/employee_screen/widget/pick_date.dart';
+
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
@@ -25,7 +27,7 @@ class EmployeeLeaveDays extends StatelessWidget {
   final _dataTableHorizontalScrollController = ScrollController();
 
   final employeeController = Get.put(EmployeeController());
-
+ final userNameController = TextEditingController();
   final screenController = Get.put(EmployeeLeaveDaysController());
 
 
@@ -54,7 +56,7 @@ class EmployeeLeaveDays extends StatelessWidget {
         buildSizedBoxH(kDefaultPadding),
        // _builDropdown(),
         _buildDatepickers(context),
-         _builDropdown(),
+         _builDropdown(context),
         buildSizedBoxH(kDefaultPadding), 
         _buildTable()
       ],
@@ -63,11 +65,9 @@ class EmployeeLeaveDays extends StatelessWidget {
 
   Widget _buildTable() {
     return Obx(() {
-      if (
-          !screenController.isFromdateSelected.value ||
-          !screenController.isTodateSelected.value) { 
-        return Center(child: Text("Please select all the dropdowns to view."));
-      } else if (screenController.isLoading.value) {
+       if (!screenController.isUserSelected.value) {  
+      return Center(child: Text("Please select all the dropdowns to view."));
+    }  else if (screenController.isLoading.value) {
         return Center(
           child: CircularProgressIndicator(),
         );
@@ -135,6 +135,7 @@ class EmployeeLeaveDays extends StatelessWidget {
                                       showCheckboxColumn: false,
                                       showBottomBorder: true,
                                       columns: [
+                                          DataColumn(label: Text('Sl No')),
                                         DataColumn(
                                             // numeric: true,
                                             label: Row(
@@ -187,15 +188,19 @@ class EmployeeLeaveDays extends StatelessWidget {
                                       ],
                                       // ... (keep the existing DataTable properties)
                                       
-                                      rows: screenController.leavereport
-                                          .map((leave) {
-                                        return DataRow(
+                                      rows: List.generate(screenController.leavereport.length, (index){
+                                        final leave=screenController.leavereport[index];
+                                         return DataRow(
                                            onSelectChanged: (_) {
                                             // setState(() {
                                             //   _selectedUser = screenController.users.firstWhere((user) => user.id == leave.leaveDate); 
                                             // });
                                           },
                                           cells: [
+                                            DataCell(Text(
+                                          '${index + 1}',
+                                        //  style: TextStyle(color: textColor),
+                                        )),
                                           DataCell(Text(dateFormat
                                               .format(leave.leaveDate))),
                                           DataCell(Text(leave.reason ?? 'N/A')),
@@ -207,7 +212,9 @@ class EmployeeLeaveDays extends StatelessWidget {
                                           //     .overShortTime
                                           //     .toString())),
                                         ]);
-                                      }).toList(),
+                                      })
+                                       
+                                     
                                     )),
                               ),
                             );
@@ -226,14 +233,84 @@ class EmployeeLeaveDays extends StatelessWidget {
   Widget _buildDatepickers(BuildContext context) {
     return Row(
       children: [
-        Flexible(
+        // Flexible(
+        //   child: Padding(
+        //     padding: EdgeInsets.all(kDefaultPadding),
+        //     child: Obx(
+        //       () => FormBuilderDateTimePicker(
+        //         initialValue: screenController.selectedFromDate.value,
+        //         inputType: InputType.date,
+        //         format: DateFormat('yyyy-MM-dd'),
+        //         name: 'From date',
+        //         decoration: const InputDecoration(
+        //           suffixIcon: Icon(Icons.calendar_month),
+        //           labelText: 'From date',
+        //           hintText: 'From date',
+        //           labelStyle: TextStyle(color: AppColors.blackColor),
+        //           border: OutlineInputBorder(),
+        //           focusedBorder: OutlineInputBorder(
+        //               borderSide: BorderSide(
+        //                   color: AppColors.defaultColor, width: 1.5)),
+        //           floatingLabelBehavior: FloatingLabelBehavior.always,
+        //         ),
+        //         keyboardType: TextInputType.name,
+        //         validator: FormBuilderValidators.compose([
+        //           FormBuilderValidators.required(),
+        //           (value) {
+        //             if (value != null && value.isAfter(DateTime.now())) {
+        //               return 'Date cannot be in the future';
+        //             }
+        //             return null;
+        //           },
+        //         ]),
+        //         onChanged: screenController.onFromDateSelected,
+        //         lastDate: DateTime.now(),
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        // Flexible(
+        //   child: Padding(
+        //     padding: EdgeInsets.all(kDefaultPadding),
+        //     child: Obx(
+        //       () => FormBuilderDateTimePicker(
+        //         inputType: InputType.date,
+        //         format: DateFormat('yyyy-MM-dd'),
+        //         name: 'To date',
+        //         initialValue: screenController.selectedToDate.value,
+        //         decoration: const InputDecoration(
+        //           suffixIcon: Icon(Icons.calendar_month),
+        //           labelText: 'To date',
+        //           hintText: 'To date',
+        //           labelStyle: TextStyle(color: AppColors.blackColor),
+        //           border: OutlineInputBorder(),
+        //           focusedBorder: OutlineInputBorder(
+        //               borderSide: BorderSide(
+        //                   color: AppColors.defaultColor, width: 1.5)),
+        //           floatingLabelBehavior: FloatingLabelBehavior.always,
+        //         ),
+        //         keyboardType: TextInputType.name,
+        //         validator: FormBuilderValidators.compose([
+        //           FormBuilderValidators.required(),
+        //           (value) {
+        //             if (value != null && value.isAfter(DateTime.now())) {
+        //               return 'Date cannot be in the future';
+        //             }
+        //             return null;
+        //           },
+        //         ]),
+        //         onChanged: screenController.onToDateSelected,  
+        //         lastDate: DateTime.now(),
+        //       ),
+        //     ),
+        //   ),
+        // ),
+         Flexible(
           child: Padding(
             padding: EdgeInsets.all(kDefaultPadding),
-            child: Obx(
-              () => FormBuilderDateTimePicker(
-                initialValue: screenController.selectedFromDate.value,
-                inputType: InputType.date,
-                format: DateFormat('yyyy-MM-dd'),
+            child: FormBuilderTextField(
+               // initialValue: screenController.selectedFromDate.value,
+              controller: screenController.fromdateController,
                 name: 'From date',
                 decoration: const InputDecoration(
                   suffixIcon: Icon(Icons.calendar_month),
@@ -247,30 +324,37 @@ class EmployeeLeaveDays extends StatelessWidget {
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
                 keyboardType: TextInputType.name,
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  (value) {
-                    if (value != null && value.isAfter(DateTime.now())) {
-                      return 'Date cannot be in the future';
-                    }
-                    return null;
-                  },
-                ]),
-                onChanged: screenController.onFromDateSelected,
-                lastDate: DateTime.now(),
+                readOnly: true,
+                // validator: FormBuilderValidators.compose([
+                //   FormBuilderValidators.required(),
+                //   (value) {
+                //     if (value != null && value.isAfter(DateTime.now())) {
+                //       return 'Date cannot be in the future';
+                //     }
+                //     return null;
+                //   },
+                // ]),
+                // onChanged:(value){
+                //     screenController.onFromDateSelected(value);
+                // },
+                onTap: ()async{
+                  screenController.fromdateController.text=await pickDate(context,format: "yyyy-MM-dd") ?? "";
+                },
+                
+               // lastDate: DateTime.now(),
               ),
             ),
           ),
-        ),
-        Flexible(
+           Flexible(
           child: Padding(
             padding: EdgeInsets.all(kDefaultPadding),
-            child: Obx(
-              () => FormBuilderDateTimePicker(
-                inputType: InputType.date,
-                format: DateFormat('yyyy-MM-dd'),
+            child: FormBuilderTextField(
+              controller: screenController.todateController,
+              readOnly: true,
+                // inputType: InputType.date,
+                // format: DateFormat('yyyy-MM-dd'),
                 name: 'To date',
-                initialValue: screenController.selectedToDate.value,
+               // initialValue: screenController.selectedToDate.value,
                 decoration: const InputDecoration(
                   suffixIcon: Icon(Icons.calendar_month),
                   labelText: 'To date',
@@ -283,39 +367,126 @@ class EmployeeLeaveDays extends StatelessWidget {
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                 ),
                 keyboardType: TextInputType.name,
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  (value) {
-                    if (value != null && value.isAfter(DateTime.now())) {
-                      return 'Date cannot be in the future';
-                    }
-                    return null;
-                  },
-                ]),
-                onChanged: screenController.onToDateSelected,  
-                lastDate: DateTime.now(),
+               
+               
+                 
+                onTap: ()async{
+                  screenController.todateController.text=await pickDate(context,format: "yyyy-MM-dd") ?? "";
+                },
               ),
             ),
           ),
-        ),
       ],
     );
   }
 
-  Widget _builDropdown() {
-    return Row(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.all(kDefaultPadding),
-            child: Obx(() {
-              if (employeeController.companydetails.isEmpty) {
-                // Show loading indicator while fetching company details
-                return Center(child: CircularProgressIndicator());
-              }
-
-              if (employeeController.isSuperAdmin.value) {
-                // Dropdown for superadmin
+  Widget _builDropdown(BuildContext context) { 
+    return Obx(()=>
+       Row(
+        children: [
+          // Expanded(
+          //   child: Padding(
+          //     padding: EdgeInsets.all(kDefaultPadding),
+          //     child: Obx(() {
+          //       if (employeeController.companydetails.isEmpty) {
+          //         // Show loading indicator while fetching company details
+          //         return Center(child: CircularProgressIndicator());
+          //       }
+      
+          //       if (employeeController.isSuperAdmin.value) {
+          //         // Dropdown for superadmin
+          //         return FormBuilderDropdown<Company>(
+          //           name: 'Company Name',
+          //           decoration: InputDecoration(
+          //             labelText: 'Company Name',
+          //             hintText: 'Select Company',
+          //             labelStyle: TextStyle(color: AppColors.blackColor),
+          //             border: OutlineInputBorder(),
+          //             enabledBorder: OutlineInputBorder(
+          //                 borderSide: BorderSide(color: AppColors.greycolor)),
+          //             focusedBorder: OutlineInputBorder(
+          //                 borderSide: BorderSide(
+          //                     color: AppColors.defaultColor, width: 1.5)),
+          //             floatingLabelBehavior: FloatingLabelBehavior.always,
+          //           ),
+          //           validator: FormBuilderValidators.required(),
+          //           items: employeeController.companydetails
+          //               .map((company) => DropdownMenuItem(
+          //                     value: company,
+          //                     child: Text(company.companyName),
+          //                   ))
+          //               .toList(),
+          //           onChanged: (value) {
+          //             screenController.onCompanySelected(value!.id);
+          //           },
+          //         );
+          //       } else {
+          //         // Single company display for company admin
+          //         final company = employeeController.companydetails[0];
+          //         // This will be called only once when the widget is built
+          //         WidgetsBinding.instance.addPostFrameCallback((_) {
+          //           screenController.onCompanySelected(company.id);
+          //         });
+          //         return FormBuilderTextField(
+          //           name: 'Company Name',
+          //           initialValue: company.companyName,
+          //           decoration: InputDecoration(
+          //             labelText: 'Company Name',
+          //             labelStyle: TextStyle(color: AppColors.blackColor),
+          //             border: OutlineInputBorder(),
+          //             enabledBorder: OutlineInputBorder(
+          //                 borderSide: BorderSide(color: AppColors.greycolor)),
+          //             focusedBorder: OutlineInputBorder(
+          //                 borderSide: BorderSide(
+          //                     color: AppColors.defaultColor, width: 1.5)),
+          //             floatingLabelBehavior: FloatingLabelBehavior.always,
+          //           ),
+          //           readOnly: true,
+          //         );
+          //       }
+          //     }),
+          //   ),
+          // ),
+          
+          // Expanded(
+          //   child: Padding(
+          //     padding: EdgeInsets.all(kDefaultPadding),
+          //     child: Obx(
+          //       () => CustomSuggessionTextFormField(
+          //         controller: userNameController,
+          //         hintText: 'Select User',
+          //         labelText: 'User Name',
+          //         suggestons: screenController.filteredUsers
+          //             .map((user) => user.name)
+          //             .toList(),
+          //         validator: FormBuilderValidators.required(),
+          //         width: MediaQuery.of(context).size.width * 0.4,
+          //         onSelected: () {
+          //           final selectedUser = screenController.filteredUsers
+          //               .firstWhere((user) => 
+          //                   user.name == userNameController.text);
+          //           screenController.onUserSelected(
+          //             selectedUser.userTypeId,
+          //             selectedUser.companyId,
+          //             selectedUser.id,
+          //            // selectedUser,
+          //           );
+          //         },
+          //        // prefixIcon: const Icon(Icons.person),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+           if (employeeController.isSuperAdmin.value) // Only show if superadmin
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: EdgeInsets.all(kDefaultPadding),
+              child: Obx(() {
+                if (employeeController.companydetails.isEmpty) {
+                  return Center(child: CircularProgressIndicator());
+                }
+      
                 return FormBuilderDropdown<Company>(
                   name: 'Company Name',
                   decoration: InputDecoration(
@@ -341,75 +512,43 @@ class EmployeeLeaveDays extends StatelessWidget {
                     screenController.onCompanySelected(value!.id);
                   },
                 );
-              } else {
-                // Single company display for company admin
-                final company = employeeController.companydetails[0];
-                // This will be called only once when the widget is built
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  screenController.onCompanySelected(company.id);
-                });
-                return FormBuilderTextField(
-                  name: 'Company Name',
-                  initialValue: company.companyName,
-                  decoration: InputDecoration(
-                    labelText: 'Company Name',
-                    labelStyle: TextStyle(color: AppColors.blackColor),
-                    border: OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.greycolor)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: AppColors.defaultColor, width: 1.5)),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                  ),
-                  readOnly: true,
-                );
-              }
-            }),
-          ),
-        ),
-        
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.all(kDefaultPadding),
-            child: Obx(
-              () => FormBuilderDropdown<UserModel>(
-                // controller: widget.companyNameController,
-                name: 'User Name',
-                decoration: const InputDecoration(
-                  labelText: 'User Name',
-                  hintText: 'User Name',
-                  labelStyle: TextStyle(color: AppColors.blackColor),
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.greycolor)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: AppColors.defaultColor, width: 1.5)),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                ),
-                // enableSuggestions: false,
-                // keyboardType: TextInputType.name,
-                validator: FormBuilderValidators.required(),
-                items: screenController.filteredUsers
-                    .map((user) => DropdownMenuItem(
-                          value: user,
-                          child: Text(user.name),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  if (value != null) {
-                    screenController.onUserSelected(
-                        value.userTypeId, value.companyId, value.id);
-                  }
-                },
-
-                // onSaved: (value) => (_formData.firstname = value ?? ''),
-              ),
+              }),
             ),
           ),
-        ),
-      ],
+         Expanded( 
+          flex: 1,
+           child: Padding(
+            padding: EdgeInsets.all(kDefaultPadding),
+            child: Obx(
+              () => CustomSuggessionTextFormField(
+                controller: userNameController,
+                hintText: 'Select User',
+                labelText: 'User Name',
+                suggestons: screenController.filteredUsers
+                    .map((user) => user.name)
+                    .toList(),
+                validator: FormBuilderValidators.required(),
+                width: MediaQuery.of(context).size.width * 0.4,
+                onSelected: () {
+                  final selectedUser = screenController.filteredUsers
+                      .firstWhere((user) => 
+                          user.name == userNameController.text);
+                  screenController.onUserSelected(
+                    selectedUser.userTypeId,
+                    selectedUser.companyId,
+                    selectedUser.id,
+                   // selectedUser,
+                  );
+                },
+              ),
+            ),
+                 ),
+         ),
+           // Add spacer to push content to the left when company field is hidden
+          if (!employeeController.isSuperAdmin.value)
+            Expanded(flex: 1 , child: SizedBox()), 
+        ],
+      ),
     );
   }
 }

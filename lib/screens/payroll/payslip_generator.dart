@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_dashboard/core/animations/entrance_fader.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
+import 'package:flutter_dashboard/core/widgets/custom_suggestion_feild.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/core/widgets/ui_component_appbar.dart';
@@ -26,8 +27,9 @@ class PayslipGenerator extends StatelessWidget {
   PayslipGenerator({super.key});
 
   final screenController = Get.put(InvoiceController());
-  final empleavecontroller=Get.put(EmployeeLeaveDaysController());
+  final empleavecontroller = Get.put(EmployeeLeaveDaysController());
   final employeeController = Get.put(EmployeeController());
+  final userNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class PayslipGenerator extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
           child: UIComponenetsAppBarNoButton(
             title: 'Employee Generated Payslip',
-           // subtitle: '',
+            subtitle: Text(''),
             icon: Icon(Icons.rocket),
           ),
         ),
@@ -106,117 +108,6 @@ class PayslipGenerator extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.all(kDefaultPadding),
-                          child: Obx(() {
-                            if (employeeController.companydetails.isEmpty) {
-                              // Show loading indicator while fetching company details
-                              return Center(child: CircularProgressIndicator());
-                            }
-
-                            if (employeeController.isSuperAdmin.value) {
-                              // Dropdown for superadmin
-                              return FormBuilderDropdown<Company>(
-                                name: 'Company Name',
-                                decoration: InputDecoration(
-                                  labelText: 'Company Name',
-                                  hintText: 'Select Company',
-                                  labelStyle:
-                                      TextStyle(color: AppColors.blackColor),
-                                  border: OutlineInputBorder(),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: AppColors.greycolor)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: AppColors.defaultColor,
-                                          width: 1.5)),
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                ),
-                                validator: FormBuilderValidators.required(),
-                                items: employeeController.companydetails
-                                    .map((company) => DropdownMenuItem(
-                                          value: company,
-                                          child: Text(company.companyName),
-                                        ))
-                                    .toList(),
-                                onChanged: (value) {
-                                  screenController.onCompanySelected(value!.id);
-                                },
-                              );
-                            } else {
-                              // Single company display for company admin
-                              final company =
-                                  employeeController.companydetails[0];
-                              // employeeController.setSelectedCompany(
-                              //     company.id, company.companyCode);
-                              return FormBuilderTextField(
-                                name: 'Company Name',
-                                initialValue: company.companyName,
-                                decoration: InputDecoration(
-                                  labelText: 'Company Name',
-                                  labelStyle:
-                                      TextStyle(color: AppColors.blackColor),
-                                  border: OutlineInputBorder(),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: AppColors.greycolor)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: AppColors.defaultColor,
-                                          width: 1.5)),
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                ),
-                                readOnly: true,
-                              );
-                            }
-                          }),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.all(kDefaultPadding),
-                          child: Obx(() => FormBuilderDropdown<UserModel>(
-                                name: 'Employee',
-                                decoration: const InputDecoration(
-                                  labelText: 'Employee',
-                                  hintText: 'Employee',
-                                  labelStyle:
-                                      TextStyle(color: AppColors.blackColor),
-                                  border: OutlineInputBorder(),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: AppColors.greycolor)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: AppColors.defaultColor,
-                                          width: 1.5)),
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                ),
-                                validator: FormBuilderValidators.required(),
-                                items: empleavecontroller.filteredUsers 
-                                    .map((user) => DropdownMenuItem(
-                                          value: user,
-                                          child: Text(user.name),
-                                        ))
-                                    .toList(),
-                                onChanged: (value) {
-                                  screenController.onUserSelected(
-                                      value!.userTypeId,
-                                      value.companyId,
-                                      value.id);
-                                },
-                              )),
-                        ),
-                      ),
-                    ],
-                  ),
                   Row(
                     children: [
                       Expanded(
@@ -294,11 +185,91 @@ class PayslipGenerator extends StatelessWidget {
                       ),
                     ],
                   ),
+                   Obx(()=>
+                       Row(
+                      children: [
+                        if (employeeController
+                            .isSuperAdmin.value) // Only show if superadmin
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.all(kDefaultPadding),
+                              child: Obx(() {
+                                if (employeeController.companydetails.isEmpty) {
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                }
+                     
+                                return FormBuilderDropdown<Company>(
+                                  name: 'Company Name',
+                                  decoration: InputDecoration(
+                                    labelText: 'Company Name',
+                                    hintText: 'Select Company',
+                                    labelStyle:
+                                        TextStyle(color: AppColors.blackColor),
+                                    border: OutlineInputBorder(),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppColors.greycolor)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppColors.defaultColor,
+                                            width: 1.5)),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                  ),
+                                  validator: FormBuilderValidators.required(),
+                                  items: employeeController.companydetails
+                                      .map((company) => DropdownMenuItem(
+                                            value: company,
+                                            child: Text(company.companyName),
+                                          ))
+                                      .toList(),
+                                  onChanged: (value) {
+                                    screenController.onCompanySelected(value!.id);
+                                  },
+                                );
+                              }),
+                            ),
+                          ),
+                       Expanded( 
+                             flex: 1,
+                              child: Padding(
+                               padding: EdgeInsets.all(kDefaultPadding),
+                               child: Obx(
+                                 () => CustomSuggessionTextFormField(
+                                   controller: userNameController,
+                                   hintText: 'Select User',
+                                   labelText: 'User Name',
+                                   suggestons: screenController.filteredUsers
+                                       .map((user) => user.name)
+                                       .toList(),
+                                   validator: FormBuilderValidators.required(),
+                                   width: MediaQuery.of(context).size.width * 0.4,
+                                   onSelected: () {
+                                     final selectedUser = screenController.filteredUsers
+                      .firstWhere((user) => 
+                          user.name == userNameController.text);
+                                     screenController.onUserSelected(
+                                       selectedUser.userTypeId,
+                                       selectedUser.companyId,
+                                       selectedUser.id, 
+                                      // selectedUser,
+                                     );
+                                   },
+                                 ),
+                               ),
+                                    ),
+                            ),
+                        if (!employeeController.isSuperAdmin.value)
+                          Expanded(flex: 1, child: SizedBox()),
+                      ],
+                                       ),
+                   ), 
                   buildSizedBoxH(kDefaultPadding * 3),
                   Obx(() {
-                    if (!screenController.isUserSelected.value ||
-                        !screenController.isYearSelected.value ||
-                        !screenController.isMonthSelected.value) {
+                    if (
+                        !screenController.isUserSelected.value  ) {
                       return Center(
                           child:
                               Text("Please select all the dropdowns to view."));

@@ -171,6 +171,10 @@ class ComapnyModules extends StatelessWidget {
                                         showCheckboxColumn: true,
                                         showBottomBorder: true,
                                         columns: [
+                                             DataColumn(
+                                                label: Text(
+                                                    'Sl No') // Added S.No column
+                                                ),
                                           DataColumn(
                                               label: Row(
                                             children: [
@@ -200,6 +204,7 @@ class ComapnyModules extends StatelessWidget {
                                           var modules = selectedModules[index];
                                           return DataRow(
                                             cells: [
+                                                DataCell(Text('${index + 1}')),
                                               DataCell(GestureDetector(
                                                 onTap: () {
                                                   print('tapped');

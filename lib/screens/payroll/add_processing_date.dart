@@ -31,11 +31,11 @@ class AddProcessingDate extends StatelessWidget {
       children: [
         Column(
           children: [
-              Padding(
+            Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               child: UIComponenetsAppBarNoButton(
-                title: 'Add Processing Day',     
-               // subtitle: '',
+                title: 'Add Processing Day',
+                subtitle: Text(''),
                 icon: Icon(Icons.rocket),
               ),
             ),
@@ -133,145 +133,116 @@ class AddProcessingDate extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Flexible(
-                      child: Obx(() {
-                        // Check if there's only one company (the logged-in user's company)
-                        if (employeeController.companydetails.isEmpty) {
-                          // Show loading indicator while fetching company details
-                          return Center(child: CircularProgressIndicator());
-                        }
-    
-                        if (employeeController.isSuperAdmin.value) {
-                          // Dropdown for superadmin
-                          return FormBuilderDropdown<Company>(
-                            name: 'Company Name',
-                            decoration: InputDecoration(
-                              labelText: 'Company Name',
-                              hintText: 'Select Company',
-                              labelStyle:
+                Obx(()=>
+                   Row(
+                    children: [
+                      if (employeeController
+                          .isSuperAdmin.value) // Only show if superadmin
+                        Expanded(
+                          flex: 1,
+                          child: Obx(() {
+                            if (employeeController.companydetails.isEmpty) {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                                            
+                            return FormBuilderDropdown<Company>(
+                              name: 'Company Name',
+                              decoration: InputDecoration(
+                                labelText: 'Company Name',
+                                hintText: 'Select Company',
+                                labelStyle:
                                     TextStyle(color: AppColors.blackColor),
                                 border: OutlineInputBorder(),
                                 enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppColors.greycolor)),
+                                    borderSide:
+                                        BorderSide(color: AppColors.greycolor)),
                                 focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: AppColors.defaultColor,
                                         width: 1.5)),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                            ),
-                            validator: FormBuilderValidators.required(),
-                            items: employeeController.companydetails
-                                .map((company) => DropdownMenuItem(
-                                      value: company,
-                                      child: Text(company.companyName),
-                                    ))
-                                .toList(),
-                            onChanged: (value) {
-                              screenController.onCompanySelected(
-                                  value!.id, value.companyCode);
-                            },
-                          );
-                        } else {
-                          // Single company display for company admin
-                          final company =
-                              employeeController.companydetails[0];
-                         screenController.onCompanySelected(company.id,company.companyCode); 
-                          return FormBuilderTextField(
-                            name: 'Company Name',
-                            initialValue: company.companyName,
-                            decoration: InputDecoration(
-                              labelText: 'Company Name',
-                              labelStyle:
-                                    TextStyle(color: AppColors.blackColor),
-                                border: OutlineInputBorder(),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppColors.greycolor)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppColors.defaultColor,
-                                        width: 1.5)),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                            ),
-                            readOnly: true,
-                          );
-                        }
-                      }),
-                    ),
-                    buildSizedboxW(kDefaultPadding),
-                    Flexible(
-                       child: Theme(
-                    data: Theme.of(context).copyWith(
-                      colorScheme: ColorScheme.light(
-                        primary: AppColors.defaultColor,
-                        onPrimary: Colors.white,
-                        
-                      ),
-                        inputDecorationTheme:
-                                          InputDecorationTheme(
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: AppColors.greycolor)),
-                                      ),
-                    ),
-                      child: FormBuilderDateTimePicker(
-                        controller:
-                            screenController.processingdayController,
-                        inputType: InputType.date,
-                        format: DateFormat('yyyy-MM-dd'),
-                        name: 'Date',
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.calendar_month),
-                          labelText: 'Date',
-                          // hintText: 'test.user',
-                          // helperText: '* To test registration fail: admin',
-                          labelStyle:
-                                    TextStyle(color: AppColors.blackColor),
-                                border: OutlineInputBorder(),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppColors.greycolor)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppColors.defaultColor,
-                                        width: 1.5)),
-                          floatingLabelBehavior:
-                              FloatingLabelBehavior.always,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                              ),
+                              validator: FormBuilderValidators.required(),
+                              items: employeeController.companydetails
+                                  .map((company) => DropdownMenuItem(
+                                        value: company,
+                                        child: Text(company.companyName),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                screenController.onCompanySelected(
+                                    value!.id, value.companyCode);
+                              },
+                            );
+                          }),
                         ),
-                        // enableSuggestions: false,
-                        validator: FormBuilderValidators.required(),
-                        // onSaved: (value) => (_formData.username = value ?? ''),
+                      buildSizedboxW(kDefaultPadding),
+                      Expanded(
+                        flex: 1,
+                        child: Theme(
+                          data: Theme.of(context).copyWith(
+                            colorScheme: ColorScheme.light(
+                              primary: AppColors.defaultColor,
+                              onPrimary: Colors.white,
+                            ),
+                            inputDecorationTheme: InputDecorationTheme(
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: AppColors.greycolor)),
+                            ),
+                          ),
+                          child: FormBuilderDateTimePicker(
+                            controller: screenController.processingdayController,
+                            inputType: InputType.date,
+                            format: DateFormat('yyyy-MM-dd'),
+                            name: 'Date',
+                            decoration: InputDecoration(
+                              suffixIcon: Icon(Icons.calendar_month),
+                              labelText: 'Date',
+                              // hintText: 'test.user',
+                              // helperText: '* To test registration fail: admin',
+                              labelStyle: TextStyle(color: AppColors.blackColor),
+                              border: OutlineInputBorder(),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: AppColors.greycolor)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: AppColors.defaultColor, width: 1.5)),
+                              floatingLabelBehavior: FloatingLabelBehavior.always,
+                            ),
+                            // enableSuggestions: false,
+                            validator: FormBuilderValidators.required(),
+                            // onSaved: (value) => (_formData.username = value ?? ''),
+                          ),
+                        ),
                       ),
-                    ),
-                    )
-                  ],
+                      // Add spacer to push content to the left when company field is hidden
+                      if (!employeeController.isSuperAdmin.value)
+                        Expanded(flex: 1, child: SizedBox()),
+                    ],
+                  ),
                 ),
                 buildSizedBoxH(kDefaultPadding * 3),
                 Row(
                   children: [
-                    Flexible(
+                    Expanded(
+                      flex: 1,
                       child: FormBuilderDropdown(
                         name: 'status',
                         decoration: InputDecoration(
                           labelText: 'status',
                           // hintText: 'test@gmail.com',
-                        labelStyle:
-                                    TextStyle(color: AppColors.blackColor),
-                                border: OutlineInputBorder(),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppColors.greycolor)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppColors.defaultColor,
-                                        width: 1.5)),
-                          floatingLabelBehavior:
-                              FloatingLabelBehavior.always,
+                          labelStyle: TextStyle(color: AppColors.blackColor),
+                          border: OutlineInputBorder(),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: AppColors.greycolor)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColors.defaultColor, width: 1.5)),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
                         ),
                         // keyboardType: TextInputType.emailAddress,
                         validator: FormBuilderValidators.required(),
@@ -293,6 +264,9 @@ class AddProcessingDate extends StatelessWidget {
                       ),
                     ),
                     buildSizedboxW(kDefaultPadding),
+                    Expanded(
+                      flex: 1,
+                      child: SizedBox())
                     // Flexible(
                     //   child: FormBuilderTextField(
                     //     name: fieldfour,
@@ -317,7 +291,7 @@ class AddProcessingDate extends StatelessWidget {
                         buttonname: 'Add Processing Day',
                         onClick: () async {
                           await screenController.addProcessingDate();
-                         // Get.back();
+                          // Get.back();
                         }),
                   ],
                 ),

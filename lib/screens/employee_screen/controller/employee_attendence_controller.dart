@@ -170,7 +170,8 @@ class EmployeeAttendenceController extends GetxController {
     selectedUserId.value = userId;
      selectedUser.value = user;  // Store the selected user
     isUserSelected.value = true;
-    checkAllSelections();
+   // checkAllSelections();
+   fetchAttendanceDetails(); 
   }
 
    // Add method to check if a user is selected
@@ -186,9 +187,10 @@ class EmployeeAttendenceController extends GetxController {
     print("Year selected: ${isFromdateSelected.value}");
     print("Month selected: ${isTodateSelected.value}");
 
-    if (isUserSelected.value &&
-        isFromdateSelected.value &&
-        isTodateSelected.value) {
+    if (isUserSelected.value 
+        // isFromdateSelected.value &&
+        // isTodateSelected.value
+        ) {
       print("All selections made, fetching payslip details");
       fetchAttendanceDetails();
     } else {
@@ -197,27 +199,27 @@ class EmployeeAttendenceController extends GetxController {
     }
   }
 
-  void onFromDateSelected(DateTime? date) {
-    selectedFromDate.value = date;
-    isFromdateSelected.value = true;
-    if (date != null) {
-      fromdateController.text = DateFormat('yyyy-MM-dd').format(date);
-    }
-    if (isUserSelected.value && selectedToDate.value != null) {
-      checkAllSelections();
-    }
-  }
+  // void onFromDateSelected(DateTime? date) {
+  //   selectedFromDate.value = date;
+  //   isFromdateSelected.value = true;
+  //   if (date != null) {
+  //     fromdateController.text = DateFormat('yyyy-MM-dd').format(date);
+  //   }
+  //   if (isUserSelected.value && selectedToDate.value != null) {
+  //     checkAllSelections();
+  //   }
+  // }
 
-  void onToDateSelected(DateTime? date) {
-    selectedToDate.value = date;
-    isTodateSelected.value = true;
-    if (date != null) {
-      todateController.text = DateFormat('yyyy-MM-dd').format(date);
-    }
-    if (isUserSelected.value && selectedFromDate.value != null) {
-      checkAllSelections();
-    }
-  }
+  // void onToDateSelected(DateTime? date) {
+  //   selectedToDate.value = date;
+  //   isTodateSelected.value = true;
+  //   if (date != null) {
+  //     todateController.text = DateFormat('yyyy-MM-dd').format(date);
+  //   }
+  //   if (isUserSelected.value && selectedFromDate.value != null) {
+  //     checkAllSelections();
+  //   }
+  // }
 
   // Fetch payslip details based on selected company, user, year, and month
   Future<void> fetchAttendanceDetails() async {
@@ -228,8 +230,10 @@ class EmployeeAttendenceController extends GetxController {
       final url =
           Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_EMPLOYEE_ATTENDENCE_REPORT)
               .replace(queryParameters: {
-        "from_date": DateFormat('yyyy-MM-dd').format(selectedFromDate.value!),
-        "to_date": DateFormat('yyyy-MM-dd').format(selectedToDate.value!),
+        // "from_date": DateFormat('yyyy-MM-dd').format(selectedFromDate.value!),
+        // "to_date": DateFormat('yyyy-MM-dd').format(selectedToDate.value!),
+        "from_date": fromdateController.text,
+        "to_date": todateController.text,
         "user_id": selectedUserId.value
       });
 

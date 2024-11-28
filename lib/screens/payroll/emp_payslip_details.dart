@@ -5,6 +5,7 @@ import 'package:flutter_dashboard/core/animations/entrance_fader.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/card_header.dart';
+import 'package:flutter_dashboard/core/widgets/custom_suggestion_feild.dart';
 import 'package:flutter_dashboard/core/widgets/dialog_widgets.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
@@ -24,6 +25,7 @@ class PayslipDetails extends StatelessWidget {
   PayslipDetails({super.key});
   final employeeController = Get.put(EmployeeController());
   final screenController = Get.put(PayrollSettingsController());
+  final userNameController = TextEditingController();
 
   final ScrollController _dataTableHorizontalScrollController =
       ScrollController();
@@ -50,7 +52,7 @@ class PayslipDetails extends StatelessWidget {
               ),
             ),
             buildSizedBoxH(kDefaultPadding),
-            buildDropdowns(),
+            buildDropdowns(context),
             buildSizedBoxH(kDefaultPadding),
             Obx(() {
               if (screenController.showTabBar.value) {
@@ -95,7 +97,7 @@ class PayslipDetails extends StatelessWidget {
     );
   }
 
-  Widget buildDropdowns() {
+  Widget buildDropdowns(BuildContext context) {
     return Column(
       children: [
         Row(
@@ -164,32 +166,28 @@ class PayslipDetails extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.all(kDefaultPadding),
-                child: Obx(() => FormBuilderDropdown<UserModel>(
-                      name: 'Employee',
-                      decoration: const InputDecoration(
-                        labelText: 'Employee',
-                        hintText: 'Employee',
-                        labelStyle: TextStyle(color: AppColors.blackColor),
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.greycolor)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: AppColors.defaultColor, width: 1.5)),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      ),
-                      validator: FormBuilderValidators.required(),
-                      items: screenController.filteredUsers
-                          .map((user) => DropdownMenuItem(
-                                value: user,
-                                child: Text(user.name),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        screenController.onUserSelected(
-                            value!.userTypeId, value.companyId, value.id);
-                      },
-                    )),
+                child: Obx(() => CustomSuggessionTextFormField(
+                controller: userNameController,
+                hintText: 'Select User',
+                labelText: 'User Name',
+                suggestons: screenController.filteredUsers
+                    .map((user) => user.name)
+                    .toList(),
+                validator: FormBuilderValidators.required(),
+                width: MediaQuery.of(context).size.width * 0.4,
+                onSelected: () {
+                  final selectedUser = screenController.filteredUsers
+                      .firstWhere((user) => 
+                          user.name == userNameController.text);
+                  screenController.onUserSelected(
+                    selectedUser.userTypeId,
+                    selectedUser.companyId,
+                    selectedUser.id,
+                    //selectedUser,
+                  );
+                },
+               // prefixIcon: const Icon(Icons.person),
+              ),),
               ),
             ),
           ],
@@ -345,7 +343,7 @@ class PayslipDetails extends StatelessWidget {
                                           // numeric: true,
                                           label: Row(
                                         children: [
-                                          Text('No'),
+                                          Text('Sl No'),
 
                                           //  IconButton(
                                           //      onPressed: () {},
