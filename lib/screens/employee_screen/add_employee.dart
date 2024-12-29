@@ -25,8 +25,8 @@ class AddEmployee extends StatelessWidget {
       children: [
         Column(
           children: [
-             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+             const Padding(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               child: UIComponenetsAppBarNoButton(
                 title: 'Add Employee', 
                 subtitle: Text(''), 

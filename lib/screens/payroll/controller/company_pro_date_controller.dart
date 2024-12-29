@@ -15,6 +15,7 @@ class CompanyProccesingDateController extends GetxController {
   var companypayrollprocessingdate = <CompanyProcessingDate>[].obs;
   final processingdayController = TextEditingController();
   final remarksController = TextEditingController();
+  RxBool isLoading=false.obs;
   String? selectedStatus;
   var selectedCompanyId = ''.obs;
     var isCompanySelected = false.obs;
@@ -40,12 +41,14 @@ class CompanyProccesingDateController extends GetxController {
   // Method to add a new processing date
 
   addProcessingDate() async {
+    final compid= await StorageServices().read('company_id');
+      final uType= await StorageServices().read('user_type');
     var response = await NetWorkManager.shared().request(
         url: ApiUrls.BASE_URL + ApiUrls.ADD_PROCESSING_DATE,
         method: 'post',
         isAuthRequired: true,
         data: {
-          "company_id": selectedCompanyId.value,
+          "company_id": uType=="QTS_ADMIN"?selectedCompanyId.value:compid, 
           "processing_day": processingdayController.text,
           "status": selectedStatus,
           "is_active": true
@@ -72,6 +75,7 @@ class CompanyProccesingDateController extends GetxController {
     // Method to fetch company payroll processing dates
 
   fetchCompanyPayrollProcessingDate() async {
+    isLoading.value=true;
     try {
       final tokens = await StorageServices().read('token');
       final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_PROCESSING_DATE);
@@ -129,6 +133,8 @@ class CompanyProccesingDateController extends GetxController {
 
       // Show error dialog
      // awesomeOkDialog(message: e.toString());
+    }finally{
+      isLoading.value=false;
     }
   }
 }

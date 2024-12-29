@@ -92,7 +92,11 @@ class PayslipDetail {
   int totalAmount;
   int overtimeHours;
   int regularHours;
-  int leavedays;
+  int currentMonthLeaves;
+  int lopLeaveDays;
+  int paidLeaves;
+  int totalTakenPaidLeaves;
+  int allowedPaidLeaves;
   int holidays;
   int workfromhomeDays;
   String projectCode;
@@ -124,7 +128,11 @@ class PayslipDetail {
     required this.totalAmount,
     required this.overtimeHours,
     required this.regularHours,
-    required this.leavedays,
+    required this.currentMonthLeaves,
+    required this.lopLeaveDays,
+    required this.paidLeaves,
+    required this.totalTakenPaidLeaves,
+    required this.allowedPaidLeaves,
     required this.holidays,
     required this.workfromhomeDays,
     required this.projectCode,
@@ -157,7 +165,11 @@ class PayslipDetail {
         totalAmount: json["total_amount"],
         overtimeHours: json["overtime_hours"],
         regularHours: json["regular_hours"],
-        leavedays: json["leavedays"],
+        currentMonthLeaves: json["current_month_leaves"],
+        lopLeaveDays: json["lop_leave_days"],
+        paidLeaves: json["paid_leaves"],
+        totalTakenPaidLeaves: json["total_taken_paid_leaves"],
+        allowedPaidLeaves: json["allowed_paid_leaves"],
         holidays: json["holidays"],
         workfromhomeDays: json["workfromhome_days"],
         projectCode: json["project_code"],
@@ -174,7 +186,7 @@ class PayslipDetail {
         deductions: List<Deduction>.from(
             json["deductions"].map((x) => Deduction.fromJson(x))),
       );
-
+ 
   Map<String, dynamic> toJson() => {
         "company_id": companyId,
         "user_id": userId,
@@ -195,7 +207,11 @@ class PayslipDetail {
         "total_amount": totalAmount,
         "overtime_hours": overtimeHours,
         "regular_hours": regularHours,
-        "leavedays": leavedays,
+        "current_month_leaves": currentMonthLeaves,
+        "lop_leave_days": lopLeaveDays,
+        "paid_leaves": paidLeaves,
+        "total_taken_paid_leaves": totalTakenPaidLeaves,
+        "allowed_paid_leaves": allowedPaidLeaves,
         "holidays": holidays,
         "workfromhome_days": workfromhomeDays,
         "project_code": projectCode,

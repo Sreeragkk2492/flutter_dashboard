@@ -34,7 +34,13 @@ class InvoiceController extends GetxController {
           totalAmount: 0,
           overtimeHours: 0,
           regularHours: 0,
-          leavedays: 0,
+          currentMonthLeaves: 0,
+          lopLeaveDays: 0,
+          paidLeaves: 0,
+          allowedPaidLeaves: 0,
+          totalTakenPaidLeaves: 0,
+          //exceededLeaveDays: 0,
+         // leavedays: 0,
           holidays: 0,
           workfromhomeDays: 0,
           projectCode: '',
@@ -145,31 +151,31 @@ class InvoiceController extends GetxController {
 
   // Check if all necessary selections have been made
 
-   void checkAllSelections() {
-    print("Checking selections:");
-    print("Company selected: ${isCompanySelected.value}");
-    print("User selected: ${isUserSelected.value}");
-    print("Year selected: ${isYearSelected.value}");
-    print("Month selected: ${isMonthSelected.value}");
+  //  void checkAllSelections() {
+  //   print("Checking selections:");
+  //   print("Company selected: ${isCompanySelected.value}");
+  //   print("User selected: ${isUserSelected.value}");
+  //   print("Year selected: ${isYearSelected.value}");
+  //   print("Month selected: ${isMonthSelected.value}");
 
-    if (
+  //   if (
         
-        isYearSelected.value &&
-        isMonthSelected.value && isUserSelected.value ) {
-      print("All selections made, fetching payslip details");
-      //fetchPayslipDetails(selectedUserId.value);
-    } else {
-      print("Not all selections made, hiding tab bar");
-      showTabBar.value = false;
-    }
-  }
+  //       isYearSelected.value &&
+  //       isMonthSelected.value && isUserSelected.value ) {
+  //     print("All selections made, fetching payslip details");
+  //     //fetchPayslipDetails(selectedUserId.value);
+  //   } else {
+  //     print("Not all selections made, hiding tab bar");
+  //     showTabBar.value = false;
+  //   }
+  // }
 
     // Handle year selection
 
   void onYearSelected(String year) {
     selectedYear.value = year;
     isYearSelected.value = true;
-    checkAllSelections();
+  //  checkAllSelections();
   }
 
     // Handle month selection
@@ -177,7 +183,7 @@ class InvoiceController extends GetxController {
   void onMonthSelected(String month) {
     selectedMonth.value = month;
     isMonthSelected.value = true;
-    checkAllSelections();
+   // checkAllSelections();
   }
 
   // Handle company selection
@@ -192,7 +198,7 @@ class InvoiceController extends GetxController {
     selectedYear.value = '';
     selectedMonth.value = '';
     fetchUsersForCompany(companyId);
-    checkAllSelections();
+   // checkAllSelections();
   }
 
  // Handle user selection
@@ -201,10 +207,10 @@ class InvoiceController extends GetxController {
     selectedCompanyId.value = companyId;
     selectedUserId.value = userId;
     isUserSelected.value = true;
-    isYearSelected.value = false;
-    isMonthSelected.value = false;
-    selectedYear.value = '';
-    selectedMonth.value = '';
+    // isYearSelected.value = false;
+    // isMonthSelected.value = false;
+    // selectedYear.value = '';
+    // selectedMonth.value = '';
     //checkAllSelections();
     fetchPayslipDetails(selectedUserId.value);
   }
@@ -251,9 +257,9 @@ class InvoiceController extends GetxController {
        final uType = await StorageServices().read('user_type');
       final url = Uri.parse(ApiUrls.BASE_URL + ApiUrls.GET_ALL_EMPLOYEE_GENERATED_PAYSLIP_DETAILS)
           .replace(queryParameters: {
-        "company_id": uType=="QTS_ADMIN"?selectedCompanyId.value:comId,
+        "company_id":  uType == "QTS_ADMIN" ? selectedCompanyId.value : comId,
         "user_id": userid,
-        "year": selectedYear.value,
+        "year":selectedYear.value,
         "month": selectedMonth.value
       });
 
@@ -269,8 +275,8 @@ class InvoiceController extends GetxController {
         
         // Update controller variables
         payslipDetails.value = generatedPayslipDetails.payslipDetails;
-        allowances.value = generatedPayslipDetails.payslipDetails.allowances;
-        deductions.value = generatedPayslipDetails.payslipDetails.deductions;
+        allowances.value = generatedPayslipDetails.payslipDetails.allowances!;
+        deductions.value = generatedPayslipDetails.payslipDetails.deductions!;
         
         // Update totals
         totalAllowances.value = generatedPayslipDetails.totalAllowances;

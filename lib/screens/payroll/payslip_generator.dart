@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_dashboard/core/animations/entrance_fader.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
+import 'package:flutter_dashboard/core/widgets/custom_circular_progress_indicator.dart';
 import 'package:flutter_dashboard/core/widgets/custom_suggestion_feild.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
@@ -38,8 +39,8 @@ class PayslipGenerator extends StatelessWidget {
         body: EntranceFader(
             child: ListView(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
           child: UIComponenetsAppBarNoButton(
             title: 'Employee Generated Payslip',
             subtitle: Text(''),
@@ -49,7 +50,7 @@ class PayslipGenerator extends StatelessWidget {
         buildSizedBoxH(kDefaultPadding),
         screenSize.width >= kScreenWidthLg
             ? Padding(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                     //  horizontal: kDefaultPadding,
                     ),
                 child: Row(
@@ -141,7 +142,7 @@ class PayslipGenerator extends StatelessWidget {
                             onChanged: (value) {
                               screenController.onYearSelected(value!);
                               // invoiceController.selectedYear.value = value;
-                            },
+                            }, 
                           ),
                         ),
                       ),
@@ -196,13 +197,13 @@ class PayslipGenerator extends StatelessWidget {
                               padding: EdgeInsets.all(kDefaultPadding),
                               child: Obx(() {
                                 if (employeeController.companydetails.isEmpty) {
-                                  return Center(
+                                  return const Center(
                                       child: CircularProgressIndicator());
                                 }
                      
                                 return FormBuilderDropdown<Company>(
                                   name: 'Company Name',
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: 'Company Name',
                                     hintText: 'Select Company',
                                     labelStyle:
@@ -256,13 +257,14 @@ class PayslipGenerator extends StatelessWidget {
                                        selectedUser.id, 
                                       // selectedUser,
                                      );
+                                   //  screenController.fetchPayslipDetails(selectedUser.id); 
                                    },
                                  ),
                                ),
                                     ),
                             ),
                         if (!employeeController.isSuperAdmin.value)
-                          Expanded(flex: 1, child: SizedBox()),
+                          const Expanded(flex: 1, child: SizedBox()),
                       ],
                                        ),
                    ), 
@@ -270,15 +272,19 @@ class PayslipGenerator extends StatelessWidget {
                   Obx(() {
                     if (
                         !screenController.isUserSelected.value  ) {
-                      return Center(
+                      return const Center(
                           child:
                               Text("Please select all the dropdowns to view."));
                     } else if (screenController.isLoading.value) {
-                      return Center(
-                        child: CircularProgressIndicator(),
+                      return const Center(
+                        child:  AnimatedCircularProgressIndicator(
+              size: 60.0,
+              strokeWidth: 5.0,
+              valueColor: AppColors.defaultColor,
+            ),
                       );
                     } else if (screenController.noDataFound.value) {
-                      return Center(child: Text("No Generated Data Found!"));
+                      return const Center(child: Text("No Generated Data Found!"));
                     } else {
                       buildSizedboxW(kDefaultPadding * 3);
                       return A4PayslipSheet(
@@ -424,12 +430,12 @@ class PayslipGenerator extends StatelessWidget {
                         // style: DefaultTextStyle.of(context).style,
                         children: <TextSpan>[
                           TextSpan(
-                            text: "Leave Days: ",
+                            text: " paid Leave Days: ",
                             style: TextStyle(fontWeight: FontWeight.w400),
                           ),
                           TextSpan(
                             text:
-                                "${screenController.payslipDetails.value.leavedays}",
+                                "${screenController.payslipDetails.value.paidLeaves}",
                           ),
                         ],
                       ),
@@ -440,12 +446,12 @@ class PayslipGenerator extends StatelessWidget {
                         // style: DefaultTextStyle.of(context).style,
                         children: <TextSpan>[
                           TextSpan(
-                            text: "Overtime Hour: ",
+                            text: "Total Amount: ",
                             style: TextStyle(fontWeight: FontWeight.w400),
                           ),
                           TextSpan(
                             text:
-                                "${screenController.payslipDetails.value.overtimeHours}",
+                                "${screenController.payslipDetails.value.totalAmount}",
                           ),
                         ],
                       ),
@@ -491,7 +497,7 @@ class PayslipGenerator extends StatelessWidget {
                       Text('Employee Net Pay'),
                       buildSizedBoxH(kDefaultPadding * 1),
                       Text(
-                        '₹1,06,800.00',
+                        screenController.payslipDetails.value.totalAmount.toString(),
                         style: TextStyle(
                             fontSize: 25,
                             color: AppColors.hoverColor,

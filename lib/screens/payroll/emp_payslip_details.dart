@@ -5,6 +5,7 @@ import 'package:flutter_dashboard/core/animations/entrance_fader.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/card_header.dart';
+import 'package:flutter_dashboard/core/widgets/custom_circular_progress_indicator.dart';
 import 'package:flutter_dashboard/core/widgets/custom_suggestion_feild.dart';
 import 'package:flutter_dashboard/core/widgets/dialog_widgets.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
@@ -271,7 +272,11 @@ class PayslipDetails extends StatelessWidget {
         return Center(child: Text("Please select all the dropdowns to view."));
       } else if (screenController.isLoading.value) {
         return Center(
-          child: CircularProgressIndicator(),
+          child:  AnimatedCircularProgressIndicator(
+              size: 60.0,
+              strokeWidth: 5.0,
+              valueColor: AppColors.defaultColor,
+            ),
         );
       } else {
         return SingleChildScrollView(
@@ -416,7 +421,7 @@ class PayslipDetails extends StatelessWidget {
                                     ],
                                     rows: List<DataRow>.generate(1, (index) {
                                       var payslip =
-                                          screenController.payslipDetails.value;
+                                          screenController.payslipDetails[index];
                                       return DataRow(
                                         cells: [
                                           DataCell(Text('${index + 1}')),
@@ -432,7 +437,7 @@ class PayslipDetails extends StatelessWidget {
                                           DataCell(Text(
                                               payslip.holidays.toString())),
                                           DataCell(Text(
-                                              payslip.leavedays.toString())),
+                                              payslip.currentMonthLeaves.toString())),
                                           DataCell(
                                               Text(payslip.month.toString())),
                                           DataCell(Text(

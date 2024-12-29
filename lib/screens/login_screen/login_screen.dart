@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/view_models/responsive.dart';
+import 'package:flutter_dashboard/core/widgets/custom_animated_button.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/screens/login_screen/controllers/auth_controller.dart';
 
@@ -39,9 +40,9 @@ class LoginScreen extends StatelessWidget {
           child: Row(
             children: [
               Column(
-                children: [ 
+                children: [
                   Image.asset(
-                    'assets/l3.jpg',  
+                    'assets/l3.jpg',
                     width: screenWidth / 2,
                     height: screenHeight / 1.2,
                   ),
@@ -64,7 +65,6 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
-
 
   Widget _buildTabletLayout(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -144,39 +144,40 @@ class LoginScreen extends StatelessWidget {
   //   );
   // }
   Widget _buildMobileLayout(BuildContext context) {
-  return Scaffold(
-    backgroundColor: AppColors.whiteColor,
-    body: SafeArea(  // Added SafeArea for better edge handling
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.25,
-                child: Image.asset(
-                  'assets/l3.jpg',
-                  width: double.infinity,
-                  fit: BoxFit.contain,
+    return Scaffold(
+      backgroundColor: AppColors.whiteColor,
+      body: SafeArea(
+        // Added SafeArea for better edge handling
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  child: Image.asset(
+                    'assets/l3.jpg',
+                    width: double.infinity,
+                    fit: BoxFit.contain,
+                  ),
                 ),
-              ),
-              buildSizedBoxH(20),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
+                buildSizedBoxH(20),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: _buildForm(context),
                 ),
-                child: _buildForm(context),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
-} 
+    );
+  }
 
   Widget _buildForm(BuildContext context) {
     return FormBuilder(
@@ -204,22 +205,19 @@ class LoginScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(bottom: kDefaultPadding * 2.5),
             child: FormBuilderTextField(
-               cursorColor: AppColors.defaultColor,
+              cursorColor: AppColors.defaultColor,
               name: 'Username',
               controller: screenController.usernameController,
               decoration: const InputDecoration(
                 labelText: 'Username',
                 hintText: 'Enter your Username',
-                labelStyle:
-                    TextStyle(color: AppColors.blackColor),
+                labelStyle: TextStyle(color: AppColors.blackColor),
                 border: OutlineInputBorder(),
                 enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: AppColors.greycolor)),
+                    borderSide: BorderSide(color: AppColors.greycolor)),
                 focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: AppColors.defaultColor,
-                        width: 1.5)),
+                    borderSide:
+                        BorderSide(color: AppColors.defaultColor, width: 1.5)),
                 floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
               enableSuggestions: false,
@@ -235,16 +233,13 @@ class LoginScreen extends StatelessWidget {
               decoration: const InputDecoration(
                 labelText: 'Password',
                 hintText: 'Enter your Password',
-                 labelStyle:
-                    TextStyle(color: AppColors.blackColor),
+                labelStyle: TextStyle(color: AppColors.blackColor),
                 border: OutlineInputBorder(),
                 enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: AppColors.greycolor)),
+                    borderSide: BorderSide(color: AppColors.greycolor)),
                 focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: AppColors.defaultColor,
-                        width: 1.5)),
+                    borderSide:
+                        BorderSide(color: AppColors.defaultColor, width: 1.5)),
                 floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
               enableSuggestions: false,
@@ -252,21 +247,35 @@ class LoginScreen extends StatelessWidget {
               validator: FormBuilderValidators.required(),
             ),
           ),
+          // SizedBox(
+          //     height: 50,
+          //     width: double.infinity,
+          //     child: TextButton(
+          //       style: ButtonStyle(
+          //         backgroundColor: WidgetStateProperty.all(Colors.blue),
+          //       ),
+          //       onPressed: ()  {
+          //        screenController.login();
+          //       },
+          //       child: const Text(
+          //         'Login',
+          //         style: TextStyle(color: AppColors.whiteColor),
+          //       ),
+          //     )
+          //     ),
+
           SizedBox(
-              height: 50, 
-              width: double.infinity,
-              child: TextButton(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(Colors.blue),
-                ),
-                onPressed: ()  {
-                 screenController.login(); 
-                },
-                child: const Text(
-                  'Login',
-                  style: TextStyle(color: AppColors.whiteColor),
-                ),
-              )),
+                  height: 50,
+              width: double.infinity, 
+            child: LoadingButton(
+              text: 'Login',
+              onPressed: () => screenController.login(),
+              // Optional customization
+              backgroundColor: Colors.blue,
+              width: 300,
+            ),
+          ),
+
           // Padding(
           //   padding: EdgeInsets.only(top: kDefaultPadding),
           //   child: SizedBox(
@@ -295,6 +304,12 @@ class LoginScreen extends StatelessWidget {
           //     ),
           //   ),
           // ),
+          // AnimatedLoginButton(
+          //       onPressed: () => screenController.login(),
+          //       labelText: 'Login',
+          //       backgroundColor: Colors.blue,
+          //       textColor: AppColors.whiteColor,
+          //     )
         ],
       ),
     );

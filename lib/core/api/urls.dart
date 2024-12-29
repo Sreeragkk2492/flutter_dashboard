@@ -134,8 +134,13 @@ static const GET_EMPLOYEE_ATTENDENCE_REPORT = "/attendance_entry/get_attendance_
 
   //payslip
 
+  
+  static const UPDATE_PAID_LEAVES ="/employee_payslip_details/update_paid_leaves";
+
   static const GET_ALL_EMPLOYEE_PAYSLIP_DETAILS =
       "/employee_payslip_details/get_all_employees_payslip_for_generation";
+       static const Update_ALL_EMPLOYEE_PAYSLIP_DETAILS ="/employee_payslip_details/generate_all_employees_payslip";
+      
   static const GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION =
       "/employee_payroll_allowance/show_allowances_and_deductions_of_user";
   static const GET_ALL_EMPLOYEE_PAYROLL_ALLOWANCE_AND_DEDUCTION_IN_ADD =
@@ -145,6 +150,8 @@ static const GET_EMPLOYEE_ATTENDENCE_REPORT = "/attendance_entry/get_attendance_
       "/employee_payroll_allowance/add_allowances_and_deductions_of_user";
   static const ADD_PAYSLIP_DETAILS =
       "/employee_payslip_details/generate_employee_payslip";
+       static const UPDATE_PAYSLIP_DETAILS =
+      "/employee_payslip_details/update_employee_payslip_exceeded_leaves";
 
   static const GET_ALL_EMPLOYEE_GENERATED_PAYSLIP_DETAILS =
       "/employee_payslip_details/get_generated_employee_payslip";

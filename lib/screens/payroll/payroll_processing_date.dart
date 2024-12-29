@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/animations/entrance_fader.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
+import 'package:flutter_dashboard/core/widgets/custom_circular_progress_indicator.dart';
 import 'package:flutter_dashboard/core/widgets/dialog_widgets.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
@@ -17,8 +18,7 @@ class CompanyPayrollDate extends StatelessWidget {
   CompanyPayrollDate({super.key});
   final _dataTableHorizontalScrollController = ScrollController();
   final screenController = Get.put(CompanyProccesingDateController());
-  final DateFormat dateFormat =
-      DateFormat('d'); // Updated to show only date
+  final DateFormat dateFormat = DateFormat('d'); // Updated to show only date
   @override
   Widget build(BuildContext context) {
     return PortalMasterLayout(
@@ -30,7 +30,7 @@ class CompanyPayrollDate extends StatelessWidget {
           child: UIComponenetsAppBar(
             title: 'Payroll Processing Day ',
             subtitle: '',
-            icon: Icon(Icons.rocket),
+            icon: const Icon(Icons.rocket),
             buttonTitle: 'Add Processing Day',
             onClick: () {
               Get.toNamed(Routes.AddProcessingDate);
@@ -79,13 +79,21 @@ class CompanyPayrollDate extends StatelessWidget {
                                 child: Obx(() {
                                   if (screenController
                                       .companypayrollprocessingdate.isEmpty) {
-                                    return Center(
+                                    return const Center(
                                       child: Text(
                                           "No payroll_processing_day found"),
                                     );
+                                  } else if (screenController.isLoading.value) {
+                                    return Center(
+                                      child: AnimatedCircularProgressIndicator(
+                                        size: 60.0,
+                                        strokeWidth: 5.0,
+                                        valueColor: AppColors.defaultColor,
+                                      ),
+                                    );
                                   } else {
                                     return DataTable(
-                                      headingTextStyle: TextStyle(
+                                      headingTextStyle: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600),
                                       headingRowHeight: 50,
@@ -104,7 +112,7 @@ class CompanyPayrollDate extends StatelessWidget {
                                       showCheckboxColumn: false,
                                       showBottomBorder: true,
                                       columns: [
-                                        DataColumn(
+                                        const DataColumn(
                                             // numeric: true,
                                             label: Row(
                                           children: [
@@ -136,7 +144,7 @@ class CompanyPayrollDate extends StatelessWidget {
                                                       .isSortasc.value;
                                             },
                                             // numeric: true,
-                                            label: Row(
+                                            label: const Row(
                                               children: [
                                                 Text('Company Name'),
 
@@ -145,7 +153,7 @@ class CompanyPayrollDate extends StatelessWidget {
                                                 //      icon: Icon(Icons.arrow_drop_down ))
                                               ],
                                             )),
-                                        DataColumn(
+                                        const DataColumn(
                                             label: Row(
                                           children: [
                                             Text('Processing Day'),
@@ -154,7 +162,7 @@ class CompanyPayrollDate extends StatelessWidget {
                                             //      icon: Icon(Icons.arrow_drop_down_sharp))
                                           ],
                                         )),
-                                        DataColumn(
+                                        const DataColumn(
                                             label: Row(
                                           children: [
                                             Text('Status'),
@@ -186,8 +194,8 @@ class CompanyPayrollDate extends StatelessWidget {
                                             DataCell(Text('${index + 1}')),
                                             DataCell(Text(
                                                 processingdate.companyName)),
-                                            DataCell(Text(dateFormat.format(
-                                                processingdate.processingDay))),
+                                            DataCell(Text(
+                                                processingdate.processingDay)),
                                             DataCell(Text(processingdate
                                                 .isActive
                                                 .toString())),

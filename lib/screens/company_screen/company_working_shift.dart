@@ -7,6 +7,7 @@ import 'package:flutter_dashboard/core/animations/entrance_fader.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/card_header.dart';
+import 'package:flutter_dashboard/core/widgets/custom_circular_progress_indicator.dart';
 import 'package:flutter_dashboard/core/widgets/dialog_widgets.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
@@ -95,7 +96,11 @@ class CompanyWorkingShift extends StatelessWidget {
                 child: Text("Please select a company to view leaves."));
           } else if (screenController.isLoading.value) {
             return Center(
-              child: CircularProgressIndicator(),
+              child:  AnimatedCircularProgressIndicator(
+              size: 60.0,
+              strokeWidth: 5.0,
+              valueColor: AppColors.defaultColor,
+            ),
             );
           } else {
             if (screenController.hasFetchedWorkingshift.value &&

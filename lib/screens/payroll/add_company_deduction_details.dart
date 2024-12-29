@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
+import 'package:flutter_dashboard/core/widgets/custom_circular_progress_indicator.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/core/widgets/ui_component_appbar_without_button.dart';
@@ -137,7 +138,11 @@ class AddCompanyDeductionDetails extends StatelessWidget {
                         // Check if there's only one company (the logged-in user's company)
                         if (employeeController.companydetails.isEmpty) {
                           // Show loading indicator while fetching company details
-                          return Center(child: CircularProgressIndicator());
+                          return Center(child:  AnimatedCircularProgressIndicator(
+              size: 60.0,
+              strokeWidth: 5.0,
+              valueColor: AppColors.defaultColor,
+            ));
                         }
         
                         if (employeeController.isSuperAdmin.value) {

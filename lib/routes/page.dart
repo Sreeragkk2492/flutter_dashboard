@@ -321,6 +321,7 @@ class GetPages {
       name: Routes.AddEmployeePayslipDetails,
       page: () =>AddEmployeePayslip(),
       //  binding: HomeBinding(),
+     //  middlewares: [ ResetEmployeePayslipDetails(),],
       transition: Transition.noTransition,
     ),
       GetPage(

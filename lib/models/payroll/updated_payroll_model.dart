@@ -1,41 +1,48 @@
-// To parse this JSON data, do
-//
-//     final generatedPayslipDetails = generatedPayslipDetailsFromJson(jsonString);
-
 import 'dart:convert';
 
-GeneratedPayslipDetails generatedPayslipDetailsFromJson(String str) => GeneratedPayslipDetails.fromJson(json.decode(str));
+class PayrollModel {
+  final String userId;
+  final int year;
+  final String id;
+  final int month;
+  final String companyId;
+  final PayrollData payrollData;
 
-String generatedPayslipDetailsToJson(GeneratedPayslipDetails data) => json.encode(data.toJson());
+  PayrollModel({
+    required this.userId,
+    required this.year,
+    required this.id,
+    required this.month,
+    required this.companyId,
+    required this.payrollData,
+  });
 
-class GeneratedPayslipDetails {
-    PayslipDetails payslipDetails;
-     int totalAllowances;
-    int totalDeductions;
-
-    GeneratedPayslipDetails({
-        required this.payslipDetails,
-         required this.totalAllowances,
-        required this.totalDeductions,
-    });
-
-    factory GeneratedPayslipDetails.fromJson(Map<String, dynamic> json) => GeneratedPayslipDetails(
-        payslipDetails: PayslipDetails.fromJson(json["payslip_details"]),
-         totalAllowances: json["total_allowances"],
-        totalDeductions: json["total_deductions"],
+  factory PayrollModel.fromJson(Map<String, dynamic> json) {
+    return PayrollModel(
+      userId: json['user_id'],
+      year: json['year'],
+      id: json['id'],
+      month: json['month'],
+      companyId: json['company_id'],
+      payrollData: PayrollData.fromJson(
+        // Converting string to Map using dart:convert
+        json['payroll_data'] is String 
+          ? Map<String, dynamic>.from(
+              jsonDecode(json['payroll_data'].replaceAll("'", '"'))
+            )
+          : json['payroll_data'],
+      ),
     );
-
-    Map<String, dynamic> toJson() => {
-        "payslip_details": payslipDetails.toJson(),
-         "total_allowances": totalAllowances,
-        "total_deductions": totalDeductions,
-    };
+  }
 }
 
-class PayslipDetails {
-    String? id;
+class PayrollData {
     String? companyId;
     String? userId;
+    String? userName;
+    String? name;
+    int? phoneNumber;
+    String? address;
     String? employeeId;
     int? year;
     int? month;
@@ -62,13 +69,16 @@ class PayslipDetails {
     String? payslipFileName;
     String? status;
     bool? isActive;
-    List<Allowance>? allowances;
-    List<Deduction>? deductions;
+    List<dynamic>? allowances;
+    List<dynamic>? deductions;
 
-    PayslipDetails({
-        this.id,
+    PayrollData({
         this.companyId,
         this.userId,
+        this.userName,
+        this.name,
+        this.phoneNumber,
+        this.address,
         this.employeeId,
         this.year,
         this.month,
@@ -99,10 +109,13 @@ class PayslipDetails {
         this.deductions,
     });
 
-    factory PayslipDetails.fromJson(Map<String, dynamic> json) => PayslipDetails(
-        id: json["id"],
+    factory PayrollData.fromJson(Map<String, dynamic> json) => PayrollData(
         companyId: json["company_id"],
         userId: json["user_id"],
+        userName: json["user_name"],
+        name: json["name"],
+        phoneNumber: json["phone_number"],
+        address: json["address"],
         employeeId: json["employee_id"],
         year: json["year"],
         month: json["month"],
@@ -129,14 +142,17 @@ class PayslipDetails {
         payslipFileName: json["payslip_file_name"],
         status: json["status"],
         isActive: json["is_active"],
-        allowances: json["allowances"] == null ? [] : List<Allowance>.from(json["allowances"]!.map((x) => Allowance.fromJson(x))),
-        deductions: json["deductions"] == null ? [] : List<Deduction>.from(json["deductions"]!.map((x) => Deduction.fromJson(x))),
+        allowances: json["allowances"] == null ? [] : List<dynamic>.from(json["allowances"]!.map((x) => x)),
+        deductions: json["deductions"] == null ? [] : List<dynamic>.from(json["deductions"]!.map((x) => x)),
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
         "company_id": companyId,
         "user_id": userId,
+        "user_name": userName,
+        "name": name,
+        "phone_number": phoneNumber,
+        "address": address,
         "employee_id": employeeId,
         "year": year,
         "month": month,
@@ -163,55 +179,47 @@ class PayslipDetails {
         "payslip_file_name": payslipFileName,
         "status": status,
         "is_active": isActive,
-        "allowances": allowances == null ? [] : List<dynamic>.from(allowances!.map((x) => x.toJson())),
-        "deductions": deductions == null ? [] : List<dynamic>.from(deductions!.map((x) => x.toJson())),
+        "allowances": allowances == null ? [] : List<dynamic>.from(allowances!.map((x) => x)),
+        "deductions": deductions == null ? [] : List<dynamic>.from(deductions!.map((x) => x)),
     };
 }
 
 class Allowance {
-    String id;
-    String allowanceName;
-    int amount;
+  final String id;
+  final String allowanceName;
+  final double amount;
 
-    Allowance({
-        required this.id,
-        required this.allowanceName,
-        required this.amount,
-    });
+  Allowance({
+    required this.id,
+    required this.allowanceName,
+    required this.amount,
+  });
 
-    factory Allowance.fromJson(Map<String, dynamic> json) => Allowance(
-        id: json["id"],
-        allowanceName: json["allowance_name"],
-        amount: json["amount"],
+  factory Allowance.fromJson(Map<String, dynamic> json) {
+    return Allowance(
+      id: json['id'].toString(),
+      allowanceName: json['allowance_name'],
+      amount: json['amount']?.toDouble() ?? 0.0,
     );
-
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "allowance_name": allowanceName,
-        "amount": amount,
-    };
+  }
 }
 
-class Deduction {
-    String id;
-    String deductionName;
-    int amount;
+class Deductions {
+  final String id;
+  final String deductionName;
+  final double amount;
 
-    Deduction({
-        required this.id,
-        required this.deductionName,
-        required this.amount,
-    });
+  Deductions({
+    required this.id,
+    required this.deductionName,
+    required this.amount,
+  });
 
-    factory Deduction.fromJson(Map<String, dynamic> json) => Deduction(
-        id: json["id"],
-        deductionName: json["deduction_name"],
-        amount: json["amount"],
+  factory Deductions.fromJson(Map<String, dynamic> json) {
+    return Deductions(
+      id: json['id'].toString(),
+      deductionName: json['deduction_name'],
+      amount: json['amount']?.toDouble() ?? 0.0,
     );
-
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "deduction_name": deductionName,
-        "amount": amount,
-    };
+  }
 }

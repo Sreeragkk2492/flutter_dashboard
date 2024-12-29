@@ -12,7 +12,7 @@ class CompanyProcessingDate {
     String id;
     String companyId;
     String companyName;
-    DateTime processingDay;
+    String processingDay;
     String status;
     bool isActive;
 
@@ -29,7 +29,7 @@ class CompanyProcessingDate {
         id: json["id"],
         companyId: json["company_id"],
         companyName: json["company_name"],
-        processingDay: DateTime.parse(json["processing_day"]),
+        processingDay: json["processing_day"],
         status: json["status"],
         isActive: json["is_active"],
     );
@@ -38,7 +38,7 @@ class CompanyProcessingDate {
         "id": id,
         "company_id": companyId,
         "company_name": companyName,
-        "processing_day": "${processingDay.year.toString().padLeft(4, '0')}-${processingDay.month.toString().padLeft(2, '0')}-${processingDay.day.toString().padLeft(2, '0')}",
+        "processing_day": processingDay,
         "status": status,
         "is_active": isActive,
     };

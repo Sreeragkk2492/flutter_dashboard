@@ -40,6 +40,7 @@ class AuthController extends GetxController {
 //     }
 // }
   login() async {
+    isLoading.value=true;
     try {
       final result = await NetWorkManager.shared().request(
           url: ApiUrls.BASE_URL + ApiUrls.COMPANY_ADMIN_LOGIN_PAGE,
@@ -83,10 +84,13 @@ class AuthController extends GetxController {
       awesomeOkDialog(message: "Client exception: ${e.message}. URI: ${e.uri}");
     } catch (e) {
       awesomeOkDialog(message: "Unexpected error: $e");
+    }finally{
+      isLoading.value=false;
     }
   }
 
    Future<void> logout() async {
+    isLoading.value=true;
     try {
       // Clear stored data
       await StorageServices().delete("token");
@@ -106,6 +110,8 @@ class AuthController extends GetxController {
       Get.offAllNamed(Routes.LOGIN);
     } catch (e) {
       awesomeOkDialog(message: "Error during logout: $e");
+    }finally{
+      isLoading.value=false;
     }
   }
 }

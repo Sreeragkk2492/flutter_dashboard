@@ -5,6 +5,7 @@ import 'package:flutter_dashboard/core/animations/entrance_fader.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/widgets/card_header.dart';
+import 'package:flutter_dashboard/core/widgets/custom_circular_progress_indicator.dart';
 import 'package:flutter_dashboard/core/widgets/custom_suggestion_feild.dart';
 import 'package:flutter_dashboard/core/widgets/dialog_widgets.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
@@ -19,7 +20,6 @@ import 'package:flutter_dashboard/screens/payroll/controller/payroll_settings_co
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 // Import other necessary packages
 
 class EmployeePayrollSettings extends StatelessWidget {
@@ -45,7 +45,7 @@ class EmployeePayrollSettings extends StatelessWidget {
               child: UIComponenetsAppBar(
                 title: 'Employee Payroll Settings',
                 subtitle: '',
-                icon: Icon(Icons.rocket),
+                icon: const Icon(Icons.rocket),
                 buttonTitle: 'Add Employee Payroll',
                 onClick: () {
                   Get.toNamed(Routes.AddEmployeePayrollSettings);
@@ -58,7 +58,7 @@ class EmployeePayrollSettings extends StatelessWidget {
             Obx(() {
               if (screenController.showTabBar.value) {
                 return Container(
-                  child: TabBar(
+                  child: const TabBar(
                     isScrollable: true,
                     tabAlignment: TabAlignment.start,
                     tabs: [
@@ -77,7 +77,7 @@ class EmployeePayrollSettings extends StatelessWidget {
                   ),
                 );
               } else {
-                return SizedBox.shrink();
+                return const SizedBox.shrink();
               }
             }),
             Expanded(
@@ -107,12 +107,12 @@ class EmployeePayrollSettings extends StatelessWidget {
               padding: EdgeInsets.all(kDefaultPadding),
               child: Obx(() {
                 if (employeeController.companydetails.isEmpty) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
           
                 return FormBuilderDropdown<Company>(
                   name: 'Company Name',
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Company Name',
                     hintText: 'Select Company',
                     labelStyle: TextStyle(color: AppColors.blackColor),
@@ -167,7 +167,7 @@ class EmployeePayrollSettings extends StatelessWidget {
                 ),
               ),
                if (!employeeController.isSuperAdmin.value)
-            Expanded(flex: 1 , child: SizedBox()), 
+            const Expanded(flex: 1 , child: SizedBox()), 
             ],
           ),
         ),
@@ -179,15 +179,19 @@ class EmployeePayrollSettings extends StatelessWidget {
     return Obx(() {
       if (
           !screenController.isUserSelected.value) {
-        return Center(child: Text("Please select the fields"));
+        return const Center(child: Text("Please select the fields"));
       } else if (screenController.isLoading.value) {
-        return Center(
-          child: CircularProgressIndicator(),
+        return const Center(
+          child:  AnimatedCircularProgressIndicator(
+              size: 60.0,
+              strokeWidth: 5.0,
+              valueColor: AppColors.defaultColor,
+            ),
         );
       } else if (screenController.allowances.isEmpty) {
-        return Center(child: Text("No payroll allowances and deductions found"));
+        return const Center(child: Text("No payroll allowances and deductions found"));
       } else if(screenController.noDataFound.value){
-       return Center(child: Text("No payroll allowances and deductions found"));
+       return const Center(child: Text("No payroll allowances and deductions found"));
       }else {
         return SingleChildScrollView(
           // physics: NeverScrollableScrollPhysics(),
@@ -236,7 +240,7 @@ class EmployeePayrollSettings extends StatelessWidget {
                                 child: SizedBox(
                                   width: dataTableWidth,
                                   child: DataTable(
-                                     headingTextStyle: TextStyle(
+                                     headingTextStyle: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600),
                                       headingRowHeight: 50,
@@ -256,7 +260,7 @@ class EmployeePayrollSettings extends StatelessWidget {
                                     showCheckboxColumn: true,
                                     showBottomBorder: true,
                                     columns: [
-                                        DataColumn(
+                                        const DataColumn(
                                             // numeric: true,
                                             label: Row(
                                           children: [
@@ -349,15 +353,19 @@ class EmployeePayrollSettings extends StatelessWidget {
     return Obx(() {
       if (
           !screenController.isUserSelected.value) {
-        return Center(child: Text("Please select all the dropdowns to view."));
+        return const Center(child: Text("Please select all the dropdowns to view."));
       } else if (screenController.isLoading.value) {
-        return Center(
-          child: CircularProgressIndicator(),
+        return const Center(
+          child: AnimatedCircularProgressIndicator(
+              size: 60.0,
+              strokeWidth: 5.0,
+              valueColor: AppColors.defaultColor,
+            ),
         );
       } else if (screenController.deductions.isEmpty) {
-        return Center(child: Text("No payroll allowances and deductions found"));
+        return const Center(child: Text("No payroll allowances and deductions found"));
       } else if(screenController.noDataFound.value){
-      return Center(child: Text("No payroll allowances and deductions found"));
+      return const Center(child: Text("No payroll allowances and deductions found"));
       }else {
         return SingleChildScrollView(
           // physics: NeverScrollableScrollPhysics(),
@@ -406,7 +414,7 @@ class EmployeePayrollSettings extends StatelessWidget {
                                 child: SizedBox(
                                   width: dataTableWidth,
                                   child: DataTable(
-                                    headingTextStyle: TextStyle(
+                                    headingTextStyle: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600),
                                         headingRowHeight: 50,
@@ -426,7 +434,7 @@ class EmployeePayrollSettings extends StatelessWidget {
                                     showCheckboxColumn: true,
                                     showBottomBorder: true,
                                     columns: [
-                                        DataColumn(
+                                        const DataColumn(
                                               // numeric: true,
                                               label: Row(
                                             children: [

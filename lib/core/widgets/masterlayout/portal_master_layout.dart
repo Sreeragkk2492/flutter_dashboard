@@ -5,6 +5,7 @@ import 'package:flutter_dashboard/core/constants/credentials.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
 import 'package:flutter_dashboard/core/services/getx/storage_service.dart';
 import 'package:flutter_dashboard/core/widgets/collapsible_sidebar.dart';
+import 'package:flutter_dashboard/core/widgets/custom_animated_button.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/masterlayout.dart';
 import 'package:flutter_dashboard/core/widgets/side_bar.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
@@ -132,6 +133,14 @@ class PortalMasterLayout extends StatelessWidget {
                     buildSizedboxW(kDefaultPadding),
                     Padding(
                       padding: EdgeInsets.only(top: kTextPadding * 2),
+                      // child: LoadingButton(
+                      //   backgroundColor: AppColors.defaultColor,
+                      //   width: 150,
+                      //   height: 40,
+                      //   text: 'Sign Out', onPressed: (){
+                      //   screenController.logout();
+                        
+                      // }),
                       child: TextButton(onPressed: (){
                      screenController.logout();
                       }, child: Text('Sign Out',style: TextStyle(color: AppColors.blackColor),)),

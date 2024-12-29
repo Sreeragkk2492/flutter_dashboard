@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dashboard/core/animations/entrance_fader.dart';
 import 'package:flutter_dashboard/core/constants/colors.dart';
 import 'package:flutter_dashboard/core/constants/dimens.dart';
+import 'package:flutter_dashboard/core/widgets/custom_circular_progress_indicator.dart';
 import 'package:flutter_dashboard/core/widgets/masterlayout/portal_master_layout.dart';
 import 'package:flutter_dashboard/core/widgets/sized_boxes.dart';
 import 'package:flutter_dashboard/routes/routes.dart';
@@ -144,11 +145,15 @@ class PayslipInvoice extends StatelessWidget {
                     buildSizedBoxH(kDefaultPadding * 3),
                     Obx(() {
                       if (screenController.isLoading.value) {
-                        return Center(
-                          child: CircularProgressIndicator(),
+                        return const Center(
+                          child:  AnimatedCircularProgressIndicator(
+              size: 60.0,
+              strokeWidth: 5.0,
+              valueColor: AppColors.defaultColor,
+            ),
                         );
                       } else if (screenController.noDataFound.value) {
-                        return Center(
+                        return const Center(
                             child: Text(
                                 "No data found for the selected criteria."));
                       } else {
@@ -299,13 +304,13 @@ class PayslipInvoice extends StatelessWidget {
                        // style: DefaultTextStyle.of(context).style,
                         children: <TextSpan>[
                           TextSpan(
-                            text: "Leave Days: ",
+                            text: " Exceeded Leave Days: ",
                             style: TextStyle(fontWeight: FontWeight.w400),
                           ),
                           
                           TextSpan(
                             text:
-                                "${screenController.payslipDetails.value.leavedays}",
+                                "${screenController.payslipDetails.value.paidLeaves}",
                           ),
                         ],
                       ),
@@ -506,7 +511,7 @@ class PayslipInvoice extends StatelessWidget {
           ],
         ),
         buildSizedBoxH(kDefaultPadding / 2),
-        ...screenController.payslipDetails.value.allowances.map((item) => Padding(
+        ...screenController.payslipDetails.value.allowances!.map((item) => Padding(
               padding: EdgeInsets.only(bottom: kDefaultPadding / 2),
               child: Row(
                 children: [
@@ -572,7 +577,7 @@ class PayslipInvoice extends StatelessWidget {
           ],
         ),
         buildSizedBoxH(kDefaultPadding / 2),
-        ...screenController.payslipDetails.value.allowances.map((item) => Padding(
+        ...screenController.payslipDetails.value.allowances!.map((item) => Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
               child: Row(
                 children: [
@@ -646,7 +651,7 @@ class PayslipInvoice extends StatelessWidget {
           ],
         ),
         buildSizedBoxH(kDefaultPadding / 2),
-        ...screenController.payslipDetails.value.deductions .map((item) => Padding(
+        ...screenController.payslipDetails.value.deductions! .map((item) => Padding(
               padding: EdgeInsets.only(bottom: kDefaultPadding / 2),
               child: Row(
                 children: [
@@ -712,7 +717,7 @@ class PayslipInvoice extends StatelessWidget {
           ],
         ),
         buildSizedBoxH(kDefaultPadding / 2),
-        ...screenController.payslipDetails.value.deductions .map((item) => Padding(
+        ...screenController.payslipDetails.value.deductions! .map((item) => Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
               child: Row(
                 children: [
