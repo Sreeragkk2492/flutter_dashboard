@@ -6,10 +6,9 @@ import 'package:flutter_dashboard/routes/routes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
-void main() async{ 
-   WidgetsFlutterBinding.ensureInitialized();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await StorageServices.init();
-   
   runApp(MyApp());
 }
 
@@ -20,7 +19,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-       
       supportedLocales: Lang.delegate.supportedLocales,
       localizationsDelegates: const [
         Lang.delegate,
@@ -31,7 +29,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       getPages: GetPages.routes,
       initialRoute: Routes.LOGIN,
-   // theme: AppTheme.themeData(true, context),
+      // theme: AppTheme.themeData(true, context),
     );
   }
 }

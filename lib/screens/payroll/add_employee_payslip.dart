@@ -514,6 +514,8 @@ class _AddEmployeePayslipState extends State<AddEmployeePayslip> {
                               payslip.year.toString(),
                               payslip.month.toString());
                         }
+                        screenController.fetchPayslipDetails();
+                        Get.back();   
                       },
                     ),
                     SizedBox(

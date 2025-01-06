@@ -171,6 +171,8 @@ class PayrollSettingsController extends GetxController {
     isUserSelected.value = false;
     isYearSelected.value = false;
     isMonthSelected.value = false;
+    isUserTypeSelected.value=false; 
+    selectedUserTypeId.value='';
     selectedCompanyId.value = '';
     selectedUserId.value = '';
     selectedYear.value = '';
@@ -502,9 +504,14 @@ class PayrollSettingsController extends GetxController {
         noDataFound.value = true;
         showTabBar.value = false;
         showDataTable.value = false;
-      } else {
-        throw Exception(
-            "Failed to fetch payslip details. Status code: ${response.statusCode}");
+          awesomeOkDialog(message: "Something went wrong");
+      } else if(response.statusCode==400){
+         noDataFound.value = true;
+        showTabBar.value = false;
+        showDataTable.value = false;
+         awesomeOkDialog(message: "Payroll can only be generated after 25");
+        // throw Exception(
+        //     "Failed to fetch payslip details. Status code: ${response.statusCode}");
       }
     } catch (e, stackTrace) {
       print("Error fetching payslip details: $e");
